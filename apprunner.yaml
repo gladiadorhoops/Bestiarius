@@ -1,0 +1,10 @@
+version: 1.0
+runtime: nodejs14
+build:
+  commands:
+    build:
+    - ng build
+run:
+  command: ng serve
+  network:
+    port: 8000
