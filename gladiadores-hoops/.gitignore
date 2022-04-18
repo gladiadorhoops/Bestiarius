@@ -1,10 +1,6 @@
 # Angular
 .angular
 
-# Prod Build
-prod-build
-server.bundle*
-
 # Logs
 logs
 *.log
