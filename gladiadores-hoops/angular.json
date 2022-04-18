@@ -65,12 +65,20 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:server",
+          "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "outputPath": "dist/gladiadores-hoops",
-            "main": "src/main.ts",
-            "tsConfig": "tsconfig.app.json"
-          }
+            "browserTarget": "angular-nodejs-example:build",
+            "proxyConfig": "proxy.conf.json"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "gladiadores-hoops:build:production"
+            },
+            "development": {
+              "browserTarget": "gladiadores-hoops:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

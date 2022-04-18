@@ -3,10 +3,12 @@ runtime: nodejs14
 build:
   commands:
     pre-build:
-    - npm install -g @angular/cli 
+    - npm install -g @angular/cli
+    - npm install -g webpack 
+    - npm install -g gulp
     - npm install
     build:
-    - npm run-script build
+    - npm run build
 run:
   command: npm start
   network:
