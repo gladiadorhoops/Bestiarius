@@ -2,6 +2,17 @@
 
 html {
     background-color: #666;
-    background-image: url("assets/logo.png");
-    background-size: 25% ;
+    /*background-image: url("assets/logo.png");
+    background-size: 10% ;
+    background-size: cover;*/
 }
+
+.text-justify {
+    text-align: justify;
+}
+
+@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '~@fortawesome/fontawesome-free/scss/solid.scss';
+@import '~@fortawesome/fontawesome-free/scss/regular.scss';
+@import '~@fortawesome/fontawesome-free/scss/brands.scss';
+@import '~mdb-angular-ui-kit/assets/scss/mdb.scss';
