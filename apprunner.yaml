@@ -12,4 +12,4 @@ build:
 run:
   command: npm start
   network:
-    port: 2400
+    port: 3080
