@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AcercaComponent } from './acerca/acerca.component';
 import { InicioComponent } from './inicio/inicio.component';
-import { ContactoComponent } from './contacto/contacto.component';
+import { FotosComponent } from './fotos/fotos.component';
 
 const routes: Routes = [
   { path: 'inicio-component', component: InicioComponent },
   { path: 'acerca-component', component: AcercaComponent },
-  { path: 'contacto-component', component: ContactoComponent },
+  { path: 'fotos-component', component: FotosComponent },
   { path: '**', component: InicioComponent },
 ];
 

@@ -1,30 +1,158 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+<link 
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
+<!-- Header -->
+<div class="row">
   <img src="assets/banner.jpeg" width="100%" alt="10mo Torneo Gladiadores Hoops">
-
-<nav class="navbar navbar-expand-sm navbar-light bg-light">
-  <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="mynavbar">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a routerLink="/inicio-component" routerLinkActive="active" class="nav-link" href="#">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="/acerca-component" routerLinkActive="active" class="nav-link" href="#">Acerca de Nosotros </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/contacto-component" routerLinkActive="active"  href="#">Contacto</a>
-        </li>
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="text" placeholder="Search">
-        <button class="btn btn-outline-secondary" type="button">Search</button>
-      </form>
+  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="mynavbar">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a routerLink="/inicio-component" routerLinkActive="active" class="nav-link" href="#">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/acerca-component" routerLinkActive="active" class="nav-link" href="#">Acerca de Nosotros </a>
+          </li>
+          <!--li class="nav-item">
+            <a class="nav-link" routerLink="/fotos-component" routerLinkActive="active"  href="#">Fotos</a>
+          </li-->
+        </ul>
+        <!--form class="d-flex">
+          <input class="form-control me-2" type="text" placeholder="Search">
+          <button class="btn btn-outline-secondary" type="button">Search</button>
+        </form-->
+      </div>
     </div>
-  </div>
-</nav>
-
+  </nav>
+</div>
+<!-- Content -->
+<div class="row">
 <router-outlet></router-outlet>
+</div>
+<!-- Footer -->
+<div class="row">
+
+<!-- Footer -->
+  <footer class="bg-dark text-center text-white ">
+    <!-- Grid container -->
+    <div class="container p-4">
+      <!-- Section: Social media -->
+      <section class="mb-4">
+
+        <!-- Facebook -->
+        <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/Gladiadores-Hoops-447286148680378" target="_blank" role="button"
+          ><i class="fab fa-facebook-f"></i
+        ></a>
+
+        <!-- Twitter -->
+        <a class="btn btn-outline-light btn-floating m-1" href="#!" target="_blank" role="button"
+          ><i class="fab fa-twitter"></i
+        ></a>
+
+        <!-- Instagram -->
+        <a class="btn btn-outline-light btn-floating m-1" href="https://instagram.com/gladiadoreshoops?igshid=NDA1YzNhOGU=" target="_blank" role="button"
+          ><i class="fab fa-instagram"></i
+        ></a>
+      </section>
+      <!-- Section: Social media -->
+
+      <!-- Section: Text -->
+      <section class="mb-4">
+        <p>
+          En busca fomentar el basquetbol como una herramienta de vida.
+        </p>
+      </section>
+      <!-- Section: Text -->
+
+      <!-- Section: Links -->
+      <section class="">
+        <div class="container text-center text-md-start mt-5">
+          <!-- Grid row -->
+          <div class="row mt-3">
+            <!-- Grid column -->
+            <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+              <!-- Content -->
+              <h6 class="text-uppercase fw-bold mb-4">
+                <img src="assets/logo.png" style="width:30px;"  alt="..."> Gladiadores Hoops
+              </h6>
+              <p>
+                ‘’Lo único más fuerte que el poder de la mente y la fuerza humana, es el coraje del corazón’’
+              </p>
+            </div>
+            <!-- Grid column -->
+    
+            <!-- Grid column -->
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+              <!-- Links -->
+              <h6 class="text-uppercase fw-bold mb-4">
+                Links
+              </h6>
+              <p>
+                <a href="#!" class="text-reset">Link 1</a>
+              </p>
+              <p>
+                <a href="#!" class="text-reset">Link 2</a>
+              </p>
+              <p>
+                <a href="#!" class="text-reset">Link 3</a>
+              </p>
+            </div>
+            <!-- Grid column -->
+    
+            <!-- Grid column -->
+            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+              <!-- Links -->
+              <h6 class="text-uppercase fw-bold mb-4">
+                Links
+              </h6>
+              <p>
+                <a href="#!" class="text-reset">Link 4</a>
+              </p>
+              <p>
+                <a href="#!" class="text-reset">Link 5</a>
+              </p>
+              <p>
+                <a href="#!" class="text-reset">Link 6</a>
+              </p>
+            </div>
+            <!-- Grid column -->
+    
+            <!-- Grid column -->
+            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+              <!-- Links -->
+              <h6 class="text-uppercase fw-bold mb-4">
+                Contacto
+              </h6>
+              <p><i class="fas fa-home me-3"></i> Parral, CHIH, MX</p>
+              <p>
+                <i class="fas fa-envelope me-3"></i>
+                parra211233@yahoo.com
+              </p>
+              <p><i class="fas fa-phone me-3"></i> +52 627 119 2829</p>
+            </div>
+            <!-- Grid column -->
+          </div>
+          <!-- Grid row -->
+        </div>
+      </section>
+      <!-- Section: Links -->
+    </div>
+    <!-- Grid container -->
+
+    <!-- Copyright -->
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2022 Copyright:
+      <a class="text-white" href="https://gladiadoreshoops.com/">GladiadoresHoops.com</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+<!-- Footer -->
+
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>

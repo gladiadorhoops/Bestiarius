@@ -1,0 +1,14 @@
+<div class="row">
+    <div *ngIf="Items">
+    <div
+      class="row justify-content-around align-items-center"
+    >
+      <div
+        class="col-lg-3 col-md-6 col-sm-12 border m-3"
+        *ngFor="let item of Items"
+      >
+        <img src="{{ item }}" width="100%" alt="" />
+      </div>
+    </div>
+</div>
+</div>

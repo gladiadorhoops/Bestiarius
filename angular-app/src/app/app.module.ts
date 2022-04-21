@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from "@angular/common/http";
+import { ApiService } from './api.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,14 +24,14 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AcercaComponent } from './acerca/acerca.component';
 import { InicioComponent } from './inicio/inicio.component';
-import { ContactoComponent } from './contacto/contacto.component';
+import { FotosComponent } from './fotos/fotos.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AcercaComponent,
     InicioComponent,
-    ContactoComponent
+    FotosComponent
   ],
   imports: [
     BrowserModule,
@@ -50,9 +52,10 @@ import { ContactoComponent } from './contacto/contacto.component';
     MdbTabsModule,
     MdbTooltipModule,
     MdbValidationModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
