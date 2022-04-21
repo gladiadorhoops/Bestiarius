@@ -3,6 +3,10 @@
 
 .DS_Store
 
+# Prod Build
+prod-build
+server.bundle*
+
 # Logs
 logs
 *.log

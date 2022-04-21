@@ -1,0 +1,15 @@
+version: 1.0
+runtime: nodejs14
+build:
+  commands:
+    pre-build:
+    - npm install -g @angular/cli
+    - npm install -g webpack 
+    - npm install -g gulp
+    - npm install
+    build:
+    - npm run build
+run:
+  command: npm start
+  network:
+    port: 3080

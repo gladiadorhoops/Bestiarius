@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from "../api.service";
 
 @Component({
   selector: 'app-fotos',
@@ -7,7 +6,7 @@ import { ApiService } from "../api.service";
   styleUrls: ['./fotos.component.css']
 })
 export class FotosComponent implements OnInit {
-  constructor(private apiService: ApiService) { }
+  
   Items!: string[];
 
   ngOnInit(): void {
