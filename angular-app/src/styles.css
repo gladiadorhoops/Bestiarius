@@ -8,6 +8,10 @@ html {
     background-size: cover;*/
 }
 
+.page-content {
+    padding: 5% 7% 7% 7%;
+}
+
 .text-justify {
     text-align: justify;
 }
