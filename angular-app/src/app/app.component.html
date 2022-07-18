@@ -8,7 +8,7 @@
 <!-- Header -->
 <div class="row">
   <img src="assets/banner.jpeg" width="100%" alt="10mo Torneo Gladiadores Hoops">
-  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container-fluid">
       <div class="collapse navbar-collapse" id="mynavbar">
         <ul class="navbar-nav me-auto">
@@ -17,6 +17,21 @@
           </li>
           <li class="nav-item">
             <a routerLink="/acerca-component" routerLinkActive="active" class="nav-link" href="#">Acerca de Nosotros </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/torneo-component" routerLinkActive="active" class="nav-link" href="#">Acerca del Torneo </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/redes-sociales-component" routerLinkActive="active" class="nav-link" href="#">Redes Sociales </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/patrocinios-component" routerLinkActive="active" class="nav-link" href="#">Patrocinadores </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/turismo-component" routerLinkActive="active" class="nav-link" href="#">Conoce Parral </a>
+          </li>
+          <li class="nav-item">
+            <a routerLink="/torneospasados-component" routerLinkActive="active" class="nav-link" href="#">Torneos Pasados</a>
           </li>
           <!--li class="nav-item">
             <a class="nav-link" routerLink="/fotos-component" routerLinkActive="active"  href="#">Fotos</a>
@@ -31,7 +46,7 @@
   </nav>
 </div>
 <!-- Content -->
-<div class="row">
+<div class="row" style="background-color: #5A5A46; color: #FFFFFF;">
 <router-outlet></router-outlet>
 </div>
 <!-- Footer -->
@@ -50,9 +65,9 @@
         ></a>
 
         <!-- Twitter -->
-        <a class="btn btn-outline-light btn-floating m-1" href="#!" target="_blank" role="button"
+        <!--a class="btn btn-outline-light btn-floating m-1" href="#!" target="_blank" role="button"
           ><i class="fab fa-twitter"></i
-        ></a>
+        ></a-->
 
         <!-- Instagram -->
         <a class="btn btn-outline-light btn-floating m-1" href="https://instagram.com/gladiadoreshoops?igshid=NDA1YzNhOGU=" target="_blank" role="button"

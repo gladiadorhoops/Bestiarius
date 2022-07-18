@@ -24,13 +24,23 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AcercaComponent } from './acerca/acerca.component';
 import { InicioComponent } from './inicio/inicio.component';
 import { FotosComponent } from './fotos/fotos.component';
+import { TorneospasadosComponent } from './torneospasados/torneospasados.component';
+import { TorneoComponent } from './torneo/torneo.component';
+import { RedesSocialesComponent } from './redes-sociales/redes-sociales.component';
+import { PatrociniosComponent } from './patrocinios/patrocinios.component';
+import { TurismoComponent } from './turismo/turismo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AcercaComponent,
     InicioComponent,
-    FotosComponent
+    FotosComponent,
+    TorneospasadosComponent,
+    TorneoComponent,
+    RedesSocialesComponent,
+    PatrociniosComponent,
+    TurismoComponent
   ],
   imports: [
     BrowserModule,
