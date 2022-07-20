@@ -16,6 +16,13 @@ html {
     text-align: justify;
 }
 
+.navbar .navbar-nav .nav-item .nav-link {
+padding: 0 0.5em;
+}
+.navbar .navbar-nav .nav-item:not(:last-child) .nav-link {
+border-right: 2px solid #FFF;
+}
+
 @import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
 @import '~@fortawesome/fontawesome-free/scss/solid.scss';
 @import '~@fortawesome/fontawesome-free/scss/regular.scss';

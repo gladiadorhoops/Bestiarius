@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http'
+import data from '../../assets/results.json';
 
 @Component({
   selector: 'app-inicio',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InicioComponent implements OnInit {
 
-  constructor() { }
+  matches: Array<any> = [];
+  showResults: boolean = true;
 
+  constructor(private httpService: HttpClient) { }
   ngOnInit(): void {
+    //*
+    this.matches= data.matches;
+    this.showResults = this.matches.length > 1;
   }
 
 }
