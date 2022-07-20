@@ -1,11 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 
+@font-face {
+    font-family: "Quantico";
+    src: local("Quantico"), url(./assets/fonts/Quantico/Quantico-Regular.ttf) format("truetype");
+}
+
 html {
     background-color: #666;
     color: #FFFFFF;
     /*background-image: url("assets/logo.png");
     background-size: 10% ;
     background-size: cover;*/
+}
+
+body {
+    font-family: "Quantico", Arial, Helvetica, sans-serif;
 }
 
 .page-content {
@@ -21,6 +30,13 @@ padding: 0 0.5em;
 }
 .navbar .navbar-nav .nav-item:not(:last-child) .nav-link {
 border-right: 2px solid #FFF;
+height: 100%;
+}
+.lower-corner-img {
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    background-size: 20%;
+    margin: 3%;
 }
 
 @import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
