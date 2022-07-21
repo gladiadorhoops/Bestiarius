@@ -1,0 +1,17 @@
+{
+    "matches": [
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "31/07 19:00h",
+            "quarter": 0,
+            "visitorTeam": {
+                "name": "Mineros",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Manzaneros",
+                "points": 0
+            }
+        }
+    ]
+}

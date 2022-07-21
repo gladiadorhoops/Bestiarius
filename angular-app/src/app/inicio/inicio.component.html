@@ -1,8 +1,43 @@
 
+
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <img src="assets/fb1.jpeg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+            <img src="assets/fb2.jpeg" class="d-block w-100" alt="...">
+        </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+            <img src="assets/fb3.jpeg" class="d-block w-100" alt="...">
+        </div>
+      </div>
+    </div>
+    
 <div class="container page-content text-center" *ngIf="showResults">
     <h2 class="text-center mb-3">
         Juegos del Día
     </h2><br>
+    <div class="row align-items-center">
+        <div class="col col-xs-2">
+            <button (click)="showDay(days[0])">{{days[0]}}/07</button>
+        </div>
+        <div class="col col-xs-2">
+            <button (click)="showDay(days[1])">{{days[1]}}/07</button>
+        </div>
+        <div class="col col-xs-2">
+            <button (click)="showDay(days[2])">{{days[2]}}/07</button>
+        </div>
+    </div>
     <div class="row justify-content-xs-center align-items-center" style="margin:2%; padding: 2%; background-color:#000 ;" *ngFor="let match of matches">
         <div class="row align-items-center">
             <div class="col col-xs-3">
@@ -29,28 +64,5 @@
         </div>
     </div>
 </div>
-
-<div class="row">
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                <img src="assets/fb1.jpeg" class="d-block w-100" alt="...">
-            </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-            <img src="assets/fb2.jpeg" class="d-block w-100" alt="...">
-        </div>
-        </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-            <img src="assets/fb3.jpeg" class="d-block w-100" alt="...">
-        </div>
-      </div>
-    </div>
 </div>
 

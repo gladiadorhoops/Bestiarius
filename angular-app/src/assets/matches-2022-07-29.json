@@ -1,0 +1,30 @@
+{
+    "matches": [
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "29/07 19:00h",
+            "quarter": 3,
+            "visitorTeam": {
+                "name": "Mineros",
+                "points": 40
+            },
+            "homeTeam": {
+                "name": "Manzaneros",
+                "points": 35
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "29/07 21:00h",
+            "quarter": 0,
+            "visitorTeam": {
+                "name": "Mineros",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Manzaneros",
+                "points": 0
+            }
+        }
+    ]
+}
