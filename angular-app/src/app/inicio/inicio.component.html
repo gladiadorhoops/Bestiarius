@@ -35,20 +35,20 @@
     
 <div class="container page-content text-center" *ngIf="showResults">
     <h2 class="text-center mb-3">
-        Juegos del Día
+        Juegos Aprendiz
     </h2><br>
     <div class="row align-items-center">
         <div class="col col-xs-2">
-            <button (click)="showDay(days[0])">{{days[0]}}/07</button>
+            <button (click)="showAprendizDay(days[0])">{{days[0]}}/07</button>
         </div>
         <div class="col col-xs-2">
-            <button (click)="showDay(days[1])">{{days[1]}}/07</button>
+            <button (click)="showAprendizDay(days[1])">{{days[1]}}/07</button>
         </div>
         <div class="col col-xs-2">
-            <button (click)="showDay(days[2])">{{days[2]}}/07</button>
+            <button (click)="showAprendizDay(days[2])">{{days[2]}}/07</button>
         </div>
     </div>
-    <div class="row justify-content-xs-center align-items-center" style="margin:2%; padding: 2%; background-color:#000 ;" *ngFor="let match of matches">
+    <div class="row justify-content-xs-center align-items-center" style="margin:2%; padding: 2%; background-color:#000 ;" *ngFor="let match of matchesAprendiz">
         <div class="row align-items-center">
             <div class="col col-xs-3">
                 <h3>{{match.homeTeam.name}}</h3><br>
@@ -68,8 +68,54 @@
             </div>
         </div>
         <div class="row">
-            <div class="col col-xs-5">
+            <div class="col col-xs-5 d-none d-sm-block">
                 {{match.location}} - {{match.time}}
+            </div>
+            <div class="col col-xs-5 d-block d-sm-none">
+                {{match.location}} <br> {{match.time}}
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <h2 class="text-center mb-3">
+        Juegos Elite
+    </h2><br>
+    <div class="row align-items-center">
+        <div class="col col-xs-2">
+            <button (click)="showEliteDay(days[0])">{{days[0]}}/07</button>
+        </div>
+        <div class="col col-xs-2">
+            <button (click)="showEliteDay(days[1])">{{days[1]}}/07</button>
+        </div>
+        <div class="col col-xs-2">
+            <button (click)="showEliteDay(days[2])">{{days[2]}}/07</button>
+        </div>
+    </div>
+    <div class="row justify-content-xs-center align-items-center" style="margin:2%; padding: 2%; background-color:#000 ;" *ngFor="let match of matchesElite">
+        <div class="row align-items-center">
+            <div class="col col-xs-3">
+                <h3>{{match.homeTeam.name}}</h3><br>
+                <h2>{{match.homeTeam.points}} </h2>
+            </div>
+            <div class="col col-xs-1 " style="max-width: 10%;">
+                <h3>vs</h3>  
+            </div>
+            <div class="col col-xs-3">
+                <h3>{{match.visitorTeam.name}}</h3><br>
+                <h2>{{match.visitorTeam.points}}</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-xs-5">
+                Cuarto: {{match.quarter}} 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-xs-5 d-none d-sm-block">
+                {{match.location}} - {{match.time}}
+            </div>
+            <div class="col col-xs-5 d-block d-sm-none">
+                {{match.location}} <br> {{match.time}}
             </div>
         </div>
     </div>

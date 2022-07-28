@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Match } from '../interfaces/match';
 
-const S3_BUCKET_URL = (day: number) => `https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-10/matches-2022-07-${day}.json`
+const S3_BUCKET_URL = (day: number) => `https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-10/category-matches-2022-07-${day}.json`
 
 @Component({
   selector: 'app-inicio',
@@ -11,9 +11,11 @@ const S3_BUCKET_URL = (day: number) => `https://gladiadores-hoops.s3.amazonaws.c
 })
 export class InicioComponent implements OnInit {
 
-  matches: Match[] = [];
+  matchesAprendiz: Match[] = [];
+  matchesElite: Match[] = [];
   days: number[] = [29, 30, 31];
-  matchesDays: Match[][] = [];
+  matchesAprendizDays: Match[][] = [];
+  matchesEliteDays: Match[][] = [];
   showResults: boolean = false;
   todayDay = new Date().getDate()
 
@@ -27,19 +29,21 @@ export class InicioComponent implements OnInit {
 
   loadMatchesPerDay(day: number) {
     let display_date = this.todayDay;
-    if(this.days[0] > this.todayDay) {
+    if(this.days[0] > this.todayDay || this.days[2] < this.todayDay) {
       display_date = this.days[0];
     }
 
     this.httpService.get(S3_BUCKET_URL(day)).subscribe(
       (response) => {
         console.log('response received', response);
-        this.matchesDays[day] = (response as any).matches as Match[];
+        this.matchesAprendizDays[day] = (response as any).matchesAprendiz as Match[];
+        this.matchesEliteDays[day] = (response as any).matchesElite as Match[];
         
         if(day == display_date)
         {
-          this.matches = this.matchesDays[day];
-          this.showResults = this.matches.length > 0;
+          this.matchesAprendiz = this.matchesAprendizDays[day];
+          this.matchesElite = this.matchesEliteDays[day];
+          this.showResults = this.matchesAprendiz.length > 0 || this.matchesElite.length > 0;
           console.log("showResults", this.showResults)
         }
       },
@@ -53,8 +57,12 @@ export class InicioComponent implements OnInit {
     )
   }
 
-  showDay(day: number) {
-    this.matches = this.matchesDays[day];
-    this.showResults = this.matches.length > 0;
+  showAprendizDay(day: number) {
+    this.matchesAprendiz = this.matchesAprendizDays[day];
+    this.showResults = this.showResults || this.matchesAprendiz.length > 0;
+  }
+  showEliteDay(day: number) {
+    this.matchesElite = this.matchesEliteDays[day];
+    this.showResults = this.showResults || this.matchesElite.length > 0;
   }
 }

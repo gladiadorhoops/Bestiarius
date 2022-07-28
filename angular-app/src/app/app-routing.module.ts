@@ -10,14 +10,14 @@ import { FotosComponent } from './fotos/fotos.component';
 import { TorneospasadosComponent } from './torneospasados/torneospasados.component';
 
 const routes: Routes = [
-  { path: 'inicio-component', component: InicioComponent },
-  { path: 'acerca-component', component: AcercaComponent },
-  { path: 'torneo-component', component: TorneoComponent },
-  { path: 'redes-sociales-component', component: RedesSocialesComponent },
-  { path: 'patrocinios-component', component: PatrociniosComponent },
-  { path: 'turismo-component', component: TurismoComponent },
-  { path: 'fotos-component', component: FotosComponent },
-  { path: 'torneospasados-component', component: TorneospasadosComponent },
+  { path: 'inicio', component: InicioComponent },
+  { path: 'acerca', component: AcercaComponent },
+  { path: 'torneo', component: TorneoComponent },
+  { path: 'redes-sociales', component: RedesSocialesComponent },
+  { path: 'patrocinios', component: PatrociniosComponent },
+  { path: 'turismo', component: TurismoComponent },
+  { path: 'fotos', component: FotosComponent },
+  { path: 'torneospasados', component: TorneospasadosComponent },
   { path: '**', component: InicioComponent },
 ];
 

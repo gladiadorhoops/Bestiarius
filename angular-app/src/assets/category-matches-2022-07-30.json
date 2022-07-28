@@ -1,0 +1,32 @@
+{
+    "matchesAprendiz": [
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "30/07 19:00h",
+            "quarter": 0,
+            "visitorTeam": {
+                "name": "Mineros",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Indios",
+                "points": 0
+            }
+        }
+    ],
+    "matchesElite": [
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "30/07 19:00h",
+            "quarter": 0,
+            "visitorTeam": {
+                "name": "Mineros",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Indios",
+                "points": 0
+            }
+        }
+    ]
+}
