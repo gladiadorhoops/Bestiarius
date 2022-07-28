@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 @font-face {
-    font-family: "Quantico";
-    src: local("Quantico"), url(./assets/fonts/Quantico/Quantico-Regular.ttf) format("truetype");
+    font-family: "Graduate";
+    src: local("Graduate"), url(./assets/fonts/Graduate/Graduate-Regular.ttf) format("truetype");
 }
 
 html {
@@ -14,7 +14,7 @@ html {
 }
 
 body {
-    font-family: "Quantico", Arial, Helvetica, sans-serif;
+    font-family: "Graduate", Arial, Helvetica, sans-serif;
 }
 
 .page-content {
@@ -37,6 +37,18 @@ height: 100%;
     background-repeat: no-repeat;
     background-size: 20%;
     margin: 3%;
+}
+
+.row {
+    --bs-gutter-x: 0.5%;
+}
+
+.foto-slider {
+    padding: 1%;
+}
+
+.card-body {
+padding: 3% 3%;
 }
 
 @import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';

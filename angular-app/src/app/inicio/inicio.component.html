@@ -1,33 +1,43 @@
 
 
 <div class="row">
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-                <img src="assets/fb1.jpeg" class="d-block w-100" alt="...">
+    <!--div class="row" style="padding-top: 5%;">
+        <h2 class="text-center mb-3">
+            Gladiadores Hoops
+        </h2>
+        <h4 class="text-center mb-3">
+            Una fábrica de sueños
+        </h4>
+    </div-->
+    <div class="row foto-slider">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <img src="assets/fb1.jpeg" class="d-block w-100" alt="...">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-            <img src="assets/fb2.jpeg" class="d-block w-100" alt="...">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                <img src="assets/fb2.jpeg" class="d-block w-100" alt="...">
+            </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                <img src="assets/fb3.jpeg" class="d-block w-100" alt="...">
+            </div>
         </div>
         </div>
-    </div>
-    <div class="col">
-        <div class="card">
-            <div class="card-body">
-            <img src="assets/fb3.jpeg" class="d-block w-100" alt="...">
-        </div>
-      </div>
     </div>
     
 <div class="container page-content text-center" *ngIf="showResults">
     <h2 class="text-center mb-3">
         Juegos del Día
     </h2><br>
-    <div class="row align-items-center">
+    <div class="row align-items-center" style="padding:0% 20%">
         <div class="col col-xs-2">
             <button (click)="showDay(days[0])">{{days[0]}}/07</button>
         </div>
