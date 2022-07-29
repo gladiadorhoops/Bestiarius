@@ -2,55 +2,471 @@
     "matchesAprendiz": [
         {
             "location": "Gimnasio Municipal", 
-            "time": "29/07 19:00h",
-            "quarter": 3,
+            "time": "29/07 8:45h",
+            "juego": "Grupo 2",
             "visitorTeam": {
-                "name": "Mineros",
-                "points": 40
+                "name": "Raptors",
+                "points": 58
             },
             "homeTeam": {
-                "name": "Manzaneros",
-                "points": 35
+                "name": "RoQui",
+                "points": 50
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "29/07 8:45h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "Bulldogs",
+                "points": 59
+            },
+            "homeTeam": {
+                "name": "ABA",
+                "points": 54
             }
         },
         {
             "location": "Gimnasio Municipal", 
-            "time": "29/07 21:00h",
-            "quarter": 0,
+            "time": "29/07 10:00h",
+            "juego": "Grupo 2",
             "visitorTeam": {
-                "name": "Mineros",
+                "name": "Lions",
+                "points": 80
+            },
+            "homeTeam": {
+                "name": "Abejas",
+                "points": 40
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "29/07 10:00h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "Rawigas",
+                "points": 60
+            },
+            "homeTeam": {
+                "name": "Gansos",
+                "points": 58
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "29/07 11:15h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "Borreguitos",
                 "points": 0
             },
             "homeTeam": {
-                "name": "Manzaneros",
+                "name": "Falcons",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "29/07 11:15h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "Tigres",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "ESBAL",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "29/07 12:30h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "Bulldogs",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Rawigas",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "29/07 12:30h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "Raptors",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Lions",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "29/07 13:45h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "ABA",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Tigres",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "29/07 13:45h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "RoQui",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Borreguitos",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "29/07 15:00h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "ESBAL",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Gansos",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "29/07 15:45h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "Falcons",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Abejas",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "29/07 16:45h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "Raptors",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Borreguitos",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "29/07 17:00h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "ABA",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "RAWIWAS",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Federal", 
+            "time": "29/07 17:00h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "Gansos",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Tigres",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "29/07 18:00h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "Bulldogs",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "ESBAL",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "29/07 19:15h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "Abejas",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "RoQui",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "29/07 20:30h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "Falcons",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Lions",
                 "points": 0
             }
         }
     ],
     "matchesElite": [
         {
-            "location": "Gimnasio Municipal", 
-            "time": "29/07 19:00h",
-            "quarter": 3,
+            "location": "Gimnasio Nuevo", 
+            "time": "29/07 9:00h",
+            "juego": "Grupo 3",
             "visitorTeam": {
-                "name": "Mineros",
-                "points": 40
+                "name": "Leñadores",
+                "points": 41
             },
             "homeTeam": {
-                "name": "Manzaneros",
-                "points": 35
+                "name": "Selec. Chih.",
+                "points": 89
             }
         },
         {
-            "location": "Gimnasio Municipal", 
-            "time": "29/07 21:00h",
-            "quarter": 0,
+            "location": "Gimnasio Federal", 
+            "time": "29/07 9:00h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "Mambas",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "ESCOBA",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "29/07 10:15h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "RoQui",
+                "points": 27
+            },
+            "homeTeam": {
+                "name": "Mini Regios",
+                "points": 62
+            }
+        },
+        {
+            "location": "Gimnasio Federal", 
+            "time": "29/07 10:15h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "SAHQ",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Carrilleros",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "29/07 11:30h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "Rawigas",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Black Devils",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Federal", 
+            "time": "29/07 11:30h",
+            "juego": "Grupo 4",
             "visitorTeam": {
                 "name": "Mineros",
                 "points": 0
             },
             "homeTeam": {
-                "name": "Manzaneros",
+                "name": "24 Cent",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "29/07 12:45h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "Mambas",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "SAHQ",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Federal", 
+            "time": "29/07 12:45h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "Leñadores",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "RoQui",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "29/07 14:00h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "ESCOBA",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Mineros",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Federal", 
+            "time": "29/07 14:00h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "Selec. Chih.",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Rawigas",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "29/07 15:15h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "Carrilleros",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "24 Cent",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Federal", 
+            "time": "29/07 15:45h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "Mini Regios",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Black Devils",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "29/07 16:45h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "Selec. Chih.",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "RoQui",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "29/07 18:00h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "Black Devils",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Leñadores",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "29/07 19:15h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "Mini Regios",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Rawigas",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "29/07 20:30h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "Mambas",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Mineros",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "29/07 21:45h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "SAHQ",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "24 Cent",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "29/07 21:45h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "ESCOBA",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Carrilleros",
                 "points": 0
             }
         }

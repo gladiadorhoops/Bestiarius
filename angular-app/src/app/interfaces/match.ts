@@ -3,7 +3,7 @@ import { Team } from "./team"
 export interface Match {
     location: string
     time: string
-    quarter: number
+    juego: string
     visitorTeam: Team
     homeTeam: Team
 }

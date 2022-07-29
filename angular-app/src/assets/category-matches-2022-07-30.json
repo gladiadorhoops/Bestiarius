@@ -2,14 +2,209 @@
     "matchesAprendiz": [
         {
             "location": "Gimnasio Municipal", 
-            "time": "30/07 19:00h",
-            "quarter": 0,
+            "time": "30/07 8:00h",
+            "juego": "Grupo 1",
             "visitorTeam": {
-                "name": "Mineros",
+                "name": "Bulldogs",
                 "points": 0
             },
             "homeTeam": {
-                "name": "Indios",
+                "name": "Gansos",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "30/07 8:00h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "ABA",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "ESBAL",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Tecnológico", 
+            "time": "30/07 8:00h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "Rawigas",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Tigres",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "30/07 8:00h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "Abejas",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Borreguitos",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "30/07 10:30h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "Raptors",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Abejas",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "30/07 10:30h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "RoQui",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Falcons",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Tecnológico", 
+            "time": "30/07 10:30h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "Lions",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Borreguitos",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "30/07 11:45h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "Rawigas",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "ESBAL",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "30/07 11:45h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "Bulldogs",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Tigres",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Tecnológico", 
+            "time": "30/07 11:45h",
+            "juego": "Grupo 1",
+            "visitorTeam": {
+                "name": "ABA",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Gansos",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "30/07 14:30h",
+            "juego": "Aprendiz J1",
+            "visitorTeam": {
+                "name": "#3 Gr 1",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "#6 Gr 2",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Tecnológico", 
+            "time": "30/07 14:30h",
+            "juego": "Aprendiz J4",
+            "visitorTeam": {
+                "name": "#5 Gr 1",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "#4 Gr 2",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "30/07 15:30h",
+            "juego": "Aprendiz J2",
+            "visitorTeam": {
+                "name": "#4 Gr 1",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "#5 Gr 2",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "30/07 15:30h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "Raptors",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Falcons",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "30/07 16:00h",
+            "juego": "Aprendiz J3",
+            "visitorTeam": {
+                "name": "#3 Gr 2",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "#6 Gr 1",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "30/07 16:45h",
+            "juego": "Grupo 2",
+            "visitorTeam": {
+                "name": "RoQui",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Lions",
                 "points": 0
             }
         }
@@ -17,14 +212,209 @@
     "matchesElite": [
         {
             "location": "Gimnasio Municipal", 
-            "time": "30/07 19:00h",
-            "quarter": 0,
+            "time": "30/07 9:15h",
+            "juego": "Grupo 3",
             "visitorTeam": {
-                "name": "Mineros",
+                "name": "Leñadores",
                 "points": 0
             },
             "homeTeam": {
-                "name": "Indios",
+                "name": "Mini Regios",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "30/07 9:15h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "Selec. Chih.",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Black Devils",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Tecnológico", 
+            "time": "30/07 9:15h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "RoQui",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Rawigas",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "30/07 9:15h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "Mambas",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Carrilleros",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "30/07 10:30h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "SAHQ",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Mineros",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "30/07 11:45h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "ESCOBA",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "24 Cent",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "30/07 13:00h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "Mini Regios",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Selec. Chih.",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Tecnológico", 
+            "time": "30/07 13:00h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "RoQui",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Black Devils",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "30/07 13:00h",
+            "juego": "Grupo 3",
+            "visitorTeam": {
+                "name": "Leñadores",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Rawigas",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "30/07 13:15h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "Carrilleros",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "Mineros",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "30/07 14:15h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "Mambas",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "24 Cent",
+                "points": 0
+            }
+        },
+        {
+            "location": "Cancha Sindicato", 
+            "time": "30/07 14:15h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "ESCOBA",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "SAHQ",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Tecnológico", 
+            "time": "30/07 16:00h",
+            "juego": "Elite J4",
+            "visitorTeam": {
+                "name": "#5 GR 4",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "#4 GR 3",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Nuevo", 
+            "time": "30/07 16:45h",
+            "juego": "Elite J1",
+            "visitorTeam": {
+                "name": "#3 GR 4",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "#6 GR 3",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "30/07 17:15h",
+            "juego": "Elite J2",
+            "visitorTeam": {
+                "name": "#4 GR 4",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "#5 GR 3",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Tecnológico", 
+            "time": "30/07 17:15h",
+            "juego": "Elite J1",
+            "visitorTeam": {
+                "name": "#3 GR 3",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "#6 GR 4",
                 "points": 0
             }
         }
