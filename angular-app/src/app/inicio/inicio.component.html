@@ -34,20 +34,23 @@
     </div>
     
 <div class="container page-content text-center" *ngIf="showResults">
-    <h2 class="text-center mb-3">
-        Juegos Aprendiz
-    </h2><br>
     <div class="row align-items-center">
         <div class="col col-xs-2">
-            <button (click)="showAprendizDay(days[0])">{{days[0]}}/07</button>
+            <button (click)="showDay(days[0])">{{days[0]}}/07</button>
         </div>
         <div class="col col-xs-2">
-            <button (click)="showAprendizDay(days[1])">{{days[1]}}/07</button>
+            <button (click)="showDay(days[1])">{{days[1]}}/07</button>
         </div>
         <div class="col col-xs-2">
-            <button (click)="showAprendizDay(days[2])">{{days[2]}}/07</button>
+            <button (click)="showDay(days[2])">{{days[2]}}/07</button>
         </div>
     </div>
+
+    <h2 class="text-center mb-3">
+        <br>
+        Juegos Aprendiz
+        <br>
+    </h2>
     <div class="row justify-content-xs-center align-items-center" style="margin:2%; padding: 2%; background-color:#000 ;" *ngFor="let match of matchesAprendiz">
         <div class="row align-items-center">
             <div class="col col-xs-3">
@@ -76,21 +79,12 @@
             </div>
         </div>
     </div>
-    <br><br>
+    <br>
     <h2 class="text-center mb-3">
+        <br>
         Juegos Elite
-    </h2><br>
-    <div class="row align-items-center">
-        <div class="col col-xs-2">
-            <button (click)="showEliteDay(days[0])">{{days[0]}}/07</button>
-        </div>
-        <div class="col col-xs-2">
-            <button (click)="showEliteDay(days[1])">{{days[1]}}/07</button>
-        </div>
-        <div class="col col-xs-2">
-            <button (click)="showEliteDay(days[2])">{{days[2]}}/07</button>
-        </div>
-    </div>
+        <br>
+    </h2>
     <div class="row justify-content-xs-center align-items-center" style="margin:2%; padding: 2%; background-color:#000 ;" *ngFor="let match of matchesElite">
         <div class="row align-items-center">
             <div class="col col-xs-3">

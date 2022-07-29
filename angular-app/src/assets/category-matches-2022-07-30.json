@@ -132,27 +132,27 @@
         },
         {
             "location": "Gimnasio Municipal", 
-            "time": "30/07 14:30h",
-            "juego": "Aprendiz J1",
+            "time": "30/07 13:15h",
+            "juego": "Grupo 2",
             "visitorTeam": {
-                "name": "#3 Gr 1",
+                "name": "Raptors",
                 "points": 0
             },
             "homeTeam": {
-                "name": "#6 Gr 2",
+                "name": "Falcons",
                 "points": 0
             }
         },
         {
             "location": "Gimnasio Tecnológico", 
-            "time": "30/07 14:30h",
-            "juego": "Aprendiz J4",
+            "time": "30/07 14:00h",
+            "juego": "Grupo 2",
             "visitorTeam": {
-                "name": "#5 Gr 1",
+                "name": "RoQui",
                 "points": 0
             },
             "homeTeam": {
-                "name": "#4 Gr 2",
+                "name": "Lions",
                 "points": 0
             }
         },
@@ -170,21 +170,34 @@
             }
         },
         {
-            "location": "Cancha Sindicato", 
-            "time": "30/07 15:30h",
-            "juego": "Grupo 2",
+            "location": "Gimnasio Municipal", 
+            "time": "30/07 16:00h",
+            "juego": "Aprendiz J1",
             "visitorTeam": {
-                "name": "Raptors",
+                "name": "#3 Gr 1",
                 "points": 0
             },
             "homeTeam": {
-                "name": "Falcons",
+                "name": "#6 Gr 2",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Tecnológico", 
+            "time": "30/07 16:00h",
+            "juego": "Aprendiz J4",
+            "visitorTeam": {
+                "name": "#5 Gr 1",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "#4 Gr 2",
                 "points": 0
             }
         },
         {
             "location": "Gimnasio Municipal", 
-            "time": "30/07 16:00h",
+            "time": "30/07 17:15h",
             "juego": "Aprendiz J3",
             "visitorTeam": {
                 "name": "#3 Gr 2",
@@ -192,19 +205,6 @@
             },
             "homeTeam": {
                 "name": "#6 Gr 1",
-                "points": 0
-            }
-        },
-        {
-            "location": "Cancha Sindicato", 
-            "time": "30/07 16:45h",
-            "juego": "Grupo 2",
-            "visitorTeam": {
-                "name": "RoQui",
-                "points": 0
-            },
-            "homeTeam": {
-                "name": "Lions",
                 "points": 0
             }
         }
@@ -329,7 +329,7 @@
         },
         {
             "location": "Gimnasio Municipal", 
-            "time": "30/07 13:15h",
+            "time": "30/07 14:30h",
             "juego": "Grupo 4",
             "visitorTeam": {
                 "name": "Carrilleros",
@@ -367,22 +367,9 @@
             }
         },
         {
-            "location": "Gimnasio Tecnológico", 
-            "time": "30/07 16:00h",
-            "juego": "Elite J4",
-            "visitorTeam": {
-                "name": "#5 GR 4",
-                "points": 0
-            },
-            "homeTeam": {
-                "name": "#4 GR 3",
-                "points": 0
-            }
-        },
-        {
             "location": "Gimnasio Nuevo", 
             "time": "30/07 16:45h",
-            "juego": "Elite J1",
+            "juego": "Elite J3",
             "visitorTeam": {
                 "name": "#3 GR 4",
                 "points": 0
@@ -393,9 +380,22 @@
             }
         },
         {
-            "location": "Gimnasio Municipal", 
+            "location": "Gimnasio Tecnológico", 
             "time": "30/07 17:15h",
             "juego": "Elite J2",
+            "visitorTeam": {
+                "name": "#5 GR 4",
+                "points": 0
+            },
+            "homeTeam": {
+                "name": "#4 GR 3",
+                "points": 0
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "30/07 18:15h",
+            "juego": "Elite J4",
             "visitorTeam": {
                 "name": "#4 GR 4",
                 "points": 0
@@ -407,7 +407,7 @@
         },
         {
             "location": "Gimnasio Tecnológico", 
-            "time": "30/07 17:15h",
+            "time": "30/07 18:15h",
             "juego": "Elite J1",
             "visitorTeam": {
                 "name": "#3 GR 3",

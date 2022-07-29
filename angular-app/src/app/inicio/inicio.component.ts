@@ -57,12 +57,9 @@ export class InicioComponent implements OnInit {
     )
   }
 
-  showAprendizDay(day: number) {
+  showDay(day: number) {
     this.matchesAprendiz = this.matchesAprendizDays[day];
-    this.showResults = this.showResults || this.matchesAprendiz.length > 0;
-  }
-  showEliteDay(day: number) {
     this.matchesElite = this.matchesEliteDays[day];
-    this.showResults = this.showResults || this.matchesElite.length > 0;
+    this.showResults = this.showResults || this.matchesAprendiz.length > 0;
   }
 }
