@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AcercaComponent } from './acerca/acerca.component';
 import { InicioComponent } from './inicio/inicio.component';
+import { ResultadosComponent } from './resultados/resultados.component';
+import { MarcadoresComponent } from './marcadores/marcadores.component';
 import { TorneoComponent } from './torneo/torneo.component';
 import { PatrociniosComponent } from './patrocinios/patrocinios.component';
 import { TurismoComponent } from './turismo/turismo.component';
@@ -12,6 +14,8 @@ import { TorneospasadosComponent } from './torneospasados/torneospasados.compone
 const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
   { path: 'acerca', component: AcercaComponent },
+  { path: 'resultados', component: ResultadosComponent },
+  { path: 'marcadores', component: MarcadoresComponent },
   { path: 'torneo', component: TorneoComponent },
   { path: 'redes-sociales', component: RedesSocialesComponent },
   { path: 'patrocinios', component: PatrociniosComponent },

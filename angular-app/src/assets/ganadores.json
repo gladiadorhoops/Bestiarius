@@ -1,0 +1,160 @@
+{
+    "equipos": [
+        {
+            "categoria": "Aprendiz", 
+            "significado": "Ganadores des Torneo de Equipos Categoria Aprendiz",
+            "ganadores": [
+                "Borreguitos",
+                "Lions",
+                "Bulldogs"
+            ]
+        },
+        {
+            "categoria": "Elite", 
+            "significado": "Ganadores des Torneo de Equipos Categoria Elite",
+            "ganadores": [
+                "-",
+                "-",
+                "SAHQ"
+            ]
+        }
+    ],
+    "individuales": [
+        {
+            "categoria": "Centuriones", 
+            "significado":"Top Jugadores del Torneo",
+            "ganadores": [
+                "Fernando Cabrera - Bulldogs - Aprendiz",
+                "Andre Marin - Gansos - Aprendiz",
+                "Maximo Chacon - Raptors - Aprendiz",
+                "Gerardo Aguirre - ESBAL - Aprendiz",
+                "Sebastian Hernandez - RoQui - Aprendiz",
+                "Ramiro Altamirano - Lions - Aprendiz",
+                "Juan Carlos Munoz - Borreguitos - Aprendiz",
+                "Arath Ramon - Borreguitos - Aprendiz",
+                "Erick Pando - Mambas - Elite",
+                "Luis Quesada - RoQui - Elite",
+                "Cristian Apodaca - Carrilleros - Elite",
+                "Carlos Minjarez - Mineros - Elite",
+                "Raul Stanford - SAHQ - Elite",
+                "Andres Montana - 24 Cent - Elite",
+                "David Torres - 24 Cent - Elite",
+                "Saul Vargas - ESCOBA - Elite"
+            ]
+        },
+        {
+            "categoria": "Spartacus", 
+            "significado":"MVP, jugador más valioso",
+            "ganadores": [
+                "Hector Perez - Borreguitos - Aprendiz"
+            ]
+        },
+        {
+            "categoria": "Scutum Shield", 
+            "significado":"Mejores Defensas del Torneo alas, guardias y poste",
+            "ganadores": [
+                "Amin Melo - ESBAL - Aprendiz",
+                "Luis Saenz - Gansos - Aprendiz",
+                "Raul Stanford - SAHQ - Elite",
+                "Ramiro Altamirano - Lions - Aprendiz"
+            ]
+        },
+        {
+            "categoria": "Flamma", 
+            "significado":"Gladiador, garra, corazón pasión para jugar, deja todo en la cancha",
+            "ganadores": [
+                "Itchvan Morales - Carrilleros - Aprendiz",
+                "Eduardo Garcia - RoQui - Elite"
+            ]
+        },
+        {
+            "categoria": "Ludus", 
+            "significado":"Coach mas Destacado del Torneo",
+            "ganadores": [
+                //"Jesse Munoz - Borreguitos"
+            ]
+        },
+        {
+            "categoria": "Maximus", 
+            "significado":"Mejor jugador Overall de todo el torneo",
+            "ganadores": [
+                "Juan Carlos Munoz - Borreguitos - Aprendiz"
+            ]
+        },
+        {
+            "categoria": "Crupelarius CRQ21", 
+            "significado":"Jugador más Completo, se desenvuelve en distintas posiciones y ambos lados de la cancha",
+            "ganadores": [
+                "Misael Palafox - Lions - Aprendiz",
+                "Sergio Acosta - SAHQ - Elite"
+            ]
+        },
+        {
+            "categoria": "Colosseum", 
+            "significado":"Jugador Sportmanship o fair play",
+            "ganadores": [
+                "Juan Limas - Gansos - Aprendiz"
+            ]
+        },
+        {
+            "categoria": "Commodus", 
+            "significado":"Mejores prospectos a futuro",
+            "ganadores": [
+                "Irvin Cuevas - RoQui - Aprendiz",
+                //"David Ortiz?? - Equipo - Elite"
+            ]
+        },
+        {
+            "categoria": "Publius Ostiorus", 
+            "significado":"Mejor jugador con capacidades para anotar",
+            "ganadores": [
+                "Ronaldo Cordero - Abejas - Aprendiz",
+                "Jesus Romero - SAHQ - Elite"
+            ]
+        },
+        {
+            "categoria": "Provocator", 
+            "significado":"Jugador de Trabajo Extra, jugador rol",
+            "ganadores": [
+                "Oscar Ochoa - Lions - Aprendiz",
+                //"Horacio ??? - 24 Cent - Elite"
+            ]
+        },
+        {
+            "categoria": "Crixus", 
+            "significado":"Mejor Sexto Hombre, cambio de los titulares",
+            "ganadores": [
+                "Antonio Rodriguez - Lions - Aprendiz",
+                "Nombre - Equipo - Elite"
+            ]
+        },
+        {
+            "categoria": "Spiculus", 
+            "significado":"Mvp del juego de Estrellas",
+            "ganadores": [
+                "Juan Carlos Munoz - Borreguitos - Aprendiz"
+            ]
+        },
+        {
+            "categoria": "Sagittarius", 
+            "significado": "Triples",
+            "ganadores": [
+                "Sergio Acosta - SAHQ - Elite"
+            ]
+        },
+        {
+            "categoria": "Tetraites", 
+            "significado":"Clavadas",
+            "ganadores": [
+                //"Marco Hernandez - Equipo - Elite"
+            ]
+        },
+        {
+            "categoria": "Retiarius", 
+            "significado":"Habilidades",
+            "ganadores": [
+                "Raul Stanford - SAHQ - Elite"
+            ]
+        }
+    ]
+}

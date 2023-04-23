@@ -6,11 +6,11 @@
             "juego": "Grupo 1",
             "visitorTeam": {
                 "name": "Bulldogs",
-                "points": 0
+                "points": 41
             },
             "homeTeam": {
                 "name": "Gansos",
-                "points": 0
+                "points": 33
             }
         },
         {
@@ -19,11 +19,11 @@
             "juego": "Grupo 1",
             "visitorTeam": {
                 "name": "ABA",
-                "points": 0
+                "points": 36
             },
             "homeTeam": {
                 "name": "ESBAL",
-                "points": 0
+                "points": 47
             }
         },
         {
@@ -32,11 +32,11 @@
             "juego": "Grupo 1",
             "visitorTeam": {
                 "name": "Rawigas",
-                "points": 0
+                "points": 33
             },
             "homeTeam": {
                 "name": "Tigres",
-                "points": 0
+                "points": 36
             }
         },
         {
@@ -45,11 +45,11 @@
             "juego": "Grupo 2",
             "visitorTeam": {
                 "name": "Abejas",
-                "points": 0
+                "points": 33
             },
             "homeTeam": {
                 "name": "Borreguitos",
-                "points": 0
+                "points": 75
             }
         },
         {
@@ -58,11 +58,11 @@
             "juego": "Grupo 2",
             "visitorTeam": {
                 "name": "Raptors",
-                "points": 0
+                "points": 56
             },
             "homeTeam": {
                 "name": "Abejas",
-                "points": 0
+                "points": 55
             }
         },
         {
@@ -71,11 +71,11 @@
             "juego": "Grupo 2",
             "visitorTeam": {
                 "name": "RoQui",
-                "points": 0
+                "points": 32
             },
             "homeTeam": {
                 "name": "Falcons",
-                "points": 0
+                "points": 52
             }
         },
         {
@@ -84,11 +84,11 @@
             "juego": "Grupo 2",
             "visitorTeam": {
                 "name": "Lions",
-                "points": 0
+                "points": 46
             },
             "homeTeam": {
                 "name": "Borreguitos",
-                "points": 0
+                "points": 49
             }
         },
         {
@@ -97,11 +97,11 @@
             "juego": "Grupo 1",
             "visitorTeam": {
                 "name": "Rawigas",
-                "points": 0
+                "points": 43
             },
             "homeTeam": {
                 "name": "ESBAL",
-                "points": 0
+                "points": 44
             }
         },
         {
@@ -110,11 +110,11 @@
             "juego": "Grupo 1",
             "visitorTeam": {
                 "name": "Bulldogs",
-                "points": 0
+                "points": 71
             },
             "homeTeam": {
                 "name": "Tigres",
-                "points": 0
+                "points": 28
             }
         },
         {
@@ -123,11 +123,11 @@
             "juego": "Grupo 1",
             "visitorTeam": {
                 "name": "ABA",
-                "points": 0
+                "points": 40
             },
             "homeTeam": {
                 "name": "Gansos",
-                "points": 0
+                "points": 60
             }
         },
         {
@@ -136,11 +136,11 @@
             "juego": "Grupo 2",
             "visitorTeam": {
                 "name": "Raptors",
-                "points": 0
+                "points": 65
             },
             "homeTeam": {
                 "name": "Falcons",
-                "points": 0
+                "points": 58
             }
         },
         {
@@ -149,63 +149,63 @@
             "juego": "Grupo 2",
             "visitorTeam": {
                 "name": "RoQui",
-                "points": 0
+                "points": 38
             },
             "homeTeam": {
                 "name": "Lions",
-                "points": 0
+                "points": 66
             }
         },
         {
             "location": "Gimnasio Nuevo", 
             "time": "30/07 15:30h",
-            "juego": "Aprendiz J2",
+            "juego": "Play Inn Aprendiz J2",
             "visitorTeam": {
-                "name": "#4 Gr 1",
-                "points": 0
+                "name": "Rawigas",
+                "points": 20
             },
             "homeTeam": {
-                "name": "#5 Gr 2",
-                "points": 0
+                "name": "Falcons",
+                "points": 49
             }
         },
         {
             "location": "Gimnasio Municipal", 
             "time": "30/07 16:00h",
-            "juego": "Aprendiz J1",
+            "juego": "Play Inn Aprendiz J1",
             "visitorTeam": {
-                "name": "#3 Gr 1",
-                "points": 0
+                "name": "ESBAL",
+                "points": 46
             },
             "homeTeam": {
-                "name": "#6 Gr 2",
-                "points": 0
+                "name": "RoQui",
+                "points": 34
             }
         },
         {
             "location": "Gimnasio Tecnológico", 
             "time": "30/07 16:00h",
-            "juego": "Aprendiz J4",
+            "juego": "Play Inn Aprendiz J4",
             "visitorTeam": {
-                "name": "#5 Gr 1",
-                "points": 0
+                "name": "ABA",
+                "points": 50
             },
             "homeTeam": {
-                "name": "#4 Gr 2",
-                "points": 0
+                "name": "Abejas",
+                "points": 55
             }
         },
         {
             "location": "Gimnasio Municipal", 
             "time": "30/07 17:15h",
-            "juego": "Aprendiz J3",
+            "juego": "Play Inn Aprendiz J3",
             "visitorTeam": {
-                "name": "#3 Gr 2",
-                "points": 0
+                "name": "Raptors",
+                "points": 63
             },
             "homeTeam": {
-                "name": "#6 Gr 1",
-                "points": 0
+                "name": "Tigres",
+                "points": 35
             }
         }
     ],
@@ -216,11 +216,11 @@
             "juego": "Grupo 3",
             "visitorTeam": {
                 "name": "Leñadores",
-                "points": 0
+                "points": 42
             },
             "homeTeam": {
                 "name": "Mini Regios",
-                "points": 0
+                "points": 74
             }
         },
         {
@@ -229,11 +229,11 @@
             "juego": "Grupo 3",
             "visitorTeam": {
                 "name": "Selec. Chih.",
-                "points": 0
+                "points": 82
             },
             "homeTeam": {
                 "name": "Black Devils",
-                "points": 0
+                "points": 50
             }
         },
         {
@@ -242,11 +242,11 @@
             "juego": "Grupo 3",
             "visitorTeam": {
                 "name": "RoQui",
-                "points": 0
+                "points": 45
             },
             "homeTeam": {
                 "name": "Rawigas",
-                "points": 0
+                "points": 49
             }
         },
         {
@@ -255,11 +255,11 @@
             "juego": "Grupo 4",
             "visitorTeam": {
                 "name": "Mambas",
-                "points": 0
+                "points": 49
             },
             "homeTeam": {
                 "name": "Carrilleros",
-                "points": 0
+                "points": 43
             }
         },
         {
@@ -268,11 +268,11 @@
             "juego": "Grupo 4",
             "visitorTeam": {
                 "name": "SAHQ",
-                "points": 0
+                "points": 46
             },
             "homeTeam": {
                 "name": "Mineros",
-                "points": 0
+                "points": 40
             }
         },
         {
@@ -281,11 +281,11 @@
             "juego": "Grupo 4",
             "visitorTeam": {
                 "name": "ESCOBA",
-                "points": 0
+                "points": 41
             },
             "homeTeam": {
                 "name": "24 Cent",
-                "points": 0
+                "points": 64
             }
         },
         {
@@ -294,11 +294,11 @@
             "juego": "Grupo 3",
             "visitorTeam": {
                 "name": "Mini Regios",
-                "points": 0
+                "points": 39
             },
             "homeTeam": {
                 "name": "Selec. Chih.",
-                "points": 0
+                "points": 44
             }
         },
         {
@@ -307,11 +307,11 @@
             "juego": "Grupo 3",
             "visitorTeam": {
                 "name": "RoQui",
-                "points": 0
+                "points": 59
             },
             "homeTeam": {
                 "name": "Black Devils",
-                "points": 0
+                "points": 50
             }
         },
         {
@@ -320,24 +320,11 @@
             "juego": "Grupo 3",
             "visitorTeam": {
                 "name": "Leñadores",
-                "points": 0
+                "points": 51
             },
             "homeTeam": {
                 "name": "Rawigas",
-                "points": 0
-            }
-        },
-        {
-            "location": "Gimnasio Municipal", 
-            "time": "30/07 14:30h",
-            "juego": "Grupo 4",
-            "visitorTeam": {
-                "name": "Carrilleros",
-                "points": 0
-            },
-            "homeTeam": {
-                "name": "Mineros",
-                "points": 0
+                "points": 61
             }
         },
         {
@@ -346,11 +333,11 @@
             "juego": "Grupo 4",
             "visitorTeam": {
                 "name": "Mambas",
-                "points": 0
+                "points": 45
             },
             "homeTeam": {
                 "name": "24 Cent",
-                "points": 0
+                "points": 55
             }
         },
         {
@@ -359,63 +346,76 @@
             "juego": "Grupo 4",
             "visitorTeam": {
                 "name": "ESCOBA",
-                "points": 0
+                "points": 51
             },
             "homeTeam": {
                 "name": "SAHQ",
-                "points": 0
+                "points": 50
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "30/07 14:30h",
+            "juego": "Grupo 4",
+            "visitorTeam": {
+                "name": "Carrilleros",
+                "points": 55
+            },
+            "homeTeam": {
+                "name": "Mineros",
+                "points": 41
             }
         },
         {
             "location": "Gimnasio Nuevo", 
             "time": "30/07 16:45h",
-            "juego": "Elite J3",
+            "juego": "Play Inn Elite J3",
             "visitorTeam": {
-                "name": "#3 GR 4",
-                "points": 0
+                "name": "24 Cent",
+                "points": 64
             },
             "homeTeam": {
-                "name": "#6 GR 3",
-                "points": 0
+                "name": "Leñadores",
+                "points": 51
             }
         },
         {
             "location": "Gimnasio Tecnológico", 
             "time": "30/07 17:15h",
-            "juego": "Elite J2",
+            "juego": "Play Inn Elite J2",
             "visitorTeam": {
-                "name": "#5 GR 4",
-                "points": 0
+                "name": "SAHQ",
+                "points": 53
             },
             "homeTeam": {
-                "name": "#4 GR 3",
-                "points": 0
+                "name": "RoQui",
+                "points": 50
             }
         },
         {
             "location": "Gimnasio Municipal", 
             "time": "30/07 18:15h",
-            "juego": "Elite J4",
+            "juego": "Play Inn Elite J4",
             "visitorTeam": {
-                "name": "#4 GR 4",
-                "points": 0
+                "name": "ESCOBA",
+                "points": 40
             },
             "homeTeam": {
-                "name": "#5 GR 3",
-                "points": 0
+                "name": "Black Devils",
+                "points": 49
             }
         },
         {
             "location": "Gimnasio Tecnológico", 
             "time": "30/07 18:15h",
-            "juego": "Elite J1",
+            "juego": "Play Inn Elite J1",
             "visitorTeam": {
-                "name": "#3 GR 3",
-                "points": 0
+                "name": "Rawigas",
+                "points": 53
             },
             "homeTeam": {
-                "name": "#6 GR 4",
-                "points": 0
+                "name": "Mineros",
+                "points": 27
             }
         }
     ]

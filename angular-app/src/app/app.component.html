@@ -21,15 +21,24 @@
           <li class="nav-item active">
             <a routerLink="/inicio" routerLinkActive="active" class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Inicio</a>
           </li>
-          <li class="nav-item">
-            <a routerLink="/acerca" routerLinkActive="active" class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Acerca de Nosotros </a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="resultados" role="button" aria-expanded="false">Resultados</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="resultados">Resultados</a></li>
+              <li><a class="dropdown-item" routerLink="marcadores">Marcadores</a></li>
+            </ul>
           </li>
-          <li class="nav-item">
-            <a routerLink="/torneo" routerLinkActive="active" class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Acerca del Torneo </a>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Acerca de Nosotros</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" routerLink="acerca">Acerca de Nosotros</a></li>
+              <li><a class="dropdown-item" routerLink="torneo">Acerca del Torneo</a></li>
+              <li><a class="dropdown-item" routerLink="redes-sociales">Redes Sociales</a></li>
+            </ul>
           </li>
-          <li class="nav-item">
-            <a routerLink="/redes-sociales" routerLinkActive="active" class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Redes Sociales </a>
-          </li>
+
+          
           <li class="nav-item">
             <a routerLink="/patrocinios" routerLinkActive="active" class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Patrocinadores </a>
           </li>

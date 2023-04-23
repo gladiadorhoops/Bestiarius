@@ -1,0 +1,37 @@
+<div class="row">
+<div class="container page-content text-center">
+
+        <h1>10mo Torneo Gladiadores Hoops</h1>
+        <h1>Ganadores</h1>
+        <br><br>
+
+        <h2 class="text-center mb-3">
+            <br>
+            Equipos
+            <br>
+        </h2>
+        <div class="row justify-content-xs-center align-items-center" 
+                    style="margin:2% 0%; padding: 2%; background-color:#000 ;" 
+                    *ngFor="let categoria of ganadoresEquipos">
+            <h4 style="cursor: help;" title="{{categoria.significado}}">Categoria {{categoria.categoria}}</h4>
+            <div class="row" *ngFor="let ganador of categoria.ganadores; let i=index">
+                <h6>{{i+1}}: {{ganador}}</h6> 
+            </div>
+        </div>
+
+        <br><br>
+        <h2 class="text-center mb-3">
+            <br>
+            Individuales
+            <br>
+        </h2>
+        <div class="row justify-content-xs-center align-items-center"
+                    style="margin:2% 0%; padding: 2%; background-color:#000 ;" 
+                    *ngFor="let categoria of ganadoresIndividuales">
+            <h4 style="cursor: help;" title="{{categoria.significado}}">Categoria {{categoria.categoria}}</h4>
+            <div class="row" *ngFor="let ganador of categoria.ganadores">
+                <h6>{{ganador}}</h6>
+            </div>
+        </div>
+</div>
+</div>

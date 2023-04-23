@@ -1,11 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'bootstrap/scss/bootstrap';
 @import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
 @import '@fortawesome/fontawesome-free/scss/solid.scss';
 @import '@fortawesome/fontawesome-free/scss/regular.scss';
 @import '@fortawesome/fontawesome-free/scss/brands.scss';
-@import 'mdb-angular-ui-kit/assets/scss/mdb.scss';
+//@import 'mdb-angular-ui-kit/assets/scss/mdb.scss';
 @import 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,600&display=swap';
+@import 'bootstrap/scss/bootstrap';
 
 @font-face {
     font-family: "Graduate";
@@ -33,7 +33,7 @@ body {
 }
 
 .navbar .navbar-nav .nav-item .nav-link {
-padding: 0 0.5em;
+padding: 0.5em;
 }
 .navbar .navbar-nav .nav-item:not(:last-child) .nav-link {
 border-right: 2px solid #FFF;

@@ -29,6 +29,8 @@ import { TorneoComponent } from './torneo/torneo.component';
 import { RedesSocialesComponent } from './redes-sociales/redes-sociales.component';
 import { PatrociniosComponent } from './patrocinios/patrocinios.component';
 import { TurismoComponent } from './turismo/turismo.component';
+import { ResultadosComponent } from './resultados/resultados.component';
+import { MarcadoresComponent } from './marcadores/marcadores.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { TurismoComponent } from './turismo/turismo.component';
     TorneoComponent,
     RedesSocialesComponent,
     PatrociniosComponent,
-    TurismoComponent
+    TurismoComponent,
+    ResultadosComponent,
+    MarcadoresComponent
   ],
   imports: [
     BrowserModule,

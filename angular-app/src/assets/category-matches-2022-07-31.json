@@ -5,12 +5,12 @@
             "time": "31/07 8:00h",
             "juego": "Cuartos Aprendiz J5",
             "visitorTeam": {
-                "name": "#2 GR 2",
-                "points": 0
+                "name": "Lions",
+                "points": 61
             },
             "homeTeam": {
-                "name": "GAN J3",
-                "points": 0
+                "name": "Raptors",
+                "points": 47
             }
         },
         {
@@ -18,12 +18,12 @@
             "time": "31/07 8:00h",
             "juego": "Cuartos Aprendiz J7",
             "visitorTeam": {
-                "name": "#2 GR 1",
-                "points": 0
+                "name": "Gansos",
+                "points": 67
             },
             "homeTeam": {
-                "name": "GAN J1",
-                "points": 0
+                "name": "ESBAL",
+                "points": 52
             }
         },
         {
@@ -31,12 +31,12 @@
             "time": "31/07 9:15h",
             "juego": "Cuartos Aprendiz J6",
             "visitorTeam": {
-                "name": "#1 GR 1",
-                "points": 0
+                "name": "Bulldogs",
+                "points": 73
             },
             "homeTeam": {
-                "name": "GAN J4",
-                "points": 0
+                "name": "Abejas",
+                "points": 33
             }
         },
         {
@@ -44,25 +44,12 @@
             "time": "31/07 9:15h",
             "juego": "Cuartos Aprendiz J8",
             "visitorTeam": {
-                "name": "#1 GR 2",
-                "points": 0
+                "name": "Borreguitos",
+                "points": 54
             },
             "homeTeam": {
-                "name": "GAN J2",
-                "points": 0
-            }
-        },
-        {
-            "location": "Gimnasio Municipal", 
-            "time": "31/07 11:45h",
-            "juego": "Semi Aprendiz J10",
-            "visitorTeam": {
-                "name": "GAN J7",
-                "points": 0
-            },
-            "homeTeam": {
-                "name": "GAN J8",
-                "points": 0
+                "name": "Falcons",
+                "points": 46
             }
         },
         {
@@ -70,12 +57,25 @@
             "time": "31/07 11:45h",
             "juego": "Semi Aprendiz J9",
             "visitorTeam": {
-                "name": "GAN J5",
-                "points": 0
+                "name": "Lions",
+                "points": 59
             },
             "homeTeam": {
-                "name": "GAN J6",
-                "points": 0
+                "name": "Bulldogs",
+                "points": 49
+            }
+        },
+        {
+            "location": "Gimnasio Municipal", 
+            "time": "31/07 11:45h",
+            "juego": "Semi Aprendiz J10",
+            "visitorTeam": {
+                "name": "Gansos",
+                "points": 30
+            },
+            "homeTeam": {
+                "name": "Borreguitos",
+                "points": 57
             }
         },
         {
@@ -83,25 +83,25 @@
             "time": "31/07 13:45h",
             "juego": "3er Aprendiz",
             "visitorTeam": {
-                "name": "PER J9",
-                "points": 0
+                "name": "Bulldogs",
+                "points": 68
             },
             "homeTeam": {
-                "name": "PER J10",
-                "points": 0
+                "name": "Gansos",
+                "points": 50
             }
         },
         {
             "location": "Gimnasio Municipal", 
-            "time": "31/07 14:15h",
+            "time": "31/07 14:45h",
             "juego": "Final Aprendiz",
             "visitorTeam": {
-                "name": "GAN J9",
-                "points": 0
+                "name": "Lions",
+                "points": 31
             },
             "homeTeam": {
-                "name": "GAN J10",
-                "points": 0
+                "name": "Borreguitos",
+                "points": 49
             }
         }
     ],
@@ -111,12 +111,12 @@
             "time": "31/07 8:00h",
             "juego": "Cuartos Elite J5",
             "visitorTeam": {
-                "name": "#2 GR 2",
-                "points": 0
+                "name": "Carrilleros",
+                "points": 65
             },
             "homeTeam": {
-                "name": "GAN J3",
-                "points": 0
+                "name": "24 Cent",
+                "points": 72
             }
         },
         {
@@ -124,12 +124,12 @@
             "time": "31/07 9:15h",
             "juego": "Cuartos Elite J6",
             "visitorTeam": {
-                "name": "#1 GR 1",
-                "points": 0
+                "name": "Selec. Chih.",
+                "points": 54
             },
             "homeTeam": {
-                "name": "GAN J4",
-                "points": 0
+                "name": "ESCOBA",
+                "points": 35
             }
         },
         {
@@ -137,12 +137,12 @@
             "time": "31/07 10:30h",
             "juego": "Cuartos Elite J7",
             "visitorTeam": {
-                "name": "#2 GR 1",
-                "points": 0
+                "name": "Mini Regios",
+                "points": 47
             },
             "homeTeam": {
-                "name": "GAN J1",
-                "points": 0
+                "name": "Rawigas",
+                "points": 23
             }
         },
         {
@@ -150,12 +150,12 @@
             "time": "31/07 10:30h",
             "juego": "Cuartos Elite J8",
             "visitorTeam": {
-                "name": "#1 GR 2 J9",
-                "points": 0
+                "name": "Mambas",
+                "points": 61
             },
             "homeTeam": {
-                "name": "GAN J2",
-                "points": 0
+                "name": "SAHQ",
+                "points": 62
             }
         },
         {
@@ -163,12 +163,12 @@
             "time": "31/07 12:30h",
             "juego": "Semi Elite J9",
             "visitorTeam": {
-                "name": "GAN J5",
-                "points": 0
+                "name": "24 Cent",
+                "points": 60
             },
             "homeTeam": {
-                "name": "GAN J6",
-                "points": 0
+                "name": "Selec. Chih.",
+                "points": 71
             }
         },
         {
@@ -176,12 +176,12 @@
             "time": "31/07 13:00h",
             "juego": "Semi Elite J10",
             "visitorTeam": {
-                "name": "GAN J7",
-                "points": 0
+                "name": "Mini Regios",
+                "points": 44
             },
             "homeTeam": {
-                "name": "GAN J8",
-                "points": 0
+                "name": "SAHQ",
+                "points": 40
             }
         },
         {
@@ -189,12 +189,12 @@
             "time": "31/07 15:00h",
             "juego": "3er Elite",
             "visitorTeam": {
-                "name": "PER J9",
-                "points": 0
+                "name": "24 Cent",
+                "points": 40
             },
             "homeTeam": {
-                "name": "PER J10",
-                "points": 0
+                "name": "SAHQ",
+                "points": 53
             }
         },
         {
@@ -202,11 +202,11 @@
             "time": "31/07 15:30h",
             "juego": "Final Elite",
             "visitorTeam": {
-                "name": "GAN J9",
+                "name": "Selec. Chih.",
                 "points": 0
             },
             "homeTeam": {
-                "name": "GAN J10",
+                "name": "Mini Regios",
                 "points": 0
             }
         }
