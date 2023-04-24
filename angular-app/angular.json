@@ -105,5 +105,7 @@
       }
     }
   },
-  "defaultProject": "gladiadores-hoops"
+  "cli": {
+    "analytics": false
+  }
 }
