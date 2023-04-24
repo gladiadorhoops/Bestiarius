@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/scss/bootstrap';
+@import '@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '@fortawesome/fontawesome-free/scss/solid.scss';
+@import '@fortawesome/fontawesome-free/scss/regular.scss';
+@import '@fortawesome/fontawesome-free/scss/brands.scss';
+@import 'mdb-angular-ui-kit/assets/scss/mdb.scss';
+@import 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,600&display=swap';
 
 @font-face {
     font-family: "Graduate";
@@ -48,12 +55,6 @@ height: 100%;
 }
 
 .card-body {
-padding: 3% 3%;
+    padding: 3% 3%;
 }
-
-@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
-@import '~@fortawesome/fontawesome-free/scss/solid.scss';
-@import '~@fortawesome/fontawesome-free/scss/regular.scss';
-@import '~@fortawesome/fontawesome-free/scss/brands.scss';
-@import '~mdb-angular-ui-kit/assets/scss/mdb.scss';
 

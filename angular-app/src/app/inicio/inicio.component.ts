@@ -7,7 +7,7 @@ const S3_BUCKET_URL = (day: number) => `https://gladiadores-hoops.s3.amazonaws.c
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
-  styleUrls: ['./inicio.component.css']
+  styleUrls: ['./inicio.component.scss']
 })
 export class InicioComponent implements OnInit {
 
