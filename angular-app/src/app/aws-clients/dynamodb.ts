@@ -1,7 +1,5 @@
-import { AttributeValue, DynamoDBClient, PutItemCommand, PutItemCommandInput } from "@aws-sdk/client-dynamodb";
+import { AttributeValue, DynamoDBClient, PutItemCommand, PutItemCommandInput, GetItemCommandInput, GetItemCommand } from "@aws-sdk/client-dynamodb";
 import { REGION, COGNITO_CREDENTIALS, DDB_TABLE_NAME } from "./constants";
-import { generateId } from "../utils/utils";
-import { ItemInput } from "./interfaces/item-input"
 
 const client = new DynamoDBClient({ 
     region: REGION,
@@ -28,6 +26,23 @@ export class DynamoDb {
             const response = await client.send(command);
             console.log("response: ", response)
 
+        } catch (err) {
+            console.log("Error", err);
+        }
+    }
+
+    async getItem(record: Record<string, AttributeValue>): Promise<any> {
+        console.log("Reading Item")
+        try {
+            const input: GetItemCommandInput = {
+              TableName: DDB_TABLE_NAME,
+              Key: record,
+              ReturnConsumedCapacity: "TOTAL",
+            };
+            const command = new GetItemCommand(input);
+            console.log("command: ", command)
+            const response = await client.send(command);
+            console.log("response: ", response)
         } catch (err) {
             console.log("Error", err);
         }
