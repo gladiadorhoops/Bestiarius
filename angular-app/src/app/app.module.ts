@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from "@angular/common/http";
-
+import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -31,6 +31,7 @@ import { PatrociniosComponent } from './patrocinios/patrocinios.component';
 import { TurismoComponent } from './turismo/turismo.component';
 import { ResultadosComponent } from './resultados/resultados.component';
 import { MarcadoresComponent } from './marcadores/marcadores.component';
+import { EvaluacionComponent } from './evaluacion/evaluacion.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { MarcadoresComponent } from './marcadores/marcadores.component';
     PatrociniosComponent,
     TurismoComponent,
     ResultadosComponent,
-    MarcadoresComponent
+    MarcadoresComponent,
+    EvaluacionComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,8 @@ import { MarcadoresComponent } from './marcadores/marcadores.component';
     MdbTooltipModule,
     MdbValidationModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   bootstrap: [AppComponent]
 })

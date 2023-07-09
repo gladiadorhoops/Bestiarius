@@ -10,6 +10,7 @@ import { TurismoComponent } from './turismo/turismo.component';
 import { RedesSocialesComponent } from './redes-sociales/redes-sociales.component';
 import { FotosComponent } from './fotos/fotos.component';
 import { TorneospasadosComponent } from './torneospasados/torneospasados.component';
+import { EvaluacionComponent } from './evaluacion/evaluacion.component'
 
 const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'turismo', component: TurismoComponent },
   { path: 'fotos', component: FotosComponent },
   { path: 'torneospasados', component: TorneospasadosComponent },
+  { path: 'evaluacion', component: EvaluacionComponent },
   { path: '**', component: InicioComponent },
 ];
 

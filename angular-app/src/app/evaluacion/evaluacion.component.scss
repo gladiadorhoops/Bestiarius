@@ -1,0 +1,22 @@
+.fcol {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.frow {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 100%;
+    padding-top: 1%;
+}
+
+
+.inlinelabel {
+    flex: 30%;
+    text-align: left;
+}
+
+.inlineinput {
+    flex: 70%
+}

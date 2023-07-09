@@ -1,0 +1,198 @@
+<div class="bg-image lower-corner-img" style="background-image: url('assets/no-background-logo-transparent.png');">
+    <div class="container page-content">
+        <div class="d-flex justify-content-center align-items-center" >
+            <div class="text-justify outer">
+            
+            
+            <h5 class="text-center mb-3">
+                Evaluacion de Jugadores
+            </h5><br>
+            
+            <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" class ="fcol">
+                <div class="frow">
+                    <label class="inlinelabel" for="equipo">Equipo:&nbsp;</label>
+                    <div class="inlineinput">
+                        <input list="equipos" name="equipo" formControlName="equipo">
+                        <datalist id="equipos">
+                            <option value="Equipo A">
+                            <option value="Equipo B">
+                            <option value="Equipo C">
+                            <option value="Equipo D">
+                            <option value="Equipo E">
+                        </datalist>
+                    </div>
+                </div>
+                <div class="frow">
+                    <label class="inlinelabel" for="nombre">Nombre:&nbsp;</label>
+                    <div class="inlineinput">
+                        <input name="nombre" list="players" formControlName="nombre" required>
+                        <datalist id="players">
+                            <option value="Jose">
+                            <option value="Luis">
+                            <option value="Marcos">
+                        </datalist>
+                    </div>
+                </div>
+                <!--div class="frow">
+                    <label class="inlinelabel" for="partido">Partido:&nbsp;</label>
+                    <input class="inlineinput" id="partido" type="text" formControlName="partido" size="10" required>
+                </div>
+                <div class="frow">
+                    <label class="inlinelabel" for="partido">Dia:&nbsp;</label>
+                    <input class="inlineinput" id="partido" type="date" formControlName="partido" required>
+                </div-->
+                <div class="frow">
+                    <label class="inlinelabel" for="edad">Edad:&nbsp;</label>
+                    <input class="inlineinput" id="edad" type="number" formControlName="edad" min="1" max="99" required>
+                </div>
+                <div class="frow">
+                    <label class="inlinelabel" for="categoria">Categoria:&nbsp;</label>
+                    <div class="inlineinput">
+                        <input list="categorias" name="categoria" formControlName="categoria">
+                        <datalist id="categorias">
+                            <option value="Aprendiz">
+                            <option value="Elite">
+                        </datalist>
+                    </div>
+                </div>
+                <div class="frow">
+                    <label class="inlinelabel" for="estatura">Estatura (cm):&nbsp;</label>
+                    <input class="inlineinput" id="estatura" type="number" formControlName="estatura" min="1" max="999" required>
+                </div>
+                <div class="frow">
+                    <label class="inlinelabel" for="peso">Peso (kg):&nbsp;</label>
+                    <input class="inlineinput" id="peso" type="number" formControlName="peso" min="1" max="999" required>
+                </div>
+                <div class="frow">
+                    <label class="inlinelabel" for="position">Position(es):&nbsp;</label>
+                    <div class="inlineinput">
+                        <input type="checkbox" id="p1" name="position" value="1" formControlName="position">
+                        <label class="checkbox-label" for="p1">&nbsp;1&nbsp;</label>
+                        <input type="checkbox" id="p2" name="position" value="2" formControlName="position">
+                        <label class="checkbox-label" for="p2">&nbsp;2&nbsp;</label>
+                        <input type="checkbox" id="p3" name="position" value="3" formControlName="position">
+                        <label class="checkbox-label" for="p3">&nbsp;3&nbsp;</label>
+                        <input type="checkbox" id="p4" name="position" value="4" formControlName="position">
+                        <label class="checkbox-label" for="p4">&nbsp;4&nbsp;</label>
+                        <input type="checkbox" id="p5" name="position" value="5" formControlName="position">
+                        <label class="checkbox-label" for="p5">&nbsp;5&nbsp;</label>
+                    </div>
+                </div>
+                <div class="frow">
+                    <label class="inlinelabel" for="eval">Evaluation General:&nbsp;</label>
+                    <div class="inlineinput">
+                        <input list="evals" name="eval" formControlName="eval">
+                        <datalist id="evals">
+                            <option value="1 - Necesita mejora">
+                            <option value="2 - Promedio">
+                            <option value="3 - Arriba de promedio">
+                            <option value="4 - Muy Bueno">
+                            <option value="5 - Gladiador">
+                        </datalist>
+                    </div>
+                </div>
+                <fieldset class="frow">
+                    <legend>Tiro:</legend>
+                        <label class="inlinelabel" for="tirocolada">Colada:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="tirocolada" formControlName="tirocolada">
+                        <label class="inlinelabel" for="tiromedia">Tiro Media:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="tiromedia" formControlName="tiromedia">
+                        <label class="inlinelabel" for="tirotriples">Triples:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="tirotriples" formControlName="tirotriples">
+                        <label class="inlinelabel" for="tirointeligente">Tiro Inteligente:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="tirointeligente" formControlName="tirointeligente">
+                </fieldset>
+
+                <fieldset class="frow">
+                    <legend>Pase:</legend>
+                        <label class="inlinelabel" for="pasevision">Vision:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="pasevision" formControlName="pasevision">
+                        <label class="inlinelabel" for="pasecreador">Creador:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="pasecreador" formControlName="pasecreador">
+                        <label class="inlinelabel" for="paseperdida">Perdida de Balon:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="paseperdida" formControlName="paseperdida">
+                        <label class="inlinelabel" for="pasesentido">Sentido:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="pasesentido" formControlName="pasesentido">
+                </fieldset>
+
+                <fieldset class="frow">
+                    <legend>Defensa:</legend>
+                        <label class="inlinelabel" for="defensaenbola">En Bola:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="defensaenbola" formControlName="defensaenbola">
+                        <label class="inlinelabel" for="defensasinbola">Sin Bola:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="defensasinbola" formControlName="defensasinbola">
+                        <label class="inlinelabel" for="defensatrans">Transicion:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="defensatrans" formControlName="defensatrans">
+                        <label class="inlinelabel" for="defensarebote">Rebote Def:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="defensarebote" formControlName="defensarebote">
+                </fieldset>
+
+                <fieldset class="frow">
+                    <legend>Bote:</legend>
+                        <label class="inlinelabel" for="botecontrol">Control:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="botecontrol" formControlName="botecontrol">
+                        <label class="inlinelabel" for="botepresion">En Presion:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="botepresion" formControlName="botepresion">
+                        <label class="inlinelabel" for="boteperdida">Perdida de Balon:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="boteperdida" formControlName="boteperdida">
+                        <label class="inlinelabel" for="botemanodebil">Mano Debil:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="botemanodebil" formControlName="botemanodebil">
+                        <label class="inlinelabel" for="botecambio">Cambio de Ritmo:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="botecambio" formControlName="botecambio">
+                </fieldset>
+
+                <fieldset class="frow">
+                    <legend>Jugador:</legend>
+                        <label class="inlinelabel" for="jugadorhustle">Hustle:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="jugadorhustle" formControlName="jugadorhustle">
+                        <label class="inlinelabel" for="jugadorspacing">Spacing:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="jugadorspacing" formControlName="jugadorspacing">
+                        <label class="inlinelabel" for="jugadorequipo">Juego de Equipo:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="jugadorequipo" formControlName="jugadorequipo">
+                        <label class="inlinelabel" for="jugadortiro">Tiro Inteligente:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="jugadortiro" formControlName="jugadortiro">
+                        <label class="inlinelabel" for="jugadoragresividad">Agresividad:&nbsp;</label>
+                        <input class="inlineinput" type="number" min="1" max="5" name="jugadoragresividad" formControlName="jugadoragresividad">
+                </fieldset>
+
+                <label class="inlinelabel" for="estilo">Estilo de Juego:&nbsp;</label>
+                    <div class="inlineinput">
+                        <input type="checkbox" id="p1" name="estilo" value="Anotador" formControlName="estilo">
+                        <label class="checkbox-label" for="p1">&nbsp;Anotador&nbsp;</label>
+                        <input type="checkbox" id="p2" name="estilo" value="Defensor" formControlName="estilo">
+                        <label class="checkbox-label" for="p2">&nbsp;Defensor&nbsp;</label>
+                        <input type="checkbox" id="p3" name="estilo" value="Creador" formControlName="estilo">
+                        <label class="checkbox-label" for="p3">&nbsp;Creador&nbsp;</label>
+                        <input type="checkbox" id="p4" name="estilo" value="Atletico" formControlName="estilo">
+                        <label class="checkbox-label" for="p4">&nbsp;Atletico&nbsp;</label>
+                        <input type="checkbox" id="p5" name="estilo" value="Clutch" formControlName="estilo">
+                        <label class="checkbox-label" for="p5">&nbsp;Clutch&nbsp;</label>
+                        <input type="checkbox" id="p5" name="estilo" value="Rebotador" formControlName="estilo">
+                        <label class="checkbox-label" for="p5">&nbsp;Rebotador&nbsp;</label>
+                        <input type="checkbox" id="p5" name="estilo" value="Rol" formControlName="estilo">
+                        <label class="checkbox-label" for="p5">&nbsp;Rol&nbsp;</label>
+                    </div>
+
+                <div class="frow">
+                    <label class="inlinelabel" for="nominacion">Nominacion y Premios:&nbsp;</label>
+                    <!--input class="inlineinput" id="nominacion" type="textbox" formControlName="nominacion" required-->
+                    <textarea class="inlineinput" rows="4" name="nominacion" id="nominacion" formControlName="nominacion" form="evaluationForm"></textarea>
+                </div>
+                <div class="frow">
+                    <button type="submit" [disabled]="!evaluationForm.valid">Submit</button>
+                </div>
+            </form>
+              
+              <hr>
+              
+              <p>Form Value: {{ evaluationForm.value | json }}</p>
+              
+              <p>Form Status: {{ evaluationForm.status }}</p>
+              
+              <button type="button" (click)="updateProfile()">Update Profile</button>
+              
+    
+            </div>
+        </div>
+    </div>
+    </div> 
