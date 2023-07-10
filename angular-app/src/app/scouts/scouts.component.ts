@@ -46,7 +46,6 @@ export class ScoutsComponent {
                         if(response != ""){
                           this.authService.setSession(response)
                           console.log("User is logged in");
-                          this.router.navigateByUrl('/');
                         }
                         else{
                           console.log("Failed to log in");
