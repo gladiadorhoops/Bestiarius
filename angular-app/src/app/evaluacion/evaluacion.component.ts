@@ -16,10 +16,12 @@ export class EvaluacionComponent {
     private authService: AuthService) {
   }
 
-  scoutid = this.authService.getScoutId()
+  scout_id = this.authService.getScoutId()
+  scout_name = this.authService.getScoutName()
 
   evaluationForm = this.fb.group({
-    scout: [this.scoutid, Validators.required],
+    scoutid: [this.scout_id, Validators.required],
+    scoutname: [this.scout_name, Validators.required],
     nombre: ['', Validators.required],
     categoria: new FormControl(""),
     equipo: new FormControl("", Validators.required),

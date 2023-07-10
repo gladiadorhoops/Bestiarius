@@ -48,7 +48,7 @@ export class ScoutsComponent {
                   console.log("Failed to log in");
                   this.failed = true;
                 } else {
-                  this.authService.setSession(scoutId);
+                  this.authService.setSession(val.scout, scoutId);
                   this.reloadLoginStatus();
                   console.log("User is logged in");
                 }

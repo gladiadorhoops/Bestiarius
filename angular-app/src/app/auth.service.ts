@@ -37,12 +37,14 @@ export class AuthService {
      return scoutId
   }
 
-  public setSession( scoutId: string) {
+  public setSession( scoutName: string, scoutId: string) {
+      localStorage.setItem('scout_name', scoutName);
       localStorage.setItem('scout_id', scoutId);
   }
 
   public logout() {
       localStorage.removeItem("scout_id");
+      localStorage.removeItem("scout_name");
   }
 
   public isLoggedIn() {
@@ -61,5 +63,15 @@ export class AuthService {
       else{
         return "";
       }
-  } 
+    } 
+
+    getScoutName() {
+        var scoutname = localStorage.getItem("scout_name");
+        if (scoutname != null){
+          return scoutname;
+        }
+        else{
+          return "";
+        }
+      } 
 }
