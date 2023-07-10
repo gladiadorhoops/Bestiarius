@@ -41,11 +41,16 @@ export class ScoutsComponent {
 
         if (val.scout && val.password) {
             this.authService.login(val.scout, val.password)
-                .subscribe(
+                .then(
                     (response) => {
-                        this.authService.setSession(response)
-                        console.log("User is logged in");
-                        this.router.navigateByUrl('/');
+                        if(response != ""){
+                          this.authService.setSession(response)
+                          console.log("User is logged in");
+                          this.router.navigateByUrl('/');
+                        }
+                        else{
+                          console.log("Failed to log in");
+                        }
                     }
                 );
         }

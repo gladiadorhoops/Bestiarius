@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Cognito } from './aws-clients/cognito';
+import { DynamoDb } from './aws-clients/dynamodb';
 
 const LOGIN_URL =  'https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-10/scoutid.json'
 //const LOGIN_URL =  'https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-10/category-matches-2022-07-29.json'
@@ -12,7 +14,28 @@ export class AuthService {
   constructor(private httpService: HttpClient) { }
     
   login(scout:string, password:string ) {
-    return this.httpService.get<string>(LOGIN_URL)
+    let credentials = Cognito.getAwsCredentials(scout, password);
+    let ddb: DynamoDb
+
+    return credentials.then(
+      (credentials) => {
+       console.log("Checking credentials")
+       if(credentials == undefined) return ""
+       console.log("credentials are valid", credentials)
+       ddb = new DynamoDb(credentials)
+       /*ddb.getItem(
+         {
+           pk: { S: `${playerId}.${scoutId}` },
+           sk: { S: `${playerId}.report` },
+           body: { S: "test" },
+         }
+       )*/
+       return "1234"
+      } 
+     )
+
+
+    //return this.httpService.get<string>(LOGIN_URL)
     //return this.httpService.post('/api/scouts', {scout, password})
           // this is just the HTTP call, 
           // we still need to handle the reception of the token
