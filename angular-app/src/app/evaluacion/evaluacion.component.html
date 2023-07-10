@@ -2,80 +2,83 @@
     <div class="text-justify outer">
     
     
-    <h5 class="text-center mb-3">
+    <h2 class="text-center mb-3">
         Evaluacion de Jugadores
-    </h5><br>
+    </h2>
     <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" class ="fcol">
         <div class="frow">
-            <label class="inlinelabel" for="scout">Scout:&nbsp;</label>
-            <div class="inlineinput">
+            <label class="frow" for="scout">Scout:&nbsp;</label>
+            <div class="frow">
                 <input name="scout" type="text" formControlName="scout" value="{{scoutid}}" readonly required>
             </div>
         </div>
-        <div class="frow">
-            <label class="inlinelabel" for="equipo">Equipo:&nbsp;</label>
-            <div class="inlineinput">
-                <input list="equipos" name="equipo" formControlName="equipo">
-                <datalist id="equipos">
-                    <option value="Equipo A">
-                    <option value="Equipo B">
-                    <option value="Equipo C">
-                    <option value="Equipo D">
-                    <option value="Equipo E">
-                </datalist>
+        <fieldset class="frow">
+            <legend>Informacion del Jugador</legend>
+            <div class="frow">
+                <label class="frow" for="equipo">Equipo:&nbsp;</label>
+                <div class="frow">
+                    <input list="equipos" name="equipo" formControlName="equipo" required>
+                    <datalist id="equipos">
+                        <option value="Equipo A">
+                        <option value="Equipo B">
+                        <option value="Equipo C">
+                        <option value="Equipo D">
+                        <option value="Equipo E">
+                    </datalist>
+                </div>
             </div>
-        </div>
-        <div class="frow">
-            <label class="inlinelabel" for="nombre">Nombre:&nbsp;</label>
-            <div class="inlineinput">
-                <input name="nombre" list="players" formControlName="nombre" required>
-                <datalist id="players">
-                    <option value="Jose">
-                    <option value="Luis">
-                    <option value="Marcos">
-                </datalist>
+            <div class="frow">
+                <label class="frow" for="nombre">Nombre:&nbsp;</label>
+                <div class="frow">
+                    <input name="nombre" list="players" formControlName="nombre" required>
+                    <datalist id="players">
+                        <option value="Jose">
+                        <option value="Luis">
+                        <option value="Marcos">
+                    </datalist>
+                </div>
             </div>
-        </div>
-        <div class="frow">
-            <label class="inlinelabel" for="edad">Edad:&nbsp;</label>
-            <input class="inlineinput" id="edad" type="number" formControlName="edad" min="1" max="99" required>
-        </div>
-        <div class="frow">
-            <label class="inlinelabel" for="categoria">Categoria:&nbsp;</label>
-            <div class="inlineinput">
-                <input list="categorias" name="categoria" formControlName="categoria">
-                <datalist id="categorias">
-                    <option value="Aprendiz">
-                    <option value="Elite">
-                </datalist>
+            <div class="frow">
+                <label class="frow" for="edad">Edad:&nbsp;</label>
+                <input class="frow" id="edad" type="number" formControlName="edad" min="1" max="99">
             </div>
-        </div>
-        <div class="frow">
-            <label class="inlinelabel" for="estatura">Estatura (cm):&nbsp;</label>
-            <input class="inlineinput" id="estatura" type="number" formControlName="estatura" min="1" max="999" required>
-        </div>
-        <div class="frow">
-            <label class="inlinelabel" for="peso">Peso (kg):&nbsp;</label>
-            <input class="inlineinput" id="peso" type="number" formControlName="peso" min="1" max="999" required>
-        </div>
-        <div class="frow">
-            <label class="inlinelabel" for="position">Position(es):&nbsp;</label>
-            <div *ngFor="let pos of positions">
+            <div class="frow">
+                <label class="frow" for="categoria">Categoria:&nbsp;</label>
+                <div class="frow">
+                    <input list="categorias" name="categoria" formControlName="categoria">
+                    <datalist id="categorias">
+                        <option value="Aprendiz">
+                        <option value="Elite">
+                    </datalist>
+                </div>
+            </div>
+            <!--div class="frow">
+                <label class="frow" for="estatura">Estatura (cm):&nbsp;</label>
+                <input class="frow" id="estatura" type="number" formControlName="estatura" min="1" max="999" required>
+            </div>
+            <div class="frow">
+                <label class="frow" for="peso">Peso (kg):&nbsp;</label>
+                <input class="frow" id="peso" type="number" formControlName="peso" min="1" max="999" required>
+            </div-->
+        </fieldset>
+        <fieldset class="frow">
+            <legend>Position(es)</legend>
+            <div class="frow" *ngFor="let pos of positions">
                 <input type="checkbox" id="p{{pos}}" name="position" value="{{pos}}" formControlName="position">
                 <label class="checkbox-label" for="p{{pos}}">&nbsp;{{pos}}&nbsp;</label>
             </div>
-        </div>
+        </fieldset>
         <fieldset class="frow">
-            <legend>Evaluation General:</legend>
+            <legend>Evaluation General</legend>
             <div class="frow" *ngFor="let ev of evalGens">
                 <input type="radio" alt="{{ev.desc}}" id="e{{ev.id}}" name="eval" value="e{{ev.id}}" formControlName="eval">
                 <label class="radio-label" for="e{{ev.id}}">&nbsp;{{ev.id}} - {{ev.desc}}&nbsp;</label>
             </div>
         </fieldset>
         <fieldset class="frow">
-            <legend>Tiro:</legend>
+            <legend>Tiro</legend>
                 <div class="frow" *ngFor="let tiro of tiros">
-                    <label class="inlinelabel" for="tiro{{tiro}}">{{tiro}}:&nbsp;</label>
+                    <label class="frow" for="tiro{{tiro}}">{{tiro}}:&nbsp;</label>
                     <div *ngFor="let idx of [1,2,3,4,5]">
                         <input type="radio" id="t{{idx}}" name="tiro{{tiro}}" value="{{idx}}" formControlName="tiro{{tiro}}">
                         <label class="radio-label" for="t{{idx}}">&nbsp;{{idx}}&nbsp;</label>
@@ -84,9 +87,9 @@
         </fieldset>
 
         <fieldset class="frow">
-            <legend>Pase:</legend>
+            <legend>Pase</legend>
                 <div class="frow" *ngFor="let ps of pases">
-                    <label class="inlinelabel" for="pase{{ps}}">{{ps}}:&nbsp;</label>
+                    <label class="frow" for="pase{{ps}}">{{ps}}:&nbsp;</label>
                     <div *ngFor="let idx of [1,2,3,4,5]">
                         <input type="radio" id="t{{idx}}" name="pase{{ps}}" value="{{idx}}" formControlName="pase{{ps}}">
                         <label class="radio-label" for="t{{idx}}">&nbsp;{{idx}}&nbsp;</label>
@@ -95,9 +98,9 @@
         </fieldset>
 
         <fieldset class="frow">
-            <legend>Defensa:</legend>
+            <legend>Defensa</legend>
                 <div class="frow" *ngFor="let df of defensas">
-                    <label class="inlinelabel" for="defensa{{df}}">{{df}}:&nbsp;</label>
+                    <label class="frow" for="defensa{{df}}">{{df}}:&nbsp;</label>
                     <div *ngFor="let idx of [1,2,3,4,5]">
                         <input type="radio" id="t{{idx}}" name="defensa{{df}}" value="{{idx}}" formControlName="defensa{{df}}">
                         <label class="radio-label" for="t{{idx}}">&nbsp;{{idx}}&nbsp;</label>
@@ -106,9 +109,9 @@
         </fieldset>
 
         <fieldset class="frow">
-            <legend>Bote:</legend>
+            <legend>Bote</legend>
                 <div class="frow" *ngFor="let bt of botes">
-                    <label class="inlinelabel" for="bote{{bt}}">{{bt}}:&nbsp;</label>
+                    <label class="frow" for="bote{{bt}}">{{bt}}:&nbsp;</label>
                     <div *ngFor="let idx of [1,2,3,4,5]">
                         <input type="radio" id="t{{idx}}" name="bote{{bt}}" value="{{idx}}" formControlName="bote{{bt}}">
                         <label class="radio-label" for="t{{idx}}">&nbsp;{{idx}}&nbsp;</label>
@@ -117,9 +120,9 @@
         </fieldset>
 
         <fieldset class="frow">
-            <legend>Jugador:</legend>
+            <legend>Jugador</legend>
                 <div class="frow" *ngFor="let jg of jugadors">
-                    <label class="inlinelabel" for="jugador{{jg}}">{{jg}}:&nbsp;</label>
+                    <label class="frow" for="jugador{{jg}}">{{jg}}:&nbsp;</label>
                     <div *ngFor="let idx of [1,2,3,4,5]">
                         <input type="radio" id="t{{idx}}" name="jugador{{jg}}" value="{{idx}}" formControlName="jugador{{jg}}">
                         <label class="radio-label" for="t{{idx}}">&nbsp;{{idx}}&nbsp;</label>
@@ -128,7 +131,7 @@
         </fieldset>
 
         <fieldset class="frow">
-            <legend>Estilo de Juego:</legend>
+            <legend>Estilo de Juego</legend>
                 <div class="frow" *ngFor="let est of estilos">
                     <input type="checkbox"  id="{{est}}" name="estilo" value="{{est}}" formControlName="estilo">
                     <label class="checkbox-label" for="{{est}}">&nbsp;{{est}}&nbsp;</label>
@@ -136,8 +139,8 @@
         </fieldset>
 
         <fieldset class="frow">
-            <legend>Nominacion y Premios:</legend>
-            <textarea class="inlineinput" rows="4" name="nominacion" id="nominacion" formControlName="nominacion" form="evaluationForm"></textarea>
+            <legend>Nominacion y Premios</legend>
+            <textarea class="frow" rows="4" name="nominacion" id="nominacion" formControlName="nominacion" form="evaluationForm"></textarea>
         </fieldset>
         <div class="frow">
             <button type="submit" [disabled]="!evaluationForm.valid">Submit</button>
