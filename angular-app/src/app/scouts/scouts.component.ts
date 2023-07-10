@@ -15,6 +15,7 @@ export class ScoutsComponent {
     form:FormGroup;
     isLoggedIn: boolean = false;
     scoutid: string = "";
+    failed: boolean = false;
 
     constructor(private fb:FormBuilder, 
                  private authService: AuthService, 
@@ -38,19 +39,24 @@ export class ScoutsComponent {
 
     login() {
         const val = this.form.value;
+        this.failed = false;
         if (val.scout && val.password) {
             let scoutId = this.authService.login(val.scout, val.password)
             scoutId.then(
               (scoutId) => {
                 if (scoutId == undefined) {
                   console.log("Failed to log in");
+                  this.failed = true;
                 } else {
                   this.authService.setSession(scoutId);
                   this.reloadLoginStatus();
                   console.log("User is logged in");
                 }
               }
-            )          
+            )
+        }
+        else{
+          this.failed = true;
         }
     }
 

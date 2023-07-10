@@ -22,6 +22,8 @@
                                     (click)="login()">Login</button>
                         </div>
                     </form>
+                    <br>
+                    <span style="background-color: red" *ngIf="failed"> Failed to Login </span>
                 </div>
             </ng-container>
             <ng-container *ngIf="isLoggedIn">
