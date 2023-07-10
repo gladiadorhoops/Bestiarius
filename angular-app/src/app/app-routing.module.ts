@@ -26,7 +26,11 @@ const routes: Routes = [
   { path: 'torneospasados', component: TorneospasadosComponent },
   { path: 'evaluacion', component: EvaluacionComponent },
   { path: 'scouts', component: ScoutsComponent },
-  { path: '**', component: InicioComponent },
+  { path: '**', component: InicioComponent, data: { 
+    breadcrumb: 'Gladiadores Hoops', 
+    title: 'GladiadoresHoops',
+    metaDescription: 'Sitio Web Torneo Gladiadores Hoops, MX', 
+    metaKeywords: 'GladiadoresHoops, gladiadores, hoops, basketball, basquetbol, parral' } }
 ];
 
 @NgModule({
