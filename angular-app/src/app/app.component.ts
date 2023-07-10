@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AppService } from './app.service';
 import { Subject } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { Subject } from 'rxjs';
 })
 export class AppComponent {
   
-  constructor(private appService: AppService) {}
+  constructor(private appService: AppService, public authService: AuthService) {}
 
   title = 'gladiadores-hoops';
 
@@ -19,4 +20,5 @@ export class AppComponent {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
+
 }

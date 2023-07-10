@@ -32,6 +32,7 @@ import { TurismoComponent } from './turismo/turismo.component';
 import { ResultadosComponent } from './resultados/resultados.component';
 import { MarcadoresComponent } from './marcadores/marcadores.component';
 import { EvaluacionComponent } from './evaluacion/evaluacion.component';
+import { ScoutsComponent } from './scouts/scouts.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { EvaluacionComponent } from './evaluacion/evaluacion.component';
     TurismoComponent,
     ResultadosComponent,
     MarcadoresComponent,
-    EvaluacionComponent
+    EvaluacionComponent,
+    ScoutsComponent
   ],
   imports: [
     BrowserModule,

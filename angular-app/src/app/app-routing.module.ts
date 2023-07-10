@@ -11,6 +11,7 @@ import { RedesSocialesComponent } from './redes-sociales/redes-sociales.componen
 import { FotosComponent } from './fotos/fotos.component';
 import { TorneospasadosComponent } from './torneospasados/torneospasados.component';
 import { EvaluacionComponent } from './evaluacion/evaluacion.component'
+import { ScoutsComponent } from './scouts/scouts.component'
 
 const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
@@ -24,6 +25,7 @@ const routes: Routes = [
   { path: 'fotos', component: FotosComponent },
   { path: 'torneospasados', component: TorneospasadosComponent },
   { path: 'evaluacion', component: EvaluacionComponent },
+  { path: 'scouts', component: ScoutsComponent },
   { path: '**', component: InicioComponent },
 ];
 

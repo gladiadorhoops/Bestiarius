@@ -1,0 +1,43 @@
+<div class="bg-image lower-corner-img" style="background-image: url('assets/no-background-logo-transparent.png');">
+    <div class="container page-content">
+        <div class="d-flex justify-content-center align-items-center" >
+            <div class="text-justify outer">
+            <ng-container *ngIf="!isLoggedIn">    
+                <div class="container page-content">
+                    <h1>Scouts Login</h1>
+                    <form [formGroup]="form">
+                        <fieldset>
+                            <div class="form-field">
+                                <label>Scout:</label>
+                                <input name="scout" formControlName="scout">
+                            </div>
+                            <div class="form-field">
+                                <label>Password:</label>
+                                <input name="password" formControlName="password" 
+                                    type="password">
+                            </div>
+                        </fieldset>
+                        <div class="form-buttons">
+                            <button class="button button-primary" 
+                                    (click)="login()">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="isLoggedIn">
+                <div style="display: flex; flex-direction: column; align-items:flex-end;">
+                    <form [formGroup]="form">
+                        <button class="button button-cancel" 
+                        (click)="logout()">Logout</button>
+                    </form>
+                </div>
+                
+                <div class="container page-content text-center">
+                    <h1>Scouts Area</h1>
+                    <app-evaluacion></app-evaluacion>
+                </div>
+            </ng-container>
+            </div>
+        </div>
+    </div>
+    </div> 
