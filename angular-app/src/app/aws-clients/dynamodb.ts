@@ -1,14 +1,17 @@
 import { AttributeValue, DynamoDBClient, PutItemCommand, PutItemCommandInput, GetItemCommandInput, GetItemCommand } from "@aws-sdk/client-dynamodb";
-import { REGION, COGNITO_CREDENTIALS, DDB_TABLE_NAME } from "./constants";
+import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
+import { REGION, DDB_TABLE_NAME } from "./constants";
 
-const client = new DynamoDBClient({ 
-    region: REGION,
-    credentials: COGNITO_CREDENTIALS
-});
-
-export { client };
 export class DynamoDb {
-    constructor(){}
+
+    client: DynamoDBClient;
+    
+    constructor(credentials: AwsCredentialIdentity | Provider<AwsCredentialIdentity>){
+       this.client = new DynamoDBClient({ 
+            region: REGION,
+            credentials: credentials
+        });
+    }
 
     async putItem(record: Record<string, AttributeValue>): Promise<any> {
         console.log("Storing Item")
@@ -23,7 +26,7 @@ export class DynamoDb {
             const command = new PutItemCommand(input);
 
             console.log("command: ", command)
-            const response = await client.send(command);
+            const response = await this.client.send(command);
             console.log("response: ", response)
 
         } catch (err) {
@@ -41,7 +44,7 @@ export class DynamoDb {
             };
             const command = new GetItemCommand(input);
             console.log("command: ", command)
-            const response = await client.send(command);
+            const response = await this.client.send(command);
             console.log("response: ", response)
         } catch (err) {
             console.log("Error", err);

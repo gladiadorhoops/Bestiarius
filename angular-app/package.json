@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^15.2.8",
     "@angular/platform-browser-dynamic": "^15.2.8",
     "@angular/router": "^15.2.8",
+    "@aws-sdk/client-cognito-identity-provider": "^3.363.0",
     "@aws-sdk/client-dynamodb": "^3.316.0",
     "@aws-sdk/client-s3": "^3.317.0",
     "@aws-sdk/credential-providers": "^3.316.0",
