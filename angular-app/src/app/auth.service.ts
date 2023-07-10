@@ -44,12 +44,10 @@ export class AuthService {
 
   public setSession( scoutId: string) {
       localStorage.setItem('scout_id', scoutId);
-      window.location.reload();
   }
 
   public logout() {
       localStorage.removeItem("scout_id");
-      window.location.reload();
   }
 
   public isLoggedIn() {

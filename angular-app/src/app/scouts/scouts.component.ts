@@ -44,7 +44,8 @@ export class ScoutsComponent {
                 .then(
                     (response) => {
                         if(response != ""){
-                          this.authService.setSession(response)
+                          this.authService.setSession(response);
+                          this.reloadLoginStatus();
                           console.log("User is logged in");
                         }
                         else{
@@ -56,7 +57,8 @@ export class ScoutsComponent {
     }
 
     logout() {
-      this.authService.logout()
+      this.authService.logout();
+      this.reloadLoginStatus();
       console.log("User is logged out");
     }
 }
