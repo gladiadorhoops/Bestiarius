@@ -38,21 +38,19 @@ export class ScoutsComponent {
 
     login() {
         const val = this.form.value;
-
         if (val.scout && val.password) {
-            this.authService.login(val.scout, val.password)
-                .then(
-                    (response) => {
-                        if(response != ""){
-                          this.authService.setSession(response);
-                          this.reloadLoginStatus();
-                          console.log("User is logged in");
-                        }
-                        else{
-                          console.log("Failed to log in");
-                        }
-                    }
-                );
+            let scoutId = this.authService.login(val.scout, val.password)
+            scoutId.then(
+              (scoutId) => {
+                if (scoutId == undefined) {
+                  console.log("Failed to log in");
+                } else {
+                  this.authService.setSession(scoutId);
+                  this.reloadLoginStatus();
+                  console.log("User is logged in");
+                }
+              }
+            )          
         }
     }
 

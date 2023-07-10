@@ -13,33 +13,28 @@ export class AuthService {
 
   constructor(private httpService: HttpClient) { }
     
-  login(scout:string, password:string ) {
+  async login(scout:string, password:string): Promise<string | undefined> {
+    console.log("Starting Login")
     let credentials = Cognito.getAwsCredentials(scout, password);
     let ddb: DynamoDb
+    let scoutId: string | undefined
+    await credentials.then(
+      async (credentials) => {
+       if(credentials != undefined){
+        console.log("credentials are valid")
+        ddb = new DynamoDb(credentials)
+       }
 
-    return credentials.then(
-      (credentials) => {
-       console.log("Checking credentials")
-       if(credentials == undefined) return ""
-       console.log("credentials are valid", credentials)
-       ddb = new DynamoDb(credentials)
-       /*ddb.getItem(
-         {
-           pk: { S: `${playerId}.${scoutId}` },
-           sk: { S: `${playerId}.report` },
-           body: { S: "test" },
-         }
-       )*/
-       return "1234"
-      } 
+       let item = ddb.query(scout, password)
+       await item.then(
+        (item) => {
+          if(item != undefined) scoutId = item["pk"].S
+          console.log("scoutId", scoutId)
+        }
+       )
+      }
      )
-
-
-    //return this.httpService.get<string>(LOGIN_URL)
-    //return this.httpService.post('/api/scouts', {scout, password})
-          // this is just the HTTP call, 
-          // we still need to handle the reception of the token
-          //.shareReplay();
+     return scoutId
   }
 
   public setSession( scoutId: string) {
