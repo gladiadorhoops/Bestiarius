@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { FormArray } from '@angular/forms';
 import { FormGroup, FormControl } from '@angular/forms';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-evaluacion',
@@ -10,7 +11,15 @@ import { FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./evaluacion.component.scss']
 })
 export class EvaluacionComponent {
+
+  constructor(private fb: FormBuilder,
+    private authService: AuthService) {
+  }
+
+  scoutid = this.authService.getScoutId()
+
   evaluationForm = this.fb.group({
+    scout: [this.scoutid, Validators.required],
     nombre: ['', Validators.required],
     categoria: new FormControl("", Validators.required),
     equipo: new FormControl("", Validators.required),
@@ -45,19 +54,10 @@ export class EvaluacionComponent {
     nominacion: [''],
   });
 
-  constructor(private fb: FormBuilder) { }
-
-  updateProfile() {
-    this.evaluationForm.patchValue({
-      nombre: 'Nancy'
-    });
-  }
-
   onSubmit() {
     // TODO: Use EventEmitter with form value
     console.warn(this.evaluationForm.value);
   }
-
 
   positions: string[] = ["1", "2", "3", "4", "5"]
   evalGens = [

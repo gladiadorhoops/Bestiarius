@@ -5,8 +5,13 @@
     <h5 class="text-center mb-3">
         Evaluacion de Jugadores
     </h5><br>
-    
     <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" class ="fcol">
+        <div class="frow">
+            <label class="inlinelabel" for="scout">Scout:&nbsp;</label>
+            <div class="inlineinput">
+                <input name="scout" type="text" formControlName="scout" value="{{scoutid}}" readonly required>
+            </div>
+        </div>
         <div class="frow">
             <label class="inlinelabel" for="equipo">Equipo:&nbsp;</label>
             <div class="inlineinput">
