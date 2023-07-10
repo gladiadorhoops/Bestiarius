@@ -20,10 +20,12 @@ export class AuthService {
     let scoutId: string | undefined
     await credentials.then(
       async (credentials) => {
-       if(credentials != undefined){
-        console.log("credentials are valid")
-        ddb = new DynamoDb(credentials)
+       if(credentials == undefined){
+         return
        }
+       
+       console.log("credentials are valid")
+       ddb = new DynamoDb(credentials)
 
        let item = ddb.query(scout, password)
        await item.then(
