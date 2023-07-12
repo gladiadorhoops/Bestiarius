@@ -24,3 +24,18 @@
 fieldset {
     margin-top: 10%;
 }
+
+.accordion{
+    width: 100%;
+    background-color: #FCC258;
+}
+
+.accordion-button{
+    background-image: linear-gradient(to bottom right, #BA1E34, #A40A72);//#BA1E34;
+    color: white;
+}
+
+.accordion-body{
+    background-image: linear-gradient(to bottom left, #f47941, #BA1E34);//#FCC258;
+    color: white;
+}

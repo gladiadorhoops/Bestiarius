@@ -29,6 +29,7 @@
             <ng-container *ngIf="isLoggedIn">
                 <div style="display: flex; flex-direction: column; align-items:flex-end;">
                     <form [formGroup]="form">
+                        <label>Usuario: <i>{{scoutname}}</i> |&nbsp;</label>
                         <button class="button button-cancel" 
                         (click)="logout()">Logout</button>
                     </form>

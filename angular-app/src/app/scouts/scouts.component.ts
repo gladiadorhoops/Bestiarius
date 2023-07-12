@@ -15,6 +15,7 @@ export class ScoutsComponent {
     form:FormGroup;
     isLoggedIn: boolean = false;
     scoutid: string = "";
+    scoutname: string = "";
     failed: boolean = false;
 
     constructor(private fb:FormBuilder, 
@@ -34,6 +35,7 @@ export class ScoutsComponent {
     reloadLoginStatus() {
       this.isLoggedIn = this.authService.isLoggedIn();
       this.scoutid = this.authService.getScoutId();
+      this.scoutname = this.authService.getScoutName();
       console.log("Reloaded");
     }
 
