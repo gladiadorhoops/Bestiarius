@@ -19,33 +19,25 @@
                 <div class="accordion-body">
                     <label class="frow" for="equipo">Equipo:&nbsp;</label>
                     <div class="frow">
-                        <input list="equipos" name="equipo" formControlName="equipo" required>
-                        <datalist id="equipos">
-                            <option value="Equipo A">
-                            <option value="Equipo B">
-                            <option value="Equipo C">
-                            <option value="Equipo D">
-                            <option value="Equipo E">
-                        </datalist>
+                        <!--input list="equipos" name="equipo" formControlName="equipo" (onselect)="loadPlayers()" required-->
+                        <select id="equipos" formControlName="equipo" (change)="loadPlayers()" required>
+                            <option *ngFor="let team of teams" value="{{team.name}}">{{team.name}}</option>
+                        </select>
                     </div>
                     <label class="frow" for="nombre">Nombre:&nbsp;</label>
                     <div class="frow">
-                        <input name="nombre" list="players" formControlName="nombre" required>
-                        <datalist id="players">
-                            <option value="Jose">
-                            <option value="Luis">
-                            <option value="Marcos">
-                        </datalist>
+                        <select id="players" formControlName="nombre" required>
+                            <option *ngFor="let player of teamplayers" value="{{player}}">{{player}}</option>
+                        </select>
                     </div>
                     <label class="frow" for="edad">Edad:&nbsp;</label>
                     <input class="frow" id="edad" type="number" formControlName="edad" min="1" max="99">
                     <label class="frow" for="categoria">Categoria:&nbsp;</label>
                     <div class="frow">
-                        <input list="categorias" name="categoria" formControlName="categoria">
-                        <datalist id="categorias">
-                            <option value="Aprendiz">
-                            <option value="Elite">
-                        </datalist>
+                        <select id="categorias" formControlName="categoria">
+                            <option value="Aprendiz">Aprendiz</option>
+                            <option value="Elite">Elite</option>>
+                        </select>
                     </div>
                 </div>
               </div>

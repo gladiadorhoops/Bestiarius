@@ -24,7 +24,7 @@ export class EvaluacionComponent {
     scoutname: [this.scout_name, Validators.required],
     nombre: ['', Validators.required],
     categoria: new FormControl(""),
-    equipo: new FormControl("", Validators.required),
+    equipo: ["", Validators.required],
     edad: [''],
     //estatura: [''],
     //peso: [''],
@@ -61,6 +61,25 @@ export class EvaluacionComponent {
     console.warn(this.evaluationForm.value);
   }
 
+  teams = [
+    {name: "Equipo A", players: ["Jose", "Luis", "Pedro"]},
+    {name: "Equipo B", players: ["Juan", "Marcos", "Gabriel"]},
+    {name: "Equipo C", players: ["Jesus", "Antonio", "Jaime"]},
+    {name: "Equipo D", players: ["Daniel", "Luis", "Carlos"]}
+  ]
+  teamplayers: string[] = ["Daniel", "Luis", "Carlos"]
+  
+  loadPlayers() {
+    var selectedTeam = this.evaluationForm.value.equipo;
+    var selectedteamplayers: string[] = [];
+    this.teams.forEach(function(value){
+      if(value.name == selectedTeam){
+        selectedteamplayers = value.players;
+      }
+    });
+    this.teamplayers = selectedteamplayers;
+  }
+  
   positions: string[] = ["1", "2", "3", "4", "5"]
   evalGens = [
     {id: "1", desc: "Necesita mejora"}, 
