@@ -33,6 +33,7 @@ import { ResultadosComponent } from './resultados/resultados.component';
 import { MarcadoresComponent } from './marcadores/marcadores.component';
 import { EvaluacionComponent } from './evaluacion/evaluacion.component';
 import { ScoutsComponent } from './scouts/scouts.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,8 @@ import { ScoutsComponent } from './scouts/scouts.component';
     HttpClientModule,
     ReactiveFormsModule
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
+
 })
 export class AppModule { }
