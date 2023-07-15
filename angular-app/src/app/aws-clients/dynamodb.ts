@@ -7,9 +7,13 @@ import {
     GetItemCommand,
     QueryCommandInput,
     QueryCommand,
+    QueryInput
 } from "@aws-sdk/client-dynamodb";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 import { REGION, DDB_TABLE_NAME } from "./constants";
+
+const SI_PK = 'si-pk'
+const SI_SK = 'si-sk'
 
 export class DynamoDb {
 
@@ -60,16 +64,21 @@ export class DynamoDb {
         }
     }
 
-    async query(sk: string, lk: string): Promise<Record<string, AttributeValue> | undefined> {
-        console.log("Reading Item")
+    async query(pk: string, sk: string): Promise<Record<string, AttributeValue> | undefined> {
+        console.log(`Reading Item (pk: ${pk}, sk: ${sk}`)
+        
         try {
             const input: QueryCommandInput = {
               TableName: DDB_TABLE_NAME,
-              IndexName: 'sk-lk-index',
-              KeyConditionExpression: 'sk = :sk and lk = :lk',
+              IndexName: `${SI_PK}-${SI_SK}-index`,
+              KeyConditionExpression: `#pk = :pk and #sk = :sk`,
+              ExpressionAttributeNames: {
+                '#pk': SI_PK,
+                '#sk': SI_SK,
+              },
               ExpressionAttributeValues: {
-                ':sk': {S: sk},
-                ':lk' : {S: lk},
+                ':pk': {S: pk},
+                ':sk' : {S: sk},
               },
               ReturnConsumedCapacity: "TOTAL",
             };
