@@ -4,9 +4,10 @@ import { Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Team } from '../interfaces/team';
-import { DynamoDB } from '@aws-sdk/client-dynamodb';
+import { Player } from '../interfaces/player';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { TeamBuilder } from '../Builders/team-builder';
+import { PlayerBuilder } from '../Builders/player-builder';
 
 
 @Component({
@@ -19,10 +20,12 @@ export class EvaluacionComponent {
   constructor(private fb: FormBuilder,
     private authService: AuthService) {
     this.teamBuidler = new TeamBuilder()
+    this.playerBuilder = new PlayerBuilder()
   }
 
   @Input() ddb!: DynamoDb;
   teamBuidler: TeamBuilder;
+  playerBuilder: PlayerBuilder;
   teams: Team[] = [];
 
   async ngOnInit() {
@@ -80,17 +83,22 @@ export class EvaluacionComponent {
     console.warn(this.evaluationForm.value);
   }
 
-  teamplayers: string[] = ["Daniel", "Luis", "Carlos"]
+  teamplayers: Player[] = []
   
-  loadPlayers() {
+  async loadPlayers() {
     var selectedTeam = this.evaluationForm.value.equipo;
     var selectedteamplayers: string[] = [];
-    this.teams.forEach(function(value){
-      if(value.name == selectedTeam){
-        // selectedteamplayers = value.players;
-      }
+    this.teams.forEach(
+      async (team) => {
+        if(team.name == selectedTeam){
+          this.teamplayers = await this.playerBuilder.getPlayersByTeam(this.ddb, team.id!).then(
+            (players) => {
+              return players
+            }
+          )
+        }
     });
-    this.teamplayers = selectedteamplayers;
+    // this.teamplayers = selectedteamplayers;
   }
   
   positions: string[] = ["1", "2", "3", "4", "5"]

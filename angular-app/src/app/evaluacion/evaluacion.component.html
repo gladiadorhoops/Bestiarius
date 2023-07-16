@@ -28,7 +28,7 @@
                 <div class="frow">
                     <select id="players" formControlName="nombre" required>
                         <option value=""></option>
-                        <option *ngFor="let player of teamplayers" value="{{player}}">{{player}}</option>
+                        <option *ngFor="let player of teamplayers" value="{{player.nombre}}">{{player.nombre}}</option>
                     </select>
                 </div>
                 <label class="frow" for="edad">Edad:&nbsp;</label>
