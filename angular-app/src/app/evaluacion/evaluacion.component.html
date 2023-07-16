@@ -47,7 +47,7 @@
           <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">
                 <div class="frow" *ngFor="let pos of positions">
-                    <input type="checkbox" id="p{{pos}}" name="position" value="{{pos}}" formControlName="position">
+                    <input type="checkbox" id="p{{pos}}" name="position{{pos}}" value="{{pos}}" formControlName="position{{pos}}">
                     <label class="checkbox-label" for="p{{pos}}">&nbsp;{{pos}}&nbsp;</label>
                 </div>
             </div>
@@ -173,7 +173,7 @@
             <div id="flush-collapseEight" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 <div class="frow" *ngFor="let est of estilos">
-                    <input type="checkbox"  id="{{est}}" name="estilo" value="{{est}}" formControlName="estilo">
+                    <input type="checkbox"  id="{{est}}" name="estilo{{est}}" value="{{est}}" formControlName="estilo{{est}}">
                     <label class="checkbox-label" for="{{est}}">&nbsp;{{est}}&nbsp;</label>
                 </div>
               </div>
