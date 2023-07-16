@@ -1,207 +1,206 @@
-<div class="d-flex justify-content-center align-items-center" >
-    <div class="text-justify outer">
-    
-    <h2 class="text-center mb-3">
-        Evaluacion de Jugadores
-    </h2>
-    <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" class ="fcol">
-            <input name="scout" type="text" formControlName="scoutid" value="{{scout_id}}" hidden readonly required>
-            <input name="scout" type="text" formControlName="scoutname" value="{{scout_name}}" hidden readonly required>
+<div class="row justify-content-md-center">
+<div class="col-sm-12 col-md-6">
+  <h2 class="text-center mb-3">
+    Evaluacion de Jugadores
+</h2>
+<form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" class ="fcol">
+        <input name="scout" type="text" formControlName="scoutid" value="{{scout_id}}" hidden readonly required>
+        <input name="scout" type="text" formControlName="scoutname" value="{{scout_name}}" hidden readonly required>
 
-        <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                    Informacion del Jugador
-                </button>
-              </h2>
-              <div id="flush-collapseOne" class="accordion-collapse collapse show" >
-                <div class="accordion-body">
-                    <label class="frow" for="equipo">Equipo:&nbsp;</label>
-                    <div class="frow">
-                        <!--input list="equipos" name="equipo" formControlName="equipo" (onselect)="loadPlayers()" required-->
-                        <select id="equipos" formControlName="equipo" (change)="loadPlayers()" required>
-                            <option *ngFor="let team of teams" value="{{team.name}}">{{team.name}}</option>
-                        </select>
-                    </div>
-                    <label class="frow" for="nombre">Nombre:&nbsp;</label>
-                    <div class="frow">
-                        <select id="players" formControlName="nombre" required>
-                            <option *ngFor="let player of teamplayers" value="{{player}}">{{player}}</option>
-                        </select>
-                    </div>
-                    <label class="frow" for="edad">Edad:&nbsp;</label>
-                    <input class="frow" id="edad" type="number" formControlName="edad" min="1" max="99">
-                    <label class="frow" for="categoria">Categoria:&nbsp;</label>
-                    <div class="frow">
-                        <select id="categorias" formControlName="categoria">
-                            <option value="Aprendiz">Aprendiz</option>
-                            <option value="Elite">Elite</option>>
-                        </select>
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                Informacion del Jugador
+            </button>
+          </h2>
+          <div id="flush-collapseOne" class="accordion-collapse collapse show" >
+            <div class="accordion-body">
+                <label class="frow" for="equipo">Equipo:&nbsp;</label>
+                <div class="frow">
+                    <!--input list="equipos" name="equipo" formControlName="equipo" (onselect)="loadPlayers()" required-->
+                    <select id="equipos" formControlName="equipo" (change)="loadPlayers()" required>
+                        <option value=""></option>
+                        <option *ngFor="let team of teams" value="{{team.name}}">{{team.name}}</option>
+                    </select>
+                </div>
+                <label class="frow" for="nombre">Nombre:&nbsp;</label>
+                <div class="frow">
+                    <select id="players" formControlName="nombre" required>
+                        <option value=""></option>
+                        <option *ngFor="let player of teamplayers" value="{{player}}">{{player}}</option>
+                    </select>
+                </div>
+                <label class="frow" for="edad">Edad:&nbsp;</label>
+                <input class="frow" id="edad" type="number" formControlName="edad" min="1" max="99">
+                <label class="frow" for="categoria">Categoria:&nbsp;</label>
+                <div class="frow">
+                    <select id="categorias" formControlName="categoria">
+                        <option value="Aprendiz">Aprendiz</option>
+                        <option value="Elite">Elite</option>>
+                    </select>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                Posicion(es)
+            </button>
+          </h2>
+          <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+                <div class="frow" *ngFor="let pos of positions">
+                    <input type="checkbox" id="p{{pos}}" name="position" value="{{pos}}" formControlName="position">
+                    <label class="checkbox-label" for="p{{pos}}">&nbsp;{{pos}}&nbsp;</label>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                Evaluation General
+            </button>
+          </h2>
+          <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body">
+                <div class="frow" *ngFor="let ev of evalGens">
+                    <input type="radio" alt="{{ev.desc}}" id="e{{ev.id}}" name="eval" value="e{{ev.id}}" formControlName="eval">
+                    <label class="radio-label" for="e{{ev.id}}">&nbsp;{{ev.id}} - {{ev.desc}}&nbsp;</label>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                  Tiro
+              </button>
+            </h2>
+            <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                <div class="frow" *ngFor="let tiro of tiros">
+                    <label class="frow" for="tiro{{tiro}}">{{tiro}}:&nbsp;</label>
+                    <div *ngFor="let idx of [1,2,3,4,5]">
+                        <input type="radio" id="tiro{{tiro}}{{idx}}" name="tiro{{tiro}}" value="{{idx}}" formControlName="tiro{{tiro}}">
+                        <label class="radio-label" for="tiro{{tiro}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
                 </div>
               </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                    Position(es)
-                </button>
-              </h2>
-              <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-                    <div class="frow" *ngFor="let pos of positions">
-                        <input type="checkbox" id="p{{pos}}" name="position" value="{{pos}}" formControlName="position">
-                        <label class="checkbox-label" for="p{{pos}}">&nbsp;{{pos}}&nbsp;</label>
-                    </div>
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                    Evaluation General
-                </button>
-              </h2>
-              <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-                    <div class="frow" *ngFor="let ev of evalGens">
-                        <input type="radio" alt="{{ev.desc}}" id="e{{ev.id}}" name="eval" value="e{{ev.id}}" formControlName="eval">
-                        <label class="radio-label" for="e{{ev.id}}">&nbsp;{{ev.id}} - {{ev.desc}}&nbsp;</label>
-                    </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                      Tiro
-                  </button>
-                </h2>
-                <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                  <div class="accordion-body">
-                    <div class="frow" *ngFor="let tiro of tiros">
-                        <label class="frow" for="tiro{{tiro}}">{{tiro}}:&nbsp;</label>
-                        <div *ngFor="let idx of [1,2,3,4,5]">
-                            <input type="radio" id="tiro{{tiro}}{{idx}}" name="tiro{{tiro}}" value="{{idx}}" formControlName="tiro{{tiro}}">
-                            <label class="radio-label" for="tiro{{tiro}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
-                      Pase
-                  </button>
-                </h2>
-                <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                  <div class="accordion-body">
-                    <div class="frow" *ngFor="let ps of pases">
-                        <label class="frow" for="pase{{ps}}">{{ps}}:&nbsp;</label>
-                        <div *ngFor="let idx of [1,2,3,4,5]">
-                            <input type="radio" id="pase{{ps}}{{idx}}" name="pase{{ps}}" value="{{idx}}" formControlName="pase{{ps}}">
-                            <label class="radio-label" for="pase{{ps}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
-                      Defensa
-                  </button>
-                </h2>
-                <div id="flush-collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                  <div class="accordion-body">
-                    <div class="frow" *ngFor="let df of defensas">
-                        <label class="frow" for="defensa{{df}}">{{df}}:&nbsp;</label>
-                        <div *ngFor="let idx of [1,2,3,4,5]">
-                            <input type="radio" id="defensa{{df}}{{idx}}" name="defensa{{df}}" value="{{idx}}" formControlName="defensa{{df}}">
-                            <label class="radio-label" for="defensa{{df}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
-                      Bote
-                  </button>
-                </h2>
-                <div id="flush-collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                  <div class="accordion-body">
-                    <div class="frow" *ngFor="let bt of botes">
-                        <label class="frow" for="bote{{bt}}">{{bt}}:&nbsp;</label>
-                        <div *ngFor="let idx of [1,2,3,4,5]">
-                            <input type="radio" id="bote{{bt}}{{idx}}" name="bote{{bt}}" value="{{idx}}" formControlName="bote{{bt}}">
-                            <label class="radio-label" for="bote{{bt}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
-                      Jugador
-                  </button>
-                </h2>
-                <div id="flush-collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                  <div class="accordion-body">
-                    <div class="frow" *ngFor="let jg of jugadors">
-                        <label class="frow" for="jugador{{jg}}">{{jg}}:&nbsp;</label>
-                        <div *ngFor="let idx of [1,2,3,4,5]">
-                            <input type="radio" id="jugador{{jg}}{{idx}}" name="jugador{{jg}}" value="{{idx}}" formControlName="jugador{{jg}}">
-                            <label class="radio-label" for="jugador{{jg}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseEight">
-                    Estilo de Juego  
-                  </button>
-                </h2>
-                <div id="flush-collapseEight" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                  <div class="accordion-body">
-                    <div class="frow" *ngFor="let est of estilos">
-                        <input type="checkbox"  id="{{est}}" name="estilo" value="{{est}}" formControlName="estilo">
-                        <label class="checkbox-label" for="{{est}}">&nbsp;{{est}}&nbsp;</label>
-                    </div>
-                  </div>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNine" aria-expanded="false" aria-controls="flush-collapseNine">
-                    Nominacion a Premios
-                  </button>
-                </h2>
-                <div id="flush-collapseNine" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                  <div class="accordion-body">
-                    <textarea class="frow" rows="4" name="nominacion" id="nominacion" formControlName="nominacion" form="evaluationForm"></textarea>
-                  </div>
-                </div>
             </div>
         </div>
-        <div class="frow">
-            <button type="submit" [disabled]="!evaluationForm.valid">Submit</button>
-        </div>
-    </form>
-        
 
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                  Pase
+              </button>
+            </h2>
+            <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                <div class="frow" *ngFor="let ps of pases">
+                    <label class="frow" for="pase{{ps}}">{{ps}}:&nbsp;</label>
+                    <div *ngFor="let idx of [1,2,3,4,5]">
+                        <input type="radio" id="pase{{ps}}{{idx}}" name="pase{{ps}}" value="{{idx}}" formControlName="pase{{ps}}">
+                        <label class="radio-label" for="pase{{ps}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
+                  Defensa
+              </button>
+            </h2>
+            <div id="flush-collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                <div class="frow" *ngFor="let df of defensas">
+                    <label class="frow" for="defensa{{df}}">{{df}}:&nbsp;</label>
+                    <div *ngFor="let idx of [1,2,3,4,5]">
+                        <input type="radio" id="defensa{{df}}{{idx}}" name="defensa{{df}}" value="{{idx}}" formControlName="defensa{{df}}">
+                        <label class="radio-label" for="defensa{{df}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
+                  Bote
+              </button>
+            </h2>
+            <div id="flush-collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                <div class="frow" *ngFor="let bt of botes">
+                    <label class="frow" for="bote{{bt}}">{{bt}}:&nbsp;</label>
+                    <div *ngFor="let idx of [1,2,3,4,5]">
+                        <input type="radio" id="bote{{bt}}{{idx}}" name="bote{{bt}}" value="{{idx}}" formControlName="bote{{bt}}">
+                        <label class="radio-label" for="bote{{bt}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
+                  Jugador
+              </button>
+            </h2>
+            <div id="flush-collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                <div class="frow" *ngFor="let jg of jugadors">
+                    <label class="frow" for="jugador{{jg}}">{{jg}}:&nbsp;</label>
+                    <div *ngFor="let idx of [1,2,3,4,5]">
+                        <input type="radio" id="jugador{{jg}}{{idx}}" name="jugador{{jg}}" value="{{idx}}" formControlName="jugador{{jg}}">
+                        <label class="radio-label" for="jugador{{jg}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseEight">
+                Estilo de Juego  
+              </button>
+            </h2>
+            <div id="flush-collapseEight" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                <div class="frow" *ngFor="let est of estilos">
+                    <input type="checkbox"  id="{{est}}" name="estilo" value="{{est}}" formControlName="estilo">
+                    <label class="checkbox-label" for="{{est}}">&nbsp;{{est}}&nbsp;</label>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNine" aria-expanded="false" aria-controls="flush-collapseNine">
+                Nominacion a Premios
+              </button>
+            </h2>
+            <div id="flush-collapseNine" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                <textarea class="frow" rows="4" name="nominacion" id="nominacion" formControlName="nominacion" form="evaluationForm"></textarea>
+              </div>
+            </div>
+        </div>
     </div>
+    <div class="frow">
+        <button type="submit" [disabled]="!evaluationForm.valid">Submit</button>
+    </div>
+</form>
+</div>
 </div>

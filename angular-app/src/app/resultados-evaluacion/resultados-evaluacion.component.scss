@@ -1,0 +1,58 @@
+.mainpanel {
+    display: flex;
+}
+
+.mainpanel .sidepanels {
+    padding: 2%;
+    background-image: linear-gradient(to bottom left, #f47941, #BA1E34);//#FCC258;
+
+    -ms-flex: 1;  /* IE 10 */  
+    flex: 1;
+}
+
+.playerfield {
+    background-color: white;
+    color: black;
+}
+
+.myrow div{
+  margin: 2%;
+}
+
+.accordion{
+    width: 100%;
+    background-color: #FCC258;
+}
+
+.accordion-button{
+    background-image: linear-gradient(to bottom right, #BA1E34, #A40A72);//#BA1E34;
+    color: white;
+}
+
+.accordion-body{
+    background-image: linear-gradient(to bottom left, #f47941, #BA1E34);//#FCC258;
+    color: white;
+}
+
+table {
+    color: black;
+    background-color: white;
+}
+
+td, th {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #dddddd;
+}
+
+td {
+    background-color: #f4794180 !important;
+}
+
+th {
+    background-color: #f47941FF !important;
+}
+
+.col-md-8 {
+    padding: 0% 0% 0% 5%;
+}

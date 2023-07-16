@@ -1,0 +1,140 @@
+    
+    <h2 class="text-center mb-3">
+        Evaluacion de Jugadores
+    </h2>
+
+    <div class="mainpanel">
+        <div class="sidepanels">
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item" *ngFor="let award of top5s; let i=index">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#flush-collapse' + i" aria-expanded="false" [attr.aria-controls]="'flush-collapse'+i">
+                        Top 5 {{award.award}}
+                    </button>
+                  </h2>
+                  <div [attr.id]="'flush-collapse' + i" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <h4>Aprendiz</h4>
+                        <table class="col-sm-12">
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Puntos</th>
+                            </tr>
+                            <tr *ngFor="let tiro of award.topAprendiz; let i=index" (click)="updateSelected(tiro.Name)">
+                                <td>{{i+1}}</td>
+                                <td>{{tiro.Name}}</td>
+                                <td>{{tiro.Points}}</td>
+                            </tr>
+                        </table>
+                        <h4>Elite</h4>
+                        <table class="col-sm-12">
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Puntos</th>
+                            </tr>
+                            <tr  *ngFor="let tiro of award.topElite; let i=index" (click)="updateSelected(tiro.Name)">
+                                <td>{{i+1}}</td>
+                                <td>{{tiro.Name}}</td>
+                                <td>{{tiro.Points}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item" *ngFor="let award of nominations; let i=index">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#flush-collapse-non-' + i" aria-expanded="false" [attr.aria-controls]="'flush-collapse-non-'+i">
+                          Nominaciones {{award.award}}
+                      </button>
+                    </h2>
+                    <div [attr.id]="'flush-collapse-non-' + i" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body">
+                          <h4>Aprendiz</h4>
+                          <table class="col-sm-12">
+                              <tr>
+                                  <th>#</th>
+                                  <th>Nombre</th>
+                                  <th>Puntos</th>
+                              </tr>
+                              <tr  *ngFor="let tiro of award.topAprendiz; let i=index" (click)="updateSelected(tiro.Name)">
+                                  <td>{{i+1}}</td>
+                                  <td>{{tiro.Name}}</td>
+                                  <td>{{tiro.Points}}</td>
+                              </tr>
+                          </table>
+                          <h4>Elite</h4>
+                          <table class="col-sm-12">
+                              <tr>
+                                  <th>#</th>
+                                  <th>Nombre</th>
+                                  <th>Puntos</th>
+                              </tr>
+                              <tr  *ngFor="let tiro of award.topElite; let i=index" (click)="updateSelected(tiro.Name)">
+                                  <td>{{i+1}}</td>
+                                  <td>{{tiro.Name}}</td>
+                                  <td>{{tiro.Points}}</td>
+                              </tr>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <div class="sidepanels">
+            <div>
+                <div>
+                    <b>Nombre</b>
+                </div>
+                <div class="playerfield">
+                    {{selectedPlayer.Name}}
+                </div>
+
+                <div>
+                    <b>Scouts</b>
+                </div>
+                <div class="playerfield">
+                    {{selectedPlayer.Scouts}}
+                </div>
+
+                <div>
+                    <b>Equipo</b>
+                </div>
+                <div class="playerfield">
+                    {{selectedPlayer.Equipo}}
+                </div>
+
+                <div>
+                    <b>Evaluacion General</b>
+                </div>
+                <div class="playerfield">
+                    {{selectedPlayer.Evalgen}}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+            <div class="col-sm-12 col-md-4">
+                <div>
+                    <b>Posicion</b>
+                </div>
+                <div class="row myrow" *ngFor="let pos of selectedPlayer.Position">
+                    <div class="col-sm-6">{{pos.posicion}}</div>
+                    <div class="col-sm-5 playerfield">{{pos.votes}}/{{selectedPlayer.Scouts}}</div>
+                </div>
+                <br>
+            </div>
+            <div class="col-sm-12 col-md-8">
+                <div>
+                    <b>Estilo de Juego</b>
+                </div>
+                <div class="row myrow" *ngFor="let style of selectedPlayer.Style">
+                    <div class="col-sm-6">{{style.style}}</div> 
+                    <div class="col-sm-5 playerfield">{{style.votes}}/{{selectedPlayer.Scouts}}</div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>  

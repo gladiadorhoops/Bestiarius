@@ -1,7 +1,7 @@
 <div class="bg-image lower-corner-img" style="background-image: url('assets/no-background-logo-transparent.png');">
     <div class="container page-content">
         <div class="d-flex justify-content-center align-items-center" >
-            <div class="text-justify outer">
+            <div style="width: 100%" class="text-justify outer">
             <ng-container *ngIf="!isLoggedIn">    
                 <div class="container page-content">
                     <h1>Scouts Login</h1>
@@ -27,6 +27,7 @@
                 </div>
             </ng-container>
             <ng-container *ngIf="isLoggedIn">
+                
                 <div style="display: flex; flex-direction: column; align-items:flex-end;">
                     <form [formGroup]="form">
                         <label>Usuario: <i>{{scoutname}}</i> |&nbsp;</label>
@@ -34,10 +35,31 @@
                         (click)="logout()">Logout</button>
                     </form>
                 </div>
+
+                <div class="row align-items-center" style="margin-top: 3%;">
+                    <div class="col col-xs-2 align-items-center text-center">
+                        <button (click)="showEvaluacion()">Evaluar</button>
+                    </div>
+                    <!--div class="col col-xs-2 align-items-center text-center">
+                        <button (click)="showMarcadores()">Marcadores</button>
+                    </div-->
+                    <div class="col col-xs-2 align-items-center text-center">
+                        <button (click)="showResultados()">Resultados</button>
+                    </div>
+                </div>
                 
-                <div class="container page-content text-center">
+                <div class="text-center" *ngIf="marcadoresView">
+                    <app-marcador-form></app-marcador-form>
+                </div>
+                
+                <div class="text-center" *ngIf="evaluarView">
                     <app-evaluacion></app-evaluacion>
                 </div>
+                
+                <div *ngIf="resultadosView">
+                    <app-resultados-evaluacion></app-resultados-evaluacion>
+                </div>
+                
             </ng-container>
             </div>
         </div>

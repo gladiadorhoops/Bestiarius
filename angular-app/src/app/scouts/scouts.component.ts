@@ -17,6 +17,9 @@ export class ScoutsComponent {
     scoutid: string = "";
     scoutname: string = "";
     failed: boolean = false;
+    marcadoresView: boolean = false;
+    evaluarView: boolean = true;
+    resultadosView: boolean = false;
 
     constructor(private fb:FormBuilder, 
                  private authService: AuthService, 
@@ -40,31 +43,47 @@ export class ScoutsComponent {
     }
 
     login() {
-        const val = this.form.value;
-        this.failed = false;
-        if (val.scout && val.password) {
-            let scoutId = this.authService.login(val.scout, val.password)
-            scoutId.then(
-              (scoutId) => {
-                if (scoutId == undefined) {
-                  console.log("Failed to log in");
-                  this.failed = true;
-                } else {
-                  this.authService.setSession(val.scout, scoutId);
-                  this.reloadLoginStatus();
-                  console.log("User is logged in");
-                }
+      const val = this.form.value;
+      this.failed = false;
+      if (val.scout && val.password) {
+          let scoutId = this.authService.login(val.scout, val.password)
+          scoutId.then(
+            (scoutId) => {
+              if (scoutId == undefined) {
+                console.log("Failed to log in");
+                this.failed = true;
+              } else {
+                this.authService.setSession(val.scout, scoutId);
+                this.reloadLoginStatus();
+                console.log("User is logged in");
               }
-            )
-        }
-        else{
-          this.failed = true;
-        }
-    }
+            }
+          )
+      }
+      else{
+        this.failed = true;
+      }
+  }
 
-    logout() {
-      this.authService.logout();
-      this.reloadLoginStatus();
-      console.log("User is logged out");
-    }
+  logout() {
+    this.authService.logout();
+    this.reloadLoginStatus();
+    console.log("User is logged out");
+  }
+
+  showEvaluacion() {
+    this.marcadoresView = false;
+    this.evaluarView = true;
+    this.resultadosView = false;
+  }
+  showMarcadores() {
+    this.marcadoresView = true;
+    this.evaluarView = false;
+    this.resultadosView = false;
+  }
+  showResultados() {
+    this.marcadoresView = false;
+    this.evaluarView = false;
+    this.resultadosView = true;
+  }
 }

@@ -34,6 +34,8 @@ import { MarcadoresComponent } from './marcadores/marcadores.component';
 import { EvaluacionComponent } from './evaluacion/evaluacion.component';
 import { ScoutsComponent } from './scouts/scouts.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { MarcadorFormComponent } from './marcador-form/marcador-form.component';
+import { ResultadosEvaluacionComponent } from './resultados-evaluacion/resultados-evaluacion.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     ResultadosComponent,
     MarcadoresComponent,
     EvaluacionComponent,
-    ScoutsComponent
+    ScoutsComponent,
+    MarcadorFormComponent,
+    ResultadosEvaluacionComponent
   ],
   imports: [
     BrowserModule,
