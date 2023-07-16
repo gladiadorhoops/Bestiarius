@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { FormArray } from '@angular/forms';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { Team } from '../interfaces/team';
+import { DynamoDB } from '@aws-sdk/client-dynamodb';
+import { DynamoDb } from '../aws-clients/dynamodb';
+import { TeamBuilder } from '../Builders/team-builder';
+
 
 @Component({
   selector: 'app-evaluacion',
@@ -14,6 +18,21 @@ export class EvaluacionComponent {
 
   constructor(private fb: FormBuilder,
     private authService: AuthService) {
+    this.teamBuidler = new TeamBuilder()
+  }
+
+  @Input() ddb!: DynamoDb;
+  teamBuidler: TeamBuilder;
+  teams: Team[] = [];
+
+  async ngOnInit() {
+    let teams = await this.teamBuidler.getListOfTeams(this.ddb).then(
+      (output) => {
+        console.log("Component output", output)
+        return output
+      }
+    )
+    this.teams = this.teams.concat(teams)
   }
 
   scout_id = this.authService.getScoutId()
@@ -61,12 +80,6 @@ export class EvaluacionComponent {
     console.warn(this.evaluationForm.value);
   }
 
-  teams = [
-    {name: "Equipo A", players: ["Jose", "Luis", "Pedro"]},
-    {name: "Equipo B", players: ["Juan", "Marcos", "Gabriel"]},
-    {name: "Equipo C", players: ["Jesus", "Antonio", "Jaime"]},
-    {name: "Equipo D", players: ["Daniel", "Luis", "Carlos"]}
-  ]
   teamplayers: string[] = ["Daniel", "Luis", "Carlos"]
   
   loadPlayers() {
@@ -74,7 +87,7 @@ export class EvaluacionComponent {
     var selectedteamplayers: string[] = [];
     this.teams.forEach(function(value){
       if(value.name == selectedTeam){
-        selectedteamplayers = value.players;
+        // selectedteamplayers = value.players;
       }
     });
     this.teamplayers = selectedteamplayers;

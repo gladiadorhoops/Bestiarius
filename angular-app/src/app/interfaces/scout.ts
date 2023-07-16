@@ -1,5 +1,5 @@
 export interface Scout {
-    id: String,
-    nombre: String,
-    apellido: String,
+    id: string,
+    nombre: string,
+    apellido: string | undefined,
 }

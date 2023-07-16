@@ -1,8 +1,9 @@
 import { Player } from "./player"
 
 export interface Team {
-    id: String | undefined
+    id?: string | undefined
     name: string
-    points: number
-    players: [Player] | undefined
+    points?: number | undefined
+    players?: Player[] | undefined
+    category?: string | undefined
 }

@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Cognito } from './aws-clients/cognito';
 import { DynamoDb } from './aws-clients/dynamodb';
+import { Scout } from './interfaces/scout';
+import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 
 
 @Injectable({
@@ -11,31 +13,17 @@ export class AuthService {
 
   constructor(private httpService: HttpClient) { }
     
-  async login(scout:string, password:string): Promise<string | undefined> {
+  async login(username:string, password:string, ddb: DynamoDb): Promise<string | undefined> {
     console.log("Starting Login")
-    let credentials = Cognito.getAwsCredentials(scout, password);
-    let ddb: DynamoDb
-    let scoutId: string | undefined
-    await credentials.then(
-      async (credentials) => {
-       if(credentials == undefined){
-         return
-       }
-
-       console.log("credentials are valid")
-       ddb = new DynamoDb(credentials)
-
-       let item = ddb.query(scout, password)
-       await item.then(
-        (item) => {
-          if(item != undefined) scoutId = item["pk"].S
-          console.log("scoutId", scoutId)
-        }
-       )
+    var scoutId: string | undefined;
+    await ddb.findIdQuery(username, password).then(
+      (item) => {
+        if(item != undefined) scoutId = item["pk"].S
+        console.log("scoutId", scoutId)
       }
-     )
-     return scoutId
-  }
+    )
+    return scoutId
+  }  
 
   public setSession( scoutName: string, scoutId: string) {
       localStorage.setItem('scout_name', scoutName);
@@ -66,9 +54,9 @@ export class AuthService {
     } 
 
     getScoutName() {
-        var scoutname = localStorage.getItem("scout_name");
-        if (scoutname != null){
-          return scoutname;
+        var scoutName = localStorage.getItem("scout_name");
+        if (scoutName != null){
+          return scoutName;
         }
         else{
           return "";

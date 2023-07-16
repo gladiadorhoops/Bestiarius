@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { FormArray } from '@angular/forms';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { DynamoDb } from '../aws-clients/dynamodb';
 
 @Component({
   selector: 'app-scouts',
@@ -20,6 +20,7 @@ export class ScoutsComponent {
     marcadoresView: boolean = false;
     evaluarView: boolean = true;
     resultadosView: boolean = false;
+    ddb!: DynamoDb;
 
     constructor(private fb:FormBuilder, 
                  private authService: AuthService, 
@@ -43,34 +44,41 @@ export class ScoutsComponent {
     }
 
     login() {
-      const val = this.form.value;
-      this.failed = false;
-      if (val.scout && val.password) {
-          let scoutId = this.authService.login(val.scout, val.password)
-          scoutId.then(
-            (scoutId) => {
-              if (scoutId == undefined) {
-                console.log("Failed to log in");
-                this.failed = true;
-              } else {
-                this.authService.setSession(val.scout, scoutId);
-                this.reloadLoginStatus();
-                console.log("User is logged in");
-              }
+        const val = this.form.value;
+        this.failed = false;
+        if (val.scout && val.password) {
+
+          DynamoDb.build(val.scout, val.password).then(
+            (client) => {
+              this.ddb = client
+              this.authService.login(val.scout, val.password,this.ddb).then(
+                (scoutId) => {
+                  if (scoutId == undefined) {
+                    console.log("Failed to log in");
+                    this.failed = true;
+                  } else {              
+                    this.authService.setSession(val.scout, scoutId);
+                    this.reloadLoginStatus();
+                    console.log("User is logged in");
+                  }
+                }
+              )
             }
           )
-      }
-      else{
-        this.failed = true;
-      }
-  }
 
-  logout() {
-    this.authService.logout();
-    this.reloadLoginStatus();
-    console.log("User is logged out");
-  }
+          let scoutId: string | undefined
+        }
+        else{
+          this.failed = true;
+        }
+    }
 
+    logout() {
+      this.authService.logout();
+      this.reloadLoginStatus();
+      console.log("User is logged out");
+    }
+    
   showEvaluacion() {
     this.marcadoresView = false;
     this.evaluarView = true;

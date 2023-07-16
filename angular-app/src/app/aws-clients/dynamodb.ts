@@ -7,29 +7,42 @@ import {
     GetItemCommand,
     QueryCommandInput,
     QueryCommand,
-    QueryInput
 } from "@aws-sdk/client-dynamodb";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 import { REGION, DDB_TABLE_NAME } from "./constants";
+import { DynamoDbIndex } from "./dynamodb-index"
+import { Cognito } from './cognito';
 
-const SI_PK = 'si-pk'
-const SI_SK = 'si-sk'
+const PK_KEY = 'pk'
+const SK_KEY = 'sk'
+const SPK_KEY = `s${PK_KEY}`
+const SSK_KEY = `s${SK_KEY}`
+
+export const enum IndexId {
+    MAIN_GSI,
+    LIST_GSI,
+    SK_SPK,
+}
 
 export class DynamoDb {
 
-    client: DynamoDBClient;
+    private client: DynamoDBClient;
+    indexes: { [name: string]: DynamoDbIndex }
 
-    constructor(credentials: AwsCredentialIdentity | Provider<AwsCredentialIdentity>){
-       this.client = new DynamoDBClient({ 
-            region: REGION,
-            credentials: credentials
-        });
+    constructor(client: DynamoDBClient){
+        this.client = client
+        this.indexes = {
+            [IndexId.MAIN_GSI]: new DynamoDbIndex(SPK_KEY, SSK_KEY),
+            [IndexId.LIST_GSI]: new DynamoDbIndex(SK_KEY),
+            [IndexId.SK_SPK]: new DynamoDbIndex(SK_KEY, SPK_KEY),
+
+        }
     }
 
     async putItem(record: Record<string, AttributeValue>): Promise<any> {
         console.log("Storing Item")
         try {
-            const input: PutItemCommandInput = { // PutItemInput
+            const input: PutItemCommandInput = {
                 TableName: DDB_TABLE_NAME,
                 Item: record,
                 ReturnValues: "NONE",
@@ -64,33 +77,59 @@ export class DynamoDb {
         }
     }
 
-    async query(pk: string, sk: string): Promise<Record<string, AttributeValue> | undefined> {
-        console.log(`Reading Item (pk: ${pk}, sk: ${sk}`)
+    async findIdQuery(pk: string, sk: string | undefined): Promise<Record<string, AttributeValue> | undefined> {        
+        let item: Record<string, AttributeValue> | undefined
+        await this.query(pk, sk,  IndexId.MAIN_GSI).then(
+            (items) => {
+                if(items != undefined) item = items.pop()
+                else item = undefined
+            }
+        )
+        return item
+    }
+
+    async listQuery(pk: string, sk?: string | undefined): Promise<Record<string, AttributeValue>[]> {
+        let resultItems: Record<string, AttributeValue>[] = []
+        let index = sk ? IndexId.SK_SPK : IndexId.LIST_GSI
+        let results = await this.query(pk, sk, index).then( (items) => { return items } )
+        if(results != undefined) resultItems = resultItems.concat(results)
+        return resultItems
+    }
+
+    private async query(pk: string, sk: string | undefined, index: IndexId): Promise<Record<string, AttributeValue>[] | undefined> {
+        console.log(`Reading Item (pk: ${pk}, sk: ${sk})`)
         
         try {
             const input: QueryCommandInput = {
               TableName: DDB_TABLE_NAME,
-              IndexName: `${SI_PK}-${SI_SK}-index`,
-              KeyConditionExpression: `#pk = :pk and #sk = :sk`,
-              ExpressionAttributeNames: {
-                '#pk': SI_PK,
-                '#sk': SI_SK,
-              },
-              ExpressionAttributeValues: {
-                ':pk': {S: pk},
-                ':sk' : {S: sk},
-              },
+              IndexName: this.indexes[index].name(),
+              KeyConditionExpression: this.indexes[index].keyConditionExpression(sk),
+              ExpressionAttributeValues: this.indexes[index].getExpressionAttributeValues(pk, sk),
               ReturnConsumedCapacity: "TOTAL",
             };
             const command = new QueryCommand(input);
             console.log("command: ", command)
             const response = await this.client.send(command);
             console.log("response: ", response)
-            return response?.Items?.pop()
+            return response?.Items
         } catch (err) {
             console.log("Error", err);
             return undefined
         }
     }
 
+    static async build(username: string, password: string): Promise<DynamoDb> {
+        let credentials: AwsCredentialIdentity | Provider<AwsCredentialIdentity> | undefined
+        await Cognito.getAwsCredentials(username, password).then(
+            (creds) => {
+                if (creds == undefined) return
+                credentials = creds            
+            }
+        )
+        let client =  new DynamoDBClient({ 
+            region: REGION,
+            credentials: credentials
+        }); 
+        return new DynamoDb(client)
+    }
 }
