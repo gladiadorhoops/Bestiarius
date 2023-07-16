@@ -39,7 +39,7 @@ export class DynamoDb {
         }
     }
 
-    async putItem(record: Record<string, AttributeValue>): Promise<any> {
+    async putItem(record: Record<string, AttributeValue>) {
         console.log("Storing Item")
         try {
             const input: PutItemCommandInput = {

@@ -1,8 +1,12 @@
+import { Injectable } from '@angular/core';
 import { DynamoDb } from "src/app/aws-clients/dynamodb";
 import { Player } from "../interfaces/player";
 
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 
+@Injectable({
+    providedIn: 'root'
+})
 export class PlayerBuilder {
 
     constructor() {}

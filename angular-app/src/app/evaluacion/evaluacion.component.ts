@@ -18,18 +18,16 @@ import { PlayerBuilder } from '../Builders/player-builder';
 export class EvaluacionComponent {
 
   constructor(private fb: FormBuilder,
-    private authService: AuthService) {
-    this.teamBuidler = new TeamBuilder()
-    this.playerBuilder = new PlayerBuilder()
+    private authService: AuthService,
+    private teamBuilder: TeamBuilder,
+    private playerBuilder: PlayerBuilder) {
   }
 
   @Input() ddb!: DynamoDb;
-  teamBuidler: TeamBuilder;
-  playerBuilder: PlayerBuilder;
   teams: Team[] = [];
 
   async ngOnInit() {
-    let teams = await this.teamBuidler.getListOfTeams(this.ddb).then(
+    let teams = await this.teamBuilder.getListOfTeams(this.ddb).then(
       (output) => {
         console.log("Component output", output)
         return output
@@ -87,7 +85,6 @@ export class EvaluacionComponent {
   
   async loadPlayers() {
     var selectedTeam = this.evaluationForm.value.equipo;
-    var selectedteamplayers: string[] = [];
     this.teams.forEach(
       async (team) => {
         if(team.name == selectedTeam){
@@ -98,7 +95,6 @@ export class EvaluacionComponent {
           )
         }
     });
-    // this.teamplayers = selectedteamplayers;
   }
   
   positions: string[] = ["1", "2", "3", "4", "5"]
