@@ -8,6 +8,7 @@ import { Player } from '../interfaces/player';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { TeamBuilder } from '../Builders/team-builder';
 import { PlayerBuilder } from '../Builders/player-builder';
+import { LocalizedStrings } from '../interfaces/reporte';
 
 
 @Component({
@@ -20,8 +21,8 @@ export class EvaluacionComponent {
   constructor(private fb: FormBuilder,
     private authService: AuthService,
     private teamBuilder: TeamBuilder,
-    private playerBuilder: PlayerBuilder) {
-  }
+    private playerBuilder: PlayerBuilder,
+  ) {}
 
   @Input() ddb!: DynamoDb;
   teams: Team[] = [];
@@ -49,36 +50,36 @@ export class EvaluacionComponent {
     position3: [false],
     position4: [false],
     position5: [false],
-    eval: [''],
-    tiroColada: [''],
-    tiroTiro_Media: [''],
-    tiroTriples: [''],
-    tiroTiro_Inteligente: [''],
-    paseVision: [''],
-    paseCreador: [''],
-    pasePerdida_de_Balon: [''],
-    paseSentido: [''],
-    defensaEn_Bola: [''],
-    defensaSin_Bola: [''],
-    defensaTransicion: [''],
-    defensaRebote_Def: [''],
-    boteControl: [''],
-    boteEn_Presion: [''],
-    botePerdida_de_Balon: [''],
-    boteMano_Debil: [''],
-    boteCambio_de_Ritmo: [''],
-    jugadorHustle: [''],
-    jugadorSpacing: [''],
-    jugadorJuego_de_Equipo: [''],
-    jugadorTiro_Inteligente: [''],
-    jugadorAgresividad: [''],
-    estiloAnotador : [false],
-    estiloDefensor : [false],
-    estiloCreador : [false],
-    estiloAtletico : [false],
-    estiloClutch : [false],
-    estiloRebotador : [false],
-    estiloRol : [false],
+    eval: ['0'],
+    [`tiro-${LocalizedStrings.tiros.colada}`]: ['0'],
+    [`tiro-${LocalizedStrings.tiros.media}`]: ['0'],
+    [`tiro-${LocalizedStrings.tiros.triples}`]: ['0'],
+    [`tiro-${LocalizedStrings.tiros.Inteligencia}`]: ['0'],
+    [`pase-${LocalizedStrings.pases.vision}`]: ['0'],
+    [`pase-${LocalizedStrings.pases.creador}`]: ['0'],
+    [`pase-${LocalizedStrings.pases.perdida}`]: ['0'],
+    [`pase-${LocalizedStrings.pases.sentido}`]: ['0'],
+    [`defensa-${LocalizedStrings.defensas.conBola}`]: ['0'],
+    [`defensa-${LocalizedStrings.defensas.sinBola}`]: ['0'],
+    [`defensa-${LocalizedStrings.defensas.transicion}`]: ['0'],
+    [`defensa-${LocalizedStrings.defensas.rebote}`]: ['0'],
+    [`bote-${LocalizedStrings.botes.control}`]: ['0'],
+    [`bote-${LocalizedStrings.botes.presion}`]: ['0'],
+    [`bote-${LocalizedStrings.botes.perdida}`]: ['0'],
+    [`bote-${LocalizedStrings.botes.manoDebil}`]: ['0'],
+    [`bote-${LocalizedStrings.botes.ritmo}`]: ['0'],
+    [`jugador-${LocalizedStrings.jugadores.hustle}`]: ['0'],
+    [`jugador-${LocalizedStrings.jugadores.spacing}`]: ['0'],
+    [`jugador-${LocalizedStrings.jugadores.juegoEquipo}`]: ['0'],
+    [`jugador-${LocalizedStrings.jugadores.tiroInteligente}`]: ['0'],
+    [`jugador-${LocalizedStrings.jugadores.agresividad}`]: ['0'],
+    [`estilo-${LocalizedStrings.estilos.anotador}`]: [false],
+    [`estilo-${LocalizedStrings.estilos.defensor}`]: [false],
+    [`estilo-${LocalizedStrings.estilos.creador}`]: [false],
+    [`estilo-${LocalizedStrings.estilos.atletico}`]: [false],
+    [`estilo-${LocalizedStrings.estilos.clutch}`]: [false],
+    [`estilo-${LocalizedStrings.estilos.rebotador}`]: [false],
+    [`estilo-${LocalizedStrings.estilos.rol}`]: [false],
     nominacion: [''],
   });
 
@@ -126,11 +127,11 @@ export class EvaluacionComponent {
     {id: "4", desc: "Muy Bueno"}, 
     {id: "5", desc: "Gladiador"}
   ]
-  tiros: string[] = ["Colada", "Tiro_Media", "Triples", "Tiro_Inteligente"]
-  pases: string[] = ["Vision", "Creador", "Perdida_de_Balon", "Sentido"]
-  defensas: string[] = ["En_Bola", "Sin_Bola", "Transicion", "Rebote_Def"]
-  botes: string[] = ["Control", "En_Presion", "Perdida_de_Balon", "Mano_Debil", "Cambio_de_Ritmo"]
-  jugadors: string[] = ["Hustle", "Spacing", "Juego_de_Equipo", "Tiro_Inteligente", "Agresividad"]
-  estilos: string[] = ["Anotador", "Defensor", "Creador", "Atletico", "Clutch", "Rebotador", "Rol"]
+  tiros: string[] = LocalizedStrings.getTiros()
+  pases: string[] = LocalizedStrings.getPases()
+  defensas: string[] = LocalizedStrings.getDefensas()
+  botes: string[] = LocalizedStrings.getBotes()
+  jugadores: string [] = LocalizedStrings.getJugadores()
+  estilos: string[] = LocalizedStrings.getEstilos()
 }
 

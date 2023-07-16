@@ -62,3 +62,89 @@ export enum EvaluationGeneral {
     Promedio = 2,
     NecesitaMejora = 1
 }
+
+export class LocalizedStrings {
+    
+    static tiros = {
+        colada: 'Colada',
+        media: 'Media',
+        triples: 'Triples',
+        Inteligencia: 'Inteligencia'
+    }
+
+    static getTiros(): string[] {
+        return Object.values(LocalizedStrings.tiros).map((value: string) => {
+            return value
+        })
+    }
+    
+    static pases = {
+        vision: 'Vision',
+        creador: 'Creador',
+        perdida: 'Perdida de Balon',
+        sentido: 'Sentido'
+    }
+
+    static getPases(): string[] {
+        return Object.values(LocalizedStrings.pases).map((value: string) => {
+            return value
+        })
+    }
+    
+    static defensas = {
+        conBola: 'Con Bola',
+        sinBola: 'Sin Bola',
+        transicion: 'Transicion',
+        rebote: 'Rebote Defensivo'
+    }
+    
+    static getDefensas(): string[] {
+        return Object.values(LocalizedStrings.defensas).map((value: string) => {
+            return value
+        })
+    }
+
+    static botes = {
+        control: 'Control',
+        presion: 'En Presion',
+        perdida: 'Perdida de Balon',
+        manoDebil: 'Mano Debil',
+        ritmo: 'Cambio de Ritmo'
+    }
+
+    static getBotes(): string[] {
+        return Object.values(LocalizedStrings.botes).map((value: string) => {
+            return value
+        })
+    }
+
+    static jugadores = {
+        hustle: 'Hustle',
+        spacing: 'Spacing',
+        juegoEquipo: 'Juego en Equipo',
+        tiroInteligente: 'Tiro Inteligente',
+        agresividad: 'Agresividad',
+    }
+
+    static getJugadores(): string[] {
+        return Object.values(LocalizedStrings.jugadores).map((value: string) => {
+            return value
+        })
+    }
+
+    static estilos = {
+        anotador: 'Anotador',
+        defensor: 'Defensor',
+        creador: 'Creador',
+        atletico: 'Atletico',
+        clutch: 'Clutch',
+        rebotador: 'Rebotador',
+        rol: 'Rol',
+    }
+
+    static getEstilos(): string[] {
+        return Object.values(LocalizedStrings.estilos).map((value: string) => {
+            return value
+        })
+    }
+}
