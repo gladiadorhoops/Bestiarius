@@ -79,7 +79,7 @@ export class EvaluacionComponent {
 
   teamplayers: Player[] = []
   
-  selectedEdad = 0
+  selectedEdad : String = ""
   selectedCategoria: String = ""
   
   async loadPlayers() {
@@ -98,7 +98,7 @@ export class EvaluacionComponent {
   loadPlayerDetails() {
     var selectedPlayer = this.evaluationForm.value.playerid;
 
-    var selectedteamplayer: Player = {id: '', equipo: '', nombre:'',edad:0,categoria:''};
+    var selectedteamplayer: Player = {id: '', equipo: '', nombre:'',edad:"",categoria:''};
     this.teamplayers.forEach(function(value){
       if(value.id == selectedPlayer){
         selectedteamplayer = value;

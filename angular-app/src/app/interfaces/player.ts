@@ -2,6 +2,6 @@ export interface Player {
     id: String,
     nombre: String,
     equipo: String,
-    edad: number,
+    edad: String,
     categoria: String,
 }
