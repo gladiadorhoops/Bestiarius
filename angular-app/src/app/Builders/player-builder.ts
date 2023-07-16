@@ -28,6 +28,7 @@ export class PlayerBuilder {
             nombre: item['name'].S!,
             equipo: item['spk'].S!,
             categoria: item['category'].S!,
+            edad: 0
         }
     }
 }

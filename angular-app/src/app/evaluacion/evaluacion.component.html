@@ -26,20 +26,15 @@
                 </div>
                 <label class="frow" for="nombre">Nombre:&nbsp;</label>
                 <div class="frow">
-                    <select id="players" formControlName="nombre" required>
+                    <select id="players" formControlName="playerid" (change)="loadPlayerDetails()" required>
                         <option value=""></option>
-                        <option *ngFor="let player of teamplayers" value="{{player.nombre}}">{{player.nombre}}</option>
+                        <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.nombre}}</option>
                     </select>
                 </div>
                 <label class="frow" for="edad">Edad:&nbsp;</label>
-                <input class="frow" id="edad" type="number" formControlName="edad" min="1" max="99">
+                <input class="frow" id="edad" type="number" min="1" max="99" value="{{selectedEdad}}">
                 <label class="frow" for="categoria">Categoria:&nbsp;</label>
-                <div class="frow">
-                    <select id="categorias" formControlName="categoria">
-                        <option value="Aprendiz">Aprendiz</option>
-                        <option value="Elite">Elite</option>>
-                    </select>
-                </div>
+                <input class="frow" id="categorias" type="text" value="{{selectedCategoria}}">
             </div>
           </div>
         </div>

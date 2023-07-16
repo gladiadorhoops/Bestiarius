@@ -42,12 +42,8 @@ export class EvaluacionComponent {
   evaluationForm = this.fb.group({
     scoutid: [this.scout_id, Validators.required],
     scoutname: [this.scout_name, Validators.required],
-    nombre: ['', Validators.required],
-    categoria: new FormControl(""),
+    playerid: ["", Validators.required],
     equipo: ["", Validators.required],
-    edad: [''],
-    //estatura: [''],
-    //peso: [''],
     position: [''],
     eval: [''],
     tiroColada: [''],
@@ -83,6 +79,9 @@ export class EvaluacionComponent {
 
   teamplayers: Player[] = []
   
+  selectedEdad = 0
+  selectedCategoria: String = ""
+  
   async loadPlayers() {
     var selectedTeam = this.evaluationForm.value.equipo;
     this.teams.forEach(
@@ -95,6 +94,18 @@ export class EvaluacionComponent {
           )
         }
     });
+  }
+  loadPlayerDetails() {
+    var selectedPlayer = this.evaluationForm.value.playerid;
+
+    var selectedteamplayer: Player = {id: '', equipo: '', nombre:'',edad:0,categoria:''};
+    this.teamplayers.forEach(function(value){
+      if(value.id == selectedPlayer){
+        selectedteamplayer = value;
+      }
+    });
+    this.selectedEdad = selectedteamplayer.edad;
+    this.selectedCategoria = selectedteamplayer.categoria;
   }
   
   positions: string[] = ["1", "2", "3", "4", "5"]
