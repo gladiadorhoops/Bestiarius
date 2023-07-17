@@ -1,87 +1,107 @@
+<div class="row justify-content-md-center">
+    <h2 class="text-center mb-3">
+        Marcadores
+    </h2>
+    <div class="row">
+        <div *ngIf="!isEditing">
 
-<div class="row">
-    <div class="container page-content text-center" *ngIf="showResults">
-        <h1>Resultados de Equipos</h1>
-    
-        <div class="row align-items-center" style="margin-top: 3%;">
-            <div class="col col-xs-2">
-                <button (click)="showDay(days[0])">{{days[0]}}/07</button>
-            </div>
-            <div class="col col-xs-2">
-                <button (click)="showDay(days[1])">{{days[1]}}/07</button>
-            </div>
-            <div class="col col-xs-2">
-                <button (click)="showDay(days[2])">{{days[2]}}/07</button>
+            <form [formGroup]="filterForm">
+
+                <div class="row">
+                    <label class="col-sm-3" for="category">Category:</label>
+                    <label class="col-sm-3" for="days">Day:</label>
+                    <label class="col-sm-3" for="gyms">Gimnasio</label>
+                    <label class="col-sm-3" for="teams">Equipo</label>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3 filterPadding">
+                        <select class="col-sm-12" id="category" formControlName="cat" (change)="applyFilters()" required>
+                            <option value="Aprendix">Aprendiz</option>
+                            <option value="Elite">Elite</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3 filterPadding">
+                        <select class="col-sm-12" id="days" formControlName="day" (change)="applyFilters()" required>
+                            <option value=""></option>
+                            <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3 filterPadding">
+                        <select class="col-sm-12" id="gyms" formControlName="gym" (change)="applyFilters()" require>
+                            <option value=""></option>
+                            <option *ngFor="let gym of gyms" value="{{gym}}">{{gym}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3 filterPadding">
+                        <select class="col-sm-12" id="teams" formControlName="equipo" (change)="applyFilters()" require>
+                            <option value=""></option>
+                            <option *ngFor="let equipo of equipos" value="{{equipo}}">{{equipo}}</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row marcadorItem" *ngFor="let match of filteredMatches" >
+                <div class="col col-sm-12">
+                    <h5>
+                        {{match.juego}} - {{match.location}}
+                    </h5>
+                </div>
+                
+
+                <div class="col col-sm-1"></div>
+                <div class="col col-sm-4">{{match.homeTeam.name}}</div>
+                <div class="col col-sm-2"> X </div>
+                <div class="col col-sm-4">{{match.visitorTeam.name}}</div>
+                <div class="col col-sm-1" > 
+                    <a class="btn btn-outline-light btn-floating m-1" role="button" (click)="edit(match)">
+                        <i class="fas fa-regular fa-pen"></i>
+                    </a>
+                </div>
+
+                <div class="col col-sm-1"></div>
+                <div class="col col-sm-4">{{match.homeTeam.points}}</div>
+                <div class="col col-sm-2"></div>
+                <div class="col col-sm-4">{{match.visitorTeam.points}}</div>
+                <div class="col col-sm-1"></div>
             </div>
         </div>
+        <div class="row" *ngIf="isEditing">
+            <form [formGroup]="marcadorForm" (ngSubmit)="onSubmit()">
+
+                <div class="row marcadorItem text-center" >
+                    <div class="col col-sm-12">
+                        <h5>
+                            {{editingMatch.juego}} - {{editingMatch.location}}
+                        </h5>
+                    </div>
+                    
     
-        <h2 class="text-center mb-3">
-            <br>
-            Juegos Aprendiz
-            <br>
-        </h2>
-        <div class="row justify-content-xs-center align-items-center" style="margin:2% 0%; padding: 2%; background-color:#000 ;" *ngFor="let match of matchesAprendiz">
-            <div class="row align-items-center">
-                <div class="col col-xs-3">
-                    <h3>{{match.homeTeam.name}}</h3><br>
-                    <h2>{{match.homeTeam.points}} </h2>
+                    <div class="col col-sm-1"></div>
+                    <div class="col col-sm-4">{{editingMatch.homeTeam.name}}</div>
+                    <div class="col col-sm-2"></div>
+                    <div class="col col-sm-4">{{editingMatch.visitorTeam.name}}</div>
+                    <div class="col col-sm-1"></div>
+    
+                    <div class="col col-sm-2"></div>
+                    <div class="col col-sm-2">
+                        <input class="col col-sm-12" id="homescore" type="number" formControlName="homeScore" value="{{editingMatch.homeTeam.points}}">
+                    </div>
+                    <div class="col col-sm-4"> X</div>
+                    <div class="col col-sm-2">
+                        <input class="col col-sm-12"  id="visitorscore" type="number" formControlName="visitorScore" value="{{editingMatch.visitorTeam.points}}">
+                    </div>
+                    <div class="col col-sm-2"></div>
+
                 </div>
-                <div class="col col-xs-1 " style="max-width: 10%;">
-                    <h3>vs</h3>  
+
+                <div class="col col-sm-12">
+                    <button class="marginBtn" type="submit">Guardar</button>
+                    <button class="marginBtn" type="button" (click)="goBack()">Volver</button>
                 </div>
-                <div class="col col-xs-3">
-                    <h3>{{match.visitorTeam.name}}</h3><br>
-                    <h2>{{match.visitorTeam.points}}</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col col-xs-5">
-                    {{match.juego}} 
-                </div>
-            </div>
-            <div class="row">
-                <div class="col col-xs-5 d-none d-sm-block">
-                    {{match.location}} - {{match.time}}
-                </div>
-                <div class="col col-xs-5 d-block d-sm-none">
-                    {{match.location}} <br> {{match.time}}
-                </div>
-            </div>
-        </div>
-        <br>
-        <h2 class="text-center mb-3">
-            <br>
-            Juegos Elite
-            <br>
-        </h2>
-        <div class="row justify-content-xs-center align-items-center" style="margin:2% 0%; padding: 2%; background-color:#000 ;" *ngFor="let match of matchesElite">
-            <div class="row align-items-center">
-                <div class="col col-xs-3">
-                    <h3>{{match.homeTeam.name}}</h3><br>
-                    <h2>{{match.homeTeam.points}} </h2>
-                </div>
-                <div class="col col-xs-1 " style="max-width: 10%;">
-                    <h3>vs</h3>  
-                </div>
-                <div class="col col-xs-3">
-                    <h3>{{match.visitorTeam.name}}</h3><br>
-                    <h2>{{match.visitorTeam.points}}</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col col-xs-5">
-                    {{match.juego}} 
-                </div>
-            </div>
-            <div class="row">
-                <div class="col col-xs-5 d-none d-sm-block">
-                    {{match.location}} - {{match.time}}
-                </div>
-                <div class="col col-xs-5 d-block d-sm-none">
-                    {{match.location}} <br> {{match.time}}
-                </div>
-            </div>
+        
+            </form>
         </div>
     </div>
-    </div>
+</div>
     
