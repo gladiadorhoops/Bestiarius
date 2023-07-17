@@ -17,8 +17,8 @@ export class ScoutsComponent {
     scoutid: string = "";
     scoutname: string = "";
     failed: boolean = false;
-    marcadoresView: boolean = false;
-    evaluarView: boolean = true;
+    marcadoresView: boolean = true;
+    evaluarView: boolean = false;
     resultadosView: boolean = false;
     ddb!: DynamoDb;
 
@@ -30,6 +30,16 @@ export class ScoutsComponent {
             scout: ['',Validators.required],
             password: ['',Validators.required]
         });
+
+        if(this.authService.isLoggedIn()){
+          let user = this.authService.getScoutName();
+          let pass = this.authService.getScoutPass();
+          DynamoDb.build(user, pass).then(
+            (client) => {
+              this.ddb = client
+            });
+          this.authService
+        }
     }
 
     ngOnInit(){
@@ -57,7 +67,7 @@ export class ScoutsComponent {
                     console.log("Failed to log in");
                     this.failed = true;
                   } else {              
-                    this.authService.setSession(val.scout, scoutId);
+                    this.authService.setSession(val.scout, scoutId, val.password);
                     this.reloadLoginStatus();
                     console.log("User is logged in");
                   }

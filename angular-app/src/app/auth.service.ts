@@ -23,16 +23,18 @@ export class AuthService {
       }
     )
     return scoutId
-  }  
+  } 
 
-  public setSession( scoutName: string, scoutId: string) {
+  public setSession( scoutName: string, scoutId: string, scoutPass: string) {
       localStorage.setItem('scout_name', scoutName);
       localStorage.setItem('scout_id', scoutId);
+      localStorage.setItem('scout_pass', scoutPass);
   }
 
   public logout() {
       localStorage.removeItem("scout_id");
       localStorage.removeItem("scout_name");
+      localStorage.removeItem("scout_pass");
   }
 
   public isLoggedIn() {
@@ -44,22 +46,32 @@ export class AuthService {
   }
 
   getScoutId() {
-      var scoutid = localStorage.getItem("scout_id");
-      if (scoutid != null){
-        return scoutid;
-      }
-      else{
-        return "";
-      }
-    } 
+    var scoutid = localStorage.getItem("scout_id");
+    if (scoutid != null){
+      return scoutid;
+    }
+    else{
+      return "";
+    }
+  } 
 
-    getScoutName() {
-        var scoutName = localStorage.getItem("scout_name");
-        if (scoutName != null){
-          return scoutName;
-        }
-        else{
-          return "";
-        }
-      } 
+  getScoutName() {
+    var scoutName = localStorage.getItem("scout_name");
+    if (scoutName != null){
+      return scoutName;
+    }
+    else{
+      return "";
+    }
+  } 
+
+  getScoutPass() {
+    var scoutPass = localStorage.getItem("scout_pass");
+    if (scoutPass != null){
+      return scoutPass;
+    }
+    else{
+      return "";
+    }
+  } 
 }
