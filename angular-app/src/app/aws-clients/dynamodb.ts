@@ -13,10 +13,10 @@ import { REGION, DDB_TABLE_NAME } from "./constants";
 import { DynamoDbIndex } from "./dynamodb-index"
 import { Cognito } from './cognito';
 
-const PK_KEY = 'pk'
-const SK_KEY = 'sk'
-const SPK_KEY = `s${PK_KEY}`
-const SSK_KEY = `s${SK_KEY}`
+export const PK_KEY = 'pk'
+export const SK_KEY = 'sk'
+export const SPK_KEY = `s${PK_KEY}`
+export const SSK_KEY = `s${SK_KEY}`
 
 export const enum IndexId {
     MAIN_GSI,

@@ -1,13 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { FormControl } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Team } from '../interfaces/team';
 import { Player } from '../interfaces/player';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { TeamBuilder } from '../Builders/team-builder';
 import { PlayerBuilder } from '../Builders/player-builder';
+import { ReporteBuilder } from '../Builders/reporte-builder';
 import { Skills, Skill, Section } from '../interfaces/reporte';
 
 
@@ -22,6 +22,7 @@ export class EvaluacionComponent {
     private authService: AuthService,
     private teamBuilder: TeamBuilder,
     private playerBuilder: PlayerBuilder,
+    private reporteBuilder: ReporteBuilder,
   ) {}
 
   @Input() ddb!: DynamoDb;
@@ -30,7 +31,6 @@ export class EvaluacionComponent {
   async ngOnInit() {
     let teams = await this.teamBuilder.getListOfTeams(this.ddb).then(
       (output) => {
-        console.log("Component output", output)
         return output
       }
     )
@@ -41,20 +41,19 @@ export class EvaluacionComponent {
   scout_name = this.authService.getScoutName()
 
   evaluationForm = this.fb.group({
-    scoutid: [this.scout_id, Validators.required],
+    scoutId: [this.scout_id, Validators.required],
     scoutname: [this.scout_name, Validators.required],
-    playerid: ["", Validators.required],
+    playerId: ["", Validators.required],
     equipo: ["", Validators.required],
-    position1: [false],
-    position2: [false],
-    position3: [false],
-    position4: [false],
-    position5: [false],
-    eval: ['0'],
-    [`${Section.TIROS}-${Skills.tiros['colada'].report}`]: ['0'],
-    [`${Section.TIROS}-${Skills.tiros['media'].report}`]: ['0'],
-    [`${Section.TIROS}-${Skills.tiros['triples'].report}`]: ['0'],
-    [`${Section.TIROS}-${Skills.tiros['inteligencia'].report}`]: ['0'],
+    [`${Section.POCISION}-${Skills.posiciones.base.report}`]: [false],
+    [`${Section.POCISION}-${Skills.posiciones.escolta.report}`]: [false],
+    [`${Section.POCISION}-${Skills.posiciones.alero.report}`]: [false],
+    [`${Section.POCISION}-${Skills.posiciones.ala.report}`]: [false],
+    [`${Section.POCISION}-${Skills.posiciones.pivot.report}`]: [false],
+    [`${Section.TIRO}-${Skills.tiros.colada.report}`]: ['0'],
+    [`${Section.TIRO}-${Skills.tiros.media.report}`]: ['0'],
+    [`${Section.TIRO}-${Skills.tiros.triples.report}`]: ['0'],
+    [`${Section.TIRO}-${Skills.tiros.inteligencia.report}`]: ['0'],
     [`${Section.PASE}-${Skills.pases.vision.report}`]: ['0'],
     [`${Section.PASE}-${Skills.pases.creador.report}`]: ['0'],
     [`${Section.PASE}-${Skills.pases.perdida.report}`]: ['0'],
@@ -80,12 +79,14 @@ export class EvaluacionComponent {
     [`${Section.ESTILO}-${Skills.estilos.clutch.report}`]: [false],
     [`${Section.ESTILO}-${Skills.estilos.rebotador.report}`]: [false],
     [`${Section.ESTILO}-${Skills.estilos.rol.report}`]: [false],
-    nominacion: [''],
+    [`${Section.GENERAL}-${Skills.general.gladiador.report}`]: [''],
+    [`${Section.NOMINACION}-${Skills.nominacion.maximus.report}`]: [false],
   });
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
-    console.warn(this.evaluationForm.value);
+    console.log(this.evaluationForm.value);
+    this.reporteBuilder.submit(this.ddb, this.evaluationForm)
   }
 
   teamplayers: Player[] = []
@@ -107,7 +108,7 @@ export class EvaluacionComponent {
     });
   }
   loadPlayerDetails() {
-    var selectedPlayer = this.evaluationForm.value.playerid;
+    var selectedPlayer = this.evaluationForm.value.playerId;
 
     var selectedteamplayer: Player = {id: '', equipo: '', nombre:'',edad:"",categoria:''};
     this.teamplayers.forEach(function(value){
@@ -118,20 +119,15 @@ export class EvaluacionComponent {
     this.selectedEdad = selectedteamplayer.edad;
     this.selectedCategoria = selectedteamplayer.categoria;
   }
-  
-  positions: string[] = ["1", "2", "3", "4", "5"]
-  evalGens = [
-    {id: "1", desc: "Necesita mejora"}, 
-    {id: "2", desc: "Promedio"}, 
-    {id: "3", desc: "Arriba de promedio"}, 
-    {id: "4", desc: "Muy Bueno"}, 
-    {id: "5", desc: "Gladiador"}
-  ]
+
+  positions: Skill[] = Skills.getPocisiones()
   tiros: Skill[] = Skills.getTiros()
   pases: Skill[] = Skills.getPases()
   defensas: Skill[] = Skills.getDefensas()
   botes: Skill[] = Skills.getBotes()
   jugadores: Skill [] = Skills.getJugadores()
   estilos: Skill[] = Skills.getEstilos()
+  evalGens: Skill[] = Skills.getEvaluaciones()
+  nominaciones: Skill[] = Skills.getNominaciones()
 }
 

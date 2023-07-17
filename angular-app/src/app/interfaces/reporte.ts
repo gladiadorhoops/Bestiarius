@@ -64,12 +64,15 @@ export enum EvaluationGeneral {
 }
 
 export enum Section {
-    TIROS = 'tiro',
+    POCISION = 'pocision',
+    TIRO = 'tiro',
     PASE = 'pase',
     DEFENSA = 'defensa',
     BOTE = 'bote',
     JUGADOR = 'jugador',
     ESTILO = 'estilo',
+    GENERAL = 'general',
+    NOMINACION = 'nominacion',
 }
 
 export interface Skill {
@@ -80,7 +83,36 @@ export interface Skill {
 
 export class Skills {
     
-    static tiros: { [key: string]: Skill } = {
+    static posiciones = {
+        base: {
+            localized: '1 - Base',
+            report: 'base',
+        },
+        escolta: {
+            localized: '2 - Escolta',
+            report: 'escolta',
+        },
+        alero: {
+            localized: '3 - Alero',
+            report: 'alero',
+        },
+        ala: {
+            localized: '4 - Ala Pivot',
+            report: 'ala',
+        },
+        pivot: {
+            localized: '5 - Pivot',
+            report: 'pivot',
+        },
+    }
+
+    static getPocisiones(): Skill[] {
+        return Object.values(Skills.posiciones).map((value: Skill) => {
+            return value
+        })
+    }
+
+    static tiros = {
         colada: {
             localized: 'Colada',
             report: 'colada',
@@ -246,6 +278,48 @@ export class Skills {
 
     static getEstilos(): Skill[] {
         return Object.values(Skills.estilos).map((value: Skill) => {
+            return value
+        })
+    }
+
+    static general = {
+        mejora: {
+            localized: '1 - Necesita Mejora',
+            report: 'general'
+        },
+        promedio: {
+            localized: '2 - Promedio',
+            report: 'general'
+        },
+        arriba: {
+            localized: '3 - Arriba de Promedio',
+            report: 'general'
+        },
+        bueno: {
+            localized: '4 - Muy Buen',
+            report: 'general'
+        },
+        gladiador: {
+            localized: '5 - Gladiador',
+            report: 'general'
+        },
+    }
+
+    static getEvaluaciones(): Skill[] {
+        return Object.values(Skills.general).map((value: Skill) => {
+            return value
+        })
+    }
+
+    static nominacion = {
+        maximus: {
+            localized: 'Maximus',
+            report: 'maximus'
+        },
+    }
+
+    static getNominaciones(): Skill[] {
+        return Object.values(Skills.nominacion).map((value: Skill) => {
             return value
         })
     }
