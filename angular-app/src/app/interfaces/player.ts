@@ -1,7 +1,7 @@
 export interface Player {
-    id: String,
-    nombre: String,
-    equipo: String,
-    edad: String,
-    categoria: String,
+    id: string,
+    nombre: string,
+    equipo: string,
+    edad: string,
+    categoria: string,
 }

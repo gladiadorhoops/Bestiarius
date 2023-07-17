@@ -82,6 +82,13 @@ export interface Skill {
 }
 
 export class Skills {
+
+    static playerDetails = {
+        scoutId: 'scoutId',
+        scoutname: 'scoutname',
+        playerId: 'playerId',
+        equipo: 'equipo'
+    }
     
     static posiciones = {
         base: {

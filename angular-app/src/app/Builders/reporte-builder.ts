@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
-import { Section } from "../interfaces/reporte";
+import { Section, Skills } from "../interfaces/reporte";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Scout } from '../interfaces/scout';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ReporteBuilder {
 
-    constructor() {}
+    constructor(
+        private formBuilder: FormBuilder
+    ) {}
 
     async submit(ddb: DynamoDb, evaluation: FormGroup) {   
 
@@ -94,4 +97,87 @@ export class ReporteBuilder {
 
         await ddb.putItem(record)
     }
+
+    async getReport(ddb: DynamoDb, scout: Scout, playerId: string, equipo: string): Promise<FormGroup> {
+
+        let record: Record<string, AttributeValue> = {
+            [PK_KEY]: {S: `${scout.id}`},
+            [SK_KEY]: {S: `report.${playerId}`}
+        }
+
+        let form = {... ReporteBuilder.defaultForm}
+
+        form[Skills.playerDetails.scoutId] = [scout.id, Validators.required];
+        form[Skills.playerDetails.scoutname] = [scout.nombre, Validators.required];
+        form[Skills.playerDetails.playerId] = [playerId, Validators.required];
+        form[Skills.playerDetails.equipo] = [equipo, Validators.required];
+
+        await ddb.getItem(record).then(
+            (item) => {
+                if(item == undefined) return
+
+                Object.keys(item).forEach( (sectionName: string) => {
+                    let sectionSkills = item[sectionName].M
+                    
+                    if( sectionSkills == undefined) {
+                        console.log(`Section ${sectionName} undefined`)
+                        return
+                    }
+
+                    Object.keys(sectionSkills).forEach( (skillName: string) => {
+                        if(sectionSkills == undefined) return
+                        let skillAttribute = sectionSkills[skillName]
+                        
+                        Object.entries(skillAttribute).forEach( (attribute: [key: string, value: any]) => {
+                            form[`${sectionName}-${skillName}`] = attribute[1]
+                        })
+                    })         
+                })
+            }            
+        )
+        return this.formBuilder.group(form)        
+    }
+
+    static defaultForm = {
+    scoutId: ['', Validators.required],
+    scoutname: ['', Validators.required],
+    playerId: ['', Validators.required],
+    equipo: ['', Validators.required],
+    [`${Section.POCISION}-${Skills.posiciones.base.report}`]: [false],
+    [`${Section.POCISION}-${Skills.posiciones.escolta.report}`]: [false],
+    [`${Section.POCISION}-${Skills.posiciones.alero.report}`]: [false],
+    [`${Section.POCISION}-${Skills.posiciones.ala.report}`]: [false],
+    [`${Section.POCISION}-${Skills.posiciones.pivot.report}`]: [false],
+    [`${Section.TIRO}-${Skills.tiros.colada.report}`]: ['0'],
+    [`${Section.TIRO}-${Skills.tiros.media.report}`]: ['0'],
+    [`${Section.TIRO}-${Skills.tiros.triples.report}`]: ['0'],
+    [`${Section.TIRO}-${Skills.tiros.inteligencia.report}`]: ['0'],
+    [`${Section.PASE}-${Skills.pases.vision.report}`]: ['0'],
+    [`${Section.PASE}-${Skills.pases.creador.report}`]: ['0'],
+    [`${Section.PASE}-${Skills.pases.perdida.report}`]: ['0'],
+    [`${Section.PASE}-${Skills.pases.sentido.report}`]: ['0'],
+    [`${Section.DEFENSA}-${Skills.defensas.conBola.report}`]: ['0'],
+    [`${Section.DEFENSA}-${Skills.defensas.sinBola.report}`]: ['0'],
+    [`${Section.DEFENSA}-${Skills.defensas.transicion.report}`]: ['0'],
+    [`${Section.DEFENSA}-${Skills.defensas.rebote.report}`]: ['0'],
+    [`${Section.BOTE}-${Skills.botes.control.report}`]: ['0'],
+    [`${Section.BOTE}-${Skills.botes.presion.report}`]: ['0'],
+    [`${Section.BOTE}-${Skills.botes.perdida.report}`]: ['0'],
+    [`${Section.BOTE}-${Skills.botes.manoDebil.report}`]: ['0'],
+    [`${Section.BOTE}-${Skills.botes.ritmo.report}`]: ['0'],
+    [`${Section.JUGADOR}-${Skills.jugadores.hustle.report}`]: [''],
+    [`${Section.JUGADOR}-${Skills.jugadores.spacing.report}`]: ['0'],
+    [`${Section.JUGADOR}-${Skills.jugadores.juegoEquipo.report}`]: ['0'],
+    [`${Section.JUGADOR}-${Skills.jugadores.tiroInteligente.report}`]: ['0'],
+    [`${Section.JUGADOR}-${Skills.jugadores.agresividad.report}`]: ['0'],
+    [`${Section.ESTILO}-${Skills.estilos.anotador.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.defensor.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.creador.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.atletico.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.clutch.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.rebotador.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.rol.report}`]: [false],
+    [`${Section.GENERAL}-${Skills.general.gladiador.report}`]: [''],
+    [`${Section.NOMINACION}-${Skills.nominacion.maximus.report}`]: [false],
+  }
 }

@@ -60,7 +60,7 @@ export class DynamoDb {
         }
     }
 
-    async getItem(record: Record<string, AttributeValue>): Promise<any> {
+    async getItem(record: Record<string, AttributeValue>): Promise<Record<string, AttributeValue> | undefined> {
         console.log("Reading Item")
         try {
             const input: GetItemCommandInput = {
@@ -72,9 +72,11 @@ export class DynamoDb {
             console.log("command: ", command)
             const response = await this.client.send(command);
             console.log("response: ", response)
+            return response.Item
         } catch (err) {
             console.log("Error", err);
         }
+        return
     }
 
     async findIdQuery(pk: string, sk: string | undefined): Promise<Record<string, AttributeValue> | undefined> {        
