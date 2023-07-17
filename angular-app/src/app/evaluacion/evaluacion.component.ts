@@ -87,6 +87,7 @@ export class EvaluacionComponent {
     // TODO: Use EventEmitter with form value
     console.log(this.evaluationForm.value);
     this.reporteBuilder.submit(this.ddb, this.evaluationForm)
+    this.openPopup();
   }
 
   teamplayers: Player[] = []
@@ -129,5 +130,15 @@ export class EvaluacionComponent {
   estilos: Skill[] = Skills.getEstilos()
   evalGens: Skill[] = Skills.getEvaluaciones()
   nominaciones: Skill[] = Skills.getNominaciones()
+
+
+
+  displayStyle = "none";
+  openPopup() {
+    this.displayStyle = "block";
+  }
+  closePopup() {
+    this.displayStyle = "none";
+  }
 }
 

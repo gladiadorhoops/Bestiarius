@@ -198,8 +198,29 @@
 
     </div>
     <div class="frow">
-        <button type="submit" [disabled]="!evaluationForm.valid">Submit</button>
+        <button type="submit" [disabled]="!evaluationForm.valid">Guardar</button>
     </div>
 </form>
 </div>
+</div>
+
+<div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Evaluacion guardada!</p>
+  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="closePopup()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
