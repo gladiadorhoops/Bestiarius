@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Match } from '../interfaces/match';
 import { FormBuilder } from '@angular/forms';
-import { match } from 'assert';
+import { MatchBuilder } from '../Builders/match-builder';
+import { DynamoDb } from '../aws-clients/dynamodb';
 
 const S3_BUCKET_URL = (day: string) => `https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-11/category-matches-2023-07-${day}.json`
 
@@ -12,8 +13,10 @@ const S3_BUCKET_URL = (day: string) => `https://gladiadores-hoops.s3.amazonaws.c
   styleUrls: ['./marcador-form.component.scss']
 })
 export class MarcadorFormComponent implements OnInit {
-
+  @Input() ddb!: DynamoDb;
+  
   days: number[] = [28, 29, 30];
+  allMatches: Match[] = [];
   matchesAprendizDays: Match[][] = [];
   matchesEliteDays: Match[][] = [];
   todayDay = new Date().getDate();
@@ -27,15 +30,18 @@ export class MarcadorFormComponent implements OnInit {
   filteredMatches: Match[] = [];
 
   isEditing: boolean = false;
-  editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", points: 0, players: [], category: ""}, homeTeam: {id: "", name: "", points: 0, players: [], category: ""}};
+  editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", players: [], category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", players: [], category: ""}, homePoints:"0"};
   
 
-  constructor(private fb: FormBuilder, private httpService: HttpClient) {
+  constructor(private fb: FormBuilder, 
+    private matchBuilder: MatchBuilder,
+    private httpService: HttpClient
+    ) {
   }
 
   filterForm = this.fb.group({
-    cat: ["Elite"],
-    day: ["28"],
+    cat: ["elite"],
+    day: ["29"],
     gym: [""],
     equipo: [""]
   });
@@ -46,49 +52,54 @@ export class MarcadorFormComponent implements OnInit {
   });
 
   async ngOnInit() {
-    this.loadS3Files('28');
-    this.loadS3Files('29');
-    this.loadS3Files('30');
+    await this.loadMatches()
   }  
 
-  async loadS3Files(day : string){
-    this.httpService.get(S3_BUCKET_URL(day)).subscribe(
-      (response) => {
-        this.matchesAprendizDays[Number(day)] = (response as any).matchesAprendiz as Match[];
-        this.matchesEliteDays[Number(day)] = (response as any).matchesElite as Match[];
-
-        this.loadDayMatches();
-      },  
-      (error) => {
-        console.error(error)
-      }  
-    ) 
+  async loadMatches(){
+    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb).then(
+      (output) => {
+        this.filteredMatches = output;
+        return output;
+      }
+    )
   }
 
-  loadDayMatches(){
-    let day = "28";
-    let cat = "Elite";
-    
-    if(this.filterForm.value.day != null){
-      day = this.filterForm.value.day;
-    }
+  applyFilters() {
+    this.filteredMatches = this.allMatches;
+
+    let cat = "";
     if(this.filterForm.value.cat != null){
       cat = this.filterForm.value.cat;
     }
 
-    if(cat == "Elite"){
-      this.filteredMatches = this.matchesEliteDays[Number(day)];
-      this.equipos = this.equiposEl;
-    }
-    else {
-      this.filteredMatches = this.matchesAprendizDays[Number(day)];
-      this.equipos = this.equiposAp;
+    if(cat != ""){
+      let matches : Match[] = []
+      this.filteredMatches.forEach(
+        async (match) => {
+          if(match.category == cat){
+            matches.push(match);
+          }
+        }
+      );
+      this.filteredMatches = matches;
     }
 
-  }
+    let day = "";
+    if(this.filterForm.value.day != null){
+      day = this.filterForm.value.day;
+    }
 
-  applyFilters() {
-    this.loadDayMatches();
+    if(day != ""){
+      let matches : Match[] = []
+      this.filteredMatches.forEach(
+        async (match) => {
+          if(match.day == day){
+            matches.push(match);
+          }
+        }
+      );
+      this.filteredMatches = matches;
+    }
 
     let gym = "";
     if(this.filterForm.value.gym != null){
@@ -129,22 +140,43 @@ export class MarcadorFormComponent implements OnInit {
     }
   }
   onSubmit(){
-    console.warn("New score: "+this.marcadorForm.value.homeScore+"x"+this.marcadorForm.value.visitorScore);
+    let id = "";
+    if(this.editingMatch.id){
+      id = this.editingMatch.id;
+    }
+    let hs = "";
+    if(this.marcadorForm.value.homeScore){
+      hs = this.marcadorForm.value.homeScore.toString();
+    }
+    let vs = "";
+    if(this.marcadorForm.value.visitorScore){
+      vs = this.marcadorForm.value.visitorScore.toString();
+    }
+    this.matchBuilder.submit(this.ddb, id, hs, vs).then(
+      (rs) => {
+        this.loadMatches();
+      }
+    );
+    console.warn("New score: "+hs+"x"+vs);
+    
     this.goBack();
   }
 
   edit(match:Match){
     this.isEditing = true;
     this.editingMatch = match;
+    if(match.homePoints){
+      this.marcadorForm.controls.homeScore.setValue(Number(match.homePoints));
+    }
+    if(match.visitorPoints){
+      this.marcadorForm.controls.visitorScore.setValue(Number(match.visitorPoints));
+    }
     console.warn("Editing: "+this.editingMatch.homeTeam.name+"x"+this.editingMatch.visitorTeam.name);
   }
+
   goBack(){
     this.isEditing = false;
     this.marcadorForm.reset();
   }
-
-  
-  
-  
 
 }  

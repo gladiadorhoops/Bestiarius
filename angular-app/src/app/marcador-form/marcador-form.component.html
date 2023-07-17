@@ -16,8 +16,8 @@
                 <div class="row">
                     <div class="col-sm-3 filterPadding">
                         <select class="col-sm-12" id="category" formControlName="cat" (change)="applyFilters()" required>
-                            <option value="Aprendix">Aprendiz</option>
-                            <option value="Elite">Elite</option>
+                            <option value="aprendix">Aprendiz</option>
+                            <option value="elite">Elite</option>
                         </select>
                     </div>
                     <div class="col-sm-3 filterPadding">
@@ -60,9 +60,9 @@
                 </div>
 
                 <div class="col col-sm-1"></div>
-                <div class="col col-sm-4">{{match.homeTeam.points}}</div>
+                <div class="col col-sm-4">{{match.homePoints}}</div>
                 <div class="col col-sm-2"></div>
-                <div class="col col-sm-4">{{match.visitorTeam.points}}</div>
+                <div class="col col-sm-4">{{match.visitorPoints}}</div>
                 <div class="col col-sm-1"></div>
             </div>
         </div>
@@ -85,11 +85,11 @@
     
                     <div class="col col-sm-2"></div>
                     <div class="col col-sm-2">
-                        <input class="col col-sm-12" id="homescore" type="number" formControlName="homeScore" value="{{editingMatch.homeTeam.points}}">
+                        <input class="col col-sm-12" id="homescore" type="number" formControlName="homeScore" value="{{editingMatch.homePoints}}">
                     </div>
                     <div class="col col-sm-4"> X</div>
                     <div class="col col-sm-2">
-                        <input class="col col-sm-12"  id="visitorscore" type="number" formControlName="visitorScore" value="{{editingMatch.visitorTeam.points}}">
+                        <input class="col col-sm-12"  id="visitorscore" type="number" formControlName="visitorScore" value="{{editingMatch.visitorPoints}}">
                     </div>
                     <div class="col col-sm-2"></div>
 
