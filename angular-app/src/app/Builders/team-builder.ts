@@ -21,16 +21,16 @@ export class TeamBuilder {
         return teams
     }
 
-    async getTeam(ddb: DynamoDb, id: string): Promise<Team> {
+    async getTeam(ddb: DynamoDb, id: string): Promise<Team | undefined> {
         let record: Record<string, AttributeValue> = {}
 
         record[PK_KEY] = {S: `${id}`}
         record[SK_KEY] = {S: `team.data`}
         
-        
         return await ddb.getItem(record).then(
             async (response) => {
-                return this.buildTeam(response!);
+                if(response == undefined) return
+                return this.buildTeam(response);
             }
         );
 

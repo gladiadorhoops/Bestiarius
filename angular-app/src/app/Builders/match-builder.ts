@@ -18,15 +18,15 @@ export class MatchBuilder {
         var matches: Match[] = []
         await ddb.listQuery('match.data').then(
             async (items) => {
-                items.map(async (item) => {
+                items.forEach(async (item) => {
                     let vteamId = item['visitorTeam'].S!
                     let vteam = await this.teamBuilder.getTeam(ddb, vteamId)
+                    if( vteam == undefined) return
                     let hteamId = item['homeTeam'].S!
                     let hteam = await this.teamBuilder.getTeam(ddb, hteamId)
+                    if( hteam == undefined) return
                     matches.push(this.buildMatch(item, vteam, hteam))
-                    // return this.buildMatch(item, vteam, hteam)
-                })
-                
+                })                
             }
         )
         console.log('matches', matches)
