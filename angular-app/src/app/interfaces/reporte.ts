@@ -10,39 +10,39 @@ export interface Reporte {
 }
 
 export interface Tiro {
-    colada: number,
-    media: number,
-    triple: number,
-    inteligencia: number,
+    colada: Skill,
+    media: Skill,
+    triple: Skill,
+    inteligencia: Skill,
 }
 
 export interface Defensa {
-    conBola: number,
-    sinBola: number,
-    trancision: number,
-    rebote: number,
+    conBola: Skill,
+    sinBola: Skill,
+    trancision: Skill,
+    rebote: Skill,
 }
 
 export interface Jugador {
-    hustle: number,
-    spacing: number,
-    juegoEquipo: number,
-    agresividad: number,
+    hustle: Skill,
+    spacing: Skill,
+    juegoEquipo: Skill,
+    agresividad: Skill,
 }
 
 export interface Pase {
-    vision: number,
-    creador: number,
-    perdida: number,
-    sentido: number,
+    vision: Skill,
+    creador: Skill,
+    perdida: Skill,
+    sentido: Skill,
 }
 
 export interface Bote {
-    contol: number,
-    presion: number,
-    perdida: number,
-    manoDebil: number,
-    cambioRitmo: number,
+    contol: Skill,
+    presion: Skill,
+    perdida: Skill,
+    manoDebil: Skill,
+    cambioRitmo: Skill,
 }
 
 export enum Estilo {
@@ -63,87 +63,189 @@ export enum EvaluationGeneral {
     NecesitaMejora = 1
 }
 
-export class LocalizedStrings {
+export enum Section {
+    TIROS = 'tiro',
+    PASE = 'pase',
+    DEFENSA = 'defensa',
+    BOTE = 'bote',
+    JUGADOR = 'jugador',
+    ESTILO = 'estilo',
+}
+
+export interface Skill {
+    value?: number | string | boolean | undefined
+    localized?: string | undefined,
+    report: string,
+}
+
+export class Skills {
     
-    static tiros = {
-        colada: 'Colada',
-        media: 'Media',
-        triples: 'Triples',
-        Inteligencia: 'Inteligencia'
+    static tiros: { [key: string]: Skill } = {
+        colada: {
+            localized: 'Colada',
+            report: 'colada',
+        },
+        media: {
+            localized: 'Media',
+            report: 'media',
+        },
+        triples: {
+            localized: 'Triples',
+            report: 'triples',
+        },
+        inteligencia: {
+            localized: 'Inteligencia',
+            report: 'inteligencia',
+        },
     }
 
-    static getTiros(): string[] {
-        return Object.values(LocalizedStrings.tiros).map((value: string) => {
+    static getTiros(): Skill[] {
+        return Object.values(Skills.tiros).map((value: Skill) => {
             return value
         })
     }
     
     static pases = {
-        vision: 'Vision',
-        creador: 'Creador',
-        perdida: 'Perdida de Balon',
-        sentido: 'Sentido'
+        vision: {
+            localized: 'Vision',
+            report: 'vision',
+        },
+        creador: {
+            localized: 'Creador',
+            report: 'creador',
+        },
+        sentido: {
+            localized: 'Sentido',
+            report: 'sentido',
+        },
+        perdida: {
+            localized: 'Perdida de Balon',
+            report: 'perdida.,'
+        }
     }
 
-    static getPases(): string[] {
-        return Object.values(LocalizedStrings.pases).map((value: string) => {
+    static getPases(): Skill[] {
+        return Object.values(Skills.pases).map((value: Skill) => {
             return value
         })
     }
     
     static defensas = {
-        conBola: 'Con Bola',
-        sinBola: 'Sin Bola',
-        transicion: 'Transicion',
-        rebote: 'Rebote Defensivo'
+        conBola: {
+            localized: 'Con Bola',
+            report: 'conBola',
+        },
+        sinBola: {
+            localized: 'Sin Bola',
+            report: 'sinBola',
+        },
+        transicion: {
+            localized: 'Transicion',
+            report: 'transicion',
+        },
+        rebote: {
+            localized: 'Rebote Defensivo',
+            report: 'rebote',
+        },
     }
     
-    static getDefensas(): string[] {
-        return Object.values(LocalizedStrings.defensas).map((value: string) => {
+    static getDefensas(): Skill[] {
+        return Object.values(Skills.defensas).map((value: Skill) => {
             return value
         })
     }
 
     static botes = {
-        control: 'Control',
-        presion: 'En Presion',
-        perdida: 'Perdida de Balon',
-        manoDebil: 'Mano Debil',
-        ritmo: 'Cambio de Ritmo'
+        control: {
+            localized: 'Control',
+            report: 'control',
+        },
+        presion: {
+            localized: 'En Presion',
+            report: 'presion',
+        },
+        perdida: {
+            localized: 'Perdida de Balon',
+            report: 'perdida',
+        },
+        manoDebil: {
+            localized: 'Mano Debil',
+            report: 'manoDebil',
+        },
+        ritmo: {
+            localized: 'Cambio de Ritmo',
+            report: 'ritmo',
+        },
     }
 
-    static getBotes(): string[] {
-        return Object.values(LocalizedStrings.botes).map((value: string) => {
+    static getBotes(): Skill[] {
+        return Object.values(Skills.botes).map((value: Skill) => {
             return value
         })
     }
 
     static jugadores = {
-        hustle: 'Hustle',
-        spacing: 'Spacing',
-        juegoEquipo: 'Juego en Equipo',
-        tiroInteligente: 'Tiro Inteligente',
-        agresividad: 'Agresividad',
+        hustle: {
+            localized: 'Hustle',
+            report: 'hustle'
+        },
+        spacing: {
+            localized: 'Spacing',
+            report: 'spacing'
+        },
+        juegoEquipo: {
+            localized: 'Juego en Equipo',
+            report: 'juegoEquipo'
+        },
+        tiroInteligente: {
+            localized: 'Tiro Inteligente',
+            report: 'tiroInteligente'
+        },
+        agresividad: {
+            localized: 'Agresividad',
+            report: 'agresividad'
+        },
     }
 
-    static getJugadores(): string[] {
-        return Object.values(LocalizedStrings.jugadores).map((value: string) => {
+    static getJugadores(): Skill[] {
+        return Object.values(Skills.jugadores).map((value: Skill) => {
             return value
         })
     }
 
     static estilos = {
-        anotador: 'Anotador',
-        defensor: 'Defensor',
-        creador: 'Creador',
-        atletico: 'Atletico',
-        clutch: 'Clutch',
-        rebotador: 'Rebotador',
-        rol: 'Rol',
+        anotador: {
+            localized: 'Anotador',
+            report: 'anotador',
+        },
+        defensor: {
+            localized: 'Defensor',
+            report: 'defensor',
+        },
+        creador: {
+            localized: 'Creador',
+            report: 'creador',
+        },
+        atletico: {
+            localized: 'Atletico',
+            report: 'atletico',
+        },
+        clutch: {
+            localized: 'Clutch',
+            report: 'clutch',
+        },
+        rebotador: {
+            localized: 'Rebotador',
+            report: 'rol',
+        },
+        rol: {
+            localized: 'Rol',
+            report: 'rol',
+        },
     }
 
-    static getEstilos(): string[] {
-        return Object.values(LocalizedStrings.estilos).map((value: string) => {
+    static getEstilos(): Skill[] {
+        return Object.values(Skills.estilos).map((value: Skill) => {
             return value
         })
     }

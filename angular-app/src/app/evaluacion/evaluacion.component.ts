@@ -8,7 +8,7 @@ import { Player } from '../interfaces/player';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { TeamBuilder } from '../Builders/team-builder';
 import { PlayerBuilder } from '../Builders/player-builder';
-import { LocalizedStrings } from '../interfaces/reporte';
+import { Skills, Skill, Section } from '../interfaces/reporte';
 
 
 @Component({
@@ -51,35 +51,35 @@ export class EvaluacionComponent {
     position4: [false],
     position5: [false],
     eval: ['0'],
-    [`tiro-${LocalizedStrings.tiros.colada}`]: ['0'],
-    [`tiro-${LocalizedStrings.tiros.media}`]: ['0'],
-    [`tiro-${LocalizedStrings.tiros.triples}`]: ['0'],
-    [`tiro-${LocalizedStrings.tiros.Inteligencia}`]: ['0'],
-    [`pase-${LocalizedStrings.pases.vision}`]: ['0'],
-    [`pase-${LocalizedStrings.pases.creador}`]: ['0'],
-    [`pase-${LocalizedStrings.pases.perdida}`]: ['0'],
-    [`pase-${LocalizedStrings.pases.sentido}`]: ['0'],
-    [`defensa-${LocalizedStrings.defensas.conBola}`]: ['0'],
-    [`defensa-${LocalizedStrings.defensas.sinBola}`]: ['0'],
-    [`defensa-${LocalizedStrings.defensas.transicion}`]: ['0'],
-    [`defensa-${LocalizedStrings.defensas.rebote}`]: ['0'],
-    [`bote-${LocalizedStrings.botes.control}`]: ['0'],
-    [`bote-${LocalizedStrings.botes.presion}`]: ['0'],
-    [`bote-${LocalizedStrings.botes.perdida}`]: ['0'],
-    [`bote-${LocalizedStrings.botes.manoDebil}`]: ['0'],
-    [`bote-${LocalizedStrings.botes.ritmo}`]: ['0'],
-    [`jugador-${LocalizedStrings.jugadores.hustle}`]: ['0'],
-    [`jugador-${LocalizedStrings.jugadores.spacing}`]: ['0'],
-    [`jugador-${LocalizedStrings.jugadores.juegoEquipo}`]: ['0'],
-    [`jugador-${LocalizedStrings.jugadores.tiroInteligente}`]: ['0'],
-    [`jugador-${LocalizedStrings.jugadores.agresividad}`]: ['0'],
-    [`estilo-${LocalizedStrings.estilos.anotador}`]: [false],
-    [`estilo-${LocalizedStrings.estilos.defensor}`]: [false],
-    [`estilo-${LocalizedStrings.estilos.creador}`]: [false],
-    [`estilo-${LocalizedStrings.estilos.atletico}`]: [false],
-    [`estilo-${LocalizedStrings.estilos.clutch}`]: [false],
-    [`estilo-${LocalizedStrings.estilos.rebotador}`]: [false],
-    [`estilo-${LocalizedStrings.estilos.rol}`]: [false],
+    [`${Section.TIROS}-${Skills.tiros['colada'].report}`]: ['0'],
+    [`${Section.TIROS}-${Skills.tiros['media'].report}`]: ['0'],
+    [`${Section.TIROS}-${Skills.tiros['triples'].report}`]: ['0'],
+    [`${Section.TIROS}-${Skills.tiros['inteligencia'].report}`]: ['0'],
+    [`${Section.PASE}-${Skills.pases.vision.report}`]: ['0'],
+    [`${Section.PASE}-${Skills.pases.creador.report}`]: ['0'],
+    [`${Section.PASE}-${Skills.pases.perdida.report}`]: ['0'],
+    [`${Section.PASE}-${Skills.pases.sentido.report}`]: ['0'],
+    [`${Section.DEFENSA}-${Skills.defensas.conBola.report}`]: ['0'],
+    [`${Section.DEFENSA}-${Skills.defensas.sinBola.report}`]: ['0'],
+    [`${Section.DEFENSA}-${Skills.defensas.transicion.report}`]: ['0'],
+    [`${Section.DEFENSA}-${Skills.defensas.rebote.report}`]: ['0'],
+    [`${Section.BOTE}-${Skills.botes.control.report}`]: ['0'],
+    [`${Section.BOTE}-${Skills.botes.presion.report}`]: ['0'],
+    [`${Section.BOTE}-${Skills.botes.perdida.report}`]: ['0'],
+    [`${Section.BOTE}-${Skills.botes.manoDebil.report}`]: ['0'],
+    [`${Section.BOTE}-${Skills.botes.ritmo.report}`]: ['0'],
+    [`${Section.JUGADOR}-${Skills.jugadores.hustle.report}`]: ['0'],
+    [`${Section.JUGADOR}-${Skills.jugadores.spacing.report}`]: ['0'],
+    [`${Section.JUGADOR}-${Skills.jugadores.juegoEquipo.report}`]: ['0'],
+    [`${Section.JUGADOR}-${Skills.jugadores.tiroInteligente.report}`]: ['0'],
+    [`${Section.JUGADOR}-${Skills.jugadores.agresividad.report}`]: ['0'],
+    [`${Section.ESTILO}-${Skills.estilos.anotador.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.defensor.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.creador.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.atletico.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.clutch.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.rebotador.report}`]: [false],
+    [`${Section.ESTILO}-${Skills.estilos.rol.report}`]: [false],
     nominacion: [''],
   });
 
@@ -127,11 +127,11 @@ export class EvaluacionComponent {
     {id: "4", desc: "Muy Bueno"}, 
     {id: "5", desc: "Gladiador"}
   ]
-  tiros: string[] = LocalizedStrings.getTiros()
-  pases: string[] = LocalizedStrings.getPases()
-  defensas: string[] = LocalizedStrings.getDefensas()
-  botes: string[] = LocalizedStrings.getBotes()
-  jugadores: string [] = LocalizedStrings.getJugadores()
-  estilos: string[] = LocalizedStrings.getEstilos()
+  tiros: Skill[] = Skills.getTiros()
+  pases: Skill[] = Skills.getPases()
+  defensas: Skill[] = Skills.getDefensas()
+  botes: Skill[] = Skills.getBotes()
+  jugadores: Skill [] = Skills.getJugadores()
+  estilos: Skill[] = Skills.getEstilos()
 }
 

@@ -78,10 +78,10 @@
             <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 <div class="frow" *ngFor="let tiro of tiros">
-                    <label class="frow" for="tiro-{{tiro}}">{{tiro}}:&nbsp;</label>
+                    <label class="frow">{{tiro.localized}}:&nbsp;</label>
                     <div *ngFor="let idx of [1,2,3,4,5]">
-                        <input type="radio" id="tiro-{{tiro}}{{idx}}" name="tiro-{{tiro}}" value="{{idx}}" formControlName="tiro-{{tiro}}">
-                        <label class="radio-label" for="tiro-{{tiro}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                        <input type="radio" id="{{tiro.report}}{{idx}}" name="tiro-{{tiro.report}}" value="{{idx}}" formControlName="tiro-{{tiro.report}}">
+                        <label class="radio-label" for="{{tiro.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
                 </div>
               </div>
@@ -97,10 +97,10 @@
             <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 <div class="frow" *ngFor="let ps of pases">
-                    <label class="frow" for="pase-{{ps}}">{{ps}}:&nbsp;</label>
+                    <label class="frow">{{ps.localized}}:&nbsp;</label>
                     <div *ngFor="let idx of [1,2,3,4,5]">
-                        <input type="radio" id="pase-{{ps}}{{idx}}" name="pase-{{ps}}" value="{{idx}}" formControlName="pase-{{ps}}">
-                        <label class="radio-label" for="pase-{{ps}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                        <input type="radio" id="{{ps.report}}{{idx}}" name="pase-{{ps.report}}" value="{{idx}}" formControlName="pase-{{ps.report}}">
+                        <label class="radio-label" for="{{ps.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
                 </div>
               </div>
@@ -116,10 +116,10 @@
             <div id="flush-collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 <div class="frow" *ngFor="let df of defensas">
-                    <label class="frow" for="defensa-{{df}}">{{df}}:&nbsp;</label>
+                    <label class="frow">{{df.localized}}:&nbsp;</label>
                     <div *ngFor="let idx of [1,2,3,4,5]">
-                        <input type="radio" id="defensa-{{df}}{{idx}}" name="defensa-{{df}}" value="{{idx}}" formControlName="defensa-{{df}}">
-                        <label class="radio-label" for="defensa-{{df}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                        <input type="radio" id="{{df.report}}{{idx}}" name="defensa-{{df.report}}" value="{{idx}}" formControlName="defensa-{{df.report}}">
+                        <label class="radio-label" for="{{df.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
                 </div>
               </div>
@@ -135,10 +135,10 @@
             <div id="flush-collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 <div class="frow" *ngFor="let bt of botes">
-                    <label class="frow" for="bote-{{bt}}">{{bt}}:&nbsp;</label>
+                    <label class="frow">{{bt.localized}}:&nbsp;</label>
                     <div *ngFor="let idx of [1,2,3,4,5]">
-                        <input type="radio" id="bote-{{bt}}{{idx}}" name="bote-{{bt}}" value="{{idx}}" formControlName="bote-{{bt}}">
-                        <label class="radio-label" for="bote-{{bt}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                        <input type="radio" id="{{bt.report}}{{idx}}" name="bote-{{bt.report}}" value="{{idx}}" formControlName="bote-{{bt.report}}">
+                        <label class="radio-label" for="{{bt.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
                 </div>
               </div>
@@ -154,10 +154,10 @@
             <div id="flush-collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 <div class="frow" *ngFor="let jg of jugadores">
-                    <label class="frow" for="jugador-{{jg}}">{{jg}}:&nbsp;</label>
+                    <label class="frow">{{jg.localized}}:&nbsp;</label>
                     <div *ngFor="let idx of [1,2,3,4,5]">
-                        <input type="radio" id="jugador-{{jg}}{{idx}}" name="jugador-{{jg}}" value="{{idx}}" formControlName="jugador-{{jg}}">
-                        <label class="radio-label" for="jugador-{{jg}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                        <input type="radio" id="{{jg.report}}{{idx}}" name="jugador-{{jg.report}}" value="{{idx}}" formControlName="jugador-{{jg.report}}">
+                        <label class="radio-label" for="{{jg.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
                 </div>
               </div>
@@ -173,8 +173,8 @@
             <div id="flush-collapseEight" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 <div class="frow" *ngFor="let est of estilos">
-                    <input type="checkbox"  id="{{est}}" name="estilo-{{est}}" value="{{est}}" formControlName="estilo-{{est}}">
-                    <label class="checkbox-label" for="{{est}}">&nbsp;{{est}}&nbsp;</label>
+                    <input type="checkbox"  id="{{est.report}}" name="estilo-{{est.report}}" value="{{est}}" formControlName="estilo-{{est.report}}">
+                    <label class="checkbox-label" for="{{est.report}}">&nbsp;{{est.localized}}&nbsp;</label>
                 </div>
               </div>
             </div>
