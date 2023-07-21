@@ -15,7 +15,7 @@
                   <div [attr.id]="'flush-collapse' + i" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body">
                         <h4>Aprendiz</h4>
-                        <table class="col-sm-12">
+                        <table class="col-12">
                             <tr>
                                 <th>#</th>
                                 <th>Nombre</th>
@@ -28,7 +28,7 @@
                             </tr>
                         </table>
                         <h4>Elite</h4>
-                        <table class="col-sm-12">
+                        <table class="col-12">
                             <tr>
                                 <th>#</th>
                                 <th>Nombre</th>
@@ -53,7 +53,7 @@
                     <div [attr.id]="'flush-collapse-non-' + i" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                       <div class="accordion-body">
                           <h4>Aprendiz</h4>
-                          <table class="col-sm-12">
+                          <table class="col-12">
                               <tr>
                                   <th>#</th>
                                   <th>Nombre</th>
@@ -66,7 +66,7 @@
                               </tr>
                           </table>
                           <h4>Elite</h4>
-                          <table class="col-sm-12">
+                          <table class="col-12">
                               <tr>
                                   <th>#</th>
                                   <th>Nombre</th>
@@ -116,23 +116,23 @@
             </div>
             <br>
             <div class="row">
-            <div class="col-sm-11 col-md-4">
+            <div class="col-11 col-md-4">
                 <div>
                     <b>Posicion</b>
                 </div>
                 <div class="row myrow" *ngFor="let pos of selectedPlayer.Position">
-                    <div class="col-sm-6">{{pos.posicion}}</div>
-                    <div class="col-sm-5 playerfield">{{pos.votes}}/{{selectedPlayer.Scouts}}</div>
+                    <div class="col-6">{{pos.posicion}}</div>
+                    <div class="col-5 playerfield">{{pos.votes}}/{{selectedPlayer.Scouts}}</div>
                 </div>
                 <br>
             </div>
-            <div class="col-sm-11 col-md-8">
+            <div class="col-11 col-md-8">
                 <div>
                     <b>Estilo de Juego</b>
                 </div>
                 <div class="row myrow" *ngFor="let style of selectedPlayer.Style">
-                    <div class="col-sm-6">{{style.style}}</div> 
-                    <div class="col-sm-5 playerfield">{{style.votes}}/{{selectedPlayer.Scouts}}</div>
+                    <div class="col-6">{{style.style}}</div> 
+                    <div class="col-5 playerfield">{{style.votes}}/{{selectedPlayer.Scouts}}</div>
                 </div>
             </div>
             </div>

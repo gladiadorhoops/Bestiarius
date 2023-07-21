@@ -6,96 +6,117 @@
         <div *ngIf="!isEditing">
 
             <form [formGroup]="filterForm">
-
                 <div class="row">
-                    <label class="col-sm-3" for="category">Category:</label>
-                    <label class="col-sm-3" for="days">Day:</label>
-                    <label class="col-sm-3" for="gyms">Gimnasio</label>
-                    <label class="col-sm-3" for="teams">Equipo</label>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3 filterPadding">
-                        <select class="col-sm-12" id="category" formControlName="cat" (change)="applyFilters()" required>
-                            <option value="aprendix">Aprendiz</option>
-                            <option value="elite">Elite</option>
-                        </select>
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="category">Category:</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="category" formControlName="cat" (change)="applyFilters()" required>
+                                    <option value="aprendix">Aprendiz</option>
+                                    <option value="elite">Elite</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-3 filterPadding">
-                        <select class="col-sm-12" id="days" formControlName="day" (change)="applyFilters()" required>
-                            <option value=""></option>
-                            <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
-                        </select>
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="days">Day:</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="days" formControlName="day" (change)="applyFilters()" required>
+                                    <option value=""></option>
+                                    <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-3 filterPadding">
-                        <select class="col-sm-12" id="gyms" formControlName="gym" (change)="applyFilters()" require>
-                            <option value=""></option>
-                            <option *ngFor="let gym of gyms" value="{{gym}}">{{gym}}</option>
-                        </select>
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="gyms">Gimnasio</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="gyms" formControlName="gym" (change)="applyFilters()" require>
+                                    <option value=""></option>
+                                    <option *ngFor="let gym of gyms" value="{{gym}}">{{gym}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-3 filterPadding">
-                        <select class="col-sm-12" id="teams" formControlName="equipo" (change)="applyFilters()" require>
-                            <option value=""></option>
-                            <option *ngFor="let equipo of equipos" value="{{equipo}}">{{equipo}}</option>
-                        </select>
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="teams">Equipo</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="teams" formControlName="equipo" (change)="applyFilters()" require>
+                                    <option value=""></option>
+                                    <option *ngFor="let equipo of equipos" value="{{equipo}}">{{equipo}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
 
             <div class="row marcadorItem" *ngFor="let match of filteredMatches" >
-                <div class="col col-sm-12">
+                <div class="col col-12">
                     <h5>
                         {{match.juego}} - {{match.location}}
                     </h5>
                 </div>
                 
 
-                <div class="col col-sm-1"></div>
-                <div class="col col-sm-4">{{match.homeTeam.name}}</div>
-                <div class="col col-sm-2"> X </div>
-                <div class="col col-sm-4">{{match.visitorTeam.name}}</div>
-                <div class="col col-sm-1" > 
+                <div class="col col-1"></div>
+                <div class="col col-4">{{match.homeTeam.name}}</div>
+                <div class="col col-2"> X </div>
+                <div class="col col-4">{{match.visitorTeam.name}}</div>
+                <div class="col col-1" > 
                     <a class="btn btn-outline-light btn-floating m-1" role="button" (click)="edit(match)">
                         <i class="fas fa-regular fa-pen"></i>
                     </a>
                 </div>
 
-                <div class="col col-sm-1"></div>
-                <div class="col col-sm-4">{{match.homePoints}}</div>
-                <div class="col col-sm-2"></div>
-                <div class="col col-sm-4">{{match.visitorPoints}}</div>
-                <div class="col col-sm-1"></div>
+                <div class="col col-1"></div>
+                <div class="col col-4">{{match.homePoints}}</div>
+                <div class="col col-2"></div>
+                <div class="col col-4">{{match.visitorPoints}}</div>
+                <div class="col col-1"></div>
             </div>
         </div>
         <div class="row" *ngIf="isEditing">
             <form [formGroup]="marcadorForm" (ngSubmit)="onSubmit()">
 
                 <div class="row marcadorItem text-center" >
-                    <div class="col col-sm-12">
+                    <div class="col col-12">
                         <h5>
                             {{editingMatch.juego}} - {{editingMatch.location}}
                         </h5>
                     </div>
                     
     
-                    <div class="col col-sm-1"></div>
-                    <div class="col col-sm-4">{{editingMatch.homeTeam.name}}</div>
-                    <div class="col col-sm-2"></div>
-                    <div class="col col-sm-4">{{editingMatch.visitorTeam.name}}</div>
-                    <div class="col col-sm-1"></div>
+                    <div class="col col-1"></div>
+                    <div class="col col-4">{{editingMatch.homeTeam.name}}</div>
+                    <div class="col col-2"></div>
+                    <div class="col col-4">{{editingMatch.visitorTeam.name}}</div>
+                    <div class="col col-1"></div>
     
-                    <div class="col col-sm-2"></div>
-                    <div class="col col-sm-2">
-                        <input class="col col-sm-12" id="homescore" type="number" formControlName="homeScore" value="{{editingMatch.homePoints}}">
+                    <div class="col col-2"></div>
+                    <div class="col col-2">
+                        <input class="col col-12" id="homescore" type="number" formControlName="homeScore" value="{{editingMatch.homePoints}}">
                     </div>
-                    <div class="col col-sm-4"> X</div>
-                    <div class="col col-sm-2">
-                        <input class="col col-sm-12"  id="visitorscore" type="number" formControlName="visitorScore" value="{{editingMatch.visitorPoints}}">
+                    <div class="col col-4"> X</div>
+                    <div class="col col-2">
+                        <input class="col col-12"  id="visitorscore" type="number" formControlName="visitorScore" value="{{editingMatch.visitorPoints}}">
                     </div>
-                    <div class="col col-sm-2"></div>
+                    <div class="col col-2"></div>
 
                 </div>
 
-                <div class="col col-sm-12">
+                <div class="col col-12">
                     <button class="marginBtn" type="submit">Guardar</button>
                     <button class="marginBtn" type="button" (click)="goBack()">Volver</button>
                 </div>
