@@ -54,9 +54,9 @@ export class DynamoDb {
             console.log("command: ", command)
             const response = await this.client.send(command);
             console.log("response: ", response)
-
         } catch (err) {
-            console.log("Error", err);
+            console.error("Error", err);
+            throw err
         }
     }
 

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { Team } from '../interfaces/team';
+import { Team, getCategories } from '../interfaces/team';
 import { Player } from '../interfaces/player';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { TeamBuilder } from '../Builders/team-builder';
@@ -25,10 +25,50 @@ export class EvaluacionComponent {
   ) {}
 
   @Input() ddb!: DynamoDb;
+
+  scout_id = this.authService.getScoutId();
+  scout_name = this.authService.getScoutName();
+  categories = getCategories();
+  evaluationForm =  this.fb.group(ReporteBuilder.defaultForm);
+
   teams: Team[] = [];
+  teamplayers: Player[] = [];
+  selectedEdad : string = "";
+  selectedCategoria: string = "";
+  displayStyle = "none";
+  submitReportMessage = "Evaluacion guardada!"
+
+  positions: Skill[] = Skills.getPocisiones()
+  tiros: Skill[] = Skills.getTiros()
+  pases: Skill[] = Skills.getPases()
+  defensas: Skill[] = Skills.getDefensas()
+  botes: Skill[] = Skills.getBotes()
+  jugadores: Skill [] = Skills.getJugadores()
+  estilos: Skill[] = Skills.getEstilos()
+  evalGens: Skill[] = Skills.getEvaluaciones()
+  nominaciones: Skill[] = Skills.getNominaciones()
 
   async ngOnInit() {
-    let teams = await this.teamBuilder.getListOfTeams(this.ddb).then(
+  }
+
+  async onSubmit() {
+    // TODO: Use EventEmitter with form value
+    console.log(this.evaluationForm.value);
+
+    try {
+      await this.reporteBuilder.submit(this.ddb, this.evaluationForm)
+    } catch (err) {
+      this.submitReportMessage = `Error gurardong evaluacion. Contacta a Paco.\n${err}`
+      console.error("Error Submitting report")
+    }
+    
+    this.openPopup();
+  }
+
+  async loadTeams() {
+    this.teams = []
+    this.selectedCategoria = this.evaluationForm.value.categoria!
+    let teams = await this.teamBuilder.getListOfTeams(this.ddb, this.selectedCategoria).then(
       (output) => {
         return output
       }
@@ -36,23 +76,6 @@ export class EvaluacionComponent {
     this.teams = this.teams.concat(teams)
   }
 
-  scout_id = this.authService.getScoutId()
-  scout_name = this.authService.getScoutName()
-
-  evaluationForm =  this.fb.group(ReporteBuilder.defaultForm);
-
-  onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.log(this.evaluationForm.value);
-    this.reporteBuilder.submit(this.ddb, this.evaluationForm)
-    this.openPopup();
-  }
-
-  teamplayers: Player[] = []
-  
-  selectedEdad : String = ""
-  selectedCategoria: String = ""
-  
   async loadPlayers() {
     var selectedTeam = this.evaluationForm.value.equipo;
     this.teams.forEach(
@@ -66,6 +89,7 @@ export class EvaluacionComponent {
         }
     });
   }
+
   async loadPlayerDetails() {
     var selectedPlayer = this.evaluationForm.value.playerId;
 
@@ -76,27 +100,17 @@ export class EvaluacionComponent {
       }
     });
     this.selectedEdad = selectedteamplayer.edad;
-    this.selectedCategoria = selectedteamplayer.categoria;
 
     let scout = {
       id: this.scout_id,
       nombre: this.scout_name
     }
 
-    this.evaluationForm = await this.reporteBuilder.getReport(this.ddb, scout, selectedteamplayer.id, this.evaluationForm.value.equipo!)
+    this.evaluationForm = await this.reporteBuilder.getReport(
+      this.ddb, scout, selectedteamplayer.id, this.evaluationForm.value.equipo!, this.selectedCategoria
+    )
   }
 
-  positions: Skill[] = Skills.getPocisiones()
-  tiros: Skill[] = Skills.getTiros()
-  pases: Skill[] = Skills.getPases()
-  defensas: Skill[] = Skills.getDefensas()
-  botes: Skill[] = Skills.getBotes()
-  jugadores: Skill [] = Skills.getJugadores()
-  estilos: Skill[] = Skills.getEstilos()
-  evalGens: Skill[] = Skills.getEvaluaciones()
-  nominaciones: Skill[] = Skills.getNominaciones()
-
-  displayStyle = "none";
   openPopup() {
     this.displayStyle = "block";
   }

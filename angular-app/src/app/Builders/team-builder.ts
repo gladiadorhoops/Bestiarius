@@ -10,9 +10,9 @@ export class TeamBuilder {
 
     constructor() {}
 
-    async getListOfTeams(ddb: DynamoDb): Promise<Team[]> {
+    async getListOfTeams(ddb: DynamoDb, category?: string | undefined): Promise<Team[]> {
         var teams: Team[] = []
-        teams = await ddb.listQuery('team.data').then(
+        teams = await ddb.listQuery('team.data', category).then(
             (items) => {
                 return items.map((item) => {return this.buildTeam(item)})
             }
@@ -40,7 +40,7 @@ export class TeamBuilder {
         return {
             id: item['pk'].S,
             name: item['name'].S!,
-            category: item['category'].S,
+            category: item['spk'].S,
 
         }
     }

@@ -64,6 +64,7 @@ export enum EvaluationGeneral {
 }
 
 export enum Section {
+    CATEGORIA = 'categoria',
     POCISION = 'pocision',
     TIRO = 'tiro',
     PASE = 'pase',
@@ -87,7 +88,8 @@ export class Skills {
         scoutId: 'scoutId',
         scoutname: 'scoutname',
         playerId: 'playerId',
-        equipo: 'equipo'
+        equipo: 'equipo',
+        categoria: 'categoria'
     }
     
     static posiciones = {
@@ -291,24 +293,30 @@ export class Skills {
 
     static general = {
         mejora: {
-            localized: '1 - Necesita Mejora',
-            report: 'general'
+            localized: 'Necesita Mejora',
+            report: 'general',
+            value: 1
+            
         },
         promedio: {
-            localized: '2 - Promedio',
-            report: 'general'
+            localized: 'Promedio',
+            report: 'general',
+            value: 2
         },
         arriba: {
-            localized: '3 - Arriba de Promedio',
-            report: 'general'
+            localized: 'Arriba de Promedio',
+            report: 'general',
+            value: 3
         },
         bueno: {
-            localized: '4 - Muy Buen',
-            report: 'general'
+            localized: 'Muy Buen',
+            report: 'general',
+            value: 4
         },
         gladiador: {
-            localized: '5 - Gladiador',
-            report: 'general'
+            localized: 'Gladiador',
+            report: 'general',
+            value: 5
         },
     }
 

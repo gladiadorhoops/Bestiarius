@@ -16,9 +16,15 @@
           </h2>
           <div id="flush-collapseOne" class="accordion-collapse collapse show" >
             <div class="accordion-body">
+                <label class="frow" for="categoria">Categoria:&nbsp;</label>
+                <div class="frow">
+                    <select id="categorias" formControlName="categoria" (change)="loadTeams()" required>
+                        <option value=""></option>
+                        <option *ngFor="let cat of categories" value="{{cat}}">{{cat}}</option>
+                    </select>
+                </div>
                 <label class="frow" for="equipo">Equipo:&nbsp;</label>
                 <div class="frow">
-                    <!--input list="equipos" name="equipo" formControlName="equipo" (onselect)="loadPlayers()" required-->
                     <select id="equipos" formControlName="equipo" (change)="loadPlayers()" required>
                         <option value=""></option>
                         <option *ngFor="let team of teams" value="{{team.name}}">{{team.name}}</option>
@@ -33,8 +39,6 @@
                 </div>
                 <label class="frow" for="edad">Edad:&nbsp;</label>
                 <input class="frow" disabled id="edad" type="number" min="1" max="99" value="{{selectedEdad}}">
-                <label class="frow" for="categoria">Categoria:&nbsp;</label>
-                <input class="frow" disabled id="categorias" type="text" value="{{selectedCategoria}}">
             </div>
           </div>
         </div>
@@ -172,9 +176,9 @@
           </h2>
           <div id="flush-collapseNine" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
             <div class="accordion-body">
-                <div class="frow" *ngFor="let ev of evalGens; let idx=index">
-                    <input type="radio" alt="{{idx}}{{ev.report}}" id="{{idx}}{{ev.report}}" name="general-{{ev.report}}" value="{{idx}}" formControlName="general-{{ev.report}}">
-                    <label class="radio-label" for="{{idx}}{{ev.report}}">&nbsp;{{ev.localized}}&nbsp;</label>
+                <div class="frow" *ngFor="let ev of evalGens">
+                    <input type="radio" alt="{{ev.value}}{{ev.report}}" id="{{ev.value}}{{ev.report}}" name="general-{{ev.report}}" value="{{ev.value}}" formControlName="general-{{ev.report}}">
+                    <label class="radio-label" for="{{ev.value}}{{ev.report}}">&nbsp;{{ev.value}} - {{ev.localized}}&nbsp;</label>
                 </div>
             </div>
           </div>
@@ -212,7 +216,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
-        <p>Evaluacion guardada!</p>
+        <p>{{submitReportMessage}}</p>
   
       </div>
       <div class="modal-footer">
