@@ -161,7 +161,7 @@ export class Skills {
         },
         perdida: {
             localized: 'Perdida de Balon',
-            report: 'perdida.,'
+            report: 'perdida'
         }
     }
 

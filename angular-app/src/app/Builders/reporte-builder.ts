@@ -139,7 +139,7 @@ export class ReporteBuilder {
                 })
             }            
         )
-        return this.formBuilder.group(form)        
+        return this.formBuilder.group(form)     
     }
 
     static defaultForm = {
