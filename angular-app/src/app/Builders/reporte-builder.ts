@@ -184,5 +184,15 @@ export class ReporteBuilder {
     [`${Section.ESTILO}-${Skills.estilos.rol.report}`]: [false],
     [`${Section.GENERAL}-${Skills.general.gladiador.report}`]: [''],
     [`${Section.NOMINACION}-${Skills.nominacion.maximus.report}`]: [false],
+    [`${Section.NOMINACION}-${Skills.nominacion.centuriones.report}`]: [false],
+    [`${Section.NOMINACION}-${Skills.nominacion.scutum.report}`]: [false],
+    [`${Section.NOMINACION}-${Skills.nominacion.spartacus.report}`]: [false],
+    [`${Section.NOMINACION}-${Skills.nominacion.flamma.report}`]: [false],
+    [`${Section.NOMINACION}-${Skills.nominacion.copellarius.report}`]: [false],
+    [`${Section.NOMINACION}-${Skills.nominacion.publius.report}`]: [false],
+    [`${Section.NOMINACION}-${Skills.nominacion.retiarius.report}`]: [false],
+    [`${Section.NOMINACION}-${Skills.nominacion.provocator.report}`]: [false],
+    [`${Section.NOMINACION}-${Skills.nominacion.colosseum.report}`]: [false],
+    [`${Section.NOMINACION}-${Skills.nominacion.crixus.report}`]: [false],
   }
 }

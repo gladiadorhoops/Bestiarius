@@ -327,10 +327,50 @@ export class Skills {
     }
 
     static nominacion = {
+        centuriones: {
+            localized: 'Centuriones (Jugadores mas destacados)',
+            report: 'centuriones'
+        },
+        scutum: {
+            localized: 'Scutum Shield (Mejor Defensa)',
+            report: 'scutum'
+        },
+        spartacus: {
+            localized: 'Spartacus (MVP)',
+            report: 'spartacus'
+        },
+        flamma: {
+            localized: 'Flamma (Gladiador)',
+            report: 'flamma'
+        },
         maximus: {
-            localized: 'Maximus',
+            localized: 'Maximus (Mejor Overall)',
             report: 'maximus'
         },
+        copellarius: {
+            localized: 'Copellarius (Jugador mas Completo)',
+            report: 'copellarius'
+        },
+        publius: {
+            localized: 'Publius Ostorius (Mejor Anotador)',
+            report: 'publius'
+        },
+        retiarius: {
+            localized: 'Retiarius (Mejor Prospecto)',
+            report: 'retiarius'
+        },
+        provocator: {
+            localized: 'Provocator (Mejor Jugador Rol)',
+            report: 'provocator'
+        },
+        colosseum: {
+            localized: 'Colosseum (Spormanchip)',
+            report: 'colosseum'
+        },
+        crixus: {
+            localized: 'Crixus (6to Hombre)',
+            report: 'crixus'
+        }
     }
 
     static getNominaciones(): Skill[] {
