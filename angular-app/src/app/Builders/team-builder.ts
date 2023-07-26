@@ -27,12 +27,11 @@ export class TeamBuilder {
         record[PK_KEY] = {S: `${id}`}
         record[SK_KEY] = {S: `team.data`}
         
-        return await ddb.getItem(record).then(
-            async (response) => {
-                if(response == undefined) return
-                return this.buildTeam(response);
-            }
-        );
+        var response = await ddb.getItem(record)
+        
+        if(response == undefined) return
+
+        return this.buildTeam(response);
 
     }
 

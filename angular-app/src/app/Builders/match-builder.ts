@@ -14,22 +14,24 @@ export class MatchBuilder {
         private teamBuilder: TeamBuilder
     ) {}
 
+    
     async getListOfMatch(ddb: DynamoDb): Promise<Match[]> {
         var matches: Match[] = []
-        await ddb.listQuery('match.data').then(
-            async (items) => {
-                items.forEach(async (item) => {
-                    let vteamId = item['visitorTeam'].S!
-                    let vteam = await this.teamBuilder.getTeam(ddb, vteamId)
-                    if( vteam == undefined) return
-                    let hteamId = item['homeTeam'].S!
-                    let hteam = await this.teamBuilder.getTeam(ddb, hteamId)
-                    if( hteam == undefined) return
-                    matches.push(this.buildMatch(item, vteam, hteam))
-                })                
+        var items = await ddb.listQuery('match.data')
+        for (const item of items) {
+            let vteamId = item['visitorTeam'].S!
+            let vteam = await this.teamBuilder.getTeam(ddb, vteamId)
+            if( vteam == undefined){
+                vteam = {id: vteamId, name: " - "}
             }
-        )
-        console.log('matches', matches)
+            let hteamId = item['homeTeam'].S!
+            let hteam = await this.teamBuilder.getTeam(ddb, hteamId)
+            if( hteam == undefined){
+                hteam = {id: hteamId, name: " - "}
+            }
+            matches.push(this.buildMatch(item, vteam, hteam))
+        } 
+
         return matches
     }
 

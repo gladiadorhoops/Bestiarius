@@ -36,6 +36,8 @@ import { ScoutsComponent } from './scouts/scouts.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { MarcadorFormComponent } from './marcador-form/marcador-form.component';
 import { ResultadosEvaluacionComponent } from './resultados-evaluacion/resultados-evaluacion.component';
+import { BracketsComponent } from './brackets/brackets.component';
+import { GroupsComponent } from './groups/groups.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { ResultadosEvaluacionComponent } from './resultados-evaluacion/resultado
     EvaluacionComponent,
     ScoutsComponent,
     MarcadorFormComponent,
-    ResultadosEvaluacionComponent
+    ResultadosEvaluacionComponent,
+    BracketsComponent,
+    GroupsComponent
   ],
   imports: [
     BrowserModule,

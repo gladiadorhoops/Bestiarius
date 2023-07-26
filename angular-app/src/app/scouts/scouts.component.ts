@@ -20,6 +20,8 @@ export class ScoutsComponent {
     marcadoresView: boolean = true;
     evaluarView: boolean = false;
     resultadosView: boolean = false;
+    bracketsView: boolean = false;
+    groupsView: boolean = false;
     ddb!: DynamoDb;
 
     constructor(private fb:FormBuilder, 
@@ -93,15 +95,35 @@ export class ScoutsComponent {
     this.marcadoresView = false;
     this.evaluarView = true;
     this.resultadosView = false;
+    this.bracketsView = false;
+    this.groupsView = false;
   }
   showMarcadores() {
     this.marcadoresView = true;
     this.evaluarView = false;
     this.resultadosView = false;
+    this.bracketsView = false;
+    this.groupsView = false;
   }
   showResultados() {
     this.marcadoresView = false;
     this.evaluarView = false;
     this.resultadosView = true;
+    this.bracketsView = false;
+    this.groupsView = false;
+  }
+  showBrackets(){
+    this.bracketsView = true;
+    this.marcadoresView = false;
+    this.evaluarView = false;
+    this.resultadosView = false;
+    this.groupsView = false;
+  }
+  showGroups(){
+    this.bracketsView = false;
+    this.marcadoresView = false;
+    this.evaluarView = false;
+    this.resultadosView = false;
+    this.groupsView = true;
   }
 }

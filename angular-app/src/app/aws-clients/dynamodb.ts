@@ -40,7 +40,6 @@ export class DynamoDb {
     }
 
     async putItem(record: Record<string, AttributeValue>) {
-        console.log("Storing Item")
         try {
             const input: PutItemCommandInput = {
                 TableName: DDB_TABLE_NAME,
@@ -51,9 +50,7 @@ export class DynamoDb {
             };
             const command = new PutItemCommand(input);
 
-            console.log("command: ", command)
             const response = await this.client.send(command);
-            console.log("response: ", response)
         } catch (err) {
             console.error("Error", err);
             throw err
@@ -61,7 +58,6 @@ export class DynamoDb {
     }
 
     async getItem(record: Record<string, AttributeValue>): Promise<Record<string, AttributeValue> | undefined> {
-        console.log("Reading Item")
         try {
             const input: GetItemCommandInput = {
               TableName: DDB_TABLE_NAME,
@@ -69,9 +65,7 @@ export class DynamoDb {
               ReturnConsumedCapacity: "TOTAL",
             };
             const command = new GetItemCommand(input);
-            console.log("command: ", command)
             const response = await this.client.send(command);
-            console.log("response: ", response)
             return response.Item
         } catch (err) {
             console.log("Error", err);
@@ -110,9 +104,7 @@ export class DynamoDb {
               ReturnConsumedCapacity: "TOTAL",
             };
             const command = new QueryCommand(input);
-            console.log("command: ", command)
             const response = await this.client.send(command);
-            console.log("response: ", response)
             return response?.Items
         } catch (err) {
             console.log("Error", err);

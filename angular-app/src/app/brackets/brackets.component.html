@@ -1,0 +1,23 @@
+<div class="row justify-content-md-center">
+    <h2 class="text-center mb-3">
+        Marcadores
+    </h2>
+    <div class="row">
+        <div class="col col-12 col-md-4" *ngFor="let phase of phases">
+            <h3>{{phase}}</h3>
+            <div class="row marcadorItem" *ngFor="let match of phaseMatches[phase]; let idx=index" >
+
+                <div class="col col-2">#{{idx}}</div>
+                <div class="col col-8" > 
+                    <div class="row">{{match.homeTeam.name}}</div>
+                    <div class="row">{{match.visitorTeam.name}}</div>
+                </div>
+                <div class="col col-2">
+                    <div class="row">{{match.homePoints}}</div>
+                    <div class="row">{{match.visitorPoints}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
