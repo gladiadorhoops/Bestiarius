@@ -17,17 +17,20 @@ export class MatchBuilder {
     
     async getListOfMatch(ddb: DynamoDb): Promise<Match[]> {
         var matches: Match[] = []
-        var items = await ddb.listQuery('match.data')
+        var items = await ddb.listQuery('match.data');
+        var teams = await this.teamBuilder.getListOfTeams(ddb);
         for (const item of items) {
             let vteamId = item['visitorTeam'].S!
-            let vteam = await this.teamBuilder.getTeam(ddb, vteamId)
-            if( vteam == undefined){
-                vteam = {id: vteamId, name: " - "}
+            let vteams = teams.filter(t => t.id == vteamId)
+            let vteam : Team = {id: vteamId, name: " - "}
+            if( vteams.length == 1){
+                vteam = vteams[0]
             }
             let hteamId = item['homeTeam'].S!
-            let hteam = await this.teamBuilder.getTeam(ddb, hteamId)
-            if( hteam == undefined){
-                hteam = {id: hteamId, name: " - "}
+            let hteams = teams.filter(t => t.id == hteamId)
+            let hteam: Team = {id: hteamId, name: " - "}
+            if( hteams.length == 1){
+                hteam = hteams[0]
             }
             matches.push(this.buildMatch(item, vteam, hteam))
         } 
@@ -45,6 +48,7 @@ export class MatchBuilder {
             juego: item['juego'].S!,
             visitorPoints: item['visitorPoints'].S!,
             homePoints: item['homePoints'].S!,
+            braketPlace: item['braketPlace'].S!,
             visitorTeam: vteam,
             homeTeam: hteam
         }

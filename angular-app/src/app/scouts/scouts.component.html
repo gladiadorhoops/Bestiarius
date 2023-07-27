@@ -46,32 +46,23 @@
                     <div class="col col-4 align-items-center text-center">
                         <button (click)="showResultados()">Resultados</button>
                     </div>
-                    <!--div class="col col-4 align-items-center text-center">
-                        <button (click)="showGroups()">Groups</button>
+                </div>
+
+                <div class="spinner-border text-light" role="status" *ngIf="loading">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="row" *ngIf="!loading">
+                    <div class="text-center" *ngIf="marcadoresView">
+                        <app-marcador-form [ddb]="ddb"></app-marcador-form>
                     </div>
-                    <div class="col col-4 align-items-center text-center">
-                        <button (click)="showBrackets()">Brackets</button>
-                    </div-->
-                </div>
-                
-                <div class="text-center" *ngIf="marcadoresView">
-                    <app-marcador-form [ddb]="ddb"></app-marcador-form>
-                </div>
-                
-                <div class="text-center" *ngIf="evaluarView">
-                    <app-evaluacion [ddb]="ddb"></app-evaluacion>
-                </div>
-                
-                <div class="text-center" *ngIf="bracketsView">
-                    <app-brackets [ddb]="ddb"></app-brackets>
-                </div>
-                
-                <div class="text-center" *ngIf="groupsView">
-                    <app-groups [ddb]="ddb"></app-groups>
-                </div>
-                
-                <div *ngIf="resultadosView">
-                    <app-resultados-evaluacion></app-resultados-evaluacion>
+                    
+                    <div class="text-center" *ngIf="evaluarView">
+                        <app-evaluacion [ddb]="ddb"></app-evaluacion>
+                    </div>
+                    
+                    <div *ngIf="resultadosView">
+                        <app-resultados-evaluacion></app-resultados-evaluacion>
+                    </div>
                 </div>
                 
             </ng-container>

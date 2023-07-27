@@ -75,21 +75,18 @@ export class DynamoDb {
 
     async findIdQuery(pk: string, sk: string | undefined): Promise<Record<string, AttributeValue> | undefined> {        
         let item: Record<string, AttributeValue> | undefined
-        await this.query(pk, sk,  IndexId.MAIN_GSI).then(
-            (items) => {
-                if(items != undefined) item = items.pop()
-                else item = undefined
-            }
-        )
-        return item
+        let items = await this.query(pk, sk,  IndexId.MAIN_GSI);
+        if(items != undefined) item = items.pop();
+        else item = undefined;
+        return item;
     }
 
     async listQuery(pk: string, sk?: string | undefined): Promise<Record<string, AttributeValue>[]> {
-        let resultItems: Record<string, AttributeValue>[] = []
-        let index = sk ? IndexId.SK_SPK : IndexId.LIST_GSI
-        let results = await this.query(pk, sk, index).then( (items) => { return items } )
-        if(results != undefined) resultItems = resultItems.concat(results)
-        return resultItems
+        let resultItems: Record<string, AttributeValue>[] = [];
+        let index = sk ? IndexId.SK_SPK : IndexId.LIST_GSI;
+        let results = await this.query(pk, sk, index);
+        if(results != undefined) resultItems = resultItems.concat(results);
+        return resultItems;
     }
 
     private async query(pk: string, sk: string | undefined, index: IndexId): Promise<Record<string, AttributeValue>[] | undefined> {
@@ -114,12 +111,7 @@ export class DynamoDb {
 
     static async build(username: string, password: string): Promise<DynamoDb> {
         let credentials: AwsCredentialIdentity | Provider<AwsCredentialIdentity> | undefined
-        await Cognito.getAwsCredentials(username, password).then(
-            (creds) => {
-                if (creds == undefined) return
-                credentials = creds            
-            }
-        )
+        credentials = await Cognito.getAwsCredentials(username, password);
         let client =  new DynamoDBClient({ 
             region: REGION,
             credentials: credentials

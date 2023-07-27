@@ -11,4 +11,5 @@ export interface Match {
     visitorPoints?: string | undefined
     homeTeam: Team
     homePoints?: string | undefined
+    braketPlace?: string | undefined
 }

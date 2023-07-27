@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http'
 import { Match } from '../interfaces/match';
 import { FormBuilder } from '@angular/forms';
 import { MatchBuilder } from '../Builders/match-builder';
+import { TeamBuilder } from '../Builders/team-builder';
 import { DynamoDb } from '../aws-clients/dynamodb';
+import { Team } from '../interfaces/team';
 
 const S3_BUCKET_URL = (day: string) => `https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-11/category-matches-2023-07-${day}.json`
 
@@ -25,25 +27,27 @@ export class MarcadorFormComponent implements OnInit {
 
   equiposAp : string[] = [ "Raptors", "RoQui", "Bulldogs", "ABA", "Lions", "Abejas", "Rawigas", "Gansos", "Borreguitos", "Falcons", "Tigres", "ESBAL"];
   equiposEl : string[] = [ "Leñadores", "Selec. Chih.", "Mambas", "ESCOBA", "RoQui", "Mini Regios", "SAHQ", "Carrilleros", "Rawigas", "Black Devils", "Mineros", "24 Cent"];
-  equipos : string[] = [];
+  equipos : Team[] = [];
 
   filteredMatches: Match[] = [];
 
   isEditing: boolean = false;
+  loading: boolean = true;
   editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", players: [], category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", players: [], category: ""}, homePoints:"0"};
   
 
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
+    private teamBuilder: TeamBuilder,
     private httpService: HttpClient
     ) {
   }
 
   filterForm = this.fb.group({
-    cat: ["elite"],
-    day: ["29"],
-    gym: [""],
-    equipo: [""]
+    cat: null,
+    day: null,
+    gym: null,
+    equipo: null
   });
 
   marcadorForm = this.fb.group({
@@ -56,12 +60,10 @@ export class MarcadorFormComponent implements OnInit {
   }  
 
   async loadMatches(){
-    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb).then(
-      (output) => {
-        this.filteredMatches = output;
-        return output;
-      }
-    )
+    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb)
+    this.equipos = await this.teamBuilder.getListOfTeams(this.ddb)
+    this.filteredMatches = this.allMatches;
+    this.loading = false;
   }
 
   applyFilters() {
@@ -69,7 +71,9 @@ export class MarcadorFormComponent implements OnInit {
 
     let cat = "";
     if(this.filterForm.value.cat != null){
+      console.log(this.filterForm.value.cat)
       cat = this.filterForm.value.cat;
+      console.log(cat)
     }
 
     if(cat != ""){
@@ -127,10 +131,7 @@ export class MarcadorFormComponent implements OnInit {
       let matches : Match[] = []
       this.filteredMatches.forEach(
         async (match) => {
-          if(match.homeTeam.name == equipo){
-            matches.push(match);
-          }
-          if(match.visitorTeam.name == equipo){
+          if(match.homeTeam.name == equipo || match.visitorTeam.name == equipo){
             matches.push(match);
           }
         }
@@ -138,6 +139,10 @@ export class MarcadorFormComponent implements OnInit {
       
       this.filteredMatches = matches;
     }
+
+    console.log(day);
+    console.log(gym);
+    console.log(equipo);
   }
   onSubmit(){
     let id = "";

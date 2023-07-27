@@ -17,12 +17,11 @@ export class ScoutsComponent {
     scoutid: string = "";
     scoutname: string = "";
     failed: boolean = false;
-    marcadoresView: boolean = true;
+    marcadoresView: boolean = false;
     evaluarView: boolean = false;
     resultadosView: boolean = false;
-    bracketsView: boolean = false;
-    groupsView: boolean = false;
     ddb!: DynamoDb;
+    loading = true;
 
     constructor(private fb:FormBuilder, 
                  private authService: AuthService, 
@@ -38,7 +37,9 @@ export class ScoutsComponent {
           let pass = this.authService.getScoutPass();
           DynamoDb.build(user, pass).then(
             (client) => {
-              this.ddb = client
+              this.ddb = client;
+              this.loading = false;
+              this.marcadoresView = true;
             });
           this.authService
         }
@@ -46,6 +47,7 @@ export class ScoutsComponent {
 
     ngOnInit(){
       this.reloadLoginStatus()
+      this.loading = false;
     }
     
     reloadLoginStatus() {
@@ -95,35 +97,15 @@ export class ScoutsComponent {
     this.marcadoresView = false;
     this.evaluarView = true;
     this.resultadosView = false;
-    this.bracketsView = false;
-    this.groupsView = false;
   }
   showMarcadores() {
     this.marcadoresView = true;
     this.evaluarView = false;
     this.resultadosView = false;
-    this.bracketsView = false;
-    this.groupsView = false;
   }
   showResultados() {
     this.marcadoresView = false;
     this.evaluarView = false;
     this.resultadosView = true;
-    this.bracketsView = false;
-    this.groupsView = false;
-  }
-  showBrackets(){
-    this.bracketsView = true;
-    this.marcadoresView = false;
-    this.evaluarView = false;
-    this.resultadosView = false;
-    this.groupsView = false;
-  }
-  showGroups(){
-    this.bracketsView = false;
-    this.marcadoresView = false;
-    this.evaluarView = false;
-    this.resultadosView = false;
-    this.groupsView = true;
   }
 }
