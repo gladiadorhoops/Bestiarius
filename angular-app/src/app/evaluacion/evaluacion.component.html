@@ -68,8 +68,13 @@
                 <div class="frow" *ngFor="let tiro of tiros">
                     <label class="frow">{{tiro.localized}}:&nbsp;</label>
                     <div *ngFor="let idx of [1,2,3,4,5]">
-                        <input type="radio" id="{{tiro.report}}{{idx}}" name="tiro-{{tiro.report}}" value="{{idx}}" formControlName="tiro-{{tiro.report}}">
-                        <label class="radio-label" for="{{tiro.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                      <input type="radio" id="{{tiro.report}}{{idx}}" name="tiro-{{tiro.report}}" value="{{idx}}" formControlName="tiro-{{tiro.report}}">
+                      <label class="radio-label" for="{{tiro.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                    </div>
+                    &nbsp;|&nbsp;
+                    <div>
+                      <input type="radio" id="{{tiro.report}}0" name="tiro-{{tiro.report}}" value="{{null}}" formControlName="tiro-{{tiro.report}}">
+                      <label class="radio-label" for="{{tiro.report}}0">&nbsp;Borrar&nbsp;</label>
                     </div>
                 </div>
               </div>
@@ -90,6 +95,11 @@
                         <input type="radio" id="{{ps.report}}{{idx}}" name="pase-{{ps.report}}" value="{{idx}}" formControlName="pase-{{ps.report}}">
                         <label class="radio-label" for="{{ps.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
+                    &nbsp;|&nbsp;
+                    <div>
+                      <input type="radio" id="{{ps.report}}0" name="pase-{{ps.report}}" value="{{null}}" formControlName="pase-{{ps.report}}">
+                      <label class="radio-label" for="{{ps.report}}0">&nbsp;Borrar&nbsp;</label>
+                    </div>
                 </div>
               </div>
             </div>
@@ -108,6 +118,11 @@
                     <div *ngFor="let idx of [1,2,3,4,5]">
                         <input type="radio" id="{{df.report}}{{idx}}" name="defensa-{{df.report}}" value="{{idx}}" formControlName="defensa-{{df.report}}">
                         <label class="radio-label" for="{{df.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                    </div>
+                    &nbsp;|&nbsp;
+                    <div>
+                      <input type="radio" id="{{df.report}}0" name="defensa-{{df.report}}" value="{{null}}" formControlName="defensa-{{df.report}}">
+                      <label class="radio-label" for="{{df.report}}0">&nbsp;Borrar&nbsp;</label>
                     </div>
                 </div>
               </div>
@@ -128,6 +143,11 @@
                         <input type="radio" id="{{bt.report}}{{idx}}" name="bote-{{bt.report}}" value="{{idx}}" formControlName="bote-{{bt.report}}">
                         <label class="radio-label" for="{{bt.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
+                    &nbsp;|&nbsp;
+                    <div>
+                      <input type="radio" id="{{bt.report}}0" name="bote-{{bt.report}}" value="{{null}}" formControlName="bote-{{bt.report}}">
+                      <label class="radio-label" for="{{bt.report}}0">&nbsp;Borrar&nbsp;</label>
+                    </div>
                 </div>
               </div>
             </div>
@@ -146,6 +166,11 @@
                     <div *ngFor="let idx of [1,2,3,4,5]">
                         <input type="radio" id="{{jg.report}}{{idx}}" name="jugador-{{jg.report}}" value="{{idx}}" formControlName="jugador-{{jg.report}}">
                         <label class="radio-label" for="{{jg.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                    </div>
+                    &nbsp;|&nbsp;
+                    <div>
+                      <input type="radio" id="{{jg.report}}0" name="jugador-{{jg.report}}" value="{{null}}" formControlName="jugador-{{jg.report}}">
+                      <label class="radio-label" for="{{jg.report}}0">&nbsp;Borrar&nbsp;</label>
                     </div>
                 </div>
               </div>
@@ -179,6 +204,11 @@
                 <div class="frow" *ngFor="let ev of evalGens">
                     <input type="radio" alt="{{ev.value}}{{ev.report}}" id="{{ev.value}}{{ev.report}}" name="general-{{ev.report}}" value="{{ev.value}}" formControlName="general-{{ev.report}}">
                     <label class="radio-label" for="{{ev.value}}{{ev.report}}">&nbsp;{{ev.value}} - {{ev.localized}}&nbsp;</label>
+                </div>
+                <div class="frow"> -- </div>
+                <div class="frow">
+                  <input type="radio" id="general-0" name="general-general" value="{{null}}" formControlName="general-general">
+                  <label class="radio-label" for="general-general">&nbsp;Borrar&nbsp;</label>
                 </div>
             </div>
           </div>
