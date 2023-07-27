@@ -1,48 +1,51 @@
 export interface Reporte {
-    pocisiones: [number],
-    tiro: Tiro,
-    defensa: Defensa,
-    jugador: Jugador,
-    pase: Pase,
-    bote: Bote,
-    estilo: [Estilo],
-    evaluationGeneral: EvaluationGeneral
+    playerId: string,
+    categoria: string,
+    scout: string,
+    posicion?: number[] | undefined,
+    tiro?: Tiro | undefined,
+    defensa?: Defensa | undefined,
+    jugador?: Jugador | undefined,
+    pase?: Pase | undefined,
+    bote?: Bote | undefined,
+    estilo?: Estilo[] | undefined,
+    general?: EvaluationGeneral | undefined,
 }
 
 export interface Tiro {
-    colada: Skill,
-    media: Skill,
-    triple: Skill,
-    inteligencia: Skill,
+    colada?: Skill | undefined,
+    media?: Skill | undefined,
+    triple?: Skill | undefined,
+    inteligencia?: Skill | undefined,
 }
 
 export interface Defensa {
-    conBola: Skill,
-    sinBola: Skill,
-    trancision: Skill,
-    rebote: Skill,
+    conBola?: Skill | undefined,
+    sinBola?: Skill | undefined,
+    trancision?: Skill | undefined,
+    rebote?: Skill | undefined,
 }
 
 export interface Jugador {
-    hustle: Skill,
-    spacing: Skill,
-    juegoEquipo: Skill,
-    agresividad: Skill,
+    hustle?: Skill | undefined,
+    spacing?: Skill | undefined,
+    juegoEquipo?: Skill | undefined,
+    agresividad?: Skill | undefined,
 }
 
 export interface Pase {
-    vision: Skill,
-    creador: Skill,
-    perdida: Skill,
-    sentido: Skill,
+    vision?: Skill | undefined,
+    creador?: Skill | undefined,
+    perdida?: Skill | undefined,
+    sentido?: Skill | undefined,
 }
 
 export interface Bote {
-    contol: Skill,
-    presion: Skill,
-    perdida: Skill,
-    manoDebil: Skill,
-    cambioRitmo: Skill,
+    contol?: Skill | undefined,
+    presion?: Skill | undefined,
+    perdida?: Skill | undefined,
+    manoDebil?: Skill | undefined,
+    cambioRitmo: Skill | undefined,
 }
 
 export enum Estilo {
@@ -65,7 +68,7 @@ export enum EvaluationGeneral {
 
 export enum Section {
     CATEGORIA = 'categoria',
-    POCISION = 'pocision',
+    POSICION = 'posicion',
     TIRO = 'tiro',
     PASE = 'pase',
     DEFENSA = 'defensa',
@@ -82,6 +85,21 @@ export interface Skill {
     report: string,
 }
 
+export interface PlayerScore {
+    playerId: string,
+    tiro: {sum: number, count: number, value: number},
+    defensa: {sum: number, count: number, value: number},
+    jugador: {sum: number, count: number, value: number},
+    pase: {sum: number, count: number, value: number},
+    bote: {sum: number, count: number, value: number},
+    general: {sum: number, count: number, value: number},
+}
+
+export interface TopScore {
+    playerId: string,
+    score: number
+}
+
 export class Skills {
 
     static playerDetails = {
@@ -92,7 +110,7 @@ export class Skills {
         categoria: 'categoria'
     }
     
-    static posiciones = {
+    static posicion = {
         base: {
             localized: '1 - Base',
             report: 'base',
@@ -115,13 +133,13 @@ export class Skills {
         },
     }
 
-    static getPocisiones(): Skill[] {
-        return Object.values(Skills.posiciones).map((value: Skill) => {
+    static getPosiciones(): Skill[] {
+        return Object.values(Skills.posicion).map((value: Skill) => {
             return value
         })
     }
 
-    static tiros = {
+    static tiro = {
         colada: {
             localized: 'Colada',
             report: 'colada',
@@ -141,12 +159,12 @@ export class Skills {
     }
 
     static getTiros(): Skill[] {
-        return Object.values(Skills.tiros).map((value: Skill) => {
+        return Object.values(Skills.tiro).map((value: Skill) => {
             return value
         })
     }
     
-    static pases = {
+    static pase = {
         vision: {
             localized: 'Vision',
             report: 'vision',
@@ -166,12 +184,12 @@ export class Skills {
     }
 
     static getPases(): Skill[] {
-        return Object.values(Skills.pases).map((value: Skill) => {
+        return Object.values(Skills.pase).map((value: Skill) => {
             return value
         })
     }
     
-    static defensas = {
+    static defensa = {
         conBola: {
             localized: 'Con Bola',
             report: 'conBola',
@@ -191,12 +209,12 @@ export class Skills {
     }
     
     static getDefensas(): Skill[] {
-        return Object.values(Skills.defensas).map((value: Skill) => {
+        return Object.values(Skills.defensa).map((value: Skill) => {
             return value
         })
     }
 
-    static botes = {
+    static bote = {
         control: {
             localized: 'Control',
             report: 'control',
@@ -220,12 +238,12 @@ export class Skills {
     }
 
     static getBotes(): Skill[] {
-        return Object.values(Skills.botes).map((value: Skill) => {
+        return Object.values(Skills.bote).map((value: Skill) => {
             return value
         })
     }
 
-    static jugadores = {
+    static jugador = {
         hustle: {
             localized: 'Hustle',
             report: 'hustle'
@@ -249,12 +267,12 @@ export class Skills {
     }
 
     static getJugadores(): Skill[] {
-        return Object.values(Skills.jugadores).map((value: Skill) => {
+        return Object.values(Skills.jugador).map((value: Skill) => {
             return value
         })
     }
 
-    static estilos = {
+    static estilo = {
         anotador: {
             localized: 'Anotador',
             report: 'anotador',
@@ -286,7 +304,7 @@ export class Skills {
     }
 
     static getEstilos(): Skill[] {
-        return Object.values(Skills.estilos).map((value: Skill) => {
+        return Object.values(Skills.estilo).map((value: Skill) => {
             return value
         })
     }
@@ -295,8 +313,7 @@ export class Skills {
         mejora: {
             localized: 'Necesita Mejora',
             report: 'general',
-            value: 1
-            
+            value: 1            
         },
         promedio: {
             localized: 'Promedio',
@@ -319,7 +336,7 @@ export class Skills {
             value: 5
         },
     }
-
+    
     static getEvaluaciones(): Skill[] {
         return Object.values(Skills.general).map((value: Skill) => {
             return value
@@ -377,5 +394,30 @@ export class Skills {
         return Object.values(Skills.nominacion).map((value: Skill) => {
             return value
         })
+    }
+
+    static findSection(section: string): {[key: string]: Skill} | undefined {
+        switch(section){
+            case Section.POSICION:
+                return Skills.posicion
+            case Section.TIRO:
+                return Skills.tiro
+            case Section.PASE:
+                return Skills.pase
+            case Section.DEFENSA:
+                return Skills.defensa
+            case Section.BOTE:
+                return Skills.bote
+            case Section.JUGADOR:
+                return Skills.jugador
+            case Section.ESTILO:
+                return Skills.estilo
+            case Section.GENERAL:
+                return Skills.general
+            case Section.NOMINACION:
+                return Skills.nominacion
+            default:
+                return undefined
+        }
     }
 }

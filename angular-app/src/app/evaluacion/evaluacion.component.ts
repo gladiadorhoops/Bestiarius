@@ -38,7 +38,7 @@ export class EvaluacionComponent {
   displayStyle = "none";
   submitReportMessage = "Evaluacion guardada!"
 
-  positions: Skill[] = Skills.getPocisiones()
+  positions: Skill[] = Skills.getPosiciones()
   tiros: Skill[] = Skills.getTiros()
   pases: Skill[] = Skills.getPases()
   defensas: Skill[] = Skills.getDefensas()
