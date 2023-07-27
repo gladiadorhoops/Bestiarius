@@ -1,9 +1,13 @@
 <div class="row justify-content-md-center">
     <h2 class="text-center mb-3">
-        Marcadores
+        Brackets
     </h2>
-    <div class="row">
-        <div class="col col-12 col-md-4" *ngFor="let phase of phases">
+
+    <div class="spinner-border text-light" role="status" *ngIf="loading">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="row" *ngIf="!loading">
+        <!--div class="col col-12 col-md-4" *ngFor="let phase of phases">
             <h3>{{phase}}</h3>
             <div class="row marcadorItem" *ngFor="let match of phaseMatches[phase]; let idx=index" >
 
@@ -15,6 +19,121 @@
                 <div class="col col-2">
                     <div class="row">{{match.homePoints}}</div>
                     <div class="row">{{match.visitorPoints}}</div>
+                </div>
+            </div>
+        </div-->
+        <div class="row">
+            <div class="col col-12 col-md-4">
+                <h3>Quarter Finals</h3>
+            </div>
+            <div class="col col-12 col-md-4">
+                <h3>Semi Finals</h3>
+            </div>
+            <div class="col col-12 col-md-4">
+                <h3>Finals</h3>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col col-12 col-md-4">
+                <div class="row marcadorItem">
+                    <div class="col col-2">Q1</div>
+                    <div class="col col-8" > 
+                        <div class="row">{{phaseMatches['quarter1'].homeTeam.name}}</div>
+                        <div class="row">{{phaseMatches['quarter1'].visitorTeam.name}}</div>
+                    </div>
+                    <div class="col col-2">
+                        <div class="row">{{phaseMatches['quarter1'].homePoints}}</div>
+                        <div class="row">{{phaseMatches['quarter1'].visitorPoints}}</div>
+                    </div>
+                </div>
+                <div class="row marcadorItem">
+                    <div class="col col-2">Q2</div>
+                    <div class="col col-8" > 
+                        <div class="row">{{phaseMatches['quarter2'].homeTeam.name}}</div>
+                        <div class="row">{{phaseMatches['quarter2'].visitorTeam.name}}</div>
+                    </div>
+                    <div class="col col-2">
+                        <div class="row">{{phaseMatches['quarter2'].homePoints}}</div>
+                        <div class="row">{{phaseMatches['quarter2'].visitorPoints}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-12 col-md-4">
+                <div class="row marcadorItem">
+                    <div class="col col-2">S1</div>
+                    <div class="col col-8" > 
+                        <div class="row">{{phaseMatches['semi1'].homeTeam.name}}</div>
+                        <div class="row">{{phaseMatches['semi1'].visitorTeam.name}}</div>
+                    </div>
+                    <div class="col col-2">
+                        <div class="row">{{phaseMatches['semi1'].homePoints}}</div>
+                        <div class="row">{{phaseMatches['semi1'].visitorPoints}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-12 col-md-4">
+                <div class="row marcadorItem">
+                    <div class="col col-2">F1</div>
+                    <div class="col col-8" > 
+                        <div class="row">{{phaseMatches['final1'].homeTeam.name}}</div>
+                        <div class="row">{{phaseMatches['final1'].visitorTeam.name}}</div>
+                    </div>
+                    <div class="col col-2">
+                        <div class="row">{{phaseMatches['final1'].homePoints}}</div>
+                        <div class="row">{{phaseMatches['final1'].visitorPoints}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-12 col-md-4">
+                <div class="row marcadorItem">
+                    <div class="col col-2">Q3</div>
+                    <div class="col col-8" > 
+                        <div class="row">{{phaseMatches['quarter3'].homeTeam.name}}</div>
+                        <div class="row">{{phaseMatches['quarter3'].visitorTeam.name}}</div>
+                    </div>
+                    <div class="col col-2">
+                        <div class="row">{{phaseMatches['quarter3'].homePoints}}</div>
+                        <div class="row">{{phaseMatches['quarter3'].visitorPoints}}</div>
+                    </div>
+                </div>
+                <div class="row marcadorItem">
+                    <div class="col col-2">Q4</div>
+                    <div class="col col-8" > 
+                        <div class="row">{{phaseMatches['quarter4'].homeTeam.name}}</div>
+                        <div class="row">{{phaseMatches['quarter4'].visitorTeam.name}}</div>
+                    </div>
+                    <div class="col col-2">
+                        <div class="row">{{phaseMatches['quarter4'].homePoints}}</div>
+                        <div class="row">{{phaseMatches['quarter4'].visitorPoints}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-12 col-md-4">
+                <div class="row marcadorItem">
+                    <div class="col col-2">S2</div>
+                    <div class="col col-8" > 
+                        <div class="row">{{phaseMatches['semi2'].homeTeam.name}}</div>
+                        <div class="row">{{phaseMatches['semi2'].visitorTeam.name}}</div>
+                    </div>
+                    <div class="col col-2">
+                        <div class="row">{{phaseMatches['semi2'].homePoints}}</div>
+                        <div class="row">{{phaseMatches['semi2'].visitorPoints}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-12 col-md-4">
+                <div class="row marcadorItem">
+                    <div class="col col-2">F2</div>
+                    <div class="col col-8" > 
+                        <div class="row">{{phaseMatches['final2'].homeTeam.name}}</div>
+                        <div class="row">{{phaseMatches['final2'].visitorTeam.name}}</div>
+                    </div>
+                    <div class="col col-2">
+                        <div class="row">{{phaseMatches['final2'].homePoints}}</div>
+                        <div class="row">{{phaseMatches['final2'].visitorPoints}}</div>
+                    </div>
                 </div>
             </div>
         </div>

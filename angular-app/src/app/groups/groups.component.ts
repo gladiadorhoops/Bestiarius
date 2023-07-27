@@ -4,6 +4,8 @@ import { Match } from '../interfaces/match';
 import { FormBuilder } from '@angular/forms';
 import { MatchBuilder } from '../Builders/match-builder';
 import { DynamoDb } from '../aws-clients/dynamodb';
+import { COGNITO_UNAUTHENTICATED_CREDENTIALS, REGION } from '../aws-clients/constants'
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 @Component({
   selector: 'app-groups',
@@ -11,9 +13,14 @@ import { DynamoDb } from '../aws-clients/dynamodb';
   styleUrls: ['./groups.component.scss']
 })
 export class GroupsComponent implements OnInit {
-  @Input() ddb!: DynamoDb;
+  ddbClient = new DynamoDBClient({ 
+    region: REGION,
+    credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
+  }); 
+  ddb: DynamoDb =  new DynamoDb(this.ddbClient);
   
   allMatches: Match[] = [];
+  loading = true;
 
   isEditing: boolean = false;
   editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", players: [], category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", players: [], category: ""}, homePoints:"0"};
@@ -41,7 +48,9 @@ export class GroupsComponent implements OnInit {
       if(this.groups.includes(element.juego)){
         this.groupMatches[element.juego].push(element);
       }
-    })
+    });
+    this.loading = false;
+
   }
 
 

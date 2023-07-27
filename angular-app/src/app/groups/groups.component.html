@@ -2,7 +2,10 @@
     <h2 class="text-center mb-3">
         Groups Phase
     </h2>
-    <div class="row">
+    <div class="spinner-border text-light" role="status" *ngIf="loading">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="row" *ngIf="!loading">
         <div class="col col-12 col-md-6" *ngFor="let group of groups">
             <h3>{{group}}</h3>
             <div class="row marcadorItem" *ngFor="let match of groupMatches[group]; let idx=index" >

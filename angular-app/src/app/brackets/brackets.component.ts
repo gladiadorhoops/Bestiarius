@@ -4,6 +4,8 @@ import { Match } from '../interfaces/match';
 import { FormBuilder } from '@angular/forms';
 import { MatchBuilder } from '../Builders/match-builder';
 import { DynamoDb } from '../aws-clients/dynamodb';
+import { COGNITO_UNAUTHENTICATED_CREDENTIALS, REGION } from '../aws-clients/constants'
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 @Component({
   selector: 'app-brackets',
@@ -11,15 +13,20 @@ import { DynamoDb } from '../aws-clients/dynamodb';
   styleUrls: ['./brackets.component.scss']
 })
 export class BracketsComponent implements OnInit {
-  @Input() ddb!: DynamoDb;
+  ddbClient = new DynamoDBClient({ 
+    region: REGION,
+    credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
+  }); 
+  ddb: DynamoDb =  new DynamoDb(this.ddbClient);
   
   allMatches: Match[] = [];
+  loading = true;
 
   isEditing: boolean = false;
   editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", players: [], category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", players: [], category: ""}, homePoints:"0"};
   phases = ["Quarter-Finals", "Semi-Finals", "Finals"]
 
-  phaseMatches: {[group: string]: Match[]} = {}
+  phaseMatches: {[place: string]: Match} = {}
 
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
@@ -32,16 +39,16 @@ export class BracketsComponent implements OnInit {
   }  
 
   async loadMatches(){
-    this.phases.forEach(element => {
-      this.phaseMatches[element] = [];
-    });
 
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb)
+    
     this.allMatches.forEach(element => {
-      if(this.phases.includes(element.juego)){
-        this.phaseMatches[element.juego].push(element);
+      if(this.phases.includes(element.juego) && element.braketPlace != undefined){
+        this.phaseMatches[element.braketPlace] = element;
       }
-    })
+    });
+
+    this.loading = false;
   }
 
 

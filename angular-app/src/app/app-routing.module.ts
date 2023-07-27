@@ -12,6 +12,8 @@ import { FotosComponent } from './fotos/fotos.component';
 import { TorneospasadosComponent } from './torneospasados/torneospasados.component';
 import { EvaluacionComponent } from './evaluacion/evaluacion.component'
 import { ScoutsComponent } from './scouts/scouts.component'
+import { GroupsComponent } from './groups/groups.component';
+import { BracketsComponent } from './brackets/brackets.component';
 
 const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
@@ -26,6 +28,8 @@ const routes: Routes = [
   { path: 'torneospasados', component: TorneospasadosComponent },
   { path: 'evaluacion', component: EvaluacionComponent },
   { path: 'scouts', component: ScoutsComponent },
+  { path: 'grupos', component: GroupsComponent },
+  { path: 'brackets', component: BracketsComponent },
   { path: '**', component: InicioComponent, data: { 
     breadcrumb: 'Gladiadores Hoops', 
     title: 'GladiadoresHoops',
