@@ -27,6 +27,7 @@ export class BracketsComponent implements OnInit {
   phases = ["Quarter-Finals", "Semi-Finals", "Finals"]
 
   phaseMatches: {[place: string]: Match} = {}
+  phaseMatchesElite: {[place: string]: Match} = {}
 
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
@@ -44,7 +45,12 @@ export class BracketsComponent implements OnInit {
     
     this.allMatches.forEach(element => {
       if(this.phases.includes(element.juego) && element.braketPlace != undefined){
-        this.phaseMatches[element.braketPlace] = element;
+        if(element.category == 'aprendiz'){
+          this.phaseMatches[element.braketPlace] = element;
+        }
+        if(element.category == 'elite'){
+          this.phaseMatchesElite[element.braketPlace] = element;
+        }
       }
     });
 

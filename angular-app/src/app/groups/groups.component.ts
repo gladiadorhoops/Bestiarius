@@ -27,6 +27,7 @@ export class GroupsComponent implements OnInit {
   groups = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4"]
 
   groupMatches: {[group: string]: Match[]} = {}
+  groupMatchesElite: {[group: string]: Match[]} = {}
 
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
@@ -41,12 +42,18 @@ export class GroupsComponent implements OnInit {
   async loadMatches(){
     this.groups.forEach(element => {
       this.groupMatches[element] = [];
+      this.groupMatchesElite[element] = [];
     });
 
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb)
     this.allMatches.forEach(element => {
       if(this.groups.includes(element.juego)){
-        this.groupMatches[element.juego].push(element);
+        if(element.category == "elite"){
+          this.groupMatchesElite[element.juego].push(element);
+        }
+        else{
+          this.groupMatches[element.juego].push(element);
+        }
       }
     });
     this.loading = false;
