@@ -13,7 +13,7 @@ export class AuthService {
   async login(username:string, password:string, ddb: DynamoDb): Promise<string | undefined> {
     console.log("Starting Login")
     var scoutId: string | undefined;
-    await ddb.findIdQuery(username, password).then(
+    await ddb.findIdQuery(username.toLocaleLowerCase(), password).then(
       (item) => {
         if(item != undefined) scoutId = item["pk"].S
         console.log("scoutId", scoutId)
@@ -23,7 +23,7 @@ export class AuthService {
   } 
 
   public setSession( scoutName: string, scoutId: string, scoutPass: string) {
-      localStorage.setItem('scout_name', scoutName);
+      localStorage.setItem('scout_name', scoutName.toLocaleLowerCase());
       localStorage.setItem('scout_id', scoutId);
       localStorage.setItem('scout_pass', scoutPass);
   }

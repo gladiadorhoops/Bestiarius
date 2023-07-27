@@ -12,39 +12,36 @@ export class Cognito {
         
         let credentials: AwsCredentialIdentity | Provider<AwsCredentialIdentity> | undefined
 
-        await Cognito.authenticateUser(username, password).then(
-            (output) => {
-                if(output == undefined) {
-                    credentials = undefined
-                    console.log("ERROR: User authentication returned undefined")
-                    return
-                }
-                let token = output.AuthenticationResult?.IdToken
-                if(token == undefined) {
-                    console.log("ERROR: ID Token not found on user authentication output")
-                    credentials = undefined
-                    return
-                }
-                console.log(`Found User ${username} ID Token`)
-                try {
-                    const cognitoCredentials: CognitoIdentityCredentialProvider = fromCognitoIdentityPool({
-                        clientConfig: { region: REGION }, // Configure the underlying CognitoIdentityClient.
-                        identityPoolId: COGNITO_IDENTITY_POOL,
-                        logins: {
-                            [COGNITO_IDP_TEMPLATE(REGION, COGNITO_USER_POOL)]: token,                            
-                        }            
-                    })
-                    credentials = cognitoCredentials
-                    console.log("Found AWS Credentials")
-                    return
-                } catch (err) {
-                    console.log("ERROR: Failed to retreive AWS credentials", err)
-                    return
-                }
-                
-            }
-        )
-        return credentials
+        let output = await Cognito.authenticateUser(username.toLowerCase(), password)
+ 
+        if(output == undefined) {
+            credentials = undefined
+            console.log("ERROR: User authentication returned undefined")
+            return
+        }
+        let token = output.AuthenticationResult?.IdToken
+        if(token == undefined) {
+            console.log("ERROR: ID Token not found on user authentication output")
+            credentials = undefined
+            return
+        }
+        console.log(`Found User ${username} ID Token`)
+        try {
+            const cognitoCredentials: CognitoIdentityCredentialProvider = fromCognitoIdentityPool({
+                clientConfig: { region: REGION }, // Configure the underlying CognitoIdentityClient.
+                identityPoolId: COGNITO_IDENTITY_POOL,
+                logins: {
+                    [COGNITO_IDP_TEMPLATE(REGION, COGNITO_USER_POOL)]: token,                            
+                }            
+            })
+            console.log("Found AWS Credentials")
+            return cognitoCredentials
+            
+            return
+        } catch (err) {
+            console.log("ERROR: Failed to retreive AWS credentials", err)
+            return
+        }                
     }
 
 
