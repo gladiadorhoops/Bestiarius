@@ -1,10 +1,9 @@
 import { S3Client, GetObjectCommand, ListObjectsCommand, ListObjectsCommandInput } from "@aws-sdk/client-s3";
-import {fromCognitoIdentityPool} from "@aws-sdk/credential-providers";
-import { REGION, COGNITO_CREDENTIALS } from "./constants";
+import { REGION, COGNITO_UNAUTHENTICATED_CREDENTIALS } from "./constants";
 
 const client = new S3Client({ 
     region: REGION,
-    credentials: COGNITO_CREDENTIALS
+    credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
 });
 const GLADIADORES_BUCKET_NAME = "gladiadores-hoops"
 const MATCH_DATA = "match-data"
