@@ -22,7 +22,7 @@ export class MarcadorFormComponent implements OnInit {
   matchesAprendizDays: Match[][] = [];
   matchesEliteDays: Match[][] = [];
   todayDay = new Date().getDate();
-  gyms = ['Gimnasio Nuevo', 'Gimnasio Tecnológico', 'Cancha Sindicato', 'Gimnasio Municipal'];
+  gyms = ['Gimnasio Nuevo', 'Gimnasio Tecnológico', 'Cancha Sindicato', 'Gimnasio Municipal', 'Gimnasio Municipal (afuera)', 'Gimnasio Federal'];
 
 
   equiposAp : string[] = [ "Raptors", "RoQui", "Bulldogs", "ABA", "Lions", "Abejas", "Rawigas", "Gansos", "Borreguitos", "Falcons", "Tigres", "ESBAL"];
