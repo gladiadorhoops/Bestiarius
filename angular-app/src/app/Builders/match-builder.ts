@@ -86,21 +86,21 @@ export class MatchBuilder {
         )
     }
 
-    async addEpmtyMatch(ddb: DynamoDb, category: string, juego: string, bracket: string) {   
+    async addEpmtyMatch(ddb: DynamoDb, category: string, juego: string, bracket: string, homeTeam?: string, visitorTeam?: string, day?: string, time?: string, gym?: string) {   
     
         let record: Record<string, AttributeValue> = {}
         let matchGuid = uuidv4();
 
         record[PK_KEY] = {S: `match.${matchGuid}`}
         record[SK_KEY] = {S: `match.data`}
-        record[SPK_KEY] = {S: `day`}
-        record[SSK_KEY] = {S: `gym`}
+        record[SPK_KEY] = {S: `${day}`}
+        record[SSK_KEY] = {S: `${gym}`}
         record['category'] = {S: `${category}`};
-        record['homeTeam'] = {S: `team.`};
-        record['visitorTeam'] = {S: `team.`};
+        record['homeTeam'] = {S: `${homeTeam}`};
+        record['visitorTeam'] = {S: `${visitorTeam}`};
         record['homePoints'] = {S: `0`};
         record['visitorPoints'] = {S: `0`};
-        record['time'] = {S: `datetime`};
+        record['time'] = {S: `${time}`};
         record['juego'] = {S: `${juego}`};
         record['braketPlace'] = {S: `${bracket}`};
 

@@ -24,7 +24,7 @@ export class BracketsComponent implements OnInit {
 
   isEditing: boolean = false;
   editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", players: [], category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", players: [], category: ""}, homePoints:"0"};
-  phases = ["Quarter-Finals", "Semi-Finals", "Finals"]
+  phases = ["Octavos", "Cuartos", "Semi-Finaless", "Finales"]
 
   phaseMatches: {[place: string]: Match} = {}
   phaseMatchesElite: {[place: string]: Match} = {}
@@ -53,6 +53,8 @@ export class BracketsComponent implements OnInit {
         }
       }
     });
+
+    console.warn(this.phaseMatches)
 
     this.loading = false;
   }

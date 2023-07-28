@@ -155,16 +155,288 @@
         
         <div class="container text-center">
             <h2>Categoria Aprendiz</h2>
-            <div class="tournament-bracket tournament-bracket--rounded">                                                     
+            <div class="tournament-bracket tournament-bracket--rounded"> 
+                                                                   
                 <div class="tournament-bracket__round tournament-bracket__round--quarterfinals">
-                <h3 class="tournament-bracket__round-title">Cuartos de Final</h3>
+                    <h3 class="tournament-bracket__round-title">Octavos</h3>
+                    <ul class="tournament-bracket__list">
+                        
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatches['o1'].location}} {{phaseMatches['o1'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o1'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o1'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o1'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o1'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatches['o2'].location}} {{phaseMatches['o2'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o2'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o2'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o2'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o2'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatches['o3'].location}} {{phaseMatches['o3'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o3'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o3'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o3'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o3'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatches['o4'].location}} {{phaseMatches['o4'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o4'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o4'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o4'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o4'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatches['o5'].location}} {{phaseMatches['o5'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o5'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o5'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o5'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o5'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatches['o6'].location}} {{phaseMatches['o6'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o6'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o6'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o6'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o6'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatches['o7'].location}} {{phaseMatches['o7'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o7'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o7'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o7'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o7'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatches['o8'].location}} {{phaseMatches['o8'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o8'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o8'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatches['o8'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatches['o8'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                    </ul>
+                    </div>
+                
+                <div class="tournament-bracket__round tournament-bracket__round--quarterfinals">
+                <h3 class="tournament-bracket__round-title">Cuartos</h3>
                 <ul class="tournament-bracket__list">
                     
                     <li class="tournament-bracket__item">
                     <div class="tournament-bracket__match" tabindex="0">
                         <table class="tournament-bracket__table">
                         <caption class="tournament-bracket__caption">
-                            {{phaseMatches['quarter1'].time}}
+                            {{phaseMatches['q9'].location}} {{phaseMatches['q9'].time}}
                         </caption>
                         <thead class="sr-only">
                             <tr>
@@ -175,18 +447,18 @@
                         <tbody class="tournament-bracket__content">
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['quarter1'].homeTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['q9'].homeTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatches['quarter1'].homePoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatches['q9'].homePoints}}</span>
                             </td>
                             </tr>
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['quarter1'].visitorTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['q9'].visitorTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatches['quarter1'].visitorPoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatches['q9'].visitorPoints}}</span>
                             </td>
                             </tr>
                         </tbody>
@@ -198,7 +470,7 @@
                     <div class="tournament-bracket__match" tabindex="0">
                         <table class="tournament-bracket__table">
                         <caption class="tournament-bracket__caption">
-                            {{phaseMatches['quarter2'].time}}
+                            {{phaseMatches['q10'].location}} {{phaseMatches['q10'].time}}
                         </caption>
                         <thead class="sr-only">
                             <tr>
@@ -209,18 +481,18 @@
                         <tbody class="tournament-bracket__content">
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['quarter2'].homeTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['q10'].homeTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatches['quarter2'].homePoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatches['q10'].homePoints}}</span>
                             </td>
                             </tr>
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['quarter2'].visitorTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['q10'].visitorTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatches['quarter2'].visitorPoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatches['q10'].visitorPoints}}</span>
                             </td>
                             </tr>
                         </tbody>
@@ -232,7 +504,7 @@
                     <div class="tournament-bracket__match" tabindex="0">
                         <table class="tournament-bracket__table">
                         <caption class="tournament-bracket__caption">
-                            {{phaseMatches['quarter3'].time}}
+                            {{phaseMatches['q11'].location}} {{phaseMatches['q11'].time}}
                         </caption>
                         <thead class="sr-only">
                             <tr>
@@ -243,18 +515,18 @@
                         <tbody class="tournament-bracket__content">
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['quarter3'].homeTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['q11'].homeTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatches['quarter3'].homePoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatches['q11'].homePoints}}</span>
                             </td>
                             </tr>
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['quarter3'].visitorTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['q11'].visitorTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatches['quarter3'].visitorPoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatches['q11'].visitorPoints}}</span>
                             </td>
                             </tr>
                         </tbody>
@@ -266,7 +538,7 @@
                     <div class="tournament-bracket__match" tabindex="0">
                         <table class="tournament-bracket__table">
                         <caption class="tournament-bracket__caption">
-                            {{phaseMatches['quarter4'].time}}
+                            {{phaseMatches['q12'].location}} {{phaseMatches['q12'].time}}
                         </caption>
                         <thead class="sr-only">
                             <tr>
@@ -277,18 +549,18 @@
                         <tbody class="tournament-bracket__content">
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['quarter4'].homeTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['q12'].homeTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatches['quarter4'].homePoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatches['q12'].homePoints}}</span>
                             </td>
                             </tr>
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['quarter4'].visitorTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatches['q12'].visitorTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatches['quarter4'].visitorPoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatches['q12'].visitorPoints}}</span>
                             </td>
                             </tr>
                         </tbody>
@@ -297,6 +569,7 @@
                     </li>
                 </ul>
                 </div>
+
                 <div class="tournament-bracket__round tournament-bracket__round--semifinals">
                 <h3 class="tournament-bracket__round-title">Semifinales</h3>
                 <ul class="tournament-bracket__list">
@@ -305,7 +578,7 @@
                         <div class="tournament-bracket__match" tabindex="0">
                             <table class="tournament-bracket__table">
                             <caption class="tournament-bracket__caption">
-                                {{phaseMatches['semi1'].time}}
+                                {{phaseMatches['s13'].location}} {{phaseMatches['s13'].time}}
                             </caption>
                             <thead class="sr-only">
                                 <tr>
@@ -316,18 +589,18 @@
                             <tbody class="tournament-bracket__content">
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['semi1'].homeTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['s13'].homeTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatches['semi1'].homePoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatches['s13'].homePoints}}</span>
                                 </td>
                                 </tr>
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['semi1'].visitorTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['s13'].visitorTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatches['semi1'].visitorPoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatches['s13'].visitorPoints}}</span>
                                 </td>
                                 </tr>
                             </tbody>
@@ -339,7 +612,7 @@
                         <div class="tournament-bracket__match" tabindex="0">
                             <table class="tournament-bracket__table">
                             <caption class="tournament-bracket__caption">
-                                {{phaseMatches['semi2'].time}}
+                                {{phaseMatches['s14'].location}} {{phaseMatches['s14'].time}}
                             </caption>
                             <thead class="sr-only">
                                 <tr>
@@ -350,18 +623,18 @@
                             <tbody class="tournament-bracket__content">
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['semi2'].homeTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['s14'].homeTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatches['semi2'].homePoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatches['s14'].homePoints}}</span>
                                 </td>
                                 </tr>
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['semi2'].visitorTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['s14'].visitorTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatches['semi2'].visitorPoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatches['s14'].visitorPoints}}</span>
                                 </td>
                                 </tr>
                             </tbody>
@@ -370,6 +643,7 @@
                         </li>
                 </ul>
                 </div>
+
                 <div class="tournament-bracket__round tournament-bracket__round--bronze">
                 <h3 class="tournament-bracket__round-title">Tercer</h3>
                 <ul class="tournament-bracket__list">
@@ -377,7 +651,7 @@
                         <div class="tournament-bracket__match" tabindex="0">
                             <table class="tournament-bracket__table">
                             <caption class="tournament-bracket__caption">
-                                {{phaseMatches['final2'].time}}
+                                {{phaseMatches['f22'].location}} {{phaseMatches['f22'].time}}
                             </caption>
                             <thead class="sr-only">
                                 <tr>
@@ -388,18 +662,18 @@
                             <tbody class="tournament-bracket__content">
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['final2'].homeTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['f22'].homeTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatches['final2'].homePoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatches['f22'].homePoints}}</span>
                                 </td>
                                 </tr>
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['final2'].visitorTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['f22'].visitorTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatches['final2'].visitorPoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatches['f22'].visitorPoints}}</span>
                                 </td>
                                 </tr>
                             </tbody>
@@ -408,6 +682,7 @@
                     </li>
                 </ul>
                 </div>
+
                 <div class="tournament-bracket__round tournament-bracket__round--gold">
                 <h3 class="tournament-bracket__round-title">Final</h3>
                 <ul class="tournament-bracket__list">
@@ -415,7 +690,7 @@
                         <div class="tournament-bracket__match" tabindex="0">
                             <table class="tournament-bracket__table">
                             <caption class="tournament-bracket__caption">
-                                {{phaseMatches['final1'].time}}
+                                {{phaseMatches['f15'].location}} {{phaseMatches['f15'].time}}
                             </caption>
                             <thead class="sr-only">
                                 <tr>
@@ -426,18 +701,18 @@
                             <tbody class="tournament-bracket__content">
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['final1'].homeTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['f15'].homeTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatches['final1'].homePoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatches['f15'].homePoints}}</span>
                                 </td>
                                 </tr>
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['final1'].visitorTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatches['f15'].visitorTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatches['final1'].visitorPoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatches['f15'].visitorPoints}}</span>
                                 </td>
                                 </tr>
                             </tbody>
@@ -452,16 +727,288 @@
 
         <div class="container text-center">
             <h2>Categoria Elite</h2>
-            <div class="tournament-bracket tournament-bracket--rounded">                                                     
+            <div class="tournament-bracket tournament-bracket--rounded"> 
+                                                                   
                 <div class="tournament-bracket__round tournament-bracket__round--quarterfinals">
-                <h3 class="tournament-bracket__round-title">Cuartos de Final</h3>
+                    <h3 class="tournament-bracket__round-title">Octavos</h3>
+                    <ul class="tournament-bracket__list">
+                        
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatchesElite['o1'].location}} {{phaseMatchesElite['o1'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o1'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o1'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o1'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o1'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatchesElite['o2'].location}} {{phaseMatchesElite['o2'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o2'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o2'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o2'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o2'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatchesElite['o3'].location}} {{phaseMatchesElite['o3'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o3'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o3'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o3'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o3'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatchesElite['o4'].location}} {{phaseMatchesElite['o4'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o4'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o4'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o4'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o4'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatchesElite['o5'].location}} {{phaseMatchesElite['o5'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o5'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o5'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o5'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o5'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatchesElite['o6'].location}} {{phaseMatchesElite['o6'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o6'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o6'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o6'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o6'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatchesElite['o7'].location}} {{phaseMatchesElite['o7'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o7'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o7'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o7'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o7'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        <li class="tournament-bracket__item">
+                            <div class="tournament-bracket__match" tabindex="0">
+                                <table class="tournament-bracket__table">
+                                <caption class="tournament-bracket__caption">
+                                    {{phaseMatchesElite['o8'].location}} {{phaseMatchesElite['o8'].time}}
+                                </caption>
+                                <thead class="sr-only">
+                                    <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntos</th>
+                                    </tr>
+                                </thead>  
+                                <tbody class="tournament-bracket__content">
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o8'].homeTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o8'].homePoints}}</span>
+                                    </td>
+                                    </tr>
+                                    <tr class="tournament-bracket__team">
+                                    <td class="tournament-bracket__country">
+                                        <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['o8'].visitorTeam.name}}</abbr>
+                                    </td>
+                                    <td class="tournament-bracket__score">
+                                        <span class="tournament-bracket__number">{{phaseMatchesElite['o8'].visitorPoints}}</span>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                            </div>
+                        </li>
+                    </ul>
+                    </div>
+                
+                <div class="tournament-bracket__round tournament-bracket__round--quarterfinals">
+                <h3 class="tournament-bracket__round-title">Cuartos</h3>
                 <ul class="tournament-bracket__list">
                     
                     <li class="tournament-bracket__item">
                     <div class="tournament-bracket__match" tabindex="0">
                         <table class="tournament-bracket__table">
                         <caption class="tournament-bracket__caption">
-                            {{phaseMatchesElite['quarter1'].time}}
+                            {{phaseMatchesElite['q9'].location}} {{phaseMatchesElite['q9'].time}}
                         </caption>
                         <thead class="sr-only">
                             <tr>
@@ -472,18 +1019,18 @@
                         <tbody class="tournament-bracket__content">
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['quarter1'].homeTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['q9'].homeTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatchesElite['quarter1'].homePoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatchesElite['q9'].homePoints}}</span>
                             </td>
                             </tr>
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['quarter1'].visitorTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['q9'].visitorTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatchesElite['quarter1'].visitorPoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatchesElite['q9'].visitorPoints}}</span>
                             </td>
                             </tr>
                         </tbody>
@@ -495,7 +1042,7 @@
                     <div class="tournament-bracket__match" tabindex="0">
                         <table class="tournament-bracket__table">
                         <caption class="tournament-bracket__caption">
-                            {{phaseMatchesElite['quarter2'].time}}
+                            {{phaseMatchesElite['q10'].location}} {{phaseMatchesElite['q10'].time}}
                         </caption>
                         <thead class="sr-only">
                             <tr>
@@ -506,18 +1053,18 @@
                         <tbody class="tournament-bracket__content">
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['quarter2'].homeTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['q10'].homeTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatchesElite['quarter2'].homePoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatchesElite['q10'].homePoints}}</span>
                             </td>
                             </tr>
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['quarter2'].visitorTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['q10'].visitorTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatchesElite['quarter2'].visitorPoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatchesElite['q10'].visitorPoints}}</span>
                             </td>
                             </tr>
                         </tbody>
@@ -529,7 +1076,7 @@
                     <div class="tournament-bracket__match" tabindex="0">
                         <table class="tournament-bracket__table">
                         <caption class="tournament-bracket__caption">
-                            {{phaseMatchesElite['quarter3'].time}}
+                            {{phaseMatchesElite['q11'].location}} {{phaseMatchesElite['q11'].time}}
                         </caption>
                         <thead class="sr-only">
                             <tr>
@@ -540,18 +1087,18 @@
                         <tbody class="tournament-bracket__content">
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['quarter3'].homeTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['q11'].homeTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatchesElite['quarter3'].homePoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatchesElite['q11'].homePoints}}</span>
                             </td>
                             </tr>
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['quarter3'].visitorTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['q11'].visitorTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatchesElite['quarter3'].visitorPoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatchesElite['q11'].visitorPoints}}</span>
                             </td>
                             </tr>
                         </tbody>
@@ -563,7 +1110,7 @@
                     <div class="tournament-bracket__match" tabindex="0">
                         <table class="tournament-bracket__table">
                         <caption class="tournament-bracket__caption">
-                            {{phaseMatchesElite['quarter4'].time}}
+                            {{phaseMatchesElite['q12'].location}} {{phaseMatchesElite['q12'].time}}
                         </caption>
                         <thead class="sr-only">
                             <tr>
@@ -574,18 +1121,18 @@
                         <tbody class="tournament-bracket__content">
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['quarter4'].homeTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['q12'].homeTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatchesElite['quarter4'].homePoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatchesElite['q12'].homePoints}}</span>
                             </td>
                             </tr>
                             <tr class="tournament-bracket__team">
                             <td class="tournament-bracket__country">
-                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['quarter4'].visitorTeam.name}}</abbr>
+                                <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['q12'].visitorTeam.name}}</abbr>
                             </td>
                             <td class="tournament-bracket__score">
-                                <span class="tournament-bracket__number">{{phaseMatchesElite['quarter4'].visitorPoints}}</span>
+                                <span class="tournament-bracket__number">{{phaseMatchesElite['q12'].visitorPoints}}</span>
                             </td>
                             </tr>
                         </tbody>
@@ -594,6 +1141,7 @@
                     </li>
                 </ul>
                 </div>
+
                 <div class="tournament-bracket__round tournament-bracket__round--semifinals">
                 <h3 class="tournament-bracket__round-title">Semifinales</h3>
                 <ul class="tournament-bracket__list">
@@ -602,7 +1150,7 @@
                         <div class="tournament-bracket__match" tabindex="0">
                             <table class="tournament-bracket__table">
                             <caption class="tournament-bracket__caption">
-                                {{phaseMatchesElite['semi1'].time}}
+                                {{phaseMatchesElite['s13'].location}} {{phaseMatchesElite['s13'].time}}
                             </caption>
                             <thead class="sr-only">
                                 <tr>
@@ -613,18 +1161,18 @@
                             <tbody class="tournament-bracket__content">
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['semi1'].homeTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['s13'].homeTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatchesElite['semi1'].homePoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatchesElite['s13'].homePoints}}</span>
                                 </td>
                                 </tr>
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['semi1'].visitorTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['s13'].visitorTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatchesElite['semi1'].visitorPoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatchesElite['s13'].visitorPoints}}</span>
                                 </td>
                                 </tr>
                             </tbody>
@@ -636,7 +1184,7 @@
                         <div class="tournament-bracket__match" tabindex="0">
                             <table class="tournament-bracket__table">
                             <caption class="tournament-bracket__caption">
-                                {{phaseMatchesElite['semi2'].time}}
+                                {{phaseMatchesElite['s14'].location}} {{phaseMatchesElite['s14'].time}}
                             </caption>
                             <thead class="sr-only">
                                 <tr>
@@ -647,18 +1195,18 @@
                             <tbody class="tournament-bracket__content">
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['semi2'].homeTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['s14'].homeTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatchesElite['semi2'].homePoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatchesElite['s14'].homePoints}}</span>
                                 </td>
                                 </tr>
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['semi2'].visitorTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['s14'].visitorTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatchesElite['semi2'].visitorPoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatchesElite['s14'].visitorPoints}}</span>
                                 </td>
                                 </tr>
                             </tbody>
@@ -667,6 +1215,7 @@
                         </li>
                 </ul>
                 </div>
+
                 <div class="tournament-bracket__round tournament-bracket__round--bronze">
                 <h3 class="tournament-bracket__round-title">Tercer</h3>
                 <ul class="tournament-bracket__list">
@@ -674,7 +1223,7 @@
                         <div class="tournament-bracket__match" tabindex="0">
                             <table class="tournament-bracket__table">
                             <caption class="tournament-bracket__caption">
-                                {{phaseMatchesElite['final2'].time}}
+                                {{phaseMatchesElite['f22'].location}} {{phaseMatchesElite['f22'].time}}
                             </caption>
                             <thead class="sr-only">
                                 <tr>
@@ -685,26 +1234,27 @@
                             <tbody class="tournament-bracket__content">
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['final2'].homeTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['f22'].homeTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatchesElite['final2'].homePoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatchesElite['f22'].homePoints}}</span>
                                 </td>
                                 </tr>
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['final2'].visitorTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['f22'].visitorTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatchesElite['final2'].visitorPoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatchesElite['f22'].visitorPoints}}</span>
                                 </td>
                                 </tr>
                             </tbody>
                             </table>
                         </div>
-                        </li>
+                    </li>
                 </ul>
                 </div>
+
                 <div class="tournament-bracket__round tournament-bracket__round--gold">
                 <h3 class="tournament-bracket__round-title">Final</h3>
                 <ul class="tournament-bracket__list">
@@ -712,7 +1262,7 @@
                         <div class="tournament-bracket__match" tabindex="0">
                             <table class="tournament-bracket__table">
                             <caption class="tournament-bracket__caption">
-                                {{phaseMatchesElite['final1'].time}}
+                                {{phaseMatchesElite['f15'].location}} {{phaseMatchesElite['f15'].time}}
                             </caption>
                             <thead class="sr-only">
                                 <tr>
@@ -723,27 +1273,28 @@
                             <tbody class="tournament-bracket__content">
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['final1'].homeTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['f15'].homeTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatchesElite['final1'].homePoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatchesElite['f15'].homePoints}}</span>
                                 </td>
                                 </tr>
                                 <tr class="tournament-bracket__team">
                                 <td class="tournament-bracket__country">
-                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['final1'].visitorTeam.name}}</abbr>
+                                    <abbr class="tournament-bracket__code" title="">{{phaseMatchesElite['f15'].visitorTeam.name}}</abbr>
                                 </td>
                                 <td class="tournament-bracket__score">
-                                    <span class="tournament-bracket__number">{{phaseMatchesElite['final1'].visitorPoints}}</span>
+                                    <span class="tournament-bracket__number">{{phaseMatchesElite['f15'].visitorPoints}}</span>
                                 </td>
                                 </tr>
                             </tbody>
                             </table>
                         </div>
-                        </li>
+                    </li>
                 </ul>
                 </div>
             </div>
+            
         </div>
     </div>
 </div>
