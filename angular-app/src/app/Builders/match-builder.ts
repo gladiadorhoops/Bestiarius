@@ -19,6 +19,7 @@ export class MatchBuilder {
     async getListOfMatch(ddb: DynamoDb): Promise<Match[]> {
         var matches: Match[] = []
         var items = await ddb.listQuery('match.data');
+        items.sort((a, b) => a['time'].S!.localeCompare(b['time'].S!))
         var teams = await this.teamBuilder.getListOfTeams(ddb);
         for (const item of items) {
             let vteamId = item['visitorTeam'].S!
