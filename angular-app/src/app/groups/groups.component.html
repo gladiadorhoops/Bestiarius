@@ -1,6 +1,6 @@
 <div class="row justify-content-md-center padded-page">
     <h2 class="text-center mb-3">
-        Groups Phase
+        Fase de Grupos
     </h2>
     <div class="spinner-border text-light" role="status" *ngIf="loading">
         <span class="sr-only">Loading...</span>
@@ -15,7 +15,7 @@
                     <h3 class="text-center">{{group}}</h3>
                     <div class="row marcadorItem" *ngFor="let match of groupMatches[group]; let idx=index" >
                         
-                        <div class="col col-2">#{{idx+1}}</div>
+                        <div class="col col-2"></div> <!--#{{idx+1}}</div-->
                         <div class="col col-8" > 
                             <div class="row">{{match.homeTeam.name}}</div>
                             <div class="row">{{match.visitorTeam.name}}</div>
@@ -23,6 +23,9 @@
                         <div class="col col-2">
                             <div class="row">{{match.homePoints}}</div>
                             <div class="row">{{match.visitorPoints}}</div>
+                        </div>
+                        <div class="col col-12 text-center">
+                            {{match.location}} - {{match.time}}
                         </div>
                     </div>
                 </div>

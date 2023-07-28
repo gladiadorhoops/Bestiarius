@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
+import { DynamoDb, PK_KEY, SK_KEY, SPK_KEY } from "src/app/aws-clients/dynamodb";
 import { Team } from "../interfaces/team";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
+import {v4 as uuidv4} from 'uuid';
 
 @Injectable({
     providedIn: 'root'
@@ -42,5 +43,31 @@ export class TeamBuilder {
             category: item['spk'].S,
 
         }
+    }
+
+    async addTeam(ddb: DynamoDb, name: string, category: string, players: string[]) {   
+
+        let record: Record<string, AttributeValue> = {}
+        let teamGuid = uuidv4();
+
+        record[PK_KEY] = {S: `team.${teamGuid}`}
+        record[SK_KEY] = {S: `team.data`}
+        record[SPK_KEY] = {S: `${category}`}
+        record['category'] = {S: `${category}`};
+        record['name'] = {S: `${name}`};
+        await ddb.putItem(record);
+
+        players.forEach(async player => {
+            let playerRecord: Record<string, AttributeValue> = {}
+            let playerGuid = uuidv4();
+
+            playerRecord[PK_KEY] = {S: `player.${playerGuid}`}
+            playerRecord[SK_KEY] = {S: `player.data`}
+            playerRecord['age'] = {S: ``};
+            playerRecord['category'] = {S: `${category}`};
+            playerRecord['name'] = {S: `${player}`};
+            playerRecord[SPK_KEY] = {S: `team.${teamGuid}`};
+            await ddb.putItem(playerRecord);
+        });
     }
 }

@@ -1,0 +1,705 @@
+  teams = [
+    {
+        "team":"Titanes",
+        "category":"aprendiz",
+        "players":[
+            "Jose Emiliano Torres Sanchez ",
+            "Isaac Banda Perea ",
+            "Fernando Valles Mariñelarena",
+            "Emiliano Chaparro Morales",
+            "Gael Palomarez Chairez",
+            "Gael Alejandro Salcedo Barraza",
+            "Jesus Santiago Piña Garcia"
+        ]
+    },
+    {
+        "team":"ABBA",
+        "category":"elite",
+        "players":[
+            "ABDIEL ASLAN CHI GUERRERO",
+            "OSWALDO CAMACHO VILLARREAL",
+            "SALVADOR VALDES RIVAS",
+            "HECTOR AGUNDEZ MARTINEZ",
+            "EDGARDO CEPEDA VELAZQUEZ",
+            "SANTIAGO SALVADOR INSAUSTI ALVARADO",
+            "SAMUEL MARTINEZ CERVANTES",
+            "GABRIEL RAMIREZ ESPINOZA",
+            "ANGEL LOMELI",
+            "JOSE FRANCISCO RUVALCABA PAREDES",
+            "ALEJANDRO PEREDA MARTINEZ",
+            "LUIS EDUARDO IBARRA A LA TORRE",
+            "JUAN ANTONIO CONTRERAS SOLIS",
+            "JESUS ALEJANDRO PEREDA MARTINEZ"
+        ]
+    },
+    {
+        "team":"Abejas",
+        "category":"aprendiz",
+        "players":[
+            "Adrian armendariz beall",
+            "Gael Munguía",
+            "Fernando Salgado",
+            "Diego salaices",
+            "Irving gallardo",
+            "Federico Nuñez",
+            "Gerardo Fernández",
+            "Bruno Rascón",
+            "Angel Caraveo"
+        ]
+    },
+    {
+        "team":"ALBA",
+        "category":"aprendiz",
+        "players":[
+            "Erick Fernando Moreno Becerra",
+            "Rubén Gabriel Aguirre Fierro",
+            "Sebastián Chávez Cordova",
+            "Bastian Antonio Vazquez Ávila",
+            "Raúl Tadeo Villarreal Carrillo",
+            "Francisco Samuel Rangel Hernández",
+            "Diego Iván Carrillo Vázquez",
+            "Diego Esparza"
+        ]
+    },
+    {
+        "team":"ALBA",
+        "category":"elite",
+        "players":[
+            "Víctor Alfredo Garcia Urzua",
+            "Rodrigo Canales Cebrian",
+            "Cristian Jered Segovia Moreno",
+            "Rodrigo Rangel Madrid",
+            "Ameth Fernando Morales Simental",
+            "Diego Hernández Trujillo",
+            "Jorge Gael Romero Chavarría",
+            "Víctor Alexandro Valdez Diaz",
+            "Juan Pablo Machado Carlos"
+        ]
+    },
+    {
+        "team":"Balleneros",
+        "category":"elite",
+        "players":[
+            "Hector Hugo De La O Félix",
+            "Arian Ignacio Cazares Rosales",
+            "Gustavo De Los Reyes Salinas",
+            "Luis Fernando Gonzalez Moreno",
+            "Rey Alexander Hernandez Alcala",
+            "Luis Alberto López Sánchez",
+            "Luis Roberto De La Fuente Mendez",
+            "Jose Francisco Jauregui Vidrio",
+            "Danfel Gabriel Meza Maclish"
+        ]
+    },
+    {
+        "team":"Border Bandits",
+        "category":"aprendiz",
+        "players":[
+            "Cosme Yahir Gutierrez Chavez",
+            "Emiliano Quintana González",
+            "Rodrigo Porras Ocaranza",
+            "Estefan Andre Quiroz Alcalá",
+            "Esteban Maximiliano Barba Muñoz",
+            "Aldo Chontal Morales",
+            "Hiram Osvaldo Favila Orozco",
+            "Diego Alejandro Santoyo Flores"
+        ]
+    },
+    {
+        "team":"Carrilleros",
+        "category":"elite",
+        "players":[
+            "Bryan Rafael Vazquez Serrano",
+            "Marco Antonio Ortiz Davila",
+            "Obed Nuñez Flored",
+            "Luis Fernando Ochoa Castro",
+            "Carlos Arturo Gomez Rodríguez",
+            "Brian Arath Nuñez Chavez",
+            "Alejandro Romero Hernández"
+        ]
+    },
+    {
+        "team":"Coyotes",
+        "category":"elite",
+        "players":[
+            "Ángel Uriel Martínez Rivas",
+            "Juan Jesús López Domínguez",
+            "Guillermo Rodríguez Villalobos",
+            "Santiago Andrés Ang Ramírez",
+            "José Alfredo Chávez de la O",
+            "Pedro Gabael Espinoza de la Rosa",
+            "Fernando Ruiz Alarcón",
+            "Alan Esaú Hernández Marmolejo"
+        ]
+    },
+    {
+        "team":"ESBAL",
+        "category":"aprendiz",
+        "players":[
+            "MAXIMILIANO DE LA CRUZ GONZALEZ",
+            "EDUARDO MONTAÑA BARRANCO",
+            "ALFREDO GRANA",
+            "NICOLAS MUÑOZ",
+            "ALFREDO CARDENAS LUNA",
+            "DIEGO ALANIS PEREZ",
+            "JESUS AMIN SANCHEZ AGUILAR",
+            "GAEL SANTIAGO MACIAS",
+            "GAEL GUTIEREZ LUJAN",
+            "EMILIANO CAMACHO"
+        ]
+    },
+    {
+        "team":"ESBAL",
+        "category":"elite",
+        "players":[
+            "GERARDO AGUIRRE FERNANDEZ",
+            "SANTIAGO MOLINA DIAZ",
+            "FERNANDO BARRAZA RUIZ",
+            "CARLOS GOSSEREZ COLCHADO",
+            "ANDRES MONTAÑA GUTIERREZ",
+            "ANGEL SAMUEL DE LEON BURCIAGA",
+            "LUCAS ACOSTA PIÑA",
+            "MARCELO GARNIER GÓMEZ",
+            "DAVID TORRES",
+            "ELÍAS LUEVANO ALVAREZ",
+            "AMIN MELO VORHER",
+            "SEBASTIAN AGUIRRE"
+        ]
+    },
+    {
+        "team":"FALCONS",
+        "category":"aprendiz",
+        "players":[
+            "SANTIAGO YAEL CASTILLO GALAVIZ",
+            "JOSE PABLO LIZALDE BERNAL",
+            "DYLAN AGUILERA CASTORENA",
+            "DYLAN ARMANDO GARCIA HERNANDEZ",
+            "ISAIAS MONTOYA ESPARZA",
+            "JUAN CARLOS CAMARENA RODRIGUEZ",
+            "RAFAEL ARELLANO VENTURA",
+            "VICTOR ARTURO DIAZ HERNANDEZ",
+            "VICTOR GAEL MARTINEZ MICHAUS",
+            "LUIS ALFREDO RAMIREZ CAMARILLO",
+            "JESUS EDUARDO FRAUSTO ALVISO"
+        ]
+    },
+    {
+        "team":"Frayles",
+        "category":"elite",
+        "players":[
+            "Eduardo Sandoval",
+            "Allen garcia",
+            "Eddy Jesus vargas",
+            "Brandon morales",
+            "Fabian Barrón",
+            "Luis Enrique renova",
+            "Paul garcia",
+            "Arath ramos" 
+        ]
+    },
+    {
+        "team":"Gansos",
+        "category":"aprendiz",
+        "players":[
+            "GERARDO PORTILLO MEZA",
+            "LUIS CARLOS FLORES HOLGUIN",
+            "RICARDO VALENZUELA GARCIA",
+            "ANGEL ESPINOZA DOMINGUEZ",
+            "ALEXIS SAUL FRIAS QUINTANA",
+            "ANDRE GAEL MARTINEZ FUENTES",
+            "LUIS RAUL SAENZ GUTIERREZ",
+            "OMAR ANDREE MARIN ACOSTA",
+            "JESUS OMAR SANTILLANES RODRIGUEZ",
+            "ELIER FERNANDEZ RICO",
+            "ANGEL ALBERTO VALLES MEDINA",
+            "MAXIMILIANO ORNELAS PORRAS"
+        ]
+    },
+    {
+        "team":"Gansos",
+        "category":"elite",
+        "players":[
+            "MARIO FRANCISCO MUÑOZ PAYAN",
+            "JUAN ANTONIO OGAZ ENRIQUEZ",
+            "IVAN HERNANDEZ GARCIA",
+            "DANIEL HERNANDEZ LUJAN",
+            "ALAN GARCIA GAYTAN",
+            "ABDIEL ALBERTO REGALADO GONZALEZ",
+            "JUAN ANTONIO HOLGUIN RODRIGUEZ",
+            "LUIS FERNANDO AGUILAR MEDINA",
+            "ADRIAN HINOJOS VIZCARRA",
+            "JULIO ALEJANDRO MORENO HERNANDEZ",
+            "ADRIAN GERARDO CASTREJON RODRIGUEZ",
+            "ABDIEL IBARRA"
+        ]
+    },
+    {
+        "team":"HOOPS Academy",
+        "category":"elite",
+        "players":[
+            "EMILIANO ARZAGA TREVIZO",
+            "ADRIAN CABRERA AMADOR",
+            "ANGEL CASILLAS ARAUJO",
+            "JUAN DE DIOS KARIM GARCIA PEREZ RODRIGUEZ",
+            "ADRIAN OBED BORRUEL FIERRO",
+            "DANIEL ALBERTO SALAZAR AGUAYO",
+            "HIRAM MENDOZA ARGÜELLO",
+            "JOSE EDUARDO VARGAS BENCOMO",
+            "JOSE EDUARDO GARCIA CHAVEZ",
+            "YURI IVAN AKOSIMA DE LAS CASAS",
+            "MAXIMO ALAN CHACON RODRIGUEZ",
+            "ADRIAN RIVAS GARCIA"
+        ]
+    },
+    {
+        "team":"Lenadores",
+        "category":"aprendiz",
+        "players":[
+            "Axel Fernando Bencomo Fierro",
+            "Ivan Alejandro Alvarez Jaquez",
+            "Daniel Márquez Piria",
+            "Kristian Lechuga Ortez",
+            "Yael Romero Méndez",
+            "Yamir Romero Méndez",
+            "Derek Alberto Fierro Martinez",
+            "Osmar Facundo Fornelli Carmona",
+            "Sebastián Emilio Ramos Montes",
+            "Luis René Estrada Vargas",
+            "Iker Eduardo Altamirano Rios",
+            "Raul Arturo Flores González"
+        ]
+    },
+    {
+        "team":"Linces",
+        "category":"elite",
+        "players":[
+            "Juan Gallardo",
+            "Eduardo Perales",
+            "Hector Prone",
+            "Axel Ramirez",
+            "Luis Carreon",
+            "Dante Pérez",
+            "Diego Najera",
+            "Ivan Valero",
+            "Manuel Diaz",
+            "Antonio Diaz",
+            "Joseph Gonzalez",
+            "Ángel de Lara"
+        ]
+    },
+    {
+        "team":"Lobos Negros",
+        "category":"aprendiz",
+        "players":[
+            "Diego Guevara García",
+            "Max Diego López Saucedo",
+            "Angel Mihai Castro Ortiz",
+            "Roberto Jaimes López",
+            "Gabriel Alvarez Matzumara",
+            "Arturo Adrián Méndez Gutiérrez",
+            "Jerónimo Nahir Romero Casas",
+            "José Antonio Arrieta Benítez",
+            "Tson Yado Uballe Hernández",
+            "Isaí Pérez Torres"
+        ]
+    },
+    {
+        "team":"Lobos Negros",
+        "category":"elite",
+        "players":[
+            "Julián Álvarez Matzumara",
+            "Fernando Ramirez García",
+            "Gustavo Aguirre González",
+            "Gael Pozos Argoytia",
+            "Javier Villafaña Valdez",
+            "Ethan Ricardo Solis Granados",
+            "Rodrigo Díaz González"
+        ]
+    },
+    {
+        "team":"Raptors",
+        "category":"aprendiz",
+        "players":[
+            "Bernardo Alemán Torres",
+            "Juan Roberto Garcia de León",
+            "Kevin Dayel Sosa Cortes",
+            "Juan José Navarro Ibarra",
+            "Axel Daniel De la Rosa Briones",
+            "Santiago Abdiel Dominguez Navarro",
+            "Romeo Arturo Fabela Huerta",
+            "Cesar Brondo De la Garza",
+            "Narciso Maximiliano Maciel Garcia",
+            "Rodrigo Gabriel Garcia Ledezma"
+        ]
+    },
+    {
+        "team":"SAHQ",
+        "category":"elite",
+        "players":[
+            "Héctor Samuel Chavez Gallegos",
+            "Jesus Romero Licon",
+            "Sebastian Hernandez  Macias",
+            "Juan Pablo Limas",
+            "Juan Pablo Campuzano",
+            "Enrique Correa",
+            "Luis Quezada",
+            "Diego Gabriel Acosta Piña",
+            "Misael Palafox Silva"
+        ]
+    },
+    {
+        "team":"Venados",
+        "category":"aprendiz",
+        "players":[
+            "Gael",
+            "Ramón Pantoja",
+            "Tadeo",
+            "José",
+            "Refugio",
+            "Marcos",
+            "Alfredo",
+            "Ramón Guillermo Hernández Castro.",
+            "José Alberto Casas Sifuentes",
+            "Alfredo Anaya Rubio.",
+            "Ángel Hazel Zamarripa Valtierra",
+            "José Humberto Carranza Solís"
+        ]
+    },
+    {
+        "team":"Venados",
+        "category":"elite",
+        "players":[
+            "Jesús Adan Ávila",
+            "Fily Gamboa",
+            "Pablo",
+            "Ismael",
+            "Luis",
+            "Beto",
+            "Manuel Rangel Contreras",
+            "Raúl Alejandro Piedra Hurtado",
+            "Rafael Martínez Pantoja",
+            "Ernesto Cordova Arreola"
+        ]
+    },
+    {
+        "team":"Wildcats",
+        "category":"aprendiz",
+        "players":[
+            "Mateo Lopez Amor Evaristo",
+            "Diego Garay Maldonado",
+            "Pablo Gutierrez Martinez",
+            "Arturo Mijares Rivas",
+            "Yani Jardon Boone",
+            "Santiago Lopez amor Evaristo",
+            "Maximiliano Anaya Castro",
+            "Emiliano Avila Estrada"
+        ]
+    }
+  ]
+  groupMatches = [
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Grupo 1",
+        "braketPlace":"",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Grupo 2",
+        "braketPlace":"",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Grupo 3",
+        "braketPlace":"",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Grupo 4",
+        "braketPlace":"",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Grupo 1",
+        "braketPlace":"",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Grupo 2",
+        "braketPlace":"",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Grupo 3",
+        "braketPlace":"",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Grupo 4",
+        "braketPlace":"",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    }
+  ]
+  bracketMatches = [
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Finals",
+        "braketPlace":"final1",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Finals",
+        "braketPlace":"final2",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Semi-Finals",
+        "braketPlace":"semi1",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Semi-Finals",
+        "braketPlace":"semi2",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Quarter-Finals",
+        "braketPlace":"quarter1",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Quarter-Finals",
+        "braketPlace":"quarter2",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Quarter-Finals",
+        "braketPlace":"quarter3",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"aprendiz",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Quarter-Finals",
+        "braketPlace":"quarter4",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Finals",
+        "braketPlace":"final1",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Finals",
+        "braketPlace":"final2",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Semi-Finals",
+        "braketPlace":"semi1",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Semi-Finals",
+        "braketPlace":"semi2",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Quarter-Finals",
+        "braketPlace":"quarter1",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Quarter-Finals",
+        "braketPlace":"quarter2",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Quarter-Finals",
+        "braketPlace":"quarter3",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    },
+    {
+        "category":"elite",
+        "homeTeam":"",
+        "visitorTeam":"",
+        "ssk":"gym",
+        "time":"datetime",
+        "spk":"day",
+        "juego":"Quarter-Finals",
+        "braketPlace":"quarter4",
+        "homePoints":"0",
+        "visitorPoints":"0"
+    }
+  ]
+  add_ddb_data(){
+
+    this.groupMatches.forEach( g => {
+        this.matchBuilder.addEpmtyMatch(this.ddb, g.category, g.juego, g.braketPlace);
+        this.matchBuilder.addEpmtyMatch(this.ddb, g.category, g.juego, g.braketPlace);
+        this.matchBuilder.addEpmtyMatch(this.ddb, g.category, g.juego, g.braketPlace);
+        this.matchBuilder.addEpmtyMatch(this.ddb, g.category, g.juego, g.braketPlace);
+        this.matchBuilder.addEpmtyMatch(this.ddb, g.category, g.juego, g.braketPlace);
+        this.matchBuilder.addEpmtyMatch(this.ddb, g.category, g.juego, g.braketPlace);
+      }
+    )
+    this.bracketMatches.forEach( g => {
+      this.matchBuilder.addEpmtyMatch(this.ddb, g.category, g.juego, g.braketPlace)
+    })
+  }

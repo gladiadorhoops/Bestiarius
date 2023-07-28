@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
+import { DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
 import { Match } from "../interfaces/match";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { TeamBuilder } from './team-builder';
 import { Team } from '../interfaces/team';
+import {v4 as uuidv4} from 'uuid';
 
 @Injectable({
     providedIn: 'root'
@@ -82,5 +83,26 @@ export class MatchBuilder {
                 );
             }
         )
+    }
+
+    async addEpmtyMatch(ddb: DynamoDb, category: string, juego: string, bracket: string) {   
+    
+        let record: Record<string, AttributeValue> = {}
+        let matchGuid = uuidv4();
+
+        record[PK_KEY] = {S: `match.${matchGuid}`}
+        record[SK_KEY] = {S: `match.data`}
+        record[SPK_KEY] = {S: `day`}
+        record[SSK_KEY] = {S: `gym`}
+        record['category'] = {S: `${category}`};
+        record['homeTeam'] = {S: `team.`};
+        record['visitorTeam'] = {S: `team.`};
+        record['homePoints'] = {S: `0`};
+        record['visitorPoints'] = {S: `0`};
+        record['time'] = {S: `datetime`};
+        record['juego'] = {S: `${juego}`};
+        record['braketPlace'] = {S: `${bracket}`};
+
+        await ddb.putItem(record);
     }
 }
