@@ -15,9 +15,11 @@ export class TeamBuilder {
         var teams: Team[] = []
         teams = await ddb.listQuery('team.data', category).then(
             (items) => {
+                items.sort((a, b) => a['name'].S!.localeCompare(b['name'].S!))
                 return items.map((item) => {return this.buildTeam(item)})
             }
         )
+
         console.log('teams', teams)
         return teams
     }

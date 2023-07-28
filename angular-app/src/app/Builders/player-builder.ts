@@ -15,6 +15,7 @@ export class PlayerBuilder {
         let players: Player[] = []
         players = await ddb.listQuery('player.data', teamId).then(
             (items) => {
+                items.sort((a, b) => a['name'].S!.localeCompare(b['name'].S!))
                 return items.map((item) => {return this.buildPlayer(item)})
             }
         )
