@@ -85,6 +85,50 @@
         </div>
 
         <div class="sidepanels">
+            <form [formGroup]="filterForm">
+                <div class="row">
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="category">Category:</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="category" formControlName="cat" (change)="applyFilters()" required>
+                                    <option value={{null}}></option>
+                                    <option value="aprendiz">Aprendiz</option>
+                                    <option value="elite">Elite</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="teams">Equipo</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="teams" formControlName="equipo" (change)="applyFilters()" require>
+                                    <option value={{null}}></option>
+                                    <option *ngFor="let equipo of equipos" value="{{equipo.name}}">{{equipo.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="teams">Jugador</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="player" formControlName="player" (change)="updateSelected(filterForm.value.player!)" require>
+                                    <option value={{null}}></option>
+                                    <option *ngFor="let player of players" value="{{player.Name}}">{{player.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <div>
                 <div>
                     <b>Nombre</b>
@@ -136,5 +180,26 @@
                 </div>
             </div>
             </div>
+            <div class="row">
+                <div class="col-11 col-md-4">
+                    <div>
+                        <b>Skills</b>
+                    </div>
+                    <div class="row myrow" *ngFor="let skill of selectedPlayer.skills">
+                        <div class="col-6">{{skill.Name}}</div>
+                        <div class="col-5 playerfield">{{skill.Points}}/{{selectedPlayer.Scouts}}</div>
+                    </div>
+                    <br>
+                </div>
+                <div class="col-11 col-md-8">
+                    <div>
+                        <b>Nominations</b>
+                    </div>
+                    <div class="row myrow" *ngFor="let nom of selectedPlayer.nominations">
+                        <div class="col-6">{{nom.Name}}</div> 
+                        <div class="col-5 playerfield">{{nom.Points}}/{{selectedPlayer.Scouts}}</div>
+                    </div>
+                </div>
+                </div>
         </div>
     </div>  
