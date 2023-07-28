@@ -10,6 +10,7 @@ const GLADIADORES_BUCKET_NAME = "gladiadores-hoops"
 const MATCH_DATA = "match-data"
 const TOURNAMENT_PREFIX = "tournament-"
 const CURRENT_TOURNAMENT = "10"
+export const TOURNAMENT_YEAR = "2023"
 const MATCH_DATA_PATH = `${MATCH_DATA}/${TOURNAMENT_PREFIX}${CURRENT_TOURNAMENT}`
 
 export { client };

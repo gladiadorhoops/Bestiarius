@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
+import { DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
 import { Section, Skills } from "../interfaces/reporte";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Scout } from '../interfaces/scout';
+import { TOURNAMENT_YEAR } from '../aws-clients/s3';
 
 @Injectable({
     providedIn: 'root'
@@ -85,6 +86,8 @@ export class ReporteBuilder {
         record[SK_KEY] = {S: `report.${playerId}`}
 
         record[Section.CATEGORIA] = {S: categoria};
+        record[SPK_KEY] = {S: 'reporte'}
+        record[SSK_KEY] = {S: TOURNAMENT_YEAR}
 
         if( Object.keys(posicionSkills).length != 0) record[Section.POSICION] = {M: posicionSkills};        
         if( Object.keys(tiroSkills).length != 0) record[Section.TIRO] = {M: tiroSkills};
