@@ -46,6 +46,12 @@
                     <div class="col col-4 align-items-center text-center">
                         <button (click)="showResultados()">Resultados</button>
                     </div>
+                    <div class="col col-4 align-items-center text-center" *ngIf="isAdmin">
+                        <button (click)="showMatchGen()">AddMatch</button>
+                    </div>
+                    <div class="col col-4 align-items-center text-center" *ngIf="isAdmin">
+                        <button (click)="showMatchEdit()">EditMatch</button>
+                    </div>
                 </div>
 
                 <div class="spinner-border text-light" role="status" *ngIf="loading">
@@ -62,6 +68,14 @@
                     
                     <div *ngIf="resultadosView">
                         <app-resultados-evaluacion></app-resultados-evaluacion>
+                    </div>
+                    
+                    <div *ngIf="matchGenView">
+                        <app-match-generator [ddb]="ddb"></app-match-generator>
+                    </div>
+                    
+                    <div *ngIf="matchEditView">
+                        <app-match-editor [ddb]="ddb"></app-match-editor>
                     </div>
                 </div>
                 

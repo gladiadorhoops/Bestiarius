@@ -38,6 +38,8 @@ import { MarcadorFormComponent } from './marcador-form/marcador-form.component';
 import { ResultadosEvaluacionComponent } from './resultados-evaluacion/resultados-evaluacion.component';
 import { BracketsComponent } from './brackets/brackets.component';
 import { GroupsComponent } from './groups/groups.component';
+import { MatchGeneratorComponent } from './match-generator/match-generator.component';
+import { MatchEditorComponent } from './match-editor/match-editor.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import { GroupsComponent } from './groups/groups.component';
     MarcadorFormComponent,
     ResultadosEvaluacionComponent,
     BracketsComponent,
-    GroupsComponent
+    GroupsComponent,
+    MatchGeneratorComponent,
+    MatchEditorComponent
   ],
   imports: [
     BrowserModule,

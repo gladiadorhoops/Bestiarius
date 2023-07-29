@@ -14,12 +14,15 @@ import { DynamoDb } from '../aws-clients/dynamodb';
 export class ScoutsComponent {
     form:FormGroup;
     isLoggedIn: boolean = false;
+    isAdmin = false;
     scoutid: string = "";
     scoutname: string = "";
     failed: boolean = false;
     marcadoresView: boolean = false;
     evaluarView: boolean = false;
     resultadosView: boolean = false;
+    matchGenView = false;
+    matchEditView = false;
     ddb!: DynamoDb;
     loading = true;
 
@@ -53,6 +56,12 @@ export class ScoutsComponent {
       this.isLoggedIn = this.authService.isLoggedIn();
       this.scoutid = this.authService.getScoutId();
       this.scoutname = this.authService.getScoutName();
+      if(this.scoutname == 'pecanha'){
+        this.isAdmin = true
+      }
+      else{
+        this.isAdmin = false
+      }
       console.log("Reloaded");
     }
 
@@ -96,15 +105,35 @@ export class ScoutsComponent {
     this.marcadoresView = false;
     this.evaluarView = true;
     this.resultadosView = false;
+    this.matchGenView = false;
+    this.matchEditView = false;
   }
   showMarcadores() {
     this.marcadoresView = true;
     this.evaluarView = false;
     this.resultadosView = false;
+    this.matchGenView = false;
+    this.matchEditView = false;
   }
   showResultados() {
     this.marcadoresView = false;
     this.evaluarView = false;
     this.resultadosView = true;
+    this.matchGenView = false;
+    this.matchEditView = false;
+  }
+  showMatchGen(){
+    this.marcadoresView = false;
+    this.evaluarView = false;
+    this.resultadosView = false;
+    this.matchGenView = true;
+    this.matchEditView = false;
+  }
+  showMatchEdit(){
+    this.marcadoresView = false;
+    this.evaluarView = false;
+    this.resultadosView = false;
+    this.matchGenView = false;
+    this.matchEditView = true;
   }
 }

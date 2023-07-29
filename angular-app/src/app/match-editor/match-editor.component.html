@@ -1,0 +1,135 @@
+<div class="row justify-content-md-center">
+    <h2 class="text-center mb-3">
+        Edit Matches
+    </h2>
+    <div class="spinner-border text-light" role="status" *ngIf="loading">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="row" *ngIf="!loading">
+        <div *ngIf="!isEditing">
+
+            <form [formGroup]="filterForm">
+                <div class="row">
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="category">Category:</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="category" formControlName="cat" (change)="applyFilters()" required>
+                                    <option value={{null}}></option>
+                                    <option value="aprendiz">Aprendiz</option>
+                                    <option value="elite">Elite</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="days">Day:</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="days" formControlName="day" (change)="applyFilters()" required>
+                                    <option value={{null}}></option>
+                                    <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="gyms">Gimnasio</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="gyms" formControlName="gym" (change)="applyFilters()" require>
+                                    <option value={{null}}></option>
+                                    <option *ngFor="let gym of gyms" value="{{gym}}">{{gym}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="teams">Equipo</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="teams" formControlName="equipo" (change)="applyFilters()" require>
+                                    <option value={{null}}></option>
+                                    <option *ngFor="let equipo of equipos" value="{{equipo.name}}">{{equipo.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row marcadorItem" *ngFor="let match of filteredMatches" >
+                <div class="col col-12">
+                    <h5>
+                        {{match.juego}} - {{match.location}}
+                    </h5>
+                    <h6>{{match.time}}</h6>
+                </div>
+                
+
+                <div class="col col-1"></div>
+                <div class="col col-4">{{match.homeTeam.name}}</div>
+                <div class="col col-2"> X </div>
+                <div class="col col-4">{{match.visitorTeam.name}}</div>
+                <div class="col col-1" > 
+                    <a class="btn btn-outline-light btn-floating m-1" role="button" (click)="edit(match)">
+                        <i class="fas fa-regular fa-pen"></i>
+                    </a>
+                </div>
+
+                <div class="col col-1"></div>
+                <div class="col col-4">{{match.homePoints}}</div>
+                <div class="col col-2"></div>
+                <div class="col col-4">{{match.visitorPoints}}</div>
+                <div class="col col-1"></div>
+            </div>
+        </div>
+        <div class="row" *ngIf="isEditing">
+            <form [formGroup]="marcadorForm" (ngSubmit)="onSubmit()">
+
+                <div class="row marcadorItem text-center" >
+                    <div class="col col-12">
+                        <h5>
+                            {{editingMatch.juego}} - {{editingMatch.location}}
+                        </h5>
+                        <h6>{{editingMatch.time}}</h6>
+                    </div>
+                    
+    
+                    <div class="col col-1"></div>
+                    <div class="col col-4">
+                        <select class="col-12" id="homeTeam" formControlName="homeTeam" require>
+                            <option value={{null}}></option>
+                            <option *ngFor="let equipo of filteredequipos" value="{{equipo.id}}">{{equipo.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col col-2"> X </div>
+                    <div class="col col-4">
+                        <select class="col-12" id="visitorTeam" formControlName="visitorTeam" require>
+                            <option value={{null}}></option>
+                            <option *ngFor="let equipo of filteredequipos" value="{{equipo.id}}">{{equipo.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col col-1"></div>
+
+
+                </div>
+
+                <div class="col col-12">
+                    <button class="marginBtn" type="submit">Guardar</button>
+                    <button class="marginBtn" type="button" (click)="goBack()">Volver</button>
+                </div>
+        
+            </form>
+        </div>
+    </div>
+</div>
+    

@@ -86,6 +86,36 @@ export class MatchBuilder {
         )
     }
 
+    async EditTeams(ddb: DynamoDb, id: string, homeTeam: string, visitorTeam: string) {   
+
+        let record: Record<string, AttributeValue> = {}
+
+        record[PK_KEY] = {S: `${id}`}
+        record[SK_KEY] = {S: `match.data`}
+        
+        
+        return await ddb.getItem(record).then(
+            async (response) => {
+                console.warn("response record")
+                
+                let record: Record<string, AttributeValue> = {}
+                if(response){
+                    record = response
+                }
+                record['homeTeam'] = {S: `${homeTeam}`};
+                record['visitorTeam'] = {S: `${visitorTeam}`};
+                console.warn(record)
+                
+                return await ddb.putItem(record).then(
+                    (rs) => {
+                        console.log(`Match teams updated`)
+                        return rs;
+                    }
+                );
+            }
+        )
+    }
+
     async addEpmtyMatch(ddb: DynamoDb, category: string, juego: string, bracket: string, homeTeam?: string, visitorTeam?: string, day?: string, time?: string, gym?: string) {   
     
         let record: Record<string, AttributeValue> = {}
