@@ -12,6 +12,14 @@ export interface Reporte {
     general?: EvaluationGeneral | undefined,
 }
 
+export interface TopAware {
+    name: string,
+    limit: number,
+    top: TopScore[]
+}
+
+export type TopReporte = TopAware[]
+
 export interface Tiro {
     colada?: Skill | undefined,
     media?: Skill | undefined,
@@ -85,20 +93,14 @@ export interface Skill {
     report: string,
 }
 
-export interface PlayerScore {
-    playerId: string,
-    tiro: {sum: number, count: number, value: number},
-    defensa: {sum: number, count: number, value: number},
-    jugador: {sum: number, count: number, value: number},
-    pase: {sum: number, count: number, value: number},
-    bote: {sum: number, count: number, value: number},
-    general: {sum: number, count: number, value: number},
-}
-
 export interface TopScore {
     playerId: string,
-    score: number
+    score: number,
+    name: string,
+    team: string,
 }
+
+export type topScoreMap = {[section: string]: TopScore}
 
 export class Skills {
 
@@ -326,7 +328,7 @@ export class Skills {
             value: 3
         },
         bueno: {
-            localized: 'Muy Buen',
+            localized: 'Muy Bueno',
             report: 'general',
             value: 4
         },

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
-import { Section, Skills } from "../interfaces/reporte";
+import { Section, Skills, TopReporte } from "../interfaces/reporte";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Scout } from '../interfaces/scout';
-import { TOURNAMENT_YEAR } from '../aws-clients/s3';
+import { ReportType, S3, TOURNAMENT_YEAR } from '../aws-clients/s3';
 
 @Injectable({
     providedIn: 'root'
@@ -143,6 +143,12 @@ export class ReporteBuilder {
             }            
         )
         return this.formBuilder.group(form)     
+    }
+
+    async retriveEvaluationResults(s3: S3): Promise<TopReporte> {
+        let topsString = await s3.readObject('top-players', ReportType.TOP_PLAYTERS)
+        if(topsString) return JSON.parse(topsString)        
+        return []
     }
 
     static defaultForm = {

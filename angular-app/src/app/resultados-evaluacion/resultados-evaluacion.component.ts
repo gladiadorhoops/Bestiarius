@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { ReporteBuilder } from '../Builders/reporte-builder';
+import { TopReporte } from '../interfaces/reporte';
+import { AuthService } from '../auth.service';
+import { S3 } from '../aws-clients/s3';
 import { FormBuilder } from '@angular/forms';
 
 @Component({
@@ -8,266 +12,24 @@ import { FormBuilder } from '@angular/forms';
 })
 export class ResultadosEvaluacionComponent {
 
-  constructor(private fb: FormBuilder){
-    
+  constructor(
+  private fb: FormBuilder,
+    private reporteBuilder: ReporteBuilder,
+    private authService: AuthService, 
+  ){}
+
+  topPlayers!: TopReporte
+  s3!: S3
+
+  async ngOnInit() {
+
+    if(this.authService.isLoggedIn()){
+      let user = this.authService.getScoutName();
+      let pass = this.authService.getScoutPass();
+      this.s3 = await S3.build(user, pass)
+    }
+    this.topPlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3)
   }
-  top5s = [
-    {
-      award:"Tiro", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Pase", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Defensa", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Bote", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Jugador", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    }
-  ]
-  nominations =[
-    {
-      award:"Maximus", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Colosseum", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Spartacus", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Flamma", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Crupelarius CRQ21", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Commodus", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Crixus", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Scutum Shield", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ]
-    },
-    {
-      award:"Centuriones", 
-      topAprendiz : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-      ],
-      topElite : [
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-        {Name: "Juan", Points: 5},
-        {Name: "Jose", Points: 3},
-        {Name: "Daniel", Points: 15},
-        {Name: "Luis", Points: 10},
-        {Name: "Pedro", Points: 7},
-      ]
-    }
-  ]
 
   equipos = [{"name":"Equipo A"}, {"name":"Equipo B"}, {"name":"Equipo C"}, {"name":"Equipo D"}]
 

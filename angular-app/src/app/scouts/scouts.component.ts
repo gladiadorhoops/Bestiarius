@@ -24,7 +24,7 @@ export class ScoutsComponent {
     loading = true;
 
     constructor(private fb:FormBuilder, 
-                 private authService: AuthService, 
+                 private authService: AuthService,
                  private router: Router) {
 
         this.form = this.fb.group({
@@ -41,7 +41,6 @@ export class ScoutsComponent {
               this.loading = false;
               this.marcadoresView = true;
             });
-          this.authService
         }
     }
 
