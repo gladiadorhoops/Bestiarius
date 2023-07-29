@@ -4,6 +4,7 @@ import { TopReporte } from '../interfaces/reporte';
 import { AuthService } from '../auth.service';
 import { S3 } from '../aws-clients/s3';
 import { FormBuilder } from '@angular/forms';
+import { Category } from '../interfaces/player';
 
 @Component({
   selector: 'app-resultados-evaluacion',
@@ -18,7 +19,11 @@ export class ResultadosEvaluacionComponent {
     private authService: AuthService, 
   ){}
 
-  topPlayers!: TopReporte
+  topElitePlayers!: TopReporte
+  topApprendizPlayers!: TopReporte
+  selectedCategoryTop!: TopReporte
+  selectedCategory: Category = Category.ELITE
+
   s3!: S3
 
   async ngOnInit() {
@@ -28,7 +33,28 @@ export class ResultadosEvaluacionComponent {
       let pass = this.authService.getScoutPass();
       this.s3 = await S3.build(user, pass)
     }
-    this.topPlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3)
+    this.topApprendizPlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3, Category.APRENDIZ)
+    this.topElitePlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3, Category.ELITE)
+    this.selectedCategoryTop = this.topElitePlayers
+  }
+
+  showElite() {
+    this.selectedCategoryTop = this.topElitePlayers
+    this.selectedCategory = Category.ELITE
+  }
+
+  showAprendiz() {
+    this.selectedCategoryTop = this.topApprendizPlayers
+    this.selectedCategory = Category.APRENDIZ
+  }
+  
+  switchCategory(cat: string){
+    if(cat == Category.APRENDIZ){
+      this.showAprendiz()
+    }
+    else{
+      this.showElite()
+    }
   }
 
   equipos = [{"name":"Equipo A"}, {"name":"Equipo B"}, {"name":"Equipo C"}, {"name":"Equipo D"}]

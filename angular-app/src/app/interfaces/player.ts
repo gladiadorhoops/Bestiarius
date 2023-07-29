@@ -5,3 +5,9 @@ export interface Player {
     edad: string,
     categoria: string,
 }
+
+export enum Category {
+    APRENDIZ = 'aprendiz',
+    ELITE = 'elite'
+
+}

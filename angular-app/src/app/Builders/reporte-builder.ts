@@ -5,6 +5,7 @@ import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Scout } from '../interfaces/scout';
 import { ReportType, S3, TOURNAMENT_YEAR } from '../aws-clients/s3';
+import { Category } from '../interfaces/player';
 
 @Injectable({
     providedIn: 'root'
@@ -145,8 +146,8 @@ export class ReporteBuilder {
         return this.formBuilder.group(form)     
     }
 
-    async retriveEvaluationResults(s3: S3): Promise<TopReporte> {
-        let topsString = await s3.readObject('top-players', ReportType.TOP_PLAYTERS)
+    async retriveEvaluationResults(s3: S3, category: Category): Promise<TopReporte> {
+        let topsString = await s3.readObject(`TopPlayers-${category}`, ReportType.TOP_PLAYTERS)
         if(topsString) return JSON.parse(topsString)        
         return []
     }

@@ -3,10 +3,18 @@
         Evaluacion de Jugadores
     </h2>
 
+    <div class=>
+        Category: 
+        <select #category (change)="switchCategory(category.value)">
+            <option value="aprendiz">Aprendiz</option>
+            <option selected value="elite">Elite</option>
+        </select>
+    </div>
+    
     <div class="mainpanel">
         <div class="sidepanels">
             <div class="accordion accordion-flush" id="accordionFlushExample">
-                <div class="accordion-item" *ngFor="let award of topPlayers; let i=index">
+                <div class="accordion-item" *ngFor="let award of selectedCategoryTop; let i=index">
                   <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#flush-collapse' + i" aria-expanded="false" [attr.aria-controls]="'flush-collapse'+i">
                         Top {{award.top.length}} {{award.name}}
@@ -14,7 +22,6 @@
                   </h2>
                   <div [attr.id]="'flush-collapse' + i" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body">
-                        <!-- <h4>Aprendiz</h4> -->
                         <table class="col-12">
                             <tr>
                                 <th>#</th>
@@ -22,67 +29,16 @@
                                 <th>Equipo</th>
                                 <th>Puntaje</th>
                             </tr>
-                            <tr *ngFor="let tiro of award.top; let i=index" (click)="updateSelected(tiro.playerId)">
+                            <tr *ngFor="let player of award.top; let i=index" (click)="updateSelected(player.playerId)">
                                 <td>{{i+1}}</td>
-                                <td>{{tiro.name}}</td>
-                                <td>{{tiro.team}}</td>
-                                <td>{{tiro.score}}</td>
+                                <td>{{player.name}}</td>
+                                <td>{{player.team}}</td>
+                                <td>{{player.score}}</td>
                             </tr>
                         </table>
-                        <!-- <h4>Elite</h4>
-                        <table class="col-12">
-                            <tr>
-                                <th>#</th>
-                                <th>Nombre</th>
-                                <th>Puntos</th>
-                            </tr>
-                            <tr  *ngFor="let tiro of award.topElite; let i=index" (click)="updateSelected(tiro.Name)">
-                                <td>{{i+1}}</td>
-                                <td>{{tiro.Name}}</td>
-                                <td>{{tiro.Points}}</td>
-                            </tr>
-                        </table> -->
                     </div>
                   </div>
-                </div>
-
-                <!-- <div class="accordion-item" *ngFor="let award of nominations; let i=index">
-                    <h2 class="accordion-header">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#flush-collapse-non-' + i" aria-expanded="false" [attr.aria-controls]="'flush-collapse-non-'+i">
-                          Nominaciones {{award.award}}
-                      </button>
-                    </h2>
-                    <div [attr.id]="'flush-collapse-non-' + i" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                      <div class="accordion-body">
-                          <h4>Aprendiz</h4>
-                          <table class="col-12">
-                              <tr>
-                                  <th>#</th>
-                                  <th>Nombre</th>
-                                  <th>Puntos</th>
-                              </tr>
-                              <tr  *ngFor="let tiro of award.topAprendiz; let i=index" (click)="updateSelected(tiro.Name)">
-                                  <td>{{i+1}}</td>
-                                  <td>{{tiro.Name}}</td>
-                                  <td>{{tiro.Points}}</td>
-                              </tr>
-                          </table>
-                          <h4>Elite</h4>
-                          <table class="col-12">
-                              <tr>
-                                  <th>#</th>
-                                  <th>Nombre</th>
-                                  <th>Puntos</th>
-                              </tr>
-                              <tr  *ngFor="let tiro of award.topElite; let i=index" (click)="updateSelected(tiro.Name)">
-                                  <td>{{i+1}}</td>
-                                  <td>{{tiro.Name}}</td>
-                                  <td>{{tiro.Points}}</td>
-                              </tr>
-                          </table>
-                      </div>
-                    </div>
-                  </div> -->
+                </div>               
             </div>
         </div>
 
