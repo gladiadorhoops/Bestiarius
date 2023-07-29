@@ -479,3 +479,25 @@ teams = [
       ]
     }
   ]
+
+
+  [   
+      {
+    "team": "Bulldogs",
+    "categoria": "aprendiz",
+    "players":[
+        "Saens, J.",
+        "Macias, A.",
+        "Aguirre, S.",
+        "Carrillo, J.",
+        "Jaquez, J.",
+        "Rodrihez, R.",
+        "Maldonado, J.",
+        "Sosa, A.",
+        "Becerril, S.",
+        "Morales, M.",
+        "Romero, O.",
+        "Velazquez, L.",
+    ]
+}
+]]

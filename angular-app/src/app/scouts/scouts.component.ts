@@ -42,7 +42,7 @@ export class ScoutsComponent {
             (client) => {
               this.ddb = client;
               this.loading = false;
-              this.marcadoresView = true;
+              this.evaluarView = true;
             });
         }
     }
@@ -99,6 +99,35 @@ export class ScoutsComponent {
       this.authService.logout();
       this.reloadLoginStatus();
       console.log("User is logged out");
+    }
+
+    changeFeature(feature: string){
+      switch(feature) { 
+        case 'evaluacion': { 
+           this.showEvaluacion()
+           break; 
+        } 
+        case 'marcadores': { 
+           this.showMarcadores()
+           break; 
+        } 
+        case 'resultados': { 
+           this.showResultados()
+           break; 
+        } 
+        case 'addMatch': { 
+           this.showMatchGen()
+           break; 
+        } 
+        case 'editMatch': { 
+           this.showMatchEdit()
+           break; 
+        } 
+        default: { 
+            this.showEvaluacion();
+           break; 
+        } 
+     } 
     }
     
   showEvaluacion() {
