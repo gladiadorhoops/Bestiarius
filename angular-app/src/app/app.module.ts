@@ -40,6 +40,7 @@ import { BracketsComponent } from './brackets/brackets.component';
 import { GroupsComponent } from './groups/groups.component';
 import { MatchGeneratorComponent } from './match-generator/match-generator.component';
 import { MatchEditorComponent } from './match-editor/match-editor.component';
+import { StandingMatchesComponent } from './standing-matches/standing-matches.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { MatchEditorComponent } from './match-editor/match-editor.component';
     BracketsComponent,
     GroupsComponent,
     MatchGeneratorComponent,
-    MatchEditorComponent
+    MatchEditorComponent,
+    StandingMatchesComponent
   ],
   imports: [
     BrowserModule,

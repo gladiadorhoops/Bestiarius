@@ -14,6 +14,7 @@ import { EvaluacionComponent } from './evaluacion/evaluacion.component'
 import { ScoutsComponent } from './scouts/scouts.component'
 import { GroupsComponent } from './groups/groups.component';
 import { BracketsComponent } from './brackets/brackets.component';
+import { StandingMatchesComponent } from './standing-matches/standing-matches.component';
 
 const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'scouts', component: ScoutsComponent },
   { path: 'grupos', component: GroupsComponent },
   { path: 'brackets', component: BracketsComponent },
+  { path: 'standings', component: StandingMatchesComponent },
   { path: '**', component: InicioComponent, data: { 
     breadcrumb: 'Gladiadores Hoops', 
     title: 'GladiadoresHoops',
