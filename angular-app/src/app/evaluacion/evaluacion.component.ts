@@ -8,6 +8,7 @@ import { TeamBuilder } from '../Builders/team-builder';
 import { PlayerBuilder } from '../Builders/player-builder';
 import { ReporteBuilder } from '../Builders/reporte-builder';
 import { Skills, Skill } from '../interfaces/reporte';
+import { Scout } from '../interfaces/scout';
 
 
 @Component({
@@ -101,9 +102,9 @@ export class EvaluacionComponent {
     });
     this.selectedEdad = selectedteamplayer.edad;
 
-    let scout = {
+    let scout: Scout = {
       id: this.scout_id,
-      nombre: this.scout_name
+      name: this.scout_name
     }
 
     this.evaluationForm = await this.reporteBuilder.getReport(

@@ -46,177 +46,132 @@
 </div>  
 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" *ngIf="selectedPlayerReport!=undefined">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-<div class="modal-body">
-    <!--div class="sidepanels" *ngIf="selectedPlayerReport!=undefined"-->
-        <!--form [formGroup]="filterForm">
-            <div class="row">
-                <div class="col col-md-3 col-12">
-                    <div class="row">
-                        <label for="category">Category:</label>
-                    </div>
-                    <div class="row">
-                        <div class="filterPadding">
-                            <select class="col-12" id="category" formControlName="cat" (change)="applyFilters()" required>
-                                <option value={{null}}></option>
-                                <option value="aprendiz">Aprendiz</option>
-                                <option value="elite">Elite</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col col-md-3 col-12">
-                    <div class="row">
-                        <label for="teams">Equipo</label>
-                    </div>
-                    <div class="row">
-                        <div class="filterPadding">
-                            <select class="col-12" id="teams" formControlName="equipo" (change)="applyFilters()" require>
-                                <option value={{null}}></option>
-                                <option *ngFor="let equipo of equipos" value="{{equipo.name}}">{{equipo.name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col col-md-3 col-12">
-                    <div class="row">
-                        <label for="teams">Jugador</label>
-                    </div>
-                    <div class="row">
-                        <div class="filterPadding">
-                            <select class="col-12" id="player" formControlName="player" (change)="updateSelected(filterForm.value.player!)" require>
-                                <option value={{null}}></option>
-                                <option *ngFor="let player of players" value="{{player.Name}}">{{player.Name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form-->
-        <div>
-            <div>
-                <b>Nombre</b>
-            </div>
-            <div class="playerfield">
-                {{selectedPlayer!.nombre}}
-            </div>
-
-            <div>
-                <b>Scouts</b>
-            </div>
-            <div class="playerfield">
-                {{selectedPlayerReport!.scoutIds.length}}
-            </div>
-
-            <div>
-                <b>Equipo</b>
-            </div>
-            <div class="playerfield">
-                {{selectedPlayerTeam.name}}
-            </div>
-
-            <div *ngIf="selectedPlayerReport.general">
-                <b>Evaluacion General</b>
-                <div class="playerfield">
-                    {{selectedPlayerReport!.general!.skill[0].value!}}
-                </div>
-            </div>
-        </div>
-        <br>
-
-        <div class="row">
-            <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.posicion">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
                 <div>
-                    <div class="col-12"><b>Posicion</b></div>
-                </div>
-                <div class="row myrow" *ngFor="let pos of selectedPlayerReport.posicion!.skill">
-                    <div class="col-10">{{pos.localized}}</div>
-                    <div class="col-2 playerfield">{{pos.value}}</div>
+                    <div>
+                        <b>Nombre</b>
+                    </div>
+                    <div class="playerfield">
+                        {{selectedPlayer!.nombre}}
+                    </div>
+
+                    <div>
+                        <b>Scouts</b>
+                    </div>
+                    <div class="playerfield">
+                        {{selectedPlayerReport!.scouts.length}} 
+                    </div>
+
+                    <div>
+                        <b>Equipo</b>
+                    </div>
+                    <div class="playerfield">
+                        {{selectedPlayerTeam.name}}
+                    </div>
+
+                    <div *ngIf="selectedPlayerReport.general">
+                        <b>Evaluacion General</b>
+                        <div class="playerfield">
+                            {{selectedPlayerReport!.general!.skill[0].value!}}
+                        </div>
+                    </div>
                 </div>
                 <br>
-            </div>
-            <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.estilo">
-                <div class="row">
-                    <div class="col-10"><b>Estilo de Juego:</b></div>
-                    <div class="col-2 playerfield">{{selectedPlayerReport.estilo.score.avg}}</div>
-                </div>
-                <div class="row myrow" *ngFor="let style of selectedPlayerReport.estilo!.skill">
-                    <div class="col-10">{{style.localized}}</div> 
-                    <div class="col-2 playerfield">{{style.value}}</div>
-                </div>
-            </div>
-            
-            <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.tiro">
-                <div class="row">
-                    <div class="col-10"><b>Tiro:</b></div>
-                    <div class="col-2 playerfield">{{selectedPlayerReport.tiro.score.avg}}</div>
-                </div>
-                <div class="row myrow" *ngFor="let style of selectedPlayerReport.tiro!.skill">
-                    <div class="col-10">{{style.localized}}</div> 
-                    <div class="col-2 playerfield">{{style.value}}</div>
-                </div>
-            </div>
 
-            <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.defensa">
                 <div class="row">
-                    <div class="col-10"><b>Defensa:</b></div>
-                    <div class="col-2 playerfield">{{selectedPlayerReport.defensa.score.avg}}</div>
-                </div>
-                <div class="row myrow" *ngFor="let style of selectedPlayerReport.defensa!.skill">
-                    <div class="col-10">{{style.localized}}</div> 
-                    <div class="col-2 playerfield">{{style.value}}</div>
-                </div>
-            </div>
+                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.posicion">
+                        <div>
+                            <div class="col-12"><b>Posicion</b></div>
+                        </div>
+                        <div class="row myrow" *ngFor="let pos of selectedPlayerReport.posicion!.skill">
+                            <div class="col-10">{{pos.localized}}</div>
+                            <div class="col-2 playerfield">{{pos.value}}</div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.estilo">
+                        <div class="row">
+                            <div class="col-10"><b>Estilo de Juego:</b></div>
+                            <div class="col-2 playerfield">{{selectedPlayerReport.estilo.score.avg}}</div>
+                        </div>
+                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.estilo!.skill">
+                            <div class="col-10">{{style.localized}}</div> 
+                            <div class="col-2 playerfield">{{style.value}}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.tiro">
+                        <div class="row">
+                            <div class="col-10"><b>Tiro:</b></div>
+                            <div class="col-2 playerfield">{{selectedPlayerReport.tiro.score.avg}}</div>
+                        </div>
+                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.tiro!.skill">
+                            <div class="col-10">{{style.localized}}</div> 
+                            <div class="col-2 playerfield">{{style.value}}</div>
+                        </div>
+                    </div>
 
-            <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.jugador">
-                <div class="row">
-                    <div class="col-10"><b>Jugador:</b></div>
-                    <div class="col-2 playerfield">{{selectedPlayerReport.jugador.score.avg}}</div>
-                </div>
-                <div class="row myrow" *ngFor="let style of selectedPlayerReport.jugador!.skill">
-                    <div class="col-10">{{style.localized}}</div> 
-                    <div class="col-2 playerfield">{{style.value}}</div>
-                </div>
-            </div>
+                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.defensa">
+                        <div class="row">
+                            <div class="col-10"><b>Defensa:</b></div>
+                            <div class="col-2 playerfield">{{selectedPlayerReport.defensa.score.avg}}</div>
+                        </div>
+                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.defensa!.skill">
+                            <div class="col-10">{{style.localized}}</div> 
+                            <div class="col-2 playerfield">{{style.value}}</div>
+                        </div>
+                    </div>
 
-            <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.pase">
-                <div class="row">
-                    <div class="col-10"><b>Pase:</b></div>
-                    <div class="col-2 playerfield">{{selectedPlayerReport.pase.score.avg}}</div>
-                </div>
-                <div class="row myrow" *ngFor="let style of selectedPlayerReport.pase!.skill">
-                    <div class="col-10">{{style.localized}}</div> 
-                    <div class="col-2 playerfield">{{style.value}}</div>
-                </div>
-            </div>
+                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.jugador">
+                        <div class="row">
+                            <div class="col-10"><b>Jugador:</b></div>
+                            <div class="col-2 playerfield">{{selectedPlayerReport.jugador.score.avg}}</div>
+                        </div>
+                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.jugador!.skill">
+                            <div class="col-10">{{style.localized}}</div> 
+                            <div class="col-2 playerfield">{{style.value}}</div>
+                        </div>
+                    </div>
 
-            <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.bote">
-                <div class="row">
-                    <div class="col-10"><b>Bote:</b></div>
-                    <div class="col-2 playerfield">{{selectedPlayerReport.bote.score.avg}}</div>
-                </div>
-                <div class="row myrow" *ngFor="let style of selectedPlayerReport.bote!.skill">
-                    <div class="col-10">{{style.localized}}</div> 
-                    <div class="col-2 playerfield">{{style.value}}</div>
-                </div>
-            </div>
+                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.pase">
+                        <div class="row">
+                            <div class="col-10"><b>Pase:</b></div>
+                            <div class="col-2 playerfield">{{selectedPlayerReport.pase.score.avg}}</div>
+                        </div>
+                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.pase!.skill">
+                            <div class="col-10">{{style.localized}}</div> 
+                            <div class="col-2 playerfield">{{style.value}}</div>
+                        </div>
+                    </div>
 
-            <div class="col-12 score-block" *ngIf="selectedPlayerReport.nominacion">
-                <div class="row">
-                    <div class="col-12"><b>Nominaciones:</b></div>
+                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.bote">
+                        <div class="row">
+                            <div class="col-10"><b>Bote:</b></div>
+                            <div class="col-2 playerfield">{{selectedPlayerReport.bote.score.avg}}</div>
+                        </div>
+                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.bote!.skill">
+                            <div class="col-10">{{style.localized}}</div> 
+                            <div class="col-2 playerfield">{{style.value}}</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 score-block" *ngIf="selectedPlayerReport.nominacion">
+                        <div class="row">
+                            <div class="col-12"><b>Nominaciones:</b></div>
+                        </div>
+                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.nominacion!.skill">
+                            <div class="col-10 col-md-11">{{style.localized}}</div> 
+                            <div class="col-2 col-md-1 playerfield">{{style.value}}</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="row myrow" *ngFor="let style of selectedPlayerReport.nominacion!.skill">
-                    <div class="col-10 col-md-11">{{style.localized}}</div> 
-                    <div class="col-2 col-md-1 playerfield">{{style.value}}</div>
-                </div>
+                <button type="button" class="btn btn-danger" 
+                    (click)="closePopup()">
+                    Cerrar
+                </button>
             </div>
         </div>
-        <button type="button" class="btn btn-danger" 
-            (click)="closePopup()">
-            Cerrar
-        </button>
-</div>
-</div>
-</div>
+    </div>
 </div>

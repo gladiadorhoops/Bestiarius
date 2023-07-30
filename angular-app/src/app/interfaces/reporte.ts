@@ -1,22 +1,24 @@
+import { Scout } from "./scout"
+
 export interface Reporte {
     playerId: string,
     categoria: string,
-    scoutIds: string[],
-    posicion?: Posicion | undefined,
-    tiro?: Tiro | undefined,
-    defensa?: Defensa | undefined,
-    jugador?: Jugador | undefined,
-    pase?: Pase | undefined,
-    bote?: Bote | undefined,
-    estilo?: Estilo | undefined,
-    general?: EvaluationGeneral | undefined,
-    nominacion?: Nominacion | undefined,
+    scouts: Scout[],
+    posicion?: Posicion,
+    tiro?: Tiro,
+    defensa?: Defensa,
+    jugador?: Jugador,
+    pase?: Pase,
+    bote?: Bote,
+    estilo?: Estilo,
+    general?: EvaluationGeneral,
+    nominacion?: Nominacion,
 }
 
 export interface DisplayReport {
     playerId: string,
     categoria: string,
-    scoutIds: string[],
+    scouts: Scout[],
     posicion?: DisplaySection,
     tiro?: DisplaySection,
     defensa?: DisplaySection,

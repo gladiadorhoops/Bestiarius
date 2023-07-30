@@ -115,7 +115,7 @@ export class ReporteBuilder {
         let form = {... ReporteBuilder.defaultForm}
 
         form[Skills.playerDetails.scoutId] = [scout.id, Validators.required];
-        form[Skills.playerDetails.scoutname] = [scout.nombre, Validators.required];
+        form[Skills.playerDetails.scoutname] = [scout.name, Validators.required];
         form[Skills.playerDetails.playerId] = [playerId, Validators.required];
         form[Skills.playerDetails.equipo] = [equipo, Validators.required];
         form[Skills.playerDetails.categoria] = [categoria, Validators.required];
@@ -163,14 +163,14 @@ export class ReporteBuilder {
         var displayReport: DisplayReport = {
             playerId: report.playerId,
             categoria: report.categoria,
-            scoutIds: report.scoutIds,
+            scouts: report.scouts,
         }
 
         Object.entries(report).forEach( (entry) => {
             let sectionName = entry[0]
             let section = entry[1]
 
-            if(typeof section == 'string' || sectionName == 'scoutIds') return
+            if(typeof section == 'string' || sectionName == 'scouts') return
 
             let score = section.score
             delete section['score'];
