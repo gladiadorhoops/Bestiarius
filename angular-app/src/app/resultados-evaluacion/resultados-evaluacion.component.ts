@@ -82,7 +82,8 @@ export class ResultadosEvaluacionComponent {
 
   async updateSelected(playerId: string){
     let report = await this.reporteBuilder.getPlayerCombinedReport(this.s3, playerId)
-    if(report == undefined) {
+    console.warn(report)
+    if(!report || report == undefined) {
       console.warn("report not found")
       this.openErrorPopup()
       return
@@ -112,6 +113,7 @@ export class ResultadosEvaluacionComponent {
     this.displayStyle = "block";
   }
   closePopup() {
+    this.selectedPlayerReport = {playerId: "", categoria:"", scouts: []};
     this.displayStyle = "none";
   }
   errordisplayStyle = "none";
