@@ -172,8 +172,10 @@ export class ReporteBuilder {
 
             if(typeof section == 'string' || sectionName == 'scouts') return
 
-            let score = section.score
+            let score = section.score;
             delete section['score'];
+            let type = section.type;
+            delete section['type'];
             let skillList: Skill[] = [];
             
             Object.entries(section).forEach( (entry) => {
@@ -183,7 +185,7 @@ export class ReporteBuilder {
 
             displayReport = {
                 ...displayReport, 
-                ...{ [sectionName]: {skill: skillList, score: score}}}
+                ...{ [sectionName]: {skill: skillList, score: score, type: type}}}
         })
 
         console.log('displayReport', displayReport)

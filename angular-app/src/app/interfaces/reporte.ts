@@ -30,7 +30,13 @@ export interface DisplayReport {
     nominacion?: DisplaySection,
 }
 
-export type DisplaySection = {skill: Skill[], score: Score}
+export type DisplaySection = {skill: Skill[], score: Score, type: SectionType}
+
+export enum SectionType {
+    RADIO = 'radio', // numbers, combines all values avg for stats
+    CHECKBOX = 'checkbox', // add values for each skill
+    UNIQUE = 'unique', // only one value available
+}
 
 export interface TopAware {
     name: string,
