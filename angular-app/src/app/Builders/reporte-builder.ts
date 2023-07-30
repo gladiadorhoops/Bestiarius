@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
-import { Section, Skills, TopReporte } from "../interfaces/reporte";
+import { DisplayReport, Reporte, Section, Skill, Skills, TopReporte } from "../interfaces/reporte";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Scout } from '../interfaces/scout';
@@ -150,6 +150,45 @@ export class ReporteBuilder {
         let topsString = await s3.readObject(`TopPlayers-${category}`, ReportType.TOP_PLAYTERS)
         if(topsString) return JSON.parse(topsString)        
         return []
+    }
+
+    async getPlayerCombinedReport(s3: S3, playerId: string): Promise<Reporte | undefined> {
+        let topsString = await s3.readObject(playerId, ReportType.PLAYER_REPORT)
+        if(topsString) return JSON.parse(topsString)        
+        return 
+    }
+
+    transformToDisplayReport(report: Reporte): DisplayReport {
+        
+        var displayReport: DisplayReport = {
+            playerId: report.playerId,
+            categoria: report.categoria,
+            scoutIds: report.scoutIds,
+        }
+
+        Object.entries(report).forEach( (entry) => {
+            let sectionName = entry[0]
+            let section = entry[1]
+
+            if(typeof section == 'string' || sectionName == 'scoutIds') return
+
+            let score = section.score
+            delete section['score'];
+            let skillList: Skill[] = [];
+            
+            Object.entries(section).forEach( (entry) => {
+                let skill = entry[1] as Skill
+                skillList.push(skill)
+            })
+
+            displayReport = {
+                ...displayReport, 
+                ...{ [sectionName]: {skill: skillList, score: score}}}
+        })
+
+        console.log('displayReport', displayReport)
+
+        return displayReport
     }
 
     static defaultForm = {

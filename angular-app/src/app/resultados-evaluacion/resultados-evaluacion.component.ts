@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReporteBuilder } from '../Builders/reporte-builder';
-import { TopReporte } from '../interfaces/reporte';
+import { DisplayReport, Reporte, TopReporte } from '../interfaces/reporte';
 import { AuthService } from '../auth.service';
 import { S3 } from '../aws-clients/s3';
 import { FormBuilder } from '@angular/forms';
-import { Category } from '../interfaces/player';
+import { Category, Player } from '../interfaces/player';
+import { PlayerBuilder } from '../Builders/player-builder';
+import { DynamoDb } from '../aws-clients/dynamodb';
 
 @Component({
   selector: 'app-resultados-evaluacion',
@@ -16,15 +18,19 @@ export class ResultadosEvaluacionComponent {
   constructor(
   private fb: FormBuilder,
     private reporteBuilder: ReporteBuilder,
-    private authService: AuthService, 
+    private playerBuilder: PlayerBuilder,
+    private authService: AuthService,
   ){}
 
   topElitePlayers!: TopReporte
   topApprendizPlayers!: TopReporte
   selectedCategoryTop!: TopReporte
   selectedCategory: Category = Category.ELITE
+  selectedPlayerReport!: DisplayReport
+  selectedPlayer: Player | undefined
 
   s3!: S3
+  @Input() ddb!: DynamoDb;
 
   async ngOnInit() {
 
@@ -66,23 +72,18 @@ export class ResultadosEvaluacionComponent {
     {Name: "Juan", Equipo: "Equipo D", Scouts: 9, Position: [{posicion: "1", votes: 0}, {posicion: "2", votes: 6}, {posicion: "3", votes: 0}, {posicion: "4", votes: 0}, {posicion: "5", votes: 3}], Evalgen: "3.9", Style: [{style: "Anotador", votes: 0}, {style: "Defensor", votes: 0}, {style: "Creador", votes: 0}, {style: "Atletico", votes: 7}, {style: "Clutch", votes: 0}, {style: "Rebotador", votes: 4}, {style: "Rol", votes: 0}],skills: [{Name: "Tiro", Points: 0},{Name: "Pase", Points: 0},{Name: "Defensa", Points: 0},{Name: "Bote", Points: 0},{Name: "Jugador", Points: 0}], nominations: [{Name: "Maximus", Points: 4}]},
     {Name: "Jose", Equipo: "Equipo A", Scouts: 7, Position: [{posicion: "1", votes: 0}, {posicion: "2", votes: 0}, {posicion: "3", votes: 2}, {posicion: "4", votes: 1}, {posicion: "5", votes: 0}], Evalgen: "4.7", Style: [{style: "Anotador", votes: 0}, {style: "Defensor", votes: 0}, {style: "Creador", votes: 0}, {style: "Atletico", votes: 0}, {style: "Clutch", votes: 1}, {style: "Rebotador", votes: 0}, {style: "Rol", votes: 0}],skills: [{Name: "Tiro", Points: 0},{Name: "Pase", Points: 0},{Name: "Defensa", Points: 0},{Name: "Bote", Points: 0},{Name: "Jugador", Points: 0}], nominations: [{Name: "Maximus", Points: 0}]}
   ]
-
-  selectedPlayer = {Name: "", Equipo: "", Scouts: 0, Position: [{posicion: "1", votes: 0}, {posicion: "2", votes: 0}, {posicion: "3", votes: 0}, {posicion: "4", votes: 0}, {posicion: "5", votes: 0}], Evalgen: "0", Style: [{style: "Anotador", votes: 0}, {style: "Defensor", votes: 0}, {style: "Creador", votes: 0}, {style: "Atletico", votes: 0}, {style: "Clutch", votes: 0}, {style: "Rebotador", votes: 0}, {style: "Rol", votes: 0}],skills: [{Name: "Tiro", Points: 0},{Name: "Pase", Points: 0},{Name: "Defensa", Points: 0},{Name: "Bote", Points: 0},{Name: "Jugador", Points: 0}], nominations: [{Name: "Maximus", Points: 0}]}
-    
+      
   filterForm = this.fb.group({
     cat: null,
     player: null,
     equipo: null
   });
 
-  updateSelected(playerName: string){
-    var localselectedplayer= {Name: "", Equipo: "", Scouts: 0, Position: [{posicion: "1", votes: 0}, {posicion: "2", votes: 0}, {posicion: "3", votes: 0}, {posicion: "4", votes: 0}, {posicion: "5", votes: 0}], Evalgen: "0", Style: [{style: "Anotador", votes: 0}, {style: "Defensor", votes: 0}, {style: "Creador", votes: 0}, {style: "Atletico", votes: 0}, {style: "Clutch", votes: 0}, {style: "Rebotador", votes: 0}, {style: "Rol", votes: 0}],skills: [{Name: "Tiro", Points: 0},{Name: "Pase", Points: 0},{Name: "Defensa", Points: 0},{Name: "Bote", Points: 0},{Name: "Jugador", Points: 0}], nominations: [{Name: "Maximus", Points: 0}]}
-    this.players.forEach(function(value){
-      if(value.Name == playerName){
-        localselectedplayer = value;
-      }
-    });
-    this.selectedPlayer = localselectedplayer;
+  async updateSelected(playerId: string){
+    let report = await this.reporteBuilder.getPlayerCombinedReport(this.s3, playerId)
+    if(report == undefined) return
+    this.selectedPlayer = await this.playerBuilder.getPlayer(this.ddb, playerId)
+    // this.selectedPlayerReport = this.reporteBuilder.transformToDisplayReport(report)
   }
 
   applyFilters(){

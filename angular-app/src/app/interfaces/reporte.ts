@@ -1,16 +1,34 @@
 export interface Reporte {
     playerId: string,
     categoria: string,
-    scout: string,
-    posicion?: number[] | undefined,
+    scoutIds: string[],
+    posicion?: Posicion | undefined,
     tiro?: Tiro | undefined,
     defensa?: Defensa | undefined,
     jugador?: Jugador | undefined,
     pase?: Pase | undefined,
     bote?: Bote | undefined,
-    estilo?: Estilo[] | undefined,
+    estilo?: Estilo | undefined,
     general?: EvaluationGeneral | undefined,
+    nominacion?: Nominacion | undefined,
 }
+
+export interface DisplayReport {
+    playerId: string,
+    categoria: string,
+    scoutIds: string[],
+    posicion?: DisplaySection,
+    tiro?: DisplaySection,
+    defensa?: DisplaySection,
+    jugador?: DisplaySection,
+    pase?: DisplaySection,
+    bote?: DisplaySection,
+    estilo?: DisplaySection,
+    general?: DisplaySection,
+    nominacion?: DisplaySection,
+}
+
+export type DisplaySection = {skill: Skill[], score: Score}
 
 export interface TopAware {
     name: string,
@@ -20,35 +38,53 @@ export interface TopAware {
 
 export type TopReporte = TopAware[]
 
-export interface Tiro {
+export interface Posicion extends BaseSection {
+    base?: Skill | undefined,
+    escolta?: Skill | undefined,
+    alero?: Skill | undefined,
+    ala?: Skill | undefined,
+    pivot?: Skill | undefined,
+}
+
+export interface Tiro extends BaseSection {
     colada?: Skill | undefined,
     media?: Skill | undefined,
     triple?: Skill | undefined,
     inteligencia?: Skill | undefined,
 }
 
-export interface Defensa {
+export interface Defensa extends BaseSection {
     conBola?: Skill | undefined,
     sinBola?: Skill | undefined,
     trancision?: Skill | undefined,
     rebote?: Skill | undefined,
 }
 
-export interface Jugador {
+export interface Jugador extends BaseSection {
     hustle?: Skill | undefined,
     spacing?: Skill | undefined,
     juegoEquipo?: Skill | undefined,
     agresividad?: Skill | undefined,
 }
 
-export interface Pase {
+export interface Estilo extends BaseSection {
+    defensor?: Skill | undefined
+    anotador?: Skill | undefined
+    creador?: Skill | undefined
+    atletico?: Skill | undefined
+    clutch?: Skill | undefined
+    reboteador?: Skill | undefined
+    rol?: Skill | undefined
+}
+
+export interface Pase extends BaseSection {
     vision?: Skill | undefined,
     creador?: Skill | undefined,
     perdida?: Skill | undefined,
     sentido?: Skill | undefined,
 }
 
-export interface Bote {
+export interface Bote extends BaseSection {
     contol?: Skill | undefined,
     presion?: Skill | undefined,
     perdida?: Skill | undefined,
@@ -56,22 +92,37 @@ export interface Bote {
     cambioRitmo: Skill | undefined,
 }
 
-export enum Estilo {
-    Anotador,
-    Defendor,
-    Creador,
-    Atletico,
-    Clutch,
-    Reboteador,
-    Rol,
+export interface Nominacion extends BaseSection {
+    centuriones?: Skill | undefined 
+    scutum?: Skill | undefined 
+    spartacus?: Skill | undefined
+    flamma?: Skill | undefined
+    maximus?: Skill | undefined 
+    copellarius?: Skill | undefined
+    publius?: Skill | undefined
+    retiarius?: Skill | undefined
+    provocator?: Skill | undefined
+    colosseum?: Skill | undefined
+    crixus?: Skill | undefined
 }
 
-export enum EvaluationGeneral {
-    Gladiador = 5,
-    MuyBueno = 4,
-    ArribaPromedio = 3,
-    Promedio = 2,
-    NecesitaMejora = 1
+export interface EvaluationGeneral extends BaseSection {
+    Gladiador?: 5,
+    MuyBueno?: 4,
+    ArribaPromedio?: 3,
+    Promedio?: 2,
+    NecesitaMejora?: 1
+    general: Skill
+}
+
+export interface BaseSection {
+    score: Score,
+}
+
+export interface Score {
+    count: number,
+    sum: number, 
+    avg: number,
 }
 
 export enum Section {

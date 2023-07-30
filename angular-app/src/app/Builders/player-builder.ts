@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DynamoDb } from "src/app/aws-clients/dynamodb";
+import { DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
 import { Player } from "../interfaces/player";
 
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
@@ -21,6 +21,15 @@ export class PlayerBuilder {
         )
         console.log('Players', players)
         return players
+    }
+
+    async getPlayer(ddb: DynamoDb, playerId: string): Promise<Player | undefined> {
+        let record = {
+            [PK_KEY]: {S: playerId},
+            [SK_KEY]: {S: 'player.data'}
+        }
+        let item = await ddb.getItem(record)
+        return item ? this.buildPlayer(item) : item
     }
 
     private buildPlayer(item: Record<string, AttributeValue>): Player {

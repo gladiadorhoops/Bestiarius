@@ -42,7 +42,7 @@
             </div>
         </div>
 
-        <div class="sidepanels" hidden>
+        <div class="sidepanels" *ngIf="selectedPlayerReport!=undefined">
             <form [formGroup]="filterForm">
                 <div class="row">
                     <div class="col col-md-3 col-12">
@@ -92,32 +92,32 @@
                     <b>Nombre</b>
                 </div>
                 <div class="playerfield">
-                    {{selectedPlayer.Name}}
+                    {{selectedPlayer!.nombre}}
                 </div>
 
                 <div>
                     <b>Scouts</b>
                 </div>
                 <div class="playerfield">
-                    {{selectedPlayer.Scouts}}
+                    {{selectedPlayerReport!.scoutIds}}
                 </div>
 
                 <div>
                     <b>Equipo</b>
                 </div>
                 <div class="playerfield">
-                    {{selectedPlayer.Equipo}}
+                    {{selectedPlayer!.equipo}}
                 </div>
 
                 <div>
                     <b>Evaluacion General</b>
                 </div>
                 <div class="playerfield">
-                    {{selectedPlayer.Evalgen}}
+                    {{selectedPlayerReport!.general!.skill[0].value!}}
                 </div>
             </div>
             <br>
-            <div class="row">
+            <!-- <div class="row">
             <div class="col-11 col-md-4">
                 <div>
                     <b>Posicion</b>
@@ -158,6 +158,6 @@
                         <div class="col-5 playerfield">{{nom.Points}}/{{selectedPlayer.Scouts}}</div>
                     </div>
                 </div>
-                </div>
+                </div> -->
         </div>
     </div>  
