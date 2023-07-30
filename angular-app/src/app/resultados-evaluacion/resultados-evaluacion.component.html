@@ -61,7 +61,10 @@
                         <b>Scouts</b>
                     </div>
                     <div class="playerfield">
-                        {{selectedPlayerReport!.scouts.length}} 
+                        ({{selectedPlayerReport!.scouts.length}}): 
+                        <span *ngFor="let scout of selectedPlayerReport!.scouts">
+                            {{scout.name}},  
+                        </span>
                     </div>
 
                     <div>
