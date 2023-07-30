@@ -11,12 +11,21 @@
 }
 
 .playerfield {
-    background-color: white;
+    background-color: #f4794180;
     color: black;
+    font-weight: bold;
+    padding-left: 5%;
 }
 
+
 .myrow div{
-  margin: 2%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  padding-left: 5%;
+}
+
+.score-block{
+    padding: 2%
 }
 
 .accordion{
@@ -55,4 +64,9 @@ th {
 
 .col-md-8 {
     padding: 0% 0% 0% 5%;
+}
+
+.modal-dialog{
+    color: black;
+    background-color: #dddddd;
 }
