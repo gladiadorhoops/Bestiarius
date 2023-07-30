@@ -38,13 +38,12 @@ export enum SectionType {
     UNIQUE = 'unique', // only one value available
 }
 
-export interface TopAware {
+export interface TopAward {
     name: string,
-    limit: number,
     top: TopScore[]
 }
 
-export type TopReporte = TopAware[]
+export type TopReporte = TopAward[]
 
 export interface Posicion extends BaseSection {
     base?: Skill | undefined,

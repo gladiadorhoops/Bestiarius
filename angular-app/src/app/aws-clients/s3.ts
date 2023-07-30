@@ -2,7 +2,6 @@ import { S3Client, GetObjectCommand, ListObjectsCommand, ListObjectsCommandInput
 import { REGION, COGNITO_UNAUTHENTICATED_CREDENTIALS } from "./constants";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 import { Cognito } from './cognito';
-import { TopReporte } from "../interfaces/reporte";
 
 
 const client = new S3Client({ 

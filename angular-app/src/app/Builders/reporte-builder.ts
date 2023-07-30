@@ -187,9 +187,6 @@ export class ReporteBuilder {
                 ...displayReport, 
                 ...{ [sectionName]: {skill: skillList, score: score, type: type}}}
         })
-
-        console.log('displayReport', displayReport)
-
         return displayReport
     }
 

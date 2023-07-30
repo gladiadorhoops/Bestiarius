@@ -97,7 +97,6 @@
                     <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.estilo">
                         <div class="row">
                             <div class="col-10"><b>Estilo de Juego (Votos):</b></div>
-                            <!-- <div class="col-2 playerfield">{{selectedPlayerReport.estilo.score.avg}}</div> -->
                         </div>
                         <div class="row myrow" *ngFor="let style of selectedPlayerReport.estilo!.skill">
                             <div class="col-10">{{style.localized}}</div> 
@@ -107,7 +106,7 @@
                     
                     <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.tiro">
                         <div class="row">
-                            <div class="col-10"><b>Tiro (Premodio):</b></div>
+                            <div class="col-10"><b>Tiro (Promedio):</b></div>
                             <div class="col-2 playerfield">{{selectedPlayerReport.tiro.score.avg}}</div>
                         </div>
                         <div class="row myrow" *ngFor="let style of selectedPlayerReport.tiro!.skill">
@@ -118,7 +117,7 @@
 
                     <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.defensa">
                         <div class="row">
-                            <div class="col-10"><b>Defensa (Premodio):</b></div>
+                            <div class="col-10"><b>Defensa (Promedio):</b></div>
                             <div class="col-2 playerfield">{{selectedPlayerReport.defensa.score.avg}}</div>
                         </div>
                         <div class="row myrow" *ngFor="let style of selectedPlayerReport.defensa!.skill">
@@ -129,8 +128,7 @@
 
                     <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.jugador">
                         <div class="row">
-                            <div class="col-10"><b>Jugador (Premodio):</b></div>
-                            <!-- <div class="col-2 playerfield">{{selectedPlayerReport.jugador.score.avg}}</div> -->
+                            <div class="col-10"><b>Jugador (Promedio):</b></div>
                         </div>
                         <div class="row myrow" *ngFor="let style of selectedPlayerReport.jugador!.skill">
                             <div class="col-10">{{style.localized}}</div> 
@@ -140,7 +138,7 @@
 
                     <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.pase">
                         <div class="row">
-                            <div class="col-10"><b>Pase (Premodio):</b></div>
+                            <div class="col-10"><b>Pase (Promedio):</b></div>
                             <div class="col-2 playerfield">{{selectedPlayerReport.pase.score.avg}}</div>
                         </div>
                         <div class="row myrow" *ngFor="let style of selectedPlayerReport.pase!.skill">
@@ -151,7 +149,7 @@
 
                     <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.bote">
                         <div class="row">
-                            <div class="col-10"><b>Bote (Premodio):</b></div>
+                            <div class="col-10"><b>Bote (Promedio):</b></div>
                             <div class="col-2 playerfield">{{selectedPlayerReport.bote.score.avg}}</div>
                         </div>
                         <div class="row myrow" *ngFor="let style of selectedPlayerReport.bote!.skill">
