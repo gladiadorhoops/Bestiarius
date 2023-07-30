@@ -56,9 +56,13 @@ export class S3 {
             Key: `${REPORT_PATH}/${type}/${name}.json`
         }
         console.log('input', input)
-        let response = await this.client.send( new GetObjectCommand(input));
-        // console.log('response', response)
-        return response.Body?.transformToString()
+        try{
+            let response = await this.client.send( new GetObjectCommand(input));
+            return response.Body?.transformToString()
+        } catch (err){
+            console.error('Error', err)
+            return
+        }
 
     }
 

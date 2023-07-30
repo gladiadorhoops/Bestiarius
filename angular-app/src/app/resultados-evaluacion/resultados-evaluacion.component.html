@@ -4,11 +4,51 @@
 </h2>
 
 <div class=>
-    Category: 
-    <select #category (change)="switchCategory(category.value)">
-        <option value="aprendiz">Aprendiz</option>
-        <option selected value="elite">Elite</option>
-    </select>
+    <div>
+        <form [formGroup]="filterForm">
+            <div class="row">
+                <div class="col col-md-3 col-12">
+                    <div class="row">
+                        <label for="category">Category:</label>
+                    </div>
+                    <div class="row">
+                        <div class="filterPadding">
+                            <select class="col-12" id="category" formControlName="cat" (change)="applyFilters()" required>
+                                <option value="aprendiz">Aprendiz</option>
+                                <option selected value="elite">Elite</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-md-3 col-12">
+                    <div class="row">
+                        <label for="teams">Equipo</label>
+                    </div>
+                    <div class="row">
+                        <div class="filterPadding">
+                            <select class="col-12" id="teams" formControlName="equipo" (change)="applyFilters()" require>
+                                <option value={{null}}></option>
+                                <option *ngFor="let equipo of catEquipos" value="{{equipo.id}}">{{equipo.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-md-3 col-12">
+                    <div class="row">
+                        <label for="teams">Jugador</label>
+                    </div>
+                    <div class="row">
+                        <div class="filterPadding">
+                            <select class="col-12" id="player" formControlName="player" (change)="updateSelected(filterForm.value.player!)" require>
+                                <option value={{null}}></option>
+                                <option *ngFor="let player of players" value="{{player.id}}">{{player.nombre}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 <div class="spinner-border text-light" role="status" *ngIf="loading">
     <span class="sr-only">Loading...</span>
@@ -175,4 +215,26 @@
             </div>
         </div>
     </div>
+</div>
+
+
+<div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':errordisplayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>No se encontraron evaluaciones para este jugador!</p>
+  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="closeErrorPopup()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

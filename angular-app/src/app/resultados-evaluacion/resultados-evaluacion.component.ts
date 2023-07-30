@@ -32,6 +32,7 @@ export class ResultadosEvaluacionComponent {
   selectedPlayerReport!: DisplayReport
   selectedPlayer: Player | undefined
   equipos : Team[] = [];
+  catEquipos : Team[] = [];
   players : Player[] = [];
   selectedPlayerTeam!: Team;
   loading = true;
@@ -51,6 +52,7 @@ export class ResultadosEvaluacionComponent {
     this.selectedCategoryTop = this.topElitePlayers
     this.equipos = await this.teamBuilder.getListOfTeams(this.ddb)
     this.loading = false
+    this.applyFilters()
   }
 
   showElite() {
@@ -73,27 +75,35 @@ export class ResultadosEvaluacionComponent {
   }
       
   filterForm = this.fb.group({
-    cat: "",
+    cat: Category.ELITE,
+    equipo: null,
     player: null,
-    equipo: null
   });
 
   async updateSelected(playerId: string){
     let report = await this.reporteBuilder.getPlayerCombinedReport(this.s3, playerId)
-    if(report == undefined) return
+    if(report == undefined) {
+      console.warn("report not found")
+      this.openErrorPopup()
+      return
+    }
     this.selectedPlayer = await this.playerBuilder.getPlayer(this.ddb, playerId)
     this.selectedPlayerReport = this.reporteBuilder.transformToDisplayReport(report)
     this.selectedPlayerTeam = this.equipos.filter(t => t.id == this.selectedPlayer!.equipo)[0]
     this.openPopup();
   }
 
-  applyFilters(){
-    //if (this.filterForm.value.cat == Category.APRENDIZ){
-    //  this.players = 
-    //}
-    //if(this.filterForm.value.cat == Category.ELITE){
-    //
-    //}
+  async applyFilters(){
+
+
+    this.switchCategory(this.filterForm.value.cat!)
+    
+    this.catEquipos = this.equipos.filter(e => e.category == this.filterForm.value.cat)
+    
+    if(this.filterForm.value.equipo) {
+      this.players = await this.playerBuilder.getPlayersByTeam(this.ddb, this.filterForm.value.equipo)
+    }
+
     // TODO: filter teams and players based on category/team selection
   }
 
@@ -103,5 +113,12 @@ export class ResultadosEvaluacionComponent {
   }
   closePopup() {
     this.displayStyle = "none";
+  }
+  errordisplayStyle = "none";
+  openErrorPopup() {
+    this.errordisplayStyle = "block";
+  }
+  closeErrorPopup() {
+    this.errordisplayStyle = "none";
   }
 }
