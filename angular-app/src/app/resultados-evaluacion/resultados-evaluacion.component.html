@@ -24,16 +24,18 @@
                 </h2>
                 <div [attr.id]="'flush-collapse' + i" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
-                    <table class="col-12">
-                        <tr>
-                            <th>#</th>
-                            <th>Nombre</th>
-                            <th>Puntaje</th>
+                    <table class="row">
+                        <tr class="row">
+                            <th class="col col-1">#</th>
+                            <th class="col col-5">Nombre</th>
+                            <th class="col col-4">Equipo</th>
+                            <th class="col col-2">Pts</th>
                         </tr>
-                        <tr *ngFor="let player of award.top; let i=index" (click)="updateSelected(player.playerId)">
-                            <td>{{i+1}}</td>
-                            <td>{{player.name}}</td>
-                            <td>{{player.score}}</td>
+                        <tr class="row" *ngFor="let player of award.top; let i=index" (click)="updateSelected(player.playerId)">
+                            <td class="col col-1">{{i+1}}</td>
+                            <td class="col col-5">{{player.name}}</td>
+                            <td class="col col-4">{{player.team}}</td>
+                            <td class="col col-2">{{player.score}}</td>
                         </tr>
                     </table>
                 </div>
