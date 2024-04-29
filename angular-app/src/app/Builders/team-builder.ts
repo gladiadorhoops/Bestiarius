@@ -3,13 +3,16 @@ import { DynamoDb, PK_KEY, SK_KEY, SPK_KEY } from "src/app/aws-clients/dynamodb"
 import { Team } from "../interfaces/team";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import {v4 as uuidv4} from 'uuid';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TeamBuilder {
 
-    constructor() {}
+    constructor(
+        private formBuilder: FormBuilder
+    ) {}
 
     async getListOfTeams(ddb: DynamoDb, category?: string | undefined): Promise<Team[]> {
         var teams: Team[] = []
@@ -72,4 +75,13 @@ export class TeamBuilder {
             await ddb.putItem(playerRecord);
         });
     }
+
+    static defaultForm = {
+        scoutId: ['', Validators.required],
+        scoutname: ['', Validators.required],
+        equipo: ['', Validators.required],
+        categoria: ['', Validators.required],
+        location: [''],
+        captan: ['']
+      }
 }

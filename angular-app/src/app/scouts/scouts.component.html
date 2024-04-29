@@ -40,6 +40,7 @@
                     <option value="evaluar">Evaluar</option>
                     <option value="marcadores">Marcadores</option>
                     <option value="resultados">Resultados</option>
+                    <option value="addTeam">Registrar Equipo</option>
                     <option value="addMatch" *ngIf="isAdmin">AddMatch</option>
                     <option value="editMatch" *ngIf="isAdmin">EditMatch</option>
                 </select>
@@ -61,6 +62,10 @@
                     
                     <div *ngIf="resultadosView">
                         <app-resultados-evaluacion [ddb]="ddb"></app-resultados-evaluacion>
+                    </div>
+                    
+                    <div *ngIf="addTeamView">
+                        <app-add-team [ddb]="ddb"></app-add-team>
                     </div>
                     
                     <div *ngIf="matchGenView">

@@ -1,0 +1,94 @@
+<div class="row justify-content-md-center">
+    <div class="col-12 col-md-6">
+      <h2 class="text-center mb-3">
+        Registro de Equipo
+    </h2>
+    <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" class ="fcol">
+            <input name="scout" type="text" formControlName="scoutId" value="{{scout_id}}" hidden readonly required>
+            <input name="scout" type="text" formControlName="scoutname" value="{{scout_name}}" hidden readonly required>
+    
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Informacion del Equipo
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOne" class="accordion-collapse collapse show" >
+                    <div class="accordion-body">
+                        <label class="frow" for="categoria">Categoria:&nbsp;</label>
+                        <div class="frow">
+                            <select id="categorias" formControlName="categoria" (change)="loadTeams()" required>
+                                <option value=""></option>
+                                <option *ngFor="let cat of categories" value="{{cat}}">{{cat}}</option>
+                            </select>
+                        </div>
+                        <label class="frow" for="equipo">Equipo:&nbsp;</label>
+                        <div class="frow">
+                            <input type="text" id="equipos" formControlName="equipo" class="form-control" list="equipolist" (change)="loadPlayers()" required>
+                            <datalist id="equipolist">
+                                <option *ngFor="let team of teams" value="{{team.name}}">{{team.name}}</option>
+                            </datalist>
+                        </div>
+                        <label class="frow" for="location">Ciudad, Estado y País:&nbsp;</label>
+                        <div class="frow">
+                            <input type="text" id="location" formControlName="location" class="form-control">
+                        </div>
+                        <label class="frow" for="captan">Capitán:&nbsp;</label>
+                        <div class="frow">
+                            <input type="text" id="captan" formControlName="captan" class="form-control" list="mylist">
+                            <datalist id="mylist">
+                                <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.nombre}}</option>
+                            </datalist>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseOne">
+                    Jugadores
+                </button>
+              </h2>
+              <div id="flush-collapseTwo" class="accordion-collapse collapse show" >
+                <button type="button" class="btn" 
+                    (click)="addPlayer()">
+                        +
+                    </button>
+                    <div id="players">
+                        <app-add-player *ngFor="let player of teamplayers" [teamplayers]="teamplayers" [equipoId]="selectedTeam" [categoria]="selectedCategoria" [playerId]="player.id" [ddb]="ddb"></app-add-player>
+                    </div>
+              </div>
+            </div>
+            
+        </div>
+        <div class="frow">
+            <button type="submit">Guardar</button>
+        </div>
+    </form>
+    </div>
+    </div>
+    
+    <div
+      class="modal"
+      tabindex="-1"
+      role="dialog"
+      [ngStyle]="{'display':displayStyle}">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p>{{submitReportMessage}}</p>
+      
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" 
+                    (click)="closePopup()">
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>

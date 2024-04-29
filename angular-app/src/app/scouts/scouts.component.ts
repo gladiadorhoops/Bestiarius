@@ -23,6 +23,7 @@ export class ScoutsComponent {
     resultadosView: boolean = false;
     matchGenView = false;
     matchEditView = false;
+    addTeamView = false;
     ddb!: DynamoDb;
     loading = true;
 
@@ -115,6 +116,10 @@ export class ScoutsComponent {
            this.showResultados()
            break; 
         } 
+        case 'addTeam': { 
+           this.showAddTeam()
+           break; 
+        } 
         case 'addMatch': { 
            this.showMatchGen()
            break; 
@@ -130,39 +135,37 @@ export class ScoutsComponent {
      } 
     }
     
-  showEvaluacion() {
+  hideAdd(){
     this.marcadoresView = false;
-    this.evaluarView = true;
+    this.evaluarView = false;
     this.resultadosView = false;
     this.matchGenView = false;
     this.matchEditView = false;
+    this.addTeamView = false;
+  }
+
+  showEvaluacion() {
+    this.hideAdd();
+    this.evaluarView = true;
   }
   showMarcadores() {
+    this.hideAdd();
     this.marcadoresView = true;
-    this.evaluarView = false;
-    this.resultadosView = false;
-    this.matchGenView = false;
-    this.matchEditView = false;
   }
   showResultados() {
-    this.marcadoresView = false;
-    this.evaluarView = false;
+    this.hideAdd();
     this.resultadosView = true;
-    this.matchGenView = false;
-    this.matchEditView = false;
+  }
+  showAddTeam(){
+    this.hideAdd();
+    this.addTeamView = true;
   }
   showMatchGen(){
-    this.marcadoresView = false;
-    this.evaluarView = false;
-    this.resultadosView = false;
+    this.hideAdd();
     this.matchGenView = true;
-    this.matchEditView = false;
   }
   showMatchEdit(){
-    this.marcadoresView = false;
-    this.evaluarView = false;
-    this.resultadosView = false;
-    this.matchGenView = false;
+    this.hideAdd();
     this.matchEditView = true;
   }
 }

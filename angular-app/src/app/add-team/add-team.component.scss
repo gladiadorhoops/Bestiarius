@@ -1,0 +1,45 @@
+.fcol {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.frow {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 100%;
+    padding-top: 1%;
+}
+
+
+.inlinelabel {
+    flex: 30%;
+    text-align: left;
+}
+
+.inlineinput {
+    flex: 70%
+}
+
+fieldset {
+    margin-top: 10%;
+}
+
+.accordion{
+    width: 100%;
+    background-color: #FCC258;
+}
+
+.accordion-button{
+    background-image: linear-gradient(to bottom right, #BA1E34, #A40A72);//#BA1E34;
+    color: white;
+}
+
+.accordion-body{
+    background-image: linear-gradient(to bottom left, #f47941, #BA1E34);//#FCC258;
+    color: white;
+}
+
+.modal-dialog{
+    color: black;
+}

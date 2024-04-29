@@ -3,13 +3,16 @@ import { DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
 import { Player } from "../interfaces/player";
 
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PlayerBuilder {
 
-    constructor() {}
+    constructor(
+        private formBuilder: FormBuilder
+    ) {}
 
     async getPlayersByTeam(ddb: DynamoDb, teamId: string): Promise<Player[]> {
         let players: Player[] = []
@@ -38,7 +41,23 @@ export class PlayerBuilder {
             nombre: item['name'].S!,
             equipo: item['spk'].S!,
             categoria: item['category'].S!,
-            edad: item['age'].S!
+            edad: item['age'].S!,
+            height: "",
+            weight: "",
+            posicion: "",
+            birthday: new Date()
         }
     }
+
+    static defaultForm = {
+        scoutId: ['', Validators.required],
+        scoutname: ['', Validators.required],
+        nombre: ['', Validators.required],
+        equipo: ['', Validators.required],
+        categoria: ['', Validators.required],
+        altura: [''],
+        peso: [''],
+        bday: [''],
+        posicion: ['']
+      }
 }

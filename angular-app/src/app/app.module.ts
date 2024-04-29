@@ -41,6 +41,8 @@ import { GroupsComponent } from './groups/groups.component';
 import { MatchGeneratorComponent } from './match-generator/match-generator.component';
 import { MatchEditorComponent } from './match-editor/match-editor.component';
 import { StandingMatchesComponent } from './standing-matches/standing-matches.component';
+import { AddPlayerComponent } from './add-player/add-player.component';
+import { AddTeamComponent } from './add-team/add-team.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,9 @@ import { StandingMatchesComponent } from './standing-matches/standing-matches.co
     GroupsComponent,
     MatchGeneratorComponent,
     MatchEditorComponent,
-    StandingMatchesComponent
+    StandingMatchesComponent,
+    AddPlayerComponent,
+    AddTeamComponent
   ],
   imports: [
     BrowserModule,

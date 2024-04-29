@@ -4,6 +4,11 @@ export interface Player {
     equipo: string,
     edad: string,
     categoria: string,
+
+    height: string,
+    weight: string,
+    posicion: string,
+    birthday: Date
 }
 
 export enum Category {
