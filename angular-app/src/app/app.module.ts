@@ -43,6 +43,7 @@ import { MatchEditorComponent } from './match-editor/match-editor.component';
 import { StandingMatchesComponent } from './standing-matches/standing-matches.component';
 import { AddPlayerComponent } from './add-player/add-player.component';
 import { AddTeamComponent } from './add-team/add-team.component';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { AddTeamComponent } from './add-team/add-team.component';
     MatchEditorComponent,
     StandingMatchesComponent,
     AddPlayerComponent,
-    AddTeamComponent
+    AddTeamComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

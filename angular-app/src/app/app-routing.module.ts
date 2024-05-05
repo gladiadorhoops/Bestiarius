@@ -15,7 +15,7 @@ import { ScoutsComponent } from './scouts/scouts.component'
 import { GroupsComponent } from './groups/groups.component';
 import { BracketsComponent } from './brackets/brackets.component';
 import { StandingMatchesComponent } from './standing-matches/standing-matches.component';
-import { AddPlayerComponent } from './add-player/add-player.component';
+import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
@@ -33,7 +33,7 @@ const routes: Routes = [
   { path: 'grupos', component: GroupsComponent },
   { path: 'brackets', component: BracketsComponent },
   { path: 'standings', component: StandingMatchesComponent },
-  { path: 'add-player', component: AddPlayerComponent },
+  { path: 'signup', component: SignupComponent },
   { path: '**', component: InicioComponent, data: { 
     breadcrumb: 'Gladiadores Hoops', 
     title: 'GladiadoresHoops',

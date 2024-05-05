@@ -1,0 +1,31 @@
+<div class="container page-content">
+    <h1>Registro de {{role}}</h1>
+    <form [formGroup]="form">
+        <fieldset>
+            <div class="form-field">
+                <label class="col col-4">Nombre:</label>
+                <input class="col col-8" name="nombre" formControlName="nombre">
+            </div>
+            <div class="form-field">
+                <label class="col col-4">E-mail:</label>
+                <input class="col col-8" name="email" formControlName="email">
+            </div>
+            <div class="form-field">
+                <label class="col col-4">Cel:</label>
+                <input class="col col-8" name="phone" formControlName="phone">
+            </div>
+            <div class="form-field">
+                <label class="col col-4">Contraseña:</label>
+                <input class="col col-8" name="password" formControlName="password" 
+                    type="password">
+            </div>
+        </fieldset>
+        <p></p>
+        <div class="form-buttons">
+            <button class="button button-primary" 
+                    (click)="signup()">Registrar</button>
+        </div>
+    </form>
+    <br>
+    <span style="background-color: red" *ngIf="failed"> Failed to Login </span>
+</div>
