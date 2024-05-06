@@ -49,7 +49,7 @@ export class Cognito {
             console.log("ERROR: ID Token not found on user authentication output")
             return
         }
-        console.log(`Found User ${username} ID Token`)
+        console.log(`Found User ${email} ID Token`)
         try {
             const cognitoCredentials: CognitoIdentityCredentialProvider = fromCognitoIdentityPool({
                 clientConfig: { region: REGION }, // Configure the underlying CognitoIdentityClient.
