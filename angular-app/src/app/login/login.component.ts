@@ -5,6 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
+import { Cognito } from '../aws-clients/cognito';
 
 @Component({
   selector: 'app-login',
@@ -13,14 +14,15 @@ import { DynamoDb } from '../aws-clients/dynamodb';
 })
 export class LoginComponent {
 
-    form:FormGroup;
-    isLoggedIn: boolean = false;
-    ddb!: DynamoDb;
-    loading = true;
-  scoutid: string = "";
-  scoutname: string = "";
+  form:FormGroup;
+  isLoggedIn: boolean = false;
+  ddb!: DynamoDb;
+  loading = true;
+  userId: string = "";
+  userName: string = "";
   email: string = "";
   failed: boolean = false;
+  tokenId: string = "";
 
     constructor(private fb:FormBuilder, 
                  private authService: AuthService,
@@ -32,13 +34,20 @@ export class LoginComponent {
         });
 
         if(this.authService.isLoggedIn()){
-          let user = this.authService.getScoutName();
-          let pass = this.authService.getScoutPass();
-          DynamoDb.build(user, pass).then(
-            (client) => {
-              this.ddb = client;
-              this.loading = false;
-            });
+          let user = this.authService.getUserName();
+          let pass = this.authService.getUserPass();
+          this.authService.getCredentials(user, pass).then(
+            (credentials) => {
+              if (credentials == undefined) {
+                throw Error("AWS Credentials are undefined. Unable to set DDB client")
+              }
+              DynamoDb.build(credentials).then(
+                (client) => {
+                  this.ddb = client;
+                  this.loading = false;
+                });
+            }
+          )
         }
     }
 
@@ -49,40 +58,35 @@ export class LoginComponent {
     
     reloadLoginStatus() {
       this.isLoggedIn = this.authService.isLoggedIn();
-      this.scoutid = this.authService.getScoutId();
-      this.scoutname = this.authService.getScoutName();
+      this.userId = this.authService.getUserId();
+      this.userName = this.authService.getUserName();
       console.log("Reloaded");
     }
 
-    login() {
-        const val = this.form.value;
-        this.failed = false;
-        if (val.email && val.password) {
+    async login() {
+      const val = this.form.value;
+      this.failed = false;
+      this.email = val.email
 
-          DynamoDb.build(val.email, val.password).then(
-            (client) => {
-              this.ddb = client
-              this.authService.login(val.email, val.password,this.ddb).then(
-                (scoutId) => {
-                  if (scoutId == undefined) {
-                    console.log("Failed to log in");
-                    this.failed = true;
-                  } else {              
-                    this.authService.setSession(val.email, scoutId, val.password);
-                    this.reloadLoginStatus();
-                    console.log("User is logged in");
-                    window.location.reload();
-                  }
-                }
-              )
-            }
-          )
+      if (!(val.email && val.password)) {
+        this.failed = true
+        return
+      }
+      
+      let user = await this.authService.login(val.email, val.password)
+      if (user == undefined) {
+        console.log("Failed to log in");
+        this.failed = true;
+        return
+      }
 
-          let scoutId: string | undefined
-        }
-        else{
-          this.failed = true;
-        }
+      this.userId = user.id
+      this.userName = user.name
+      
+      this.authService.setSession(val.email, user.id, val.password);
+      this.reloadLoginStatus();
+      console.log("User is logged in");
+      window.location.reload();
     }
 
     logout() {

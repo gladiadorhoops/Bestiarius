@@ -17,45 +17,25 @@ import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 import { CognitoIdentityCredentialProvider, fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 import { 
     REGION, 
-    SCOUT_APP_CLIENT,
-    GLADIADORES_APP_CLIENT_ID,
-    COGNITO_IDENTITY_POOL, 
     COGNITO_IDP_TEMPLATE, 
-    COGNITO_USER_POOL,
+    AUTHENTICATED_COGNITO_IDENTITY,
 } from "./constants";
 import { User } from "../interfaces/user";
 import { jwtDecode } from "jwt-decode";
+import { CognitoIdentity } from "../interfaces/cognito-identity";
 
 
 const client = new CognitoIdentityProviderClient({region: REGION})
 
 export class Cognito {
 
-    static async getAwsCredentials(
-        email: string, 
-        password: string, 
-        clientId: string = SCOUT_APP_CLIENT, 
-        idenityPoolId: string = COGNITO_IDENTITY_POOL, 
-        userPooldI: string = COGNITO_USER_POOL): Promise<AwsCredentialIdentity | Provider<AwsCredentialIdentity> | undefined> {
-        
-        let output = await Cognito.authenticateUser(email.toLowerCase(), password, clientId)
- 
-        if(output == undefined) {
-            console.log("ERROR: User authentication returned undefined")
-            return
-        }
-        let token = output.AuthenticationResult?.IdToken
-        if(token == undefined) {
-            console.log("ERROR: ID Token not found on user authentication output")
-            return
-        }
-        console.log(`Found User ${email} ID Token`)
+    static async getAwsCredentials(tokenId: string, identity: CognitoIdentity = AUTHENTICATED_COGNITO_IDENTITY): Promise<AwsCredentialIdentity | Provider<AwsCredentialIdentity> | undefined> {
         try {
             const cognitoCredentials: CognitoIdentityCredentialProvider = fromCognitoIdentityPool({
                 clientConfig: { region: REGION }, // Configure the underlying CognitoIdentityClient.
-                identityPoolId: idenityPoolId,
+                identityPoolId: identity.identityPoolId,
                 logins: {
-                    [COGNITO_IDP_TEMPLATE(REGION, userPooldI)]: token,                            
+                    [COGNITO_IDP_TEMPLATE(REGION, identity.userPoolId)]: tokenId,                            
                 }            
             })
             console.log("Found AWS Credentials")
@@ -66,10 +46,10 @@ export class Cognito {
         }                
     }
 
-    static async authenticateUser(username: string, password: string, clientId: string = GLADIADORES_APP_CLIENT_ID): Promise<InitiateAuthCommandOutput | undefined> {
+    static async authenticateUser(username: string, password: string, identity: CognitoIdentity = AUTHENTICATED_COGNITO_IDENTITY): Promise<string | undefined> {
         const initiateAuthCommandInput: InitiateAuthCommandInput = {
             AuthFlow: 'USER_PASSWORD_AUTH',
-            ClientId: clientId,
+            ClientId: identity.clientId,
             AuthParameters: {
                 "USERNAME": username, 
                 "PASSWORD": password
@@ -82,16 +62,27 @@ export class Cognito {
             const command = new InitiateAuthCommand(initiateAuthCommandInput);
             console.log("command: ", command)
             response = await client.send(command);
-            return response
           } catch (error) {
             console.log(error)
             return undefined
         }
+
+        if(response == undefined) {
+            console.log("ERROR: User authentication returned undefined")
+            return
+        }
+        let token = response.AuthenticationResult?.IdToken
+        if(token == undefined) {
+            console.log("ERROR: ID Token not found on user authentication output")
+            return
+        }
+        console.log(`Found User ${username} ID Token`)
+        return token
     }
 
     static async signUpUser(name: string, email: string, phoneNumber: string, password: string, role: string): Promise<SignUpCommandOutput  | undefined> {
         const signUpCommandInput: SignUpCommandInput = {
-            ClientId: GLADIADORES_APP_CLIENT_ID,
+            ClientId: AUTHENTICATED_COGNITO_IDENTITY.clientId,
             Password: password,
             Username: email,
             UserAttributes: [
@@ -127,7 +118,7 @@ export class Cognito {
 
     static async confirmSignUpUser(code: string, email: string): Promise<ConfirmSignUpCommandOutput  | undefined> {
         const confirmSignUpCommandInput: ConfirmSignUpCommandInput = {
-            ClientId: GLADIADORES_APP_CLIENT_ID,
+            ClientId: AUTHENTICATED_COGNITO_IDENTITY.clientId,
             ConfirmationCode: code,
             Username: email,
         }
@@ -145,7 +136,7 @@ export class Cognito {
 
     static async resendConfirmationCode(email: string): Promise<ResendConfirmationCodeCommandOutput  | undefined> {
         const resendConfirmationCodeCommandInput: ResendConfirmationCodeCommandInput = {
-            ClientId: GLADIADORES_APP_CLIENT_ID,
+            ClientId: AUTHENTICATED_COGNITO_IDENTITY.clientId,
             Username: email,
         }
 

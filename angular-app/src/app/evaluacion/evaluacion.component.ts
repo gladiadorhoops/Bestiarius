@@ -27,8 +27,8 @@ export class EvaluacionComponent {
 
   @Input() ddb!: DynamoDb;
 
-  scout_id = this.authService.getScoutId();
-  scout_name = this.authService.getScoutName();
+  scout_id = this.authService.getUserId();
+  scout_name = this.authService.getUserName();
   categories = getCategories();
   evaluationForm =  this.fb.group(ReporteBuilder.defaultForm);
 

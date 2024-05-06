@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Cognito } from '../aws-clients/cognito';
 import { DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -25,7 +26,7 @@ export class SignupComponent {
   phone = "";
   name = "";
 
-  constructor(private fb:FormBuilder, private activatedRoute: ActivatedRoute) {
+  constructor(private fb:FormBuilder, private activatedRoute: ActivatedRoute, private authService: AuthService) {
     this.role = "";
     this.email = "emailPlaceholder";
     this.signupForm = this.fb.group({
@@ -91,7 +92,11 @@ export class SignupComponent {
   }
 
   private async storeUserData(){
-    this.ddb = await DynamoDb.build(this.email, this.password);
+    let credentials = await this.authService.getCredentials(this.email, this.password)
+    if (credentials == undefined) {
+      throw Error("AWS Credentials are undefined. Unable to set DDB client")
+    }
+    this.ddb = await DynamoDb.build(credentials);
     let record: Record<string, AttributeValue> = {}
 
     record[PK_KEY] = {S: `${this.userId}`}

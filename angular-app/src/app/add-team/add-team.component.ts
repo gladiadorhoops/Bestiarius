@@ -29,8 +29,8 @@ export class AddTeamComponent {
 
   @Input() ddb!: DynamoDb;
 
-  scout_id = this.authService.getScoutId();
-  scout_name = this.authService.getScoutName();
+  scout_id = this.authService.getUserId();
+  scout_name = this.authService.getUserName();
   categories = getCategories();
   teamForm =  this.fb.group(TeamBuilder.defaultForm);
 

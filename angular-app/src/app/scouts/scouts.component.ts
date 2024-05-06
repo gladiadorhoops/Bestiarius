@@ -37,14 +37,22 @@ export class ScoutsComponent {
         });
 
         if(this.authService.isLoggedIn()){
-          let user = this.authService.getScoutName();
-          let pass = this.authService.getScoutPass();
-          DynamoDb.build(user, pass).then(
-            (client) => {
-              this.ddb = client;
-              this.loading = false;
-              this.evaluarView = true;
-            });
+          let user = this.authService.getUserName();
+          let pass = this.authService.getUserPass();
+
+          this.authService.getCredentials(user, pass).then(
+            (credentials) => {
+              if (credentials == undefined) {
+                throw Error("AWS Credentials are undefined. Unable to set DDB client")
+              }
+              DynamoDb.build(credentials).then(
+                (client) => {
+                  this.ddb = client;
+                  this.loading = false;
+                  this.evaluarView = true;
+                });
+            }
+          )
         }
     }
 
@@ -55,8 +63,8 @@ export class ScoutsComponent {
     
     reloadLoginStatus() {
       this.isLoggedIn = this.authService.isLoggedIn();
-      this.scoutid = this.authService.getScoutId();
-      this.scoutname = this.authService.getScoutName();
+      this.scoutid = this.authService.getUserId();
+      this.scoutname = this.authService.getUserName();
       if(this.scoutname == 'pecanha'){
         this.isAdmin = true
       }
@@ -64,42 +72,6 @@ export class ScoutsComponent {
         this.isAdmin = false
       }
       console.log("Reloaded");
-    }
-
-    login() {
-        const val = this.form.value;
-        this.failed = false;
-        if (val.scout && val.password) {
-
-          DynamoDb.build(val.scout, val.password).then(
-            (client) => {
-              this.ddb = client
-              this.authService.login(val.scout, val.password,this.ddb).then(
-                (scoutId) => {
-                  if (scoutId == undefined) {
-                    console.log("Failed to log in");
-                    this.failed = true;
-                  } else {              
-                    this.authService.setSession(val.scout, scoutId, val.password);
-                    this.reloadLoginStatus();
-                    console.log("User is logged in");
-                  }
-                }
-              )
-            }
-          )
-
-          let scoutId: string | undefined
-        }
-        else{
-          this.failed = true;
-        }
-    }
-
-    logout() {
-      this.authService.logout();
-      this.reloadLoginStatus();
-      console.log("User is logged out");
     }
 
     changeFeature(feature: string){

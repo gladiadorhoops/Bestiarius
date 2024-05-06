@@ -1,6 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DynamoDb } from './aws-clients/dynamodb';
+import { Cognito } from './aws-clients/cognito';
+import { User } from './interfaces/user';
+import { CognitoIdentity } from './interfaces/cognito-identity';
+import { AUTHENTICATED_COGNITO_IDENTITY } from './aws-clients/constants';
+import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 
 
 @Injectable({
@@ -10,62 +14,64 @@ export class AuthService {
 
   constructor(private httpService: HttpClient) { }
     
-  async login(username:string, password:string, ddb: DynamoDb): Promise<string | undefined> {
+  async login(username:string, password:string): Promise<User | undefined> {
     console.log("Starting Login")
-    var scoutId: string | undefined;
-    await ddb.findIdQuery(username.toLocaleLowerCase(), password).then(
-      (item) => {
-        if(item != undefined) scoutId = item["pk"].S
-        console.log("scoutId", scoutId)
-      }
-    )
-    return scoutId
-  } 
+    let idToken = await Cognito.authenticateUser(username, password)
+    if(idToken == undefined) return
+    return Cognito.getUserFromToken(idToken)
+  }
 
-  public setSession( scoutName: string, scoutId: string, scoutPass: string) {
-      localStorage.setItem('scout_name', scoutName.toLocaleLowerCase());
-      localStorage.setItem('scout_id', scoutId);
-      localStorage.setItem('scout_pass', scoutPass);
+  async getCredentials(username: string, password: string, identity: CognitoIdentity = AUTHENTICATED_COGNITO_IDENTITY): Promise<AwsCredentialIdentity | Provider<AwsCredentialIdentity> | undefined> {
+    console.log("Retrieving AWS Credentials")
+    let idToken = await Cognito.authenticateUser(username, password)
+    if(idToken == undefined) return
+    return await Cognito.getAwsCredentials(idToken, identity)
+  }
+
+  public setSession( userName: string, userId: string, userPass: string) {
+      localStorage.setItem('user_name', userName.toLocaleLowerCase());
+      localStorage.setItem('user_id', userId);
+      localStorage.setItem('user_pass', userPass);
   }
 
   public logout() {
-      localStorage.removeItem("scout_id");
-      localStorage.removeItem("scout_name");
-      localStorage.removeItem("scout_pass");
+      localStorage.removeItem("user_id");
+      localStorage.removeItem("user_name");
+      localStorage.removeItem("user_pass");
   }
 
   public isLoggedIn() {
-    return (localStorage.getItem("scout_id") != null)
+    return (localStorage.getItem("user_id") != null)
   }
 
   isLoggedOut() {
       return !this.isLoggedIn();
   }
 
-  getScoutId() {
-    var scoutid = localStorage.getItem("scout_id");
-    if (scoutid != null){
-      return scoutid;
+  getUserId() {
+    var userid = localStorage.getItem("user_id");
+    if (userid != null){
+      return userid;
     }
     else{
       return "";
     }
   } 
 
-  getScoutName() {
-    var scoutName = localStorage.getItem("scout_name");
-    if (scoutName != null){
-      return scoutName;
+  getUserName() {
+    var userName = localStorage.getItem("user_name");
+    if (userName != null){
+      return userName;
     }
     else{
       return "";
     }
   } 
 
-  getScoutPass() {
-    var scoutPass = localStorage.getItem("scout_pass");
-    if (scoutPass != null){
-      return scoutPass;
+  getUserPass() {
+    var userPass = localStorage.getItem("user_pass");
+    if (userPass != null){
+      return userPass;
     }
     else{
       return "";

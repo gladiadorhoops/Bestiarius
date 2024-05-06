@@ -1,8 +1,6 @@
 import { S3Client, GetObjectCommand, ListObjectsCommand, ListObjectsCommandInput, GetObjectCommandInput } from "@aws-sdk/client-s3";
 import { REGION, COGNITO_UNAUTHENTICATED_CREDENTIALS } from "./constants";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
-import { Cognito } from './cognito';
-
 
 const client = new S3Client({ 
     region: REGION,
@@ -66,9 +64,7 @@ export class S3 {
 
     }
 
-    static async build(username: string, password: string): Promise<S3> {
-        let credentials: AwsCredentialIdentity | Provider<AwsCredentialIdentity> | undefined
-        credentials = await Cognito.getAwsCredentials(username, password);
+    static async build(credentials: AwsCredentialIdentity | Provider<AwsCredentialIdentity>): Promise<S3> {
         let client =  new S3Client({ 
             region: REGION,
             credentials: credentials

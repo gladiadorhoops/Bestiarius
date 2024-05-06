@@ -43,9 +43,14 @@ export class ResultadosEvaluacionComponent {
   async ngOnInit() {
 
     if(this.authService.isLoggedIn()){
-      let user = this.authService.getScoutName();
-      let pass = this.authService.getScoutPass();
-      this.s3 = await S3.build(user, pass)
+      let user = this.authService.getUserName();
+      let pass = this.authService.getUserPass();
+
+      let credentials = await this.authService.getCredentials(user, pass)
+      if (credentials == undefined) {
+        throw Error("AWS Credentials are undefined. Unable to set S3 client")
+      }
+      this.s3 = await S3.build(credentials)
     }
     this.topApprendizPlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3, Category.APRENDIZ)
     this.topElitePlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3, Category.ELITE)
