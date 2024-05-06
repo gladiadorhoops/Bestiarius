@@ -16,6 +16,7 @@ import { GroupsComponent } from './groups/groups.component';
 import { BracketsComponent } from './brackets/brackets.component';
 import { StandingMatchesComponent } from './standing-matches/standing-matches.component';
 import { SignupComponent } from './signup/signup.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'torneospasados', component: TorneospasadosComponent },
   { path: 'evaluacion', component: EvaluacionComponent },
   { path: 'scouts', component: ScoutsComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'grupos', component: GroupsComponent },
   { path: 'brackets', component: BracketsComponent },
   { path: 'standings', component: StandingMatchesComponent },

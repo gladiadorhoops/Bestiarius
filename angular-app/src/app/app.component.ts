@@ -14,6 +14,19 @@ export class AppComponent {
 
   title = 'gladiadores-hoops';
 
+  isLoggedIn: boolean = false;
+  isAdmin = false;
+  isScout = false;
+  isCoach = false;
+
+  ngOnInit(){
+    this.isLoggedIn = this.authService.isLoggedIn();
+    // TODO: update role
+    this.isAdmin = this.authService.isLoggedIn();
+    this.isScout = this.authService.isLoggedIn();
+    this.isCoach = this.authService.isLoggedIn();
+  }
+
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   ngOnDestroy() {

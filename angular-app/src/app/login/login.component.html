@@ -1,0 +1,42 @@
+<div class="bg-image lower-corner-img" style="background-image: url('assets/no-background-logo-transparent.png');">
+    <div class="container page-content">
+        <div class="d-flex justify-content-center align-items-center" >
+            <div style="width: 100%" class="text-justify outer">
+            <ng-container *ngIf="!isLoggedIn">    
+                <div class="container page-content">
+                    <h1>Login</h1>
+                    <form [formGroup]="form">
+                        <fieldset>
+                            <div class="form-field">
+                                <label>Email:</label>
+                                <input name="email" formControlName="email">
+                            </div>
+                            <div class="form-field">
+                                <label>Password:</label>
+                                <input name="password" formControlName="password" 
+                                    type="password">
+                            </div>
+                        </fieldset>
+                        <div class="form-buttons">
+                            <button class="button button-primary" 
+                                    (click)="login()">Login</button>
+                        </div>
+                    </form>
+                    <br>
+                    <span style="background-color: red" *ngIf="failed"> Failed to Login </span>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="isLoggedIn">
+                
+                <div style="display: flex; flex-direction: column; align-items:flex-end;">
+                    <form [formGroup]="form">
+                        <label>Usuario: <i>{{email}}</i> |&nbsp;</label>
+                        <button class="button button-cancel" 
+                        (click)="logout()">Logout</button>
+                    </form>
+                </div>
+            </ng-container>
+            </div>
+        </div>
+    </div>
+    </div> 

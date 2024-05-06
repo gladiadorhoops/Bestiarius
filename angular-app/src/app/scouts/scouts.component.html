@@ -4,38 +4,10 @@
             <div style="width: 100%" class="text-justify outer">
             <ng-container *ngIf="!isLoggedIn">    
                 <div class="container page-content">
-                    <h1>Scouts Login</h1>
-                    <form [formGroup]="form">
-                        <fieldset>
-                            <div class="form-field">
-                                <label>Scout:</label>
-                                <input name="scout" formControlName="scout">
-                            </div>
-                            <div class="form-field">
-                                <label>Password:</label>
-                                <input name="password" formControlName="password" 
-                                    type="password">
-                            </div>
-                        </fieldset>
-                        <div class="form-buttons">
-                            <button class="button button-primary" 
-                                    (click)="login()">Login</button>
-                        </div>
-                    </form>
-                    <br>
-                    <span style="background-color: red" *ngIf="failed"> Failed to Login </span>
+                    <h1>Please log in!</h1>
                 </div>
             </ng-container>
             <ng-container *ngIf="isLoggedIn">
-                
-                <div style="display: flex; flex-direction: column; align-items:flex-end;">
-                    <form [formGroup]="form">
-                        <label>Usuario: <i>{{scoutname}}</i> |&nbsp;</label>
-                        <button class="button button-cancel" 
-                        (click)="logout()">Logout</button>
-                    </form>
-                </div>
-
                 <select #feature (change)="changeFeature(feature.value)">
                     <option value="evaluar">Evaluar</option>
                     <option value="marcadores">Marcadores</option>
