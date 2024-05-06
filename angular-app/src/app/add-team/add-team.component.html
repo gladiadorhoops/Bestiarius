@@ -41,6 +41,12 @@
                                 <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.nombre}}</option>
                             </datalist>
                         </div>
+                        <div class="frow">
+                        <button type="button" class="btn btn-dark" 
+                      (click)="addPlayer()">
+                          Add Player
+                      </button>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -52,16 +58,12 @@
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseOne">
                     Jugadores
                 </button>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse show" >
+                      <div id="players">
+                          <app-add-player *ngFor="let player of teamplayers" [teamplayers]="teamplayers" [equipoId]="selectedTeam" [categoria]="selectedCategoria" [playerId]="player.id" [ddb]="ddb"></app-add-player>
+                      </div>
+                </div>
               </h2>
-              <div id="flush-collapseTwo" class="accordion-collapse collapse show" >
-                <button type="button" class="btn" 
-                    (click)="addPlayer()">
-                        +
-                    </button>
-                    <div id="players">
-                        <app-add-player *ngFor="let player of teamplayers" [teamplayers]="teamplayers" [equipoId]="selectedTeam" [categoria]="selectedCategoria" [playerId]="player.id" [ddb]="ddb"></app-add-player>
-                    </div>
-              </div>
             </div>
             
         </div>

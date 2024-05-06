@@ -1,3 +1,5 @@
+@import "colors";
+
 .filterPadding{
     padding: 2%;
 }
@@ -440,11 +442,11 @@
   padding: 0.2em 0.4em 0.2em;
   border-bottom: 0.075em solid transparent;
   font-size: 0.95rem;
-  background-color: #fcc258;
+  background-color: $light-color;
   border-color: spin(shade(#F5F5F5, 10%), -10);
   
   .tournament-bracket__team--winner & {
-    background-color: #BA1E34;
-    border-color: spin(shade(#FFF176, 2%), -10);
+    background-color: $mid-color;
+    border-color: spin(shade($light-color, 2%), -10);
   }
 }

@@ -1,17 +1,19 @@
+@import "colors";
+
 .mainpanel {
     display: flex;
 }
 
 .mainpanel .sidepanels {
     padding: 2%;
-    background-image: linear-gradient(to bottom left, #f47941, #BA1E34);//#FCC258;
+    background-image: linear-gradient(to bottom left, $mid-color, $dark-color);
 
     -ms-flex: 1;  /* IE 10 */  
     flex: 1;
 }
 
 .playerfield {
-    background-color: #f4794180;
+    background-color: $mid-color;
     color: black;
     font-weight: bold;
     padding-left: 5%;
@@ -34,12 +36,12 @@
 }
 
 .accordion-button{
-    background-image: linear-gradient(to bottom right, #BA1E34, #A40A72);//#BA1E34;
+    background-image: linear-gradient(to bottom right, $mid-color, $dark-color);
     color: white;
 }
 
 .accordion-body{
-    background-image: linear-gradient(to bottom left, #f47941, #BA1E34);//#FCC258;
+    background-image: linear-gradient(to bottom left, $light-color, $dark-color);
     color: white;
 }
 
@@ -55,11 +57,11 @@ td, th {
 }
 
 td {
-    background-color: #f4794180 !important;
+    background-color: $mid-color !important;
 }
 
 th {
-    background-color: #f47941FF !important;
+    background-color: $light-color !important;
 }
 
 .col-md-8 {

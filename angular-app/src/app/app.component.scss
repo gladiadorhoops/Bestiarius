@@ -1,0 +1,6 @@
+@import 'colors.scss';
+
+.gradient-colors {
+    background-image: linear-gradient(to bottom left, $mid-color, $dark-color) !important; 
+    color: #FFFFFF;
+}

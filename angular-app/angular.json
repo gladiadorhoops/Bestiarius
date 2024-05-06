@@ -37,7 +37,12 @@
             ],
             "scripts": [
               "node_modules/chart.js/dist/chart.js"
-            ]
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./src/"
+              ]
+            }
           },
           "configurations": {
             "production": {

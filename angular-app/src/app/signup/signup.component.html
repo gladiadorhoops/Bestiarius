@@ -1,31 +1,61 @@
-<div class="container page-content">
-    <h1>Registro de {{role}}</h1>
-    <form [formGroup]="form">
-        <fieldset>
-            <div class="form-field">
-                <label class="col col-4">Nombre:</label>
-                <input class="col col-8" name="nombre" formControlName="nombre">
+<ng-container>   
+    <div class="container page-content">
+        <h1>Registro de {{role}}</h1>
+        <form [formGroup]="signupForm">
+            <fieldset>
+                <div class="form-field">
+                    <label class="col col-4">Nombre:</label>
+                    <input class="col col-8" name="nombre" formControlName="nombre">
+                </div>
+                <div class="form-field">
+                    <label class="col col-4">E-mail:</label>
+                    <input class="col col-8" name="email" formControlName="email">
+                </div>
+                <div class="form-field">
+                    <label class="col col-4">Cel:</label>
+                    <input class="col col-8" name="phone" formControlName="phone">
+                </div>
+                <div class="form-field">
+                    <label class="col col-4">Contraseña:</label>
+                    <input class="col col-8" name="password" formControlName="password" 
+                        type="password">
+                </div>
+                <div class="form-field">
+                    <label class="col col-4">Código de Verificación:</label>
+                    <input class="col col-8" name="codigo" formControlName="codigo">
+                </div>
+            </fieldset>
+            <p></p>
+            <div class="form-buttons">
+                <button  [disabled]="confirmation" class="button button-primary" 
+                        (click)="signup(); $event.preventDefault()">Verificar E-MAIL</button>
+                <button [disabled]="!confirmation" class="button button-primary" 
+                        (click)="confirm(); $event.preventDefault()">Registrar</button>
             </div>
-            <div class="form-field">
-                <label class="col col-4">E-mail:</label>
-                <input class="col col-8" name="email" formControlName="email">
-            </div>
-            <div class="form-field">
-                <label class="col col-4">Cel:</label>
-                <input class="col col-8" name="phone" formControlName="phone">
-            </div>
-            <div class="form-field">
-                <label class="col col-4">Contraseña:</label>
-                <input class="col col-8" name="password" formControlName="password" 
-                    type="password">
-            </div>
-        </fieldset>
-        <p></p>
-        <div class="form-buttons">
-            <button class="button button-primary" 
-                    (click)="signup()">Registrar</button>
-        </div>
-    </form>
-    <br>
-    <span style="background-color: red" *ngIf="failed"> Failed to Login </span>
+        </form>
+        <br>
+        <span style="background-color: red" *ngIf="failed"> Failed to Login </span>
+    </div>
+</ng-container>
+
+
+<div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>{{popUpnMsg}}</p>
+  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="closePopup()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
