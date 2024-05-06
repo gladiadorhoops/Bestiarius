@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { Cognito } from '../aws-clients/cognito';
+import { DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
+import { AttributeValue } from "@aws-sdk/client-dynamodb";
 
 @Component({
   selector: 'app-signup',
@@ -10,6 +12,18 @@ import { switchMap } from 'rxjs';
 })
 export class SignupComponent {
   signupForm:FormGroup;
+  ddb!: DynamoDb;
+
+  role: string | null;
+  email = "";
+  password = "";
+  failed: boolean = false;
+  confirmation: boolean = false;
+  displayStyle = "none";
+  popUpnMsg = "";
+  userId = "";
+  phone = "";
+  name = "";
 
   constructor(private fb:FormBuilder, private activatedRoute: ActivatedRoute) {
     this.role = "";
@@ -31,11 +45,24 @@ export class SignupComponent {
       });
   }
 
-  signup() {
+  async signup() {
     console.log("Registering "+this.role+": "+this.signupForm.value.nombre);
     console.log("Email: "+this.signupForm.value.email);
     this.email = this.signupForm.value.email;
-    console.log("NEED TO IMPLEMENT SIGNUP FUNCTION");
+    this.password = this.signupForm.value.password
+    this.phone = this.signupForm.value.phone
+    this.name = this.signupForm.value.nombre
+
+    let output = await Cognito.signUpUser(this.signupForm.value.nombre, this.email, this.signupForm.value.phone, this.password, this.role!)
+    
+    if(!output?.UserSub) {
+      this.popUpnMsg = "Ocurrio un error. Intenta de nuevo";
+      this.openPopup();
+      return
+    }
+
+    this.userId = this.role + '.' + output?.UserSub
+
     this.confirmation = true;
     this.signupForm.get('nombre')?.disable();
     this.signupForm.get('email')?.disable();
@@ -46,9 +73,12 @@ export class SignupComponent {
     this.openPopup();
   }
 
-  confirm() {
-    console.log("Validating "+this.role+": "+this.signupForm.value.email);
-    console.log("NEED TO IMPLEMENT CONFIRM FUNCTION");
+  async confirm() {
+    console.log("Validating "+this.role+": " + this.email);
+    await Cognito.confirmSignUpUser(this.signupForm.value.codigo, this.email);
+
+    await this.storeUserData()
+
     this.confirmation = false;
     this.signupForm.get('nombre')?.enable();
     this.signupForm.get('email')?.enable();
@@ -60,6 +90,20 @@ export class SignupComponent {
     this.openPopup();
   }
 
+  private async storeUserData(){
+    this.ddb = await DynamoDb.build(this.email, this.password);
+    let record: Record<string, AttributeValue> = {}
+
+    record[PK_KEY] = {S: `${this.userId}`}
+    record[SK_KEY] = {S: `${this.role}.data`}
+    record['name'] = {S: `${this.name}`}
+    record['email'] = {S: `${this.email}`}
+    record['phone'] = {S: `${this.phone}`}
+    console.log('Storing user data', record)
+    
+    await this.ddb.putItem(record);
+  }
+
 
   openPopup() {
     this.displayStyle = "block";
@@ -67,12 +111,4 @@ export class SignupComponent {
   closePopup() {
     this.displayStyle = "none";
   }
-
-  role: string | null;
-  email: string;
-  failed: boolean = false;
-  confirmation: boolean = false;
-  displayStyle = "none";
-  popUpnMsg = ""
-
 }

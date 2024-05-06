@@ -12,6 +12,7 @@ import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 import { REGION, DDB_TABLE_NAME } from "./constants";
 import { DynamoDbIndex } from "./dynamodb-index"
 import { Cognito } from './cognito';
+import { COGNITO_AUTHENTICATED_IDENTITY_POOL, COGNITO_AUTHENTICATED_USER_POOL, GLADIADORES_APP_CLIENT_ID } from '../aws-clients/constants';
 
 export const PK_KEY = 'pk'
 export const SK_KEY = 'sk'
@@ -111,7 +112,13 @@ export class DynamoDb {
 
     static async build(username: string, password: string): Promise<DynamoDb> {
         let credentials: AwsCredentialIdentity | Provider<AwsCredentialIdentity> | undefined
-        credentials = await Cognito.getAwsCredentials(username, password);
+        credentials = await Cognito.getAwsCredentials(
+            username, 
+            password,  
+            GLADIADORES_APP_CLIENT_ID,
+            COGNITO_AUTHENTICATED_IDENTITY_POOL,
+            COGNITO_AUTHENTICATED_USER_POOL
+        );
         let client =  new DynamoDBClient({ 
             region: REGION,
             credentials: credentials
