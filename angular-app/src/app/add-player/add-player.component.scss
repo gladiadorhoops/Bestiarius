@@ -1,5 +1,4 @@
-@import 'colors';
-
+@import "colors";
 
 .fcol {
     display: flex;
@@ -30,19 +29,19 @@ fieldset {
 
 .accordion{
     width: 100%;
-    background-color: $light-color;
+    background-color: $light-color;//#BA1E34;
 }
 
 .accordion-button{
-    background-image: linear-gradient(to bottom right, $mid-color, $dark-color);
+    background-image: linear-gradient(to bottom left, $mid-color, $dark-color);//#FCC258;
     color: white;
 }
 
 .accordion-body{
-    background-color: $light-color;
+    background-color: $light-color;//#BA1E34;
     color: $black-color;
 }
 
 .modal-dialog{
-    color: $black-color;
+    color: black;
 }

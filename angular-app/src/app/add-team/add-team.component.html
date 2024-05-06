@@ -50,7 +50,6 @@
                     </div>
                   </div>
                 </div>
-                
             </div>
             <div class="accordion accordion-flush" id="accordionFlushExample">
             <div class="accordion-item">
@@ -58,12 +57,12 @@
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseOne">
                     Jugadores
                 </button>
+              </h2>
                 <div id="flush-collapseTwo" class="accordion-collapse collapse show" >
                       <div id="players">
                           <app-add-player *ngFor="let player of teamplayers" [teamplayers]="teamplayers" [equipoId]="selectedTeam" [categoria]="selectedCategoria" [playerId]="player.id" [ddb]="ddb"></app-add-player>
                       </div>
                 </div>
-              </h2>
             </div>
             
         </div>
