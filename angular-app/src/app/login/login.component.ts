@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { Cognito } from '../aws-clients/cognito';
@@ -26,7 +26,7 @@ export class LoginComponent {
 
     constructor(private fb:FormBuilder, 
                  private authService: AuthService,
-                 private router: Router) {
+                 private router: Router, private activatedRoute: ActivatedRoute) {
 
         this.form = this.fb.group({
             email: ['',Validators.required],
@@ -54,6 +54,20 @@ export class LoginComponent {
     ngOnInit(){
       this.reloadLoginStatus()
       this.loading = false;
+
+      if(this.isLoggedIn){
+        let logout = false;
+        this.activatedRoute.queryParams.subscribe(params => {
+          logout = params['logout'];
+        });
+        
+        if(logout){
+          this.logout()
+        }
+        else{
+          window.location.assign('/#/scouts');
+        }
+      }
     }
     
     reloadLoginStatus() {
@@ -89,10 +103,12 @@ export class LoginComponent {
       window.location.reload();
     }
 
-    logout() {
+    async logout() {
       this.authService.logout();
       window.location.reload();
       this.reloadLoginStatus();
       console.log("User is logged out");
+      await this.router.navigateByUrl('/login');
+      window.location.reload();
     }
 }
