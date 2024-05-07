@@ -36,15 +36,19 @@
                         </div>
                         <label class="frow" for="captan">Capitán:&nbsp;</label>
                         <div class="frow">
-                            <input type="text" id="captan" formControlName="captan" class="form-control" list="mylist">
-                            <datalist id="mylist">
-                                <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.nombre}}</option>
-                            </datalist>
+                          <select id="captan" formControlName="captan">
+                            <option value=""></option>
+                            <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.nombre}}</option>
+                          </select>
+                          <button type="button" class="btn btn-light" 
+                          (click)="refreshPlayersList()">
+                          Refresh
+                          </button>
                         </div>
                         <div class="frow">
                         <button type="button" class="btn btn-dark" 
                       (click)="addPlayer()">
-                          Add Player
+                          Agregar Jugador
                       </button>
                     </div>
                     </div>
@@ -67,7 +71,7 @@
             
         </div>
         <div class="frow">
-            <button type="submit">Guardar</button>
+            <button type="submit"  class="btn btn-dark">Guardar</button>
         </div>
     </form>
     </div>
@@ -81,7 +85,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-body">
-            <p>{{submitReportMessage}}</p>
+            <p>{{popUpMsg}}</p>
       
           </div>
           <div class="modal-footer">

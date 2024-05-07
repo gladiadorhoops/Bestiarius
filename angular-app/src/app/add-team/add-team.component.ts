@@ -40,8 +40,8 @@ export class AddTeamComponent {
 
   selectedCategoria: string = "";
   selectedTeam: string = "";
+  popUpMsg = "";
   displayStyle = "none";
-  submitReportMessage = "Evaluacion guardada!"
 
   async ngOnInit() {
   }
@@ -100,13 +100,34 @@ export class AddTeamComponent {
     //});
   }
 
+  async getInputPlayersList(){
+    let updatedPlayers: Player[] = [];
+    await this.viewChildren.forEach(element => {
+      element.savePlayer();
+      console.log("updated player:");
+      console.log(element.player);
+      updatedPlayers = updatedPlayers.concat(element.player);
+    });
+    return updatedPlayers;
+  }
+
+  async refreshPlayersList(){
+    console.log("Players list:");
+    this.teamplayers = await this.getInputPlayersList();
+    console.log(this.teamplayers);
+
+    if(this.teamplayers.length == 0){
+      this.popUpMsg = "Jugadores no encontrados. Agrega jugadores para continuar.";
+      this.openPopup();
+    }
+  }
 
   async onSubmit() {
-    // TODO: Use EventEmitter with form value
+    let updatedPlayers = await this.getInputPlayersList();
+    console.log("Players to save");
+    console.log(updatedPlayers);
 
-    this.viewChildren.forEach(element => {
-      element.savePlayer();
-    });
+    // TODO: refresh database with team data
 
     /*try {
       await this.reporteBuilder.submit(this.ddb, this.teamForm)
@@ -114,7 +135,7 @@ export class AddTeamComponent {
       this.submitReportMessage = `Error gurardong evaluacion. Contacta a Paco.\n${err}`
       console.error("Error Submitting report")
     }
-    
+    this.popUpMsg = "Evaluacion guardada!";
     this.openPopup();
     */
   }
