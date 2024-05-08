@@ -97,8 +97,9 @@ export class LoginComponent {
       this.userId = user.id
       this.userName = user.name
       
-      this.authService.setSession(val.email, user.id, val.password);
-      this.reloadLoginStatus();
+      console.log(user);
+      await this.authService.setSession(val.email, user.id, val.password, user.role);
+      await this.reloadLoginStatus();
       console.log("User is logged in");
       window.location.reload();
     }

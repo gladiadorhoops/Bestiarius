@@ -28,16 +28,18 @@ export class AuthService {
     return await Cognito.getAwsCredentials(idToken, identity)
   }
 
-  public setSession( userName: string, userId: string, userPass: string) {
+  public setSession( userName: string, userId: string, userPass: string, userRole: string) {
       localStorage.setItem('user_name', userName.toLocaleLowerCase());
       localStorage.setItem('user_id', userId);
       localStorage.setItem('user_pass', userPass);
+      localStorage.setItem('user_role', userRole);
   }
 
   public logout() {
       localStorage.removeItem("user_id");
       localStorage.removeItem("user_name");
       localStorage.removeItem("user_pass");
+      localStorage.removeItem("user_role");
   }
 
   public isLoggedIn() {
@@ -72,6 +74,16 @@ export class AuthService {
     var userPass = localStorage.getItem("user_pass");
     if (userPass != null){
       return userPass;
+    }
+    else{
+      return "";
+    }
+  } 
+
+  getUserRole() {
+    var userRole = localStorage.getItem("user_role");
+    if (userRole != null){
+      return userRole;
     }
     else{
       return "";

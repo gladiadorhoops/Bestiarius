@@ -15,8 +15,11 @@ export class ScoutsComponent {
     form:FormGroup;
     isLoggedIn: boolean = false;
     isAdmin = false;
-    scoutid: string = "";
-    scoutname: string = "";
+    isScout = false;
+    isCoach = false;
+    userid: string = "";
+    username: string = "";
+    userrole: string = "";
     failed: boolean = false;
     marcadoresView: boolean = false;
     evaluarView: boolean = false;
@@ -63,14 +66,28 @@ export class ScoutsComponent {
     
     reloadLoginStatus() {
       this.isLoggedIn = this.authService.isLoggedIn();
-      this.scoutid = this.authService.getUserId();
-      this.scoutname = this.authService.getUserName();
-      if(this.scoutname == 'pecanha'){
-        this.isAdmin = true
+      this.userid = this.authService.getUserId();
+      this.username = this.authService.getUserName();
+      this.userrole = this.authService.getUserRole();
+      console.log("Role: "+this.userrole);
+      
+      this.isAdmin = false;
+      this.isScout = false;
+      this.isCoach = false;
+
+      if(this.userrole == "admin"){
+        this.isAdmin = true;
+        this.isScout = true;
+        this.isCoach = true;
       }
-      else{
-        this.isAdmin = false
+      if(this.userrole == "scout"){
+        this.isScout = true;
+        this.isCoach = true;
       }
+      if(this.userrole == "coach"){
+        this.isCoach = true;
+      }
+
       console.log("Reloaded");
     }
 

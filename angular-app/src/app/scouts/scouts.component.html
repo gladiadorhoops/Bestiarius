@@ -9,12 +9,12 @@
             </ng-container>
             <ng-container *ngIf="isLoggedIn">
                 <select #feature (change)="changeFeature(feature.value)">
-                    <option value="evaluar">Evaluar</option>
-                    <option value="marcadores">Marcadores</option>
-                    <option value="resultados">Resultados</option>
-                    <option value="addTeam">Registrar Equipo</option>
-                    <option value="addMatch" *ngIf="isAdmin">AddMatch</option>
-                    <option value="editMatch" *ngIf="isAdmin">EditMatch</option>
+                    <option *ngIf="isScout" value="evaluar">Evaluar</option>
+                    <option *ngIf="isScout" value="marcadores">Marcadores</option>
+                    <option *ngIf="isScout" value="resultados">Resultados</option>
+                    <option *ngIf="isCoach" value="addTeam">Registrar Equipo</option>
+                    <option *ngIf="isAdmin" value="addMatch">AddMatch</option>
+                    <option *ngIf="isAdmin" value="editMatch">EditMatch</option>
                 </select>
                 <br>
                 <br>
