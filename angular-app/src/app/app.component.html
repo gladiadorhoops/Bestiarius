@@ -49,8 +49,8 @@
           <li class="nav-item">
             <a routerLink="/turismo" routerLinkActive="active" class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Conoce Parral </a>
           </li>
-          <li *ngIf="isScout" class="nav-item">
-            <a routerLink="/scouts" routerLinkActive="active" class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Scouts </a>
+          <li *ngIf="isLoggedIn" class="nav-item">
+            <a routerLink="/restricted" routerLinkActive="active" class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Área Restringida</a>
           </li>
           <li *ngIf="!isLoggedIn" class="nav-item">
             <a routerLink="/login" routerLinkActive="active" class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Login </a>

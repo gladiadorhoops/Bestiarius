@@ -32,7 +32,6 @@ import { TurismoComponent } from './turismo/turismo.component';
 import { ResultadosComponent } from './resultados/resultados.component';
 import { MarcadoresComponent } from './marcadores/marcadores.component';
 import { EvaluacionComponent } from './evaluacion/evaluacion.component';
-import { ScoutsComponent } from './scouts/scouts.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { MarcadorFormComponent } from './marcador-form/marcador-form.component';
 import { ResultadosEvaluacionComponent } from './resultados-evaluacion/resultados-evaluacion.component';
@@ -45,6 +44,7 @@ import { AddPlayerComponent } from './add-player/add-player.component';
 import { AddTeamComponent } from './add-team/add-team.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
+import { RestrictedAreaComponent } from './restricted-area/restricted-area.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +60,6 @@ import { LoginComponent } from './login/login.component';
     ResultadosComponent,
     MarcadoresComponent,
     EvaluacionComponent,
-    ScoutsComponent,
     MarcadorFormComponent,
     ResultadosEvaluacionComponent,
     BracketsComponent,
@@ -71,7 +70,8 @@ import { LoginComponent } from './login/login.component';
     AddPlayerComponent,
     AddTeamComponent,
     SignupComponent,
-    LoginComponent
+    LoginComponent,
+    RestrictedAreaComponent
   ],
   imports: [
     BrowserModule,

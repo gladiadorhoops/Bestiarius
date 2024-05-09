@@ -11,12 +11,12 @@ import { RedesSocialesComponent } from './redes-sociales/redes-sociales.componen
 import { FotosComponent } from './fotos/fotos.component';
 import { TorneospasadosComponent } from './torneospasados/torneospasados.component';
 import { EvaluacionComponent } from './evaluacion/evaluacion.component'
-import { ScoutsComponent } from './scouts/scouts.component'
 import { GroupsComponent } from './groups/groups.component';
 import { BracketsComponent } from './brackets/brackets.component';
 import { StandingMatchesComponent } from './standing-matches/standing-matches.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
+import { RestrictedAreaComponent } from './restricted-area/restricted-area.component';
 
 const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
@@ -30,7 +30,7 @@ const routes: Routes = [
   { path: 'fotos', component: FotosComponent },
   { path: 'torneospasados', component: TorneospasadosComponent },
   { path: 'evaluacion', component: EvaluacionComponent },
-  { path: 'scouts', component: ScoutsComponent },
+  { path: 'restricted', component: RestrictedAreaComponent },
   { path: 'login', component: LoginComponent },
   { path: 'grupos', component: GroupsComponent },
   { path: 'brackets', component: BracketsComponent },

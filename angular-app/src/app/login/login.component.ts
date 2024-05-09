@@ -65,7 +65,7 @@ export class LoginComponent {
           this.logout()
         }
         else{
-          window.location.assign('/#/scouts');
+          window.location.assign('/#/restricted');
         }
       }
     }
