@@ -15,6 +15,7 @@ export class AppComponent {
   title = 'gladiadores-hoops';
 
   isLoggedIn: boolean = false;
+  userrole = "";
   isAdmin = false;
   isScout = false;
   isCoach = false;
@@ -25,6 +26,17 @@ export class AppComponent {
     this.isAdmin = this.authService.isLoggedIn();
     this.isScout = this.authService.isLoggedIn();
     this.isCoach = this.authService.isLoggedIn();
+    this.userrole = this.authService.getUserRole();
+
+    if(this.userrole == "admin"){
+      this.isAdmin = true;
+    }
+    if(this.userrole == "scout"){
+      this.isScout = true;
+    }
+    if(this.userrole == "coach"){
+      this.isCoach = true;
+    }
   }
 
   destroy$: Subject<boolean> = new Subject<boolean>();
