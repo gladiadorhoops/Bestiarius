@@ -10,8 +10,8 @@
             Equipos
             <br>
         </h2>
-        <div class="row justify-content-xs-center align-items-center" 
-                    style="margin:2% 0%; padding: 2%; background-color:#000 ;" 
+        <div class="row justify-content-xs-center align-items-center resultItem" 
+                    style="margin:2% 0%; padding: 2% ;" 
                     *ngFor="let categoria of ganadoresEquipos">
             <h4 style="cursor: help;" title="{{categoria.significado}}">Categoria {{categoria.categoria}}</h4>
             <div class="row" *ngFor="let ganador of categoria.ganadores; let i=index">
@@ -25,8 +25,8 @@
             Individuales
             <br>
         </h2>
-        <div class="row justify-content-xs-center align-items-center"
-                    style="margin:2% 0%; padding: 2%; background-color:#000 ;" 
+        <div class="row justify-content-xs-center align-items-center resultItem"
+                    style="margin:2% 0%; padding: 2%;" 
                     *ngFor="let categoria of ganadoresIndividuales">
             <h4 style="cursor: help;" title="{{categoria.significado}}">Categoria {{categoria.categoria}}</h4>
             <div class="row" *ngFor="let ganador of categoria.ganadores">

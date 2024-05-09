@@ -23,7 +23,7 @@
         Juegos Aprendiz
         <br>
     </h2>
-    <div class="row justify-content-xs-center align-items-center" style="margin:2% 0%; padding: 2%; background-color:#000 ;" *ngFor="let match of matchesAprendiz">
+    <div class="row justify-content-xs-center align-items-center resultItem" style="margin:2% 0%; padding: 2%;" *ngFor="let match of matchesAprendiz">
         <div class="row align-items-center">
             <div class="col col-2"></div>
             <div class="col col-3">
@@ -67,32 +67,42 @@
         Juegos Elite
         <br>
     </h2>
-    <div class="row justify-content-xs-center align-items-center" style="margin:2% 0%; padding: 2%; background-color:#000 ;" *ngFor="let match of matchesElite">
+    <div class="row justify-content-xs-center align-items-center resultItem" style="margin:2% 0%; padding: 2%;" *ngFor="let match of matchesElite">
         <div class="row align-items-center">
+            <div class="col col-2"></div>
             <div class="col col-3">
                 <h3>{{match.homeTeam.name}}</h3><br>
                 <h2>{{match.homeTeam.points}} </h2>
             </div>
-            <div class="col col-1 " style="max-width: 10%;">
+            <div class="col col-2 " style="max-width: 10%;">
                 <h3>vs</h3>  
             </div>
             <div class="col col-3">
                 <h3>{{match.visitorTeam.name}}</h3><br>
                 <h2>{{match.visitorTeam.points}}</h2>
             </div>
+            <div class="col col-2"></div>
         </div>
         <div class="row">
-            <div class="col col-5">
+            <div class="col col-2"></div>
+            <div class="col col-8">
                 {{match.juego}} 
             </div>
+            <div class="col col-2"></div>
         </div>
         <div class="row">
-            <div class="col col-5 d-none d-sm-block">
+            <div class="col col-2"></div>
+            <div class="col col-8 d-none d-sm-block">
                 {{match.location}} - {{match.time}}
             </div>
-            <div class="col col-5 d-block d-sm-none">
+            <div class="col col-2"></div>
+        </div>
+        <div class="row">
+            <div class="col col-2"></div>
+            <div class="col col-8 d-block d-sm-none">
                 {{match.location}} <br> {{match.time}}
             </div>
+            <div class="col col-2"></div>
         </div>
     </div>
 </div>

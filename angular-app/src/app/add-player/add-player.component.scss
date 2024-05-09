@@ -27,21 +27,6 @@ fieldset {
     margin-top: 10%;
 }
 
-.accordion{
-    width: 100%;
-    background-color: $light-color;//#BA1E34;
-}
-
-.accordion-button{
-    background-image: linear-gradient(to bottom left, $mid-color, $dark-color);//#FCC258;
-    color: white;
-}
-
-.accordion-body{
-    background-color: $light-color;//#BA1E34;
-    color: $black-color;
-}
-
 .modal-dialog{
     color: black;
 }

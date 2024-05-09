@@ -6,14 +6,14 @@
 
 .mainpanel .sidepanels {
     padding: 2%;
-    background-image: linear-gradient(to bottom left, $mid-color, $dark-color);
+    background-color: linear-gradient(to bottom left, $mid-dark-color, $dark-color);
 
     -ms-flex: 1;  /* IE 10 */  
     flex: 1;
 }
 
 .playerfield {
-    background-color: $mid-color;
+    background-color: $mid-dark-color;
     color: black;
     font-weight: bold;
     padding-left: 5%;
@@ -29,39 +29,32 @@
 .score-block{
     padding: 2%
 }
-
-.accordion{
-    width: 100%;
-    background-color: #FCC258;
+.row {
+    --bs-gutter-x: 0%;
 }
-
-.accordion-button{
-    background-image: linear-gradient(to bottom right, $mid-color, $dark-color);
-    color: white;
+.accordion-body {
+    padding: 0%;
 }
-
-.accordion-body{
-    background-image: linear-gradient(to bottom left, $light-color, $dark-color);
-    color: white;
-}
-
 table {
     color: black;
-    background-color: white;
+    background-color: $mid-dark-color;
 }
 
 td, th {
     text-align: left;
     padding: 8px;
-    border: 1px solid #dddddd;
+    border: 0px solid #dddddd;
 }
 
 td {
-    background-color: $mid-color !important;
+    background-color: $mid-dark-color !important;
+    color: $light-color;
 }
 
 th {
-    background-color: $light-color !important;
+    background-color: $mid-dark-color !important;
+    border-bottom: 2px solid $dark-color;
+    color: $dark-color;
 }
 
 .col-md-8 {

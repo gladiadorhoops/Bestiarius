@@ -16,7 +16,7 @@
 
 html {
     background-color: #666;
-    color: #FFFFFF;
+    color: $light-color;
     /*background-image: url("assets/logo.png");
     background-size: 10% ;
     background-size: cover;*/
@@ -62,5 +62,36 @@ height: 100%;
 
 .bg-dark {
     background-color: $dark-color !important;
-    background-image: linear-gradient(to bottom right,$mid-color, $dark-color) !important;
+    
 }
+
+.accordion-button{
+    background-color: $dark-color;
+    color: $light-color;
+}
+
+
+.accordion-button:not(.collapsed){
+    background-color: $dark-color;
+    color: $light-color;
+}
+
+.accordion{
+    width: 100%;
+    background-color: $mid-dark-color;
+}
+
+.accordion-body{
+    background-color: $mid-dark-color;
+    color: $light-color;
+}
+
+
+
+.marcadorItem{
+    margin: 3%;
+    padding: 3%;
+    background-color: $dark-color;
+    color: $light-color;
+}
+

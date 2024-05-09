@@ -4,12 +4,6 @@
     padding: 2%;
 }
 
-.marcadorItem{
-    margin: 3%;
-    padding: 3%;
-    background-color: #A40A72;
-}
-
 .marginBtn {
     margin-left: 3%;
     margin-right: 3%;
@@ -51,7 +45,7 @@
 }
 
 .tournament-bracket__round-title {
-  color: #FFFFFF;
+  color: $mid-dark-color;
   font-size: 0.95rem;
   font-weight: 400;
   text-align: center;
@@ -139,12 +133,12 @@
       display: block;
       width: 1em;
       height: 45%;
-      border-right: 2px solid #ffffff;
+      border-right: 2px solid $light-color;
     }
 
     &:nth-child(odd)::after {
       top: 50%;
-      border-top: 2px solid #ffffff;
+      border-top: 2px solid $light-color;
       transform: translateY(-1px);
       
       .tournament-bracket--rounded & {
@@ -154,7 +148,7 @@
     
     &:nth-child(even)::after {
       bottom: 50%;
-      border-bottom: 2px solid #ffffff;
+      border-bottom: 2px solid $light-color;
       transform: translateY(1px);
       
       .tournament-bracket--rounded & {
@@ -193,16 +187,16 @@
 .tournament-bracket__match {
   display: flex;
   width: 100%;
-  background-color: #fb7638;
+  background-color: $dark-color;
   padding: 1em;
-  border: 1px solid #fb7638;
+  border: 1px solid $dark-color;
   border-radius: 0.5em;
   outline: none; 
   cursor: pointer;
   transition: padding 0.2s ease-in-out, border 0.2s linear;
   
   &:focus {
-    border-color: #2196F3;
+    border-color: $mid-dark-color;
   }
   
   &::before,
@@ -224,12 +218,12 @@
       display: block;
       width: 1em;
       height: 10%;
-      border-left: 2px solid #ffffff;
+      border-left: 2px solid $light-color;
     }
 
     &::before  {
       bottom: 50%;
-      border-bottom: 2px solid #ffffff;
+      border-bottom: 2px solid $light-color;
       transform: translate(0, 1px);
       
       .tournament-bracket--rounded & {
@@ -239,7 +233,7 @@
 
     &::after  {
       top: 50%;
-      border-top: 2px solid #ffffff;
+      border-top: 2px solid $light-color;
       transform: translate(0, -1px);
       
       .tournament-bracket--rounded & {
@@ -364,7 +358,7 @@
 
 .tournament-bracket__caption {
   font-size: 0.8rem;
-  color: #fcc258;
+  color: $light-color;
   font-weight: 300;
   padding-bottom: 0.75em;
   text-align: center;
@@ -406,7 +400,7 @@
 
 .tournament-bracket__code {
   padding: 0 0.5em;
-  color: #FFFFFF;
+  color: $light-color;
   font-weight: 600;
   text-transform: uppercase;
   border: 0;
@@ -446,7 +440,7 @@
   border-color: spin(shade(#F5F5F5, 10%), -10);
   
   .tournament-bracket__team--winner & {
-    background-color: $mid-color;
+    background-color: $mid-dark-color;
     border-color: spin(shade($light-color, 2%), -10);
   }
 }
