@@ -1,0 +1,26 @@
+
+<h2 class="text-center mb-3">
+    Equipos Registrados
+</h2>
+
+<div class="spinner-border text-light" role="status" *ngIf="loading">
+    <span class="sr-only">Loading...</span>
+</div>
+<div class="mainpanel" *ngIf="!loading">
+    <table class="row">
+        <tr class="row">
+            <th class="col col-lg-4 col-12">Equipo</th>
+            <th class="col col-lg-3 col-12">Categoria</th>
+            <th class="col col-lg-3 col-12">Localidad</th>
+            <th *ngIf="!isCoach" class="col col-lg-2 col-12 groupLast">Coach</th>
+            <th *ngIf="isCoach" class="col col-lg-2 col-12 groupLast"></th>
+        </tr>
+        <tr class="row" *ngFor="let team of teams" >
+            <td class="col col-lg-4 col-12">{{team.name}}</td>
+            <td class="col col-lg-3 col-12">{{team.category}}</td>
+            <td class="col col-lg-3 col-12">{{team.location}}</td>
+            <td *ngIf="!isCoach" class="col col-lg-2 col-12">{{team.coachId}}</td>
+            <td *ngIf="isCoach" class="col col-lg-2 col-12">Edit</td>
+        </tr>
+    </table>
+</div>  

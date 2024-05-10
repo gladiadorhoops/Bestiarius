@@ -5,7 +5,7 @@
     <div class="spinner-border text-light" role="status" *ngIf="loading">
         <span class="sr-only">Loading...</span>
     </div>
-    <div class="row" *ngIf="!loading">
+    <div class="row mainpanel" *ngIf="!loading">
         <div *ngIf="!isEditing">
 
             <form [formGroup]="filterForm">

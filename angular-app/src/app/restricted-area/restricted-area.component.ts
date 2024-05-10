@@ -33,6 +33,7 @@ export class RestrictedAreaComponent {
     matchEditView = false;
     addTeamView = false;
     viewUsersView = false;
+    viewTeamsView = false;
     ddb!: DynamoDb;
     loading = true;
 
@@ -95,6 +96,11 @@ export class RestrictedAreaComponent {
         this.isCoach = true;
       }
 
+      // all roles can view teams
+      this.menuItems = this.menuItems.concat([
+        {value: "viewTeams", text: "Equipos Registrados"}
+      ]);
+
       if(this.isAdmin){
         this.menuItems = this.menuItems.concat([
           {value: "addMatch", text: "Add Match"},
@@ -150,6 +156,10 @@ export class RestrictedAreaComponent {
            this.showViewUsers()
            break; 
         } 
+        case 'viewTeams': { 
+           this.showViewTeams()
+           break; 
+        } 
         default: { 
             this.hideAll();
            break; 
@@ -165,6 +175,7 @@ export class RestrictedAreaComponent {
     this.matchEditView = false;
     this.addTeamView = false;
     this.viewUsersView = false;
+    this.viewTeamsView = false;
   }
 
   showEvaluacion() {
@@ -194,5 +205,9 @@ export class RestrictedAreaComponent {
   showViewUsers(){
     this.hideAll();
     this.viewUsersView = true;
+  }
+  showViewTeams(){
+    this.hideAll();
+    this.viewTeamsView = true;
   }
 }
