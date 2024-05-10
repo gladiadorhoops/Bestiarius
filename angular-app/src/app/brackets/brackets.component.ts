@@ -23,7 +23,7 @@ export class BracketsComponent implements OnInit {
   loading = true;
 
   isEditing: boolean = false;
-  editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", players: [], category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", players: [], category: ""}, homePoints:"0"};
+  editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   phases = ["Octavos", "Cuartos", "Semi-Finaless", "Finales"]
 
   phaseMatches: {[place: string]: Match} = {}

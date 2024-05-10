@@ -1,4 +1,4 @@
-import { Team } from "./team"
+import { MatchTeam } from "./team"
 
 export interface Match {
     id?: string | undefined
@@ -7,9 +7,9 @@ export interface Match {
     day?: string | undefined
     time: string
     juego: string
-    visitorTeam: Team
+    visitorTeam: MatchTeam
     visitorPoints?: string | undefined
-    homeTeam: Team
+    homeTeam: MatchTeam
     homePoints?: string | undefined
     braketPlace?: string | undefined
 }

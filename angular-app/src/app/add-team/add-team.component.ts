@@ -51,7 +51,7 @@ export class AddTeamComponent {
 
   async loadTeams() {
     this.teams = []
-    this.selectedCategoria = this.teamForm.value.categoria!
+    this.selectedCategoria = this.teamForm.value.category!
     let teams = await this.teamBuilder.getListOfTeams(this.ddb, this.selectedCategoria).then(
       (output) => {
         return output
@@ -63,7 +63,7 @@ export class AddTeamComponent {
   }
 
   async loadPlayers() {
-    this.selectedTeam = this.teamForm.value.equipo!;
+    this.selectedTeam = this.teamForm.value.teamName!;
     var playersLoaded = false;
     this.teams.forEach(
       async (team) => {

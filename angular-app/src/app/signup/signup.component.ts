@@ -5,6 +5,8 @@ import { Cognito } from '../aws-clients/cognito';
 import { DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { AuthService } from '../auth.service';
+import { UserBuilder } from '../Builders/user-builder';
+import { roleFromString } from '../enum/Role';
 
 @Component({
   selector: 'app-signup',
@@ -15,7 +17,7 @@ export class SignupComponent {
   signupForm:FormGroup;
   ddb!: DynamoDb;
 
-  role: string | null;
+  role: string;
   email = "";
   password = "";
   failed: boolean = false;
@@ -26,7 +28,12 @@ export class SignupComponent {
   phone = "";
   name = "";
 
-  constructor(private fb:FormBuilder, private activatedRoute: ActivatedRoute, private authService: AuthService) {
+  constructor(
+    private fb:FormBuilder, 
+    private activatedRoute: ActivatedRoute, 
+    private authService: AuthService,
+    private userBuilder: UserBuilder,
+  ) {
     this.role = "";
     this.email = "emailPlaceholder";
     this.signupForm = this.fb.group({
@@ -62,7 +69,7 @@ export class SignupComponent {
       return
     }
 
-    this.userId = this.role + '.' + output?.UserSub
+    this.userId = output?.UserSub
 
     this.confirmation = true;
     this.signupForm.get('nombre')?.disable();
@@ -78,6 +85,7 @@ export class SignupComponent {
     console.log("Validating "+this.role+": " + this.email);
     await Cognito.confirmSignUpUser(this.signupForm.value.codigo, this.email);
 
+    await this.authService.setSession(this.email, this.userId, this.password, this.role);
     await this.storeUserData()
 
     this.confirmation = false;
@@ -97,16 +105,16 @@ export class SignupComponent {
       throw Error("AWS Credentials are undefined. Unable to set DDB client")
     }
     this.ddb = await DynamoDb.build(credentials);
-    let record: Record<string, AttributeValue> = {}
-
-    record[PK_KEY] = {S: `${this.userId}`}
-    record[SK_KEY] = {S: `${this.role}.data`}
-    record['name'] = {S: `${this.name}`}
-    record['email'] = {S: `${this.email}`}
-    record['phone'] = {S: `${this.phone}`}
-    console.log('Storing user data', record)
     
-    await this.ddb.putItem(record);
+    let user = {
+      id: this.userId,
+      name: this.name,
+      email: this.email,
+      phone: this.phone,
+      role: roleFromString(this.role)
+    }
+    
+    await this.userBuilder.createUser(this.ddb, user)
   }
 
 

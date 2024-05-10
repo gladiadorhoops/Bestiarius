@@ -115,4 +115,22 @@ export class DynamoDb {
         }); 
         return new DynamoDb(client)
     }
+
+    static convertToStringList(attributeValueList: AttributeValue[]): string[] {
+        let values: string[] = []
+        attributeValueList.forEach(
+            (value: AttributeValue) => {
+            values.push(value.S!)
+        });
+        return values
+    }
+
+    static convertFromStringList(valueList: string[]): AttributeValue[] {
+        let attributeValueList: AttributeValue[] = []
+        valueList.forEach(
+            (value: string) => {
+                attributeValueList.push({S: value})
+        });
+        return attributeValueList
+    }
 }

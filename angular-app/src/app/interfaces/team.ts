@@ -12,10 +12,31 @@ export function getCategories(): string[] {
     ]
 }
 
+export enum TeamKey {
+    ID = 'id',
+    NAME = 'name',
+    CAPTAIN_ID = 'captainId',
+    COACH_ID = 'coachId',
+    COACH_NAME = 'coachName',
+    CATEGORY = 'category',
+    LOACTION = 'location',
+    PREFIX = 'team',
+    SK = 'team.data'
+}
+
 export interface Team {
-    id?: string | undefined
+    id: string
     name: string
-    points?: number | undefined
-    players?: Player[] | undefined
+    captainId: string
+    coachId: string
+    coachName: string
+    category?: string
+    location: string
+}
+
+export interface MatchTeam {
+    id: string
+    name: string
     category?: string | undefined
+    points?: number | undefined
 }

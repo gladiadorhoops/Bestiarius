@@ -30,7 +30,7 @@ export class MatchEditorComponent implements OnInit {
 
   isEditing: boolean = false;
   loading: boolean = true;
-  editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", players: [], category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", players: [], category: ""}, homePoints:"0"};
+  editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   
 
   constructor(private fb: FormBuilder, 

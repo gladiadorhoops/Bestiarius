@@ -11,6 +11,19 @@ export interface Player {
     birthday: Date
 }
 
+export enum PlayerKey {
+    ID = 'id',
+    NAME = 'nombre',
+    TEAM_ID = 'equipo',
+    AGE = 'edad',
+    CATEGORY = 'categoria',
+    HEIGHT = 'height',
+    WEIGHT = 'weight',
+    POSITION = 'posicion',
+    BIRTHDAY = 'birthday',
+    PREFIX = 'player'
+}
+
 export enum Category {
     APRENDIZ = 'aprendiz',
     ELITE = 'elite'

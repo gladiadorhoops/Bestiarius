@@ -3,7 +3,7 @@ import { DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/
 import { Match } from "../interfaces/match";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { TeamBuilder } from './team-builder';
-import { Team } from '../interfaces/team';
+import { MatchTeam } from '../interfaces/team';
 import {v4 as uuidv4} from 'uuid';
 
 @Injectable({
@@ -24,13 +24,13 @@ export class MatchBuilder {
         for (const item of items) {
             let vteamId = item['visitorTeam'].S!
             let vteams = teams.filter(t => t.id == vteamId)
-            let vteam : Team = {id: vteamId, name: " - "}
+            let vteam : MatchTeam = {id: vteamId, name: " - "}
             if( vteams.length == 1){
                 vteam = vteams[0]
             }
             let hteamId = item['homeTeam'].S!
             let hteams = teams.filter(t => t.id == hteamId)
-            let hteam: Team = {id: hteamId, name: " - "}
+            let hteam: MatchTeam = {id: hteamId, name: " - "}
             if( hteams.length == 1){
                 hteam = hteams[0]
             }
@@ -40,7 +40,7 @@ export class MatchBuilder {
         return matches
     }
 
-    private buildMatch(item: Record<string, AttributeValue>, vteam: Team, hteam: Team): Match {
+    private buildMatch(item: Record<string, AttributeValue>, vteam: MatchTeam, hteam: MatchTeam): Match {
         return {
             id: item['pk'].S,
             category: item['category'].S,

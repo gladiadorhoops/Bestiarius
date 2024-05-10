@@ -23,6 +23,7 @@ import {
 import { User } from "../interfaces/user";
 import { jwtDecode } from "jwt-decode";
 import { CognitoIdentity } from "../interfaces/cognito-identity";
+import { roleFromString } from "../enum/Role";
 
 
 const client = new CognitoIdentityProviderClient({region: REGION})
@@ -158,7 +159,7 @@ export class Cognito {
             name: jwt['name'],
             phone: jwt['phone_number'],
             email: jwt['email'],
-            role: jwt['custom:role'],
+            role: roleFromString(jwt['custom:role']),
         }
     }
 }

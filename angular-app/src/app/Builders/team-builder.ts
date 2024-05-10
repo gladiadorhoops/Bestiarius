@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DynamoDb, PK_KEY, SK_KEY, SPK_KEY } from "src/app/aws-clients/dynamodb";
-import { Team } from "../interfaces/team";
+import { Team, TeamKey } from "../interfaces/team";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import {v4 as uuidv4} from 'uuid';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -10,13 +10,22 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class TeamBuilder {
 
-    constructor(
-        private formBuilder: FormBuilder
-    ) {}
+    async createTeam(ddb: DynamoDb, team: Team) {   
+        let record: Record<string, AttributeValue> = {}
+        record[PK_KEY] = {S: `${TeamKey.PREFIX}.${team.id}`}
+        record[SK_KEY] = {S: `${TeamKey.SK}`}
+        record[SPK_KEY] = {S: `${team.category}`}
+        record[TeamKey.NAME] = {S: `${team.name}`};
+        record[TeamKey.CAPTAIN_ID] = {S: `${team.captainId}`};
+        record[TeamKey.COACH_ID] = {S: `${team.coachId}`};
+        record[TeamKey.COACH_NAME] = {S: `${team.coachName}`};
+        record[TeamKey.LOACTION] = {S: `${team.location}`};
+        await ddb.putItem(record);
+    }
 
     async getListOfTeams(ddb: DynamoDb, category?: string | undefined): Promise<Team[]> {
         var teams: Team[] = []
-        teams = await ddb.listQuery('team.data', category).then(
+        teams = await ddb.listQuery(`${TeamKey.SK}`, category).then(
             (items) => {
                 items.sort((a, b) => a['name'].S!.localeCompare(b['name'].S!))
                 return items.map((item) => {return this.buildTeam(item)})
@@ -31,7 +40,7 @@ export class TeamBuilder {
         let record: Record<string, AttributeValue> = {}
 
         record[PK_KEY] = {S: `${id}`}
-        record[SK_KEY] = {S: `team.data`}
+        record[SK_KEY] = {S: `${TeamKey.SK}`}
         
         var response = await ddb.getItem(record)
         
@@ -41,47 +50,24 @@ export class TeamBuilder {
 
     }
 
-    private buildTeam(item: Record<string, AttributeValue>): Team {
+    private buildTeam(item: Record<string, AttributeValue>): Team {        
         return {
-            id: item['pk'].S,
-            name: item['name'].S!,
-            category: item['spk'].S,
-
+            id: item[PK_KEY].S!.split('.')[1],
+            name: item[TeamKey.NAME].S!,
+            category: item[SPK_KEY].S,
+            captainId: item[TeamKey.CAPTAIN_ID].S!,
+            coachId: item[TeamKey.COACH_ID].S!,
+            coachName: item[TeamKey.COACH_NAME].S!,
+            location: item[TeamKey.LOACTION].S!,
         }
     }
 
-    async addTeam(ddb: DynamoDb, name: string, category: string, players: string[]) {   
-
-        let record: Record<string, AttributeValue> = {}
-        let teamGuid = uuidv4();
-
-        record[PK_KEY] = {S: `team.${teamGuid}`}
-        record[SK_KEY] = {S: `team.data`}
-        record[SPK_KEY] = {S: `${category}`}
-        record['category'] = {S: `${category}`};
-        record['name'] = {S: `${name}`};
-        await ddb.putItem(record);
-
-        players.forEach(async player => {
-            let playerRecord: Record<string, AttributeValue> = {}
-            let playerGuid = uuidv4();
-
-            playerRecord[PK_KEY] = {S: `player.${playerGuid}`}
-            playerRecord[SK_KEY] = {S: `player.data`}
-            playerRecord['age'] = {S: ``};
-            playerRecord['category'] = {S: `${category}`};
-            playerRecord['name'] = {S: `${player}`};
-            playerRecord[SPK_KEY] = {S: `team.${teamGuid}`};
-            await ddb.putItem(playerRecord);
-        });
-    }
-
     static defaultForm = {
-        scoutId: ['', Validators.required],
-        scoutname: ['', Validators.required],
-        equipo: ['', Validators.required],
-        categoria: ['', Validators.required],
+        coachId: ['', Validators.required],
+        coachName: ['', Validators.required],
+        teamName: ['', Validators.required],
+        category: ['', Validators.required],
         location: [''],
-        captan: ['']
+        captainId: ['']
       }
 }
