@@ -6,6 +6,11 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
 
+export interface MenuItem {
+  text: string
+  value: string
+}
+
 @Component({
   selector: 'app-restricted-area',
   templateUrl: './restricted-area.component.html',
@@ -29,6 +34,8 @@ export class RestrictedAreaComponent {
     addTeamView = false;
     ddb!: DynamoDb;
     loading = true;
+
+    menuItems: MenuItem[] = [];
 
     constructor(private fb:FormBuilder, 
                  private authService: AuthService,
@@ -78,16 +85,33 @@ export class RestrictedAreaComponent {
         this.isAdmin = true;
         this.isScout = true;
         this.isCoach = true;
+        this.menuItems = [
+          {value: "addMatch", text: "Add Match"},
+          {value: "editMatch", text: "Edit Match"},
+          {value: "evaluar", text: "Evaluar"},
+          {value: "marcadores", text: "Marcadores"},
+          {value: "resultados", text: "Resultados"},
+          {value: "addTeam", text: "Registrar Equipo"}
+        ];
       }
       if(this.userrole == "scout"){
         this.isScout = true;
-        this.isCoach = true;
+        this.menuItems = [
+          {value: "evaluar", text: "Evaluar"},
+          {value: "marcadores", text: "Marcadores"},
+          {value: "resultados", text: "Resultados"}
+        ];
       }
       if(this.userrole == "coach"){
         this.isCoach = true;
+        this.menuItems = [
+          {value: "addTeam", text: "Registrar Equipo"}
+        ];
       }
 
       console.log("Reloaded");
+
+      this.changeFeature(this.menuItems[0].value);
     }
 
     changeFeature(feature: string){

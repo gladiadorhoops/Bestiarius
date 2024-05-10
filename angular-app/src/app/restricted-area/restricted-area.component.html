@@ -9,13 +9,7 @@
             </ng-container>
             <ng-container *ngIf="isLoggedIn">
                 <select #feature (change)="changeFeature(feature.value)">
-                    <option value="noneSelected"></option>
-                    <option *ngIf="isAdmin" value="addMatch">AddMatch</option>
-                    <option *ngIf="isAdmin" value="editMatch">EditMatch</option>
-                    <option *ngIf="isScout" value="evaluar">Evaluar</option>
-                    <option *ngIf="isScout" value="marcadores">Marcadores</option>
-                    <option *ngIf="isScout" value="resultados">Resultados</option>
-                    <option *ngIf="isCoach" value="addTeam">Registrar Equipo</option>
+                    <option *ngFor="let menuItem of menuItems" value="{{menuItem.value}}">{{menuItem.text}}</option>
                 </select>
                 <br>
                 <br>
