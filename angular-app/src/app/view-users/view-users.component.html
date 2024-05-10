@@ -1,0 +1,26 @@
+
+<h2 class="text-center mb-3">
+    Usuarios Registrados
+</h2>
+
+<div class="spinner-border text-light" role="status" *ngIf="loading">
+    <span class="sr-only">Loading...</span>
+</div>
+<div class="mainpanel" *ngIf="!loading">
+    <table class="row">
+        <tr class="row">
+            <th class="col col-lg-4 col-12">Nombre</th>
+            <th class="col col-lg-2 col-12">Cel</th>
+            <th class="col col-lg-3 col-12">Email</th>
+            <th class="col col-lg-1 col-12">Rol</th>
+            <th class="col col-lg-2 col-12 groupLast"></th>
+        </tr>
+        <tr class="row" *ngFor="let user of users" >
+            <td class="col col-lg-4 col-12">{{user.name}}</td>
+            <td class="col col-lg-2 col-12">{{user.phone}}</td>
+            <td class="col col-lg-3 col-12">{{user.email}}</td>
+            <td class="col col-lg-1 col-12">{{user.role}}</td>
+            <td class="col col-lg-2 col-12 groupLast">{{user.other}}</td>
+        </tr>
+    </table>
+</div>  

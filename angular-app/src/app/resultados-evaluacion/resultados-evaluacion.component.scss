@@ -37,7 +37,7 @@
 }
 table {
     color: black;
-    background-color: $mid-dark-color;
+    background-color: $light-color;
 }
 
 td, th {
@@ -47,14 +47,14 @@ td, th {
 }
 
 td {
-    background-color: $mid-dark-color !important;
-    color: $light-color;
+    background-color: $light-color !important;
+    color: $dark-color;
 }
 
 th {
-    background-color: $mid-dark-color !important;
+    background-color: $dark-color !important;
     border-bottom: 2px solid $dark-color;
-    color: $dark-color;
+    color: $light-color;
 }
 
 .col-md-8 {

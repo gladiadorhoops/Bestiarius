@@ -32,6 +32,7 @@ export class RestrictedAreaComponent {
     matchGenView = false;
     matchEditView = false;
     addTeamView = false;
+    viewUsersView = false;
     ddb!: DynamoDb;
     loading = true;
 
@@ -85,28 +86,33 @@ export class RestrictedAreaComponent {
         this.isAdmin = true;
         this.isScout = true;
         this.isCoach = true;
-        this.menuItems = [
-          {value: "addMatch", text: "Add Match"},
-          {value: "editMatch", text: "Edit Match"},
-          {value: "evaluar", text: "Evaluar"},
-          {value: "marcadores", text: "Marcadores"},
-          {value: "resultados", text: "Resultados"},
-          {value: "addTeam", text: "Registrar Equipo"}
-        ];
       }
       if(this.userrole == "scout"){
+        this.isAdmin = true;
         this.isScout = true;
-        this.menuItems = [
-          {value: "evaluar", text: "Evaluar"},
-          {value: "marcadores", text: "Marcadores"},
-          {value: "resultados", text: "Resultados"}
-        ];
       }
       if(this.userrole == "coach"){
         this.isCoach = true;
-        this.menuItems = [
+      }
+
+      if(this.isAdmin){
+        this.menuItems = this.menuItems.concat([
+          {value: "addMatch", text: "Add Match"},
+          {value: "editMatch", text: "Edit Match"},
+          {value: "viewUsers", text: "Usuarios Registrados"}
+        ]);
+      }
+      if(this.isScout){
+        this.menuItems = this.menuItems.concat([
+          {value: "evaluar", text: "Evaluar"},
+          {value: "marcadores", text: "Marcadores"},
+          {value: "resultados", text: "Resultados"}
+        ]);
+      }
+      if(this.isCoach){
+        this.menuItems = this.menuItems.concat([
           {value: "addTeam", text: "Registrar Equipo"}
-        ];
+        ]);
       }
 
       console.log("Reloaded");
@@ -139,6 +145,10 @@ export class RestrictedAreaComponent {
         case 'editMatch': { 
            this.showMatchEdit()
            break; 
+        }
+        case 'viewUsers': { 
+           this.showViewUsers()
+           break; 
         } 
         default: { 
             this.hideAll();
@@ -154,6 +164,7 @@ export class RestrictedAreaComponent {
     this.matchGenView = false;
     this.matchEditView = false;
     this.addTeamView = false;
+    this.viewUsersView = false;
   }
 
   showEvaluacion() {
@@ -179,5 +190,9 @@ export class RestrictedAreaComponent {
   showMatchEdit(){
     this.hideAll();
     this.matchEditView = true;
+  }
+  showViewUsers(){
+    this.hideAll();
+    this.viewUsersView = true;
   }
 }
