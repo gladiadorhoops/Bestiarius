@@ -32,6 +32,23 @@ export class UserBuilder {
         return coach
     }
 
+    async getCoaches(ddb: DynamoDb): Promise<Coach[]> {
+        var coaches: Coach[] = []
+        coaches = await ddb.listQuery(`${Role.COACH}.data`).then(
+            (items) => {
+                items.sort((a, b) => a[UserKey.NAME].S!.localeCompare(b[UserKey.NAME].S!))
+                return items.map((item) => {
+                    let coach =  this.buildUser(item, Role.COACH) as Coach
+                    coach.teamIds = DynamoDb.convertToStringList(item[CoachKey.TEAM_IDS].L!)
+                    return coach
+                })
+            }
+        )
+
+        console.log('teams', coaches)
+        return coaches
+    }
+
     private updateCoachRecord(record: Record<string, any>, coach: Coach): Record<string, any> { 
         let teamIdAttributes = DynamoDb.convertFromStringList(coach.teamIds)
         record[CoachKey.TEAM_IDS] = teamIdAttributes
