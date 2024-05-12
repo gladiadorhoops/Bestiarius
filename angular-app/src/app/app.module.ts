@@ -46,6 +46,7 @@ import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { RestrictedAreaComponent } from './restricted-area/restricted-area.component';
 import { ViewUsersComponent } from './view-users/view-users.component';
+import { ViewTeamsComponent } from './view-teams/view-teams.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { ViewUsersComponent } from './view-users/view-users.component';
     SignupComponent,
     LoginComponent,
     RestrictedAreaComponent,
-    ViewUsersComponent
+    ViewUsersComponent,
+    ViewTeamsComponent
   ],
   imports: [
     BrowserModule,

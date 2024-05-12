@@ -27,7 +27,9 @@ export class UserBuilder {
         if(item === undefined) return
         
         let coach = this.buildUser(item, Role.COACH) as Coach
-        coach.teamIds = DynamoDb.convertToStringList(item[CoachKey.TEAM_IDS].L!)
+        let teamIds = item[CoachKey.TEAM_IDS]
+        if (teamIds === undefined) return coach
+        coach.teamIds = DynamoDb.convertToStringList(teamIds.L!)
         
         return coach
     }
@@ -39,7 +41,9 @@ export class UserBuilder {
                 items.sort((a, b) => a[UserKey.NAME].S!.localeCompare(b[UserKey.NAME].S!))
                 return items.map((item) => {
                     let coach =  this.buildUser(item, Role.COACH) as Coach
-                    coach.teamIds = DynamoDb.convertToStringList(item[CoachKey.TEAM_IDS].L!)
+                    let teamIds = item[CoachKey.TEAM_IDS]
+                    if (teamIds === undefined) return coach
+                    coach.teamIds = DynamoDb.convertToStringList(teamIds.L!)
                     return coach
                 })
             }

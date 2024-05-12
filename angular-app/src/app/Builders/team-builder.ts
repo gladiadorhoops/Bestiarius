@@ -55,10 +55,10 @@ export class TeamBuilder {
             id: item[PK_KEY].S!.split('.')[1],
             name: item[TeamKey.NAME].S!,
             category: item[SPK_KEY].S,
-            captainId: item[TeamKey.CAPTAIN_ID].S!,
-            coachId: item[TeamKey.COACH_ID].S!,
-            coachName: item[TeamKey.COACH_NAME].S!,
-            location: item[TeamKey.LOACTION].S!,
+            captainId: item[TeamKey.CAPTAIN_ID]?.S,
+            coachId: item[TeamKey.COACH_ID]?.S ? item[TeamKey.COACH_ID]?.S : "",
+            coachName: item[TeamKey.COACH_NAME]?.S,
+            location: item[TeamKey.LOACTION]?.S,
         }
     }
 

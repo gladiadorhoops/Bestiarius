@@ -59,6 +59,7 @@ export class RestrictedAreaComponent {
               }
               DynamoDb.build(credentials).then(
                 (client) => {
+                  console.log('Iniitation DDB', client)
                   this.ddb = client;
                   this.loading = false;
                 });
@@ -69,7 +70,6 @@ export class RestrictedAreaComponent {
 
     ngOnInit(){
       this.reloadLoginStatus()
-      this.loading = false;
     }
     
     reloadLoginStatus() {
@@ -89,18 +89,13 @@ export class RestrictedAreaComponent {
         this.isCoach = true;
       }
       if(this.userrole == "scout"){
-        this.isAdmin = true;
         this.isScout = true;
       }
       if(this.userrole == "coach"){
         this.isCoach = true;
       }
 
-      // all roles can view teams
-      this.menuItems = this.menuItems.concat([
-        {value: "viewTeams", text: "Equipos Registrados"}
-      ]);
-
+      
       if(this.isAdmin){
         this.menuItems = this.menuItems.concat([
           {value: "addMatch", text: "Add Match"},
@@ -120,6 +115,11 @@ export class RestrictedAreaComponent {
           {value: "addTeam", text: "Registrar Equipo"}
         ]);
       }
+
+      // all roles can view teams
+      this.menuItems = this.menuItems.concat([
+        {value: "viewTeams", text: "Equipos Registrados"}
+      ]);
 
       console.log("Reloaded");
 

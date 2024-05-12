@@ -27,11 +27,11 @@ export enum TeamKey {
 export interface Team {
     id: string
     name: string
-    captainId: string
+    captainId: string | undefined
     coachId: string
-    coachName: string
+    coachName: string | undefined
     category?: string
-    location: string
+    location: string | undefined
 }
 
 export interface MatchTeam {

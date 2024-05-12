@@ -48,7 +48,7 @@
                     </div>
                     
                     <div *ngIf="viewTeamsView">
-                        <app-view-teams [ddb]="ddb"></app-view-teams>
+                        <app-view-teams [ddb]="ddb" (callAddTeam)="showAddTeam()"></app-view-teams>
                     </div>
                 </div>
                 
