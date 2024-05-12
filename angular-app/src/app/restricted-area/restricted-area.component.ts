@@ -121,6 +121,8 @@ export class RestrictedAreaComponent {
         {value: "viewTeams", text: "Equipos Registrados"}
       ]);
 
+      this.menuItems = this.menuItems.sort((a, b) => a.text.localeCompare(b.text))
+
       console.log("Reloaded");
 
       this.changeFeature(this.menuItems[0].value);

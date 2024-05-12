@@ -30,25 +30,25 @@ export class ViewTeamsComponent {
   isScout = false;
   isCoach = false;
   userId = "";
-
+  userrole = "";
   
   reloadLoginStatus() {
-    let userrole = this.authService.getUserRole();
+    this.userrole = this.authService.getUserRole();
     this.userId = this.authService.getUserId();
     
     this.isAdmin = false;
     this.isScout = false;
     this.isCoach = false;
 
-    if(userrole == "admin"){
+    if(this.userrole == "admin"){
       this.isAdmin = true;
       this.isScout = true;
       this.isCoach = true;
     }
-    if(userrole == "scout"){
+    if(this.userrole == "scout"){
       this.isAdmin = true;
     }
-    if(userrole == "coach"){
+    if(this.userrole == "coach"){
       this.isCoach = true;
     }
   }
@@ -57,9 +57,8 @@ export class ViewTeamsComponent {
 
     this.reloadLoginStatus()
     
-    console.log('TEST: calling list teams');
     console.log(this.ddb);
-    if (this.isCoach){
+    if (this.userrole == "coach"){
       this.teams = (await this.teamBuilder.getListOfTeams(this.ddb)).filter((t) => t.coachId == this.userId);
     }
     else{
