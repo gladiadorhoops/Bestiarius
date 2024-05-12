@@ -36,7 +36,7 @@ export class UserBuilder {
 
     async getCoaches(ddb: DynamoDb): Promise<Coach[]> {
         var coaches: Coach[] = []
-        coaches = await ddb.listQuery(`${Role.COACH}.data`).then(
+        coaches = await ddb.listByYearQuery(`${Role.COACH}.data`).then(
             (items) => {
                 items.sort((a, b) => a[UserKey.NAME].S!.localeCompare(b[UserKey.NAME].S!))
                 return items.map((item) => {

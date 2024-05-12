@@ -1,6 +1,8 @@
 import {fromCognitoIdentityPool} from "@aws-sdk/credential-providers";
 import { CognitoIdentity } from "../interfaces/cognito-identity";
 
+export const CURRENT_YEAR = '2024'
+
 export const REGION = 'us-east-1'
 export const COGNITO_IDENTITY_POOL = 'us-east-1:66bd9702-735d-4e68-a155-76fb7fb20547'
 export const COGNITO_UNAUTHENTICATED_IDENTITY_POOL = 'us-east-1:adf17da9-3e55-4f06-b8fa-53554f6f4dbf'

@@ -9,11 +9,12 @@ import {
     QueryCommand,
 } from "@aws-sdk/client-dynamodb";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
-import { REGION, DDB_TABLE_NAME } from "./constants";
+import { REGION, DDB_TABLE_NAME, CURRENT_YEAR } from "./constants";
 import { DynamoDbIndex } from "./dynamodb-index"
 
 export const PK_KEY = 'pk'
 export const SK_KEY = 'sk'
+export const CY_KEY = 'cy'
 export const SPK_KEY = `s${PK_KEY}`
 export const SSK_KEY = `s${SK_KEY}`
 
@@ -32,9 +33,8 @@ export class DynamoDb {
         this.client = client
         this.indexes = {
             [IndexId.MAIN_GSI]: new DynamoDbIndex(SPK_KEY, SSK_KEY),
-            [IndexId.LIST_GSI]: new DynamoDbIndex(SK_KEY),
+            [IndexId.LIST_GSI]: new DynamoDbIndex(SK_KEY, CY_KEY),
             [IndexId.SK_SPK]: new DynamoDbIndex(SK_KEY, SPK_KEY),
-
         }
     }
 
@@ -84,6 +84,13 @@ export class DynamoDb {
         let resultItems: Record<string, AttributeValue>[] = [];
         let index = sk ? IndexId.SK_SPK : IndexId.LIST_GSI;
         let results = await this.query(pk, sk, index);
+        if(results != undefined) resultItems = resultItems.concat(results);
+        return resultItems;
+    }
+
+    async listByYearQuery(sk: string, cy: string = CURRENT_YEAR): Promise<Record<string, AttributeValue>[]> {
+        let resultItems: Record<string, AttributeValue>[] = [];
+        let results = await this.query(sk, cy, IndexId.LIST_GSI);
         if(results != undefined) resultItems = resultItems.concat(results);
         return resultItems;
     }
