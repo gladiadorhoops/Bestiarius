@@ -14,8 +14,8 @@ export class PlayerBuilder {
 
     async createPlayer(ddb: DynamoDb, player: Player) {
         let playerRecord: Record<string, AttributeValue> = {}
-        playerRecord[PK_KEY] = {S: `${player}.${player.id}`}
-        playerRecord[SK_KEY] = {S: `${player}.data`}
+        playerRecord[PK_KEY] = {S: `player.${player.id}`}
+        playerRecord[SK_KEY] = {S: `player.data`}
         playerRecord[PlayerKey.AGE] = {S: `${player.edad}`};
         playerRecord[PlayerKey.CATEGORY] = {S: `${player.categoria}`};
         playerRecord[PlayerKey.NAME] = {S: `${player.nombre}`};

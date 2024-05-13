@@ -1,4 +1,4 @@
-import { Component, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Team, getCategories } from '../interfaces/team';
@@ -87,7 +87,7 @@ export class AddTeamComponent {
 
   addPlayer() {
     this.teamplayers.unshift({
-      id: "player."+uuidv4(),
+      id: uuidv4(),
       nombre: "",
       equipo: this.selectedTeam,
       categoria: this.selectedCategoria,
@@ -130,7 +130,7 @@ export class AddTeamComponent {
     console.log("Players to save");
     console.log(updatedPlayers);
 
-    let newTeam : Team = {id: "team."+uuidv4(),
+    let newTeam : Team = {id: uuidv4(),
       name: this.selectedTeam,
       captainId: this.teamForm.value.captainId == null ? "" : this.teamForm.value.captainId,
       coachId: this.userId,
@@ -139,11 +139,16 @@ export class AddTeamComponent {
       location: this.teamForm.value.location == null ? "" : this.teamForm.value.location
     }
 
-    this.teamBuilder.createTeam(this.ddb, newTeam);
+    await this.teamBuilder.createTeam(this.ddb, newTeam);
 
     updatedPlayers.forEach(player => {
-      this.playerBuilder.createPlayer(this.ddb, player);
+      this.playerBuilder.createPlayer(this.ddb, player).then(()=> {
+        console.log("Saved "+player.nombre);
+      });
     });
+
+    this.popUpMsg = "Team Saved!";
+    this.openPopup();
 
     // TODO: refresh database with team data
 
@@ -162,7 +167,15 @@ export class AddTeamComponent {
     this.displayStyle = "block";
   }
   closePopup() {
+    this.callParentToListTeam();
     this.displayStyle = "none";
+  }
+
+
+  @Output() callListTeam = new EventEmitter<string>();
+
+  callParentToListTeam() {
+    this.callListTeam.emit('callListTeam');
   }
 }
 

@@ -20,7 +20,7 @@
             <td class="col col-lg-3 col-12">{{team.category}}</td>
             <td class="col col-lg-3 col-12">{{team.location}}</td>
             <td *ngIf="!isCoach" class="col col-lg-2 col-12">{{coaches.get(team.coachId)?.name}}</td>
-            <td *ngIf="isCoach" class="col col-lg-2 col-12">Editar</td>
+            <td *ngIf="isCoach" class="col col-lg-2 col-12">  <a [routerLink]="" (click)="editTeam(team.id)">Editar</a> - <a [routerLink]="" (click)="removeTeam(team.id)">Remover</a></td>
         </tr>
     </table>
     <br><br>

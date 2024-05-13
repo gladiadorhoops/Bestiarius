@@ -94,4 +94,14 @@ export class ViewTeamsComponent {
   callParentToAddTeam() {
     this.callAddTeam.emit('callAddTeam');
   }
+
+  editTeam(teamId: string){
+    // TODO: implement
+    console.log("Edit team "+teamId);
+  }
+
+  removeTeam(teamId: string){
+    // TODO: implement
+    console.log("Remove team "+teamId);
+  }
 }

@@ -32,7 +32,7 @@
                     </div>
                     
                     <div *ngIf="addTeamView">
-                        <app-add-team [ddb]="ddb"></app-add-team>
+                        <app-add-team [ddb]="ddb" (callListTeam)="showViewTeams()"></app-add-team>
                     </div>
                     
                     <div *ngIf="matchGenView">
