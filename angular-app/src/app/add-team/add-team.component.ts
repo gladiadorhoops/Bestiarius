@@ -29,8 +29,8 @@ export class AddTeamComponent {
 
   @Input() ddb!: DynamoDb;
 
-  scout_id = this.authService.getUserId();
-  scout_name = this.authService.getUserName();
+  userId = this.authService.getUserId();
+  userName = this.authService.getUserName();
   categories = getCategories();
   teamForm =  this.fb.group(TeamBuilder.defaultForm);
 
@@ -64,6 +64,9 @@ export class AddTeamComponent {
 
   async loadPlayers() {
     this.selectedTeam = this.teamForm.value.teamName!;
+    this.selectedCategoria = this.teamForm.value.category!
+    console.log(this.selectedTeam);
+    console.log(this.selectedCategoria);
     var playersLoaded = false;
     this.teams.forEach(
       async (team) => {
@@ -126,6 +129,21 @@ export class AddTeamComponent {
     let updatedPlayers = await this.getInputPlayersList();
     console.log("Players to save");
     console.log(updatedPlayers);
+
+    let newTeam : Team = {id: "team."+uuidv4(),
+      name: this.selectedTeam,
+      captainId: this.teamForm.value.captainId == null ? "" : this.teamForm.value.captainId,
+      coachId: this.userId,
+      coachName: this.userName,
+      category: this.selectedCategoria,
+      location: this.teamForm.value.location == null ? "" : this.teamForm.value.location
+    }
+
+    this.teamBuilder.createTeam(this.ddb, newTeam);
+
+    updatedPlayers.forEach(player => {
+      this.playerBuilder.createPlayer(this.ddb, player);
+    });
 
     // TODO: refresh database with team data
 

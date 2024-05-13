@@ -4,8 +4,8 @@
         Registro de Equipo
     </h2>
     <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" class ="fcol">
-            <input name="scout" type="text" formControlName="scoutId" value="{{scout_id}}" hidden readonly required>
-            <input name="scout" type="text" formControlName="scoutname" value="{{scout_name}}" hidden readonly required>
+            <input name="scout" type="text" formControlName="coachId" value="{{userId}}" hidden readonly required>
+            <input name="scout" type="text" formControlName="coachName" value="{{userName}}" hidden readonly required>
     
             <div class="accordion accordion-flush" id="accordionFlushExample">
                 <div class="accordion-item">
@@ -18,14 +18,14 @@
                     <div class="accordion-body">
                         <label class="frow" for="categoria">Categoria:&nbsp;</label>
                         <div class="frow">
-                            <select id="categorias" formControlName="categoria" (change)="loadTeams()" required>
+                            <select id="categorias" formControlName="category" (change)="loadTeams()" required>
                                 <option value=""></option>
                                 <option *ngFor="let cat of categories" value="{{cat}}">{{cat}}</option>
                             </select>
                         </div>
                         <label class="frow" for="equipo">Equipo:&nbsp;</label>
                         <div class="frow">
-                            <input type="text" id="equipos" formControlName="equipo" class="form-control" list="equipolist" (change)="loadPlayers()" required>
+                            <input type="text" id="equipos" formControlName="teamName" class="form-control" list="equipolist" (change)="loadPlayers()" required>
                             <datalist id="equipolist">
                                 <option *ngFor="let team of teams" value="{{team.name}}">{{team.name}}</option>
                             </datalist>
@@ -36,7 +36,7 @@
                         </div>
                         <label class="frow" for="captan">Capitán:&nbsp;</label>
                         <div class="frow">
-                          <select id="captan" formControlName="captan">
+                          <select id="captan" formControlName="captainId">
                             <option value=""></option>
                             <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.nombre}}</option>
                           </select>
