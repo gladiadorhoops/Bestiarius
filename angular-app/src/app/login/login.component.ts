@@ -19,7 +19,8 @@ export class LoginComponent {
   ddb!: DynamoDb;
   loading = true;
   userId: string = "";
-  userName: string = "";
+  username: string = "";
+  name: string = "";
   email: string = "";
   failed: boolean = false;
   tokenId: string = "";
@@ -34,9 +35,9 @@ export class LoginComponent {
         });
 
         if(this.authService.isLoggedIn()){
-          let user = this.authService.getUserName();
+          let username = this.authService.getUserUsername();
           let pass = this.authService.getUserPass();
-          this.authService.getCredentials(user, pass).then(
+          this.authService.getCredentials(username, pass).then(
             (credentials) => {
               if (credentials == undefined) {
                 throw Error("AWS Credentials are undefined. Unable to set DDB client")
@@ -73,7 +74,8 @@ export class LoginComponent {
     reloadLoginStatus() {
       this.isLoggedIn = this.authService.isLoggedIn();
       this.userId = this.authService.getUserId();
-      this.userName = this.authService.getUserName();
+      this.username = this.authService.getUserUsername();
+      this.name = this.authService.getUserName();
       console.log("Reloaded");
     }
 
@@ -95,11 +97,12 @@ export class LoginComponent {
       }
 
       this.userId = user.id
-      this.userName = user.name
+      this.username = user.email
+      this.name = user.name
       
       console.log(user);
-      await this.authService.setSession(val.email, user.id, val.password, user.role);
-      await this.reloadLoginStatus();
+      this.authService.setUserSession(user, val.password);
+      this.reloadLoginStatus();
       console.log("User is logged in");
       window.location.reload();
     }

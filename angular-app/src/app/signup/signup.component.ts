@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Cognito } from '../aws-clients/cognito';
-import { DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
-import { AttributeValue } from "@aws-sdk/client-dynamodb";
+import { DynamoDb } from "src/app/aws-clients/dynamodb";
 import { AuthService } from '../auth.service';
 import { UserBuilder } from '../Builders/user-builder';
 import { roleFromString } from '../enum/Role';
+import { User } from '../interfaces/user';
 
 @Component({
   selector: 'app-signup',
@@ -85,8 +85,16 @@ export class SignupComponent {
     console.log("Validating "+this.role+": " + this.email);
     await Cognito.confirmSignUpUser(this.signupForm.value.codigo, this.email);
 
-    await this.authService.setSession(this.email, this.userId, this.password, this.role);
-    await this.storeUserData()
+    let user = {
+      id: this.userId,
+      name: this.name,
+      email: this.email,
+      phone: this.phone,
+      role: roleFromString(this.role)
+    }
+
+    this.authService.setUserSession(user, this.password);
+    await this.storeUserData(user)
 
     this.confirmation = false;
     this.signupForm.get('nombre')?.enable();
@@ -99,20 +107,12 @@ export class SignupComponent {
     this.openPopup();
   }
 
-  private async storeUserData(){
+  private async storeUserData(user: User){
     let credentials = await this.authService.getCredentials(this.email, this.password)
     if (credentials == undefined) {
       throw Error("AWS Credentials are undefined. Unable to set DDB client")
     }
     this.ddb = await DynamoDb.build(credentials);
-    
-    let user = {
-      id: this.userId,
-      name: this.name,
-      email: this.email,
-      phone: this.phone,
-      role: roleFromString(this.role)
-    }
     
     await this.userBuilder.createUser(this.ddb, user)
   }

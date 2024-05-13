@@ -11,8 +11,6 @@ import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
   providedIn: 'root'
 })
 export class AuthService {
-
-  constructor(private httpService: HttpClient) { }
     
   async login(username:string, password:string): Promise<User | undefined> {
     console.log("Starting Login")
@@ -28,11 +26,13 @@ export class AuthService {
     return await Cognito.getAwsCredentials(idToken, identity)
   }
 
-  public setSession( userName: string, userId: string, userPass: string, userRole: string) {
-      localStorage.setItem('user_name', userName.toLocaleLowerCase());
-      localStorage.setItem('user_id', userId);
-      localStorage.setItem('user_pass', userPass);
-      localStorage.setItem('user_role', userRole);
+  public setUserSession(user: User, password: string) {
+      localStorage.setItem('user_name', user.name);
+      localStorage.setItem('user_id', user.id);
+      localStorage.setItem('user_pass', password);
+      localStorage.setItem('user_role', user.role);
+      localStorage.setItem('user_username', user.email);
+      localStorage.setItem('user_phone', user.phone);
   }
 
   public logout() {
@@ -40,6 +40,8 @@ export class AuthService {
       localStorage.removeItem("user_name");
       localStorage.removeItem("user_pass");
       localStorage.removeItem("user_role");
+      localStorage.removeItem('user_username');
+      localStorage.removeItem('user_phone');
   }
 
   public isLoggedIn() {
@@ -51,42 +53,27 @@ export class AuthService {
   }
 
   getUserId() {
-    var userid = localStorage.getItem("user_id");
-    if (userid != null){
-      return userid;
-    }
-    else{
-      return "";
-    }
+    let userId = localStorage.getItem("user_id");
+    return userId ? userId : "";
   } 
 
-  getUserName() {
-    var userName = localStorage.getItem("user_name");
-    if (userName != null){
-      return userName;
-    }
-    else{
-      return "";
-    }
+  getUserName(): string {
+    let userName = localStorage.getItem("user_name");
+    return userName ? userName : "";
   } 
 
-  getUserPass() {
-    var userPass = localStorage.getItem("user_pass");
-    if (userPass != null){
-      return userPass;
-    }
-    else{
-      return "";
-    }
+  getUserPass(): string {
+    let userPass = localStorage.getItem("user_pass");
+    return userPass ? userPass : "";
   } 
 
-  getUserRole() {
-    var userRole = localStorage.getItem("user_role");
-    if (userRole != null){
-      return userRole;
-    }
-    else{
-      return "";
-    }
+  getUserRole(): string {
+    let userRole = localStorage.getItem("user_role");
+    return userRole ? userRole : "";
+  }
+
+  getUserUsername(): string {
+    let username = localStorage.getItem("user_username");
+    return username ? username : "";
   } 
 }
