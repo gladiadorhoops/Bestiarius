@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
+import { CY_KEY, DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
 import { Match } from "../interfaces/match";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { TeamBuilder } from './team-builder';
 import { MatchTeam } from '../interfaces/team';
 import {v4 as uuidv4} from 'uuid';
+import { CURRENT_YEAR } from '../aws-clients/constants';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +19,7 @@ export class MatchBuilder {
     
     async getListOfMatch(ddb: DynamoDb): Promise<Match[]> {
         var matches: Match[] = []
-        var items = await ddb.listQuery('match.data');
+        var items = await ddb.listByYearQuery('match.data');
         items.sort((a, b) => a['time'].S!.localeCompare(b['time'].S!))
         var teams = await this.teamBuilder.getListOfTeams(ddb);
         for (const item of items) {
@@ -74,6 +75,7 @@ export class MatchBuilder {
                 }
                 record['homePoints'] = {S: `${homePoints}`};
                 record['visitorPoints'] = {S: `${visitorPoints}`};
+                record[CY_KEY] = {S: CURRENT_YEAR};
                 console.warn(record)
                 
                 return await ddb.putItem(record).then(

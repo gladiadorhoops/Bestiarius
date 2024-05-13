@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
+import { CY_KEY, DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { User, UserKey } from '../interfaces/user';
 import { Coach, CoachKey } from '../interfaces/coach';
 import { Role } from '../enum/Role';
+import { CURRENT_YEAR } from '../aws-clients/constants';
 
 @Injectable({
     providedIn: 'root'
@@ -85,6 +86,7 @@ export class UserBuilder {
         record[UserKey.NAME] = {S: `${user.name}`}
         record[UserKey.EMAIL] = {S: `${user.email}`}
         record[UserKey.PHONE] = {S: `${user.phone}`}
+        record[CY_KEY] = {S: CURRENT_YEAR};
         return record
     }
 }

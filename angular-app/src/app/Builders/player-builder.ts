@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DynamoDb, PK_KEY, SK_KEY, SPK_KEY } from "src/app/aws-clients/dynamodb";
+import { CY_KEY, DynamoDb, PK_KEY, SK_KEY, SPK_KEY } from "src/app/aws-clients/dynamodb";
 import { Player, PlayerKey } from "../interfaces/player";
 
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { FormBuilder, Validators } from '@angular/forms';
 import { TeamKey } from '../interfaces/team';
+import { CURRENT_YEAR } from '../aws-clients/constants';
 
 @Injectable({
     providedIn: 'root'
@@ -19,6 +20,7 @@ export class PlayerBuilder {
         playerRecord[PlayerKey.CATEGORY] = {S: `${player.categoria}`};
         playerRecord[PlayerKey.NAME] = {S: `${player.nombre}`};
         playerRecord[SPK_KEY] = {S: `${TeamKey.PREFIX}.${player.equipo}`};
+        playerRecord[CY_KEY] = {S: CURRENT_YEAR};
         await ddb.putItem(playerRecord);
     }
 
