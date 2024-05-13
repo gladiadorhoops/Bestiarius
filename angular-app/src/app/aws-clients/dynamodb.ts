@@ -22,6 +22,7 @@ export const enum IndexId {
     MAIN_GSI,
     LIST_GSI,
     SK_SPK,
+    SK_SSK,
 }
 
 export class DynamoDb {
@@ -35,6 +36,7 @@ export class DynamoDb {
             [IndexId.MAIN_GSI]: new DynamoDbIndex(SPK_KEY, SSK_KEY),
             [IndexId.LIST_GSI]: new DynamoDbIndex(SK_KEY, CY_KEY),
             [IndexId.SK_SPK]: new DynamoDbIndex(SK_KEY, SPK_KEY),
+            [IndexId.SK_SSK]: new DynamoDbIndex(SK_KEY, SSK_KEY),
         }
     }
 
@@ -84,6 +86,13 @@ export class DynamoDb {
         let resultItems: Record<string, AttributeValue>[] = [];
         let index = sk ? IndexId.SK_SPK : IndexId.LIST_GSI;
         let results = await this.query(pk, sk, index);
+        if(results != undefined) resultItems = resultItems.concat(results);
+        return resultItems;
+    }
+
+    async listSecondaryQuery(sk: string, ssk?: string | undefined): Promise<Record<string, AttributeValue>[]> {
+        let resultItems: Record<string, AttributeValue>[] = [];
+        let results = await this.query(sk, ssk, IndexId.SK_SSK);
         if(results != undefined) resultItems = resultItems.concat(results);
         return resultItems;
     }

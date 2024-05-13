@@ -58,7 +58,7 @@ export class ViewTeamsComponent {
     this.reloadLoginStatus()
     
     if (this.userrole == "coach"){
-      this.teams = (await this.teamBuilder.getListOfTeams(this.ddb)).filter((t) => t.coachId == this.userId);
+      this.teams = await this.teamBuilder.getTeamsByCoach(this.ddb, this.userId);
     }
     else{
       this.teams = await this.teamBuilder.getListOfTeams(this.ddb);

@@ -1,4 +1,4 @@
-import { Player } from "./player"
+import { SPK_KEY } from "../aws-clients/dynamodb"
 
 export enum Category {
     APRENDIZ = 'aprendiz',
@@ -16,9 +16,7 @@ export enum TeamKey {
     ID = 'id',
     NAME = 'name',
     CAPTAIN_ID = 'captainId',
-    COACH_ID = 'coachId',
     COACH_NAME = 'coachName',
-    CATEGORY = 'category',
     LOACTION = 'location',
     PREFIX = 'team',
     SK = 'team.data'
