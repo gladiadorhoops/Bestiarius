@@ -95,7 +95,7 @@ export class ResultadosEvaluacionComponent {
     }
     this.selectedPlayer = await this.playerBuilder.getPlayer(this.ddb, playerId)
     this.selectedPlayerReport = this.reporteBuilder.transformToDisplayReport(report)
-    this.selectedPlayerTeam = this.equipos.filter(t => t.id == this.selectedPlayer!.equipo)[0]
+    this.selectedPlayerTeam = this.equipos.filter(t => t.id == this.selectedPlayer!.team)[0]
     this.openPopup();
   }
 

@@ -38,7 +38,7 @@
                         <div class="frow">
                           <select id="captan" formControlName="captainId">
                             <option value=""></option>
-                            <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.nombre}}</option>
+                            <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.name}}</option>
                           </select>
                           <button type="button" class="btn btn-light" 
                           (click)="refreshPlayersList()">

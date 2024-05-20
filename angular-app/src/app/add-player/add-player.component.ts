@@ -1,15 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { Team, getCategories } from '../interfaces/team';
-import { Player } from '../interfaces/player';
+import { getCategories } from '../interfaces/team';
+import { Category, Player } from '../interfaces/player';
 import { DynamoDb } from '../aws-clients/dynamodb';
-import { TeamBuilder } from '../Builders/team-builder';
 import { PlayerBuilder } from '../Builders/player-builder';
 import { ReporteBuilder } from '../Builders/reporte-builder';
-import { Skills, Skill } from '../interfaces/reporte';
-import { Scout } from '../interfaces/scout';
-
 
 @Component({
   selector: 'app-add-player',
@@ -25,13 +21,13 @@ export class AddPlayerComponent {
   ) {
     this.player = {
       id: this.playerId,
-      nombre: "",
-      equipo: this.equipoId,
-      categoria: this.categoria,
-      edad: "",
+      name: "",
+      team: this.equipoId,
+      category: this.categoria,
+      age: "",
       height: "",
       weight: "",
-      posicion: "",
+      position: "",
       birthday: new Date()
     }
   }
@@ -57,13 +53,13 @@ export class AddPlayerComponent {
 
     this.player = {
       id: this.playerId,
-      nombre: "",
-      equipo: this.equipoId,
-      categoria: this.categoria,
-      edad: "",
+      name: "",
+      team: this.equipoId,
+      category: this.categoria,
+      age: "",
       height: "",
       weight: "",
-      posicion: "",
+      position: "",
       birthday: new Date()
     }
 
@@ -74,16 +70,16 @@ export class AddPlayerComponent {
     });
   }
 
-  getPlayerInput(){
+  getPlayerInput(): Player{
     let inputplayer = {
-      equipo: this.equipoId,
-      categoria: this.categoria,
+      team: this.equipoId,
+      category: this.categoria,
       id: this.playerId,
-      edad: "",
-      nombre: (<HTMLInputElement>document.getElementById("nombre"+this.playerId)).value,
+      age: "",
+      name: (<HTMLInputElement>document.getElementById("nombre"+this.playerId)).value,
       height: (<HTMLInputElement>document.getElementById("altura"+this.playerId)).value,
       weight: (<HTMLInputElement>document.getElementById("peso"+this.playerId)).value,
-      posicion: (<HTMLInputElement>document.getElementById("posicion"+this.playerId)).value,
+      position: (<HTMLInputElement>document.getElementById("posicion"+this.playerId)).value,
       birthday: new Date((<HTMLInputElement>document.getElementById("bday"+this.playerId)).value)
     }
     return inputplayer;
@@ -93,7 +89,7 @@ export class AddPlayerComponent {
 
     if(document.getElementById("nombre"+this.playerId)){
       this.player = this.getPlayerInput();
-      console.log("Saving player: "+this.player.nombre);
+      console.log("Saving player: "+this.player.name);
       console.log(this.player);
     }
   }

@@ -88,14 +88,14 @@ export class AddTeamComponent {
   addPlayer() {
     this.teamplayers.unshift({
       id: uuidv4(),
-      nombre: "",
-      equipo: this.selectedTeam,
-      categoria: this.selectedCategoria,
-      edad: "",
+      name: "",
+      team: this.selectedTeam,
+      category: this.selectedCategoria,
+      age: "",
       height: "",
       weight: "",
-      posicion: "",
-      birthday: new Date()
+      position: "",
+      birthday: undefined
     }); 
 
     //this.viewChildren.forEach(element => {
@@ -143,7 +143,7 @@ export class AddTeamComponent {
 
     updatedPlayers.forEach(player => {
       this.playerBuilder.createPlayer(this.ddb, player).then(()=> {
-        console.log("Saved "+player.nombre);
+        console.log("Saved "+player.name);
       });
     });
 

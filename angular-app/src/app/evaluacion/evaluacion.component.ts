@@ -94,13 +94,13 @@ export class EvaluacionComponent {
   async loadPlayerDetails() {
     var selectedPlayer = this.evaluationForm.value.playerId;
 
-    var selectedteamplayer: Player = {id: '', equipo: '', nombre:'',edad:"",categoria:'', height:'',weight:'',posicion:'',birthday:new Date()};
+    var selectedteamplayer: Player = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:new Date()};
     this.teamplayers.forEach(function(value){
       if(value.id == selectedPlayer){
         selectedteamplayer = value;
       }
     });
-    this.selectedEdad = selectedteamplayer.edad;
+    this.selectedEdad = selectedteamplayer.age;
 
     let scout: Scout = {
       id: this.scout_id,

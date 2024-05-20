@@ -1,19 +1,19 @@
 <form [formGroup]="playerForm" >
 <div class="accordion-body">
-  <input name="scout" type="text" formControlName="equipo" value="{{player.equipo}}" hidden readonly required>
-  <input name="scout" type="text" formControlName="categoria" value="{{player.categoria}}" hidden readonly required>
+  <input name="scout" type="text" formControlName="equipo" value="{{player.team}}" hidden readonly required>
+  <input name="scout" type="text" formControlName="categoria" value="{{player.category}}" hidden readonly required>
 
   <label class="frow" for="nombre">Nombre:&nbsp;</label>
-  <input class="frow" type="text" id="nombre{{playerId}}" class="form-control" value="{{player.nombre}}">
+  <input class="frow" type="text" id="nombre{{playerId}}" class="form-control" value="{{player.name}}">
   <label class="frow" for="bday">Fecha de Nacimiento:&nbsp;</label>
   <input class="frow" id="bday{{playerId}}" type="date" value="{{player.birthday | date:'yyyy-MM-dd'}}">
 
-  <label class="frow" for="posicion">Posición:&nbsp;</label>
-  <input class="frow" id="posicion{{playerId}}" type="text" value="{{player.posicion}}">
+  <label class="frow" for="position">Posición:&nbsp;</label>
+  <input class="frow" id="position{{playerId}}" type="text" value="{{player.position}}">
 
   <label class="frow" for="altura">Altura (cm):&nbsp;</label>
   <input class="frow" id="altura{{playerId}}" type="number" min="1" max="300" value="{{player.height}}">
   <label class="frow" for="peso">Peso (kg):&nbsp;</label>
-  <input class="frow" id="peso{{playerId}}" type="number" min="1" max="300" value="{{player.weight }}">
+  <input class="frow" id="peso{{playerId}}" type="number" min="1" max="300" value="{{player.weight}}">
 </div>
 </form>

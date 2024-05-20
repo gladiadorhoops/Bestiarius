@@ -34,7 +34,7 @@
                 <div class="frow">
                     <select id="players" formControlName="playerId" (change)="loadPlayerDetails()" required>
                         <option value=""></option>
-                        <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.nombre}}</option>
+                        <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.name}}</option>
                     </select>
                 </div>
                 <label class="frow" for="edad">Edad:&nbsp;</label>

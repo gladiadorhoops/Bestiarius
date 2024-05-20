@@ -1,25 +1,24 @@
 export interface Player {
     id: string,
-    nombre: string,
-    equipo: string,
-    edad: string,
-    categoria: string,
+    name: string,
+    team: string,
+    age: string,
+    category: string,
 
     height: string,
     weight: string,
-    posicion: string,
-    birthday: Date
+    position: string,
+    birthday: Date | undefined
 }
 
 export enum PlayerKey {
     ID = 'id',
     NAME = 'nombre',
-    TEAM_ID = 'equipo',
     AGE = 'edad',
     CATEGORY = 'categoria',
     HEIGHT = 'height',
     WEIGHT = 'weight',
-    POSITION = 'posicion',
+    POSITION = 'position',
     BIRTHDAY = 'birthday',
     PREFIX = 'player'
 }

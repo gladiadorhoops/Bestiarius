@@ -3,7 +3,7 @@ import { CY_KEY, DynamoDb, PK_KEY, SK_KEY, SPK_KEY } from "src/app/aws-clients/d
 import { Player, PlayerKey } from "../interfaces/player";
 
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
-import { FormBuilder, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { TeamKey } from '../interfaces/team';
 import { CURRENT_YEAR } from '../aws-clients/constants';
 
@@ -14,13 +14,17 @@ export class PlayerBuilder {
 
     async createPlayer(ddb: DynamoDb, player: Player) {
         let playerRecord: Record<string, AttributeValue> = {}
-        playerRecord[PK_KEY] = {S: `player.${player.id}`}
-        playerRecord[SK_KEY] = {S: `player.data`}
-        playerRecord[PlayerKey.AGE] = {S: `${player.edad}`};
-        playerRecord[PlayerKey.CATEGORY] = {S: `${player.categoria}`};
-        playerRecord[PlayerKey.NAME] = {S: `${player.nombre}`};
-        playerRecord[SPK_KEY] = {S: `${TeamKey.PREFIX}.${player.equipo}`};
+        playerRecord[PK_KEY] = {S: `${PlayerKey.PREFIX}.${player.id}`}
+        playerRecord[SK_KEY] = {S: `${PlayerKey.PREFIX}.data`}
+        playerRecord[SPK_KEY] = {S: `${TeamKey.PREFIX}.${player.team}`};
+        playerRecord[PlayerKey.AGE] = {S: `${player.age}`};
+        playerRecord[PlayerKey.CATEGORY] = {S: `${player.category}`};
+        playerRecord[PlayerKey.NAME] = {S: `${player.name}`};
+        playerRecord[PlayerKey.HEIGHT] = {S: `${player.height}`};
+        playerRecord[PlayerKey.WEIGHT] = {S: `${player.weight}`};
+        playerRecord[PlayerKey.POSITION] = {S: `${player.position}`};
         playerRecord[CY_KEY] = {S: CURRENT_YEAR};
+        if(player.birthday) playerRecord[PlayerKey.BIRTHDAY] = {S: `${player.birthday?.toDateString()}`};
         await ddb.putItem(playerRecord);
     }
 
@@ -38,8 +42,8 @@ export class PlayerBuilder {
 
     async getPlayer(ddb: DynamoDb, playerId: string): Promise<Player | undefined> {
         let record = {
-            [PK_KEY]: {S: playerId},
-            [SK_KEY]: {S: `${PlayerKey.NAME}.data`}
+            [PK_KEY]: {S: `${PlayerKey.PREFIX}.${playerId}`},
+            [SK_KEY]: {S: `${PlayerKey.PREFIX}.data`}
         }
         let item = await ddb.getItem(record)
         return item ? this.buildPlayer(item) : item
@@ -47,15 +51,15 @@ export class PlayerBuilder {
 
     private buildPlayer(item: Record<string, AttributeValue>): Player {
         return {
-            id: item['pk'].S!.split('.')[1],
-            nombre: item['name'].S!,
-            equipo: item['spk'].S!,
-            categoria: item['category'].S!,
-            edad: item['age'].S!,
-            height: "",
-            weight: "",
-            posicion: "",
-            birthday: new Date()
+            id: item[PK_KEY].S!.split('.')[1],
+            team: item[SPK_KEY].S!.split('.')[1],
+            name: item[PlayerKey.NAME].S!,
+            category: item[PlayerKey.CATEGORY].S!,
+            age: item[PlayerKey.AGE].S ? item[PlayerKey.AGE].S : "",
+            height: item[PlayerKey.HEIGHT].S ? item[PlayerKey.HEIGHT].S : "",
+            weight: item[PlayerKey.WEIGHT].S ? item[PlayerKey.WEIGHT].S : "",
+            position: item[PlayerKey.POSITION].S ? item[PlayerKey.POSITION].S : "",
+            birthday: item[PlayerKey.BIRTHDAY].S ? new Date(item[PlayerKey.BIRTHDAY].S) : undefined
         }
     }
 

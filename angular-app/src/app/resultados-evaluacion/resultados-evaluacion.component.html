@@ -41,7 +41,7 @@
                         <div class="filterPadding">
                             <select class="col-12" id="player" formControlName="player" (change)="updateSelected(filterForm.value.player!)" require>
                                 <option value={{null}}></option>
-                                <option *ngFor="let player of players" value="{{player.id}}">{{player.nombre}}</option>
+                                <option *ngFor="let player of players" value="{{player.id}}">{{player.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                         <b>Nombre</b>
                     </div>
                     <div class="playerfield">
-                        {{selectedPlayer!.nombre}}
+                        {{selectedPlayer!.name}}
                     </div>
 
                     <div>
