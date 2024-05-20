@@ -26,6 +26,14 @@ export class AuthService {
     return await Cognito.getAwsCredentials(idToken, identity)
   }
 
+  async forgotUserPassword(email: string) {
+    await Cognito.forgotPassword(email)
+  }
+
+  async confirmForgotUserPassword(email: string, password: string, code: string) {
+    await Cognito.confirmForgotPassword(email, password, code)
+  }
+
   public setUserSession(user: User, password: string) {
       localStorage.setItem('user_name', user.name);
       localStorage.setItem('user_id', user.id);

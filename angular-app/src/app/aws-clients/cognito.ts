@@ -11,7 +11,13 @@ import {
     ConfirmSignUpCommand,
     ResendConfirmationCodeCommand,
     ResendConfirmationCodeCommandInput,
-    ResendConfirmationCodeCommandOutput
+    ResendConfirmationCodeCommandOutput,
+    ForgotPasswordCommandInput,
+    ForgotPasswordCommand,
+    ForgotPasswordCommandOutput,
+    ConfirmForgotPasswordCommandInput,
+    ConfirmForgotPasswordCommandOutput,
+    ConfirmForgotPasswordCommand
 } from "@aws-sdk/client-cognito-identity-provider";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 import { CognitoIdentityCredentialProvider, fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
@@ -150,6 +156,42 @@ export class Cognito {
             console.log(error)
             return undefined
         }        
+    }
+
+    static async forgotPassword(email: string): Promise<ForgotPasswordCommandOutput  | undefined> {
+        const forgotPasswordCommandInput: ForgotPasswordCommandInput = {
+            ClientId: AUTHENTICATED_COGNITO_IDENTITY.clientId,
+            Username: email,            
+        }
+
+        try {
+            const command = new ForgotPasswordCommand(forgotPasswordCommandInput);
+            console.log("command: ", command)
+            let response = await client.send(command);
+            return response
+          } catch (error) {
+            console.log(error)
+            return undefined
+        }
+    }
+
+    static async confirmForgotPassword(email: string, password: string, code: string): Promise<ConfirmForgotPasswordCommandOutput  | undefined> {
+        const confirmForgotPasswordCommandInput: ConfirmForgotPasswordCommandInput = {
+            ClientId: AUTHENTICATED_COGNITO_IDENTITY.clientId,
+            Username: email,
+            ConfirmationCode: code, 
+            Password: password,       
+        }
+
+        try {
+            const command = new ConfirmForgotPasswordCommand(confirmForgotPasswordCommandInput);
+            console.log("command: ", command)
+            let response = await client.send(command);
+            return response
+          } catch (error) {
+            console.log(error)
+            return undefined
+        }
     }
 
     static getUserFromToken(idToken: string): User {
