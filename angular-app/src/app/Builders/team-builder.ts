@@ -66,6 +66,14 @@ export class TeamBuilder {
 
     }
 
+    async deleteTeam(ddb: DynamoDb, teamId: string) {
+        let record: Record<string, AttributeValue> = {}
+        record[PK_KEY] = {S: `${TeamKey.PREFIX}.${teamId}`};
+        record[SK_KEY] = {S: `${TeamKey.SK}`};
+
+        await ddb.deleteItem(record);
+    }
+
     private buildTeam(item: Record<string, AttributeValue>): Team {        
         return {
             id: item[PK_KEY].S!.split('.')[1],

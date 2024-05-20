@@ -7,6 +7,8 @@ import {
     GetItemCommand,
     QueryCommandInput,
     QueryCommand,
+    DeleteItemCommandInput,
+    DeleteItemCommand,
 } from "@aws-sdk/client-dynamodb";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 import { REGION, DDB_TABLE_NAME, CURRENT_YEAR } from "./constants";
@@ -72,6 +74,21 @@ export class DynamoDb {
             console.log("Error", err);
         }
         return
+    }
+
+    async deleteItem(record: Record<string, AttributeValue>) {
+        try {
+            const input: DeleteItemCommandInput = {
+              TableName: DDB_TABLE_NAME,
+              Key: record,
+              ReturnConsumedCapacity: "TOTAL",
+            };
+            const command = new DeleteItemCommand(input);
+            const response = await this.client.send(command);
+            console.log('Delete response', response)
+        } catch (err) {
+            console.log("Error", err);
+        }
     }
 
     async findIdQuery(pk: string, sk: string | undefined): Promise<Record<string, AttributeValue> | undefined> {        

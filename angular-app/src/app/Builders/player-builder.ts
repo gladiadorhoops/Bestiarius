@@ -30,7 +30,7 @@ export class PlayerBuilder {
 
     async getPlayersByTeam(ddb: DynamoDb, teamId: string): Promise<Player[]> {
         let players: Player[] = []
-        players = await ddb.listQuery(`${PlayerKey.PREFIX}.data`, teamId).then(
+        players = await ddb.listQuery(`${PlayerKey.PREFIX}.data`, `${TeamKey.PREFIX}.${teamId}`).then(
             (items) => {
                 items.sort((a, b) => a[PlayerKey.NAME].S!.localeCompare(b[PlayerKey.NAME].S!))
                 return items.map((item) => {return this.buildPlayer(item)})
