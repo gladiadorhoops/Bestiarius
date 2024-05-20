@@ -45,8 +45,16 @@ export class PlayerBuilder {
             [PK_KEY]: {S: `${PlayerKey.PREFIX}.${playerId}`},
             [SK_KEY]: {S: `${PlayerKey.PREFIX}.data`}
         }
-        let item = await ddb.getItem(record)
-        return item ? this.buildPlayer(item) : item
+        let item = await ddb.getItem(record);
+        return item ? this.buildPlayer(item) : item;
+    }
+
+    async deletePlayer(ddb: DynamoDb, playerId: string) {
+        let record = {
+            [PK_KEY]: {S: `${PlayerKey.PREFIX}.${playerId}`},
+            [SK_KEY]: {S: `${PlayerKey.PREFIX}.data`}
+        }
+        await ddb.deleteItem(record);
     }
 
     private buildPlayer(item: Record<string, AttributeValue>): Player {

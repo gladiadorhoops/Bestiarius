@@ -54,6 +54,14 @@ export class UserBuilder {
         return coaches
     }
 
+    async deleteCoach(ddb: DynamoDb, userId: string) {
+        await this.deleteUserItem(ddb, userId, Role.COACH);
+    }
+
+    async deleteScout(ddb: DynamoDb, userId: string) {
+        await this.deleteUserItem(ddb, userId, Role.SCOUT);
+    }
+
     private updateCoachRecord(record: Record<string, any>, coach: Coach): Record<string, any> { 
         let teamIdAttributes = DynamoDb.convertFromStringList(coach.teamIds)
         record[CoachKey.TEAM_IDS] = teamIdAttributes
@@ -68,7 +76,7 @@ export class UserBuilder {
             phone: item[UserKey.PHONE].S!,
             role: role
         }
-        return user
+        return user;
     }
 
     private async getUserItem(ddb: DynamoDb, userId: string, role: Role): Promise<Record<string, AttributeValue> | undefined> {
@@ -76,7 +84,15 @@ export class UserBuilder {
             [PK_KEY]: {S: `${role}.${userId}`},
             [SK_KEY]: {S: `${role}.data`}
         }
-        return await ddb.getItem(record)
+        return await ddb.getItem(record);
+    }
+
+    private async deleteUserItem(ddb: DynamoDb, userId: string, role: Role) {
+        let record: Record<string, AttributeValue> = {}
+        record[PK_KEY] = {S: `${role}.${userId}`};
+        record[SK_KEY] = {S: `${role}.data`};
+
+        await ddb.deleteItem(record);
     }
 
     private createUserRecord(user: User): Record<string, any> {
