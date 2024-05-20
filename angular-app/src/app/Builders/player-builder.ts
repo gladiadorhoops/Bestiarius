@@ -40,6 +40,16 @@ export class PlayerBuilder {
         return players
     }
 
+    async deletePlayersByTeam(ddb: DynamoDb, teamId: string) {
+        let players: Player[] = await this.getPlayersByTeam(ddb, teamId)
+        console.log('Players to delete', players)
+        
+        players.forEach(
+            (player) => { this.deletePlayer(ddb, player.id) }
+        )
+        return players
+    }
+
     async getPlayer(ddb: DynamoDb, playerId: string): Promise<Player | undefined> {
         let record = {
             [PK_KEY]: {S: `${PlayerKey.PREFIX}.${playerId}`},
