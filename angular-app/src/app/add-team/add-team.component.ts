@@ -39,7 +39,8 @@ export class AddTeamComponent {
   selectedCaptan : boolean = false;
 
   selectedCategoria: string = "";
-  selectedTeam: string = "";
+  selectedTeamName: string = "";
+  selectedTeamId: string = "";
   popUpMsg = "";
   displayStyle = "none";
 
@@ -63,24 +64,26 @@ export class AddTeamComponent {
   }
 
   async loadPlayers() {
-    this.selectedTeam = this.teamForm.value.teamName!;
+    this.selectedTeamName = this.teamForm.value.teamName!;
     this.selectedCategoria = this.teamForm.value.category!
-    console.log(this.selectedTeam);
+    console.log(this.selectedTeamName);
     console.log(this.selectedCategoria);
     var playersLoaded = false;
     this.teams.forEach(
       async (team) => {
-        if(team.name == this.selectedTeam){
+        if(team.name == this.selectedTeamName){
+          this.selectedTeamId = team.id;
           this.teamplayers = await this.playerBuilder.getPlayersByTeam(this.ddb, team.id!).then(
             (players) => {
               return players;
             }
-          )
+          );
           playersLoaded = true;
         }
     });
     if(!playersLoaded){
       this.teamplayers = [];
+      this.selectedTeamId = uuidv4();
     }
 
   }
@@ -89,7 +92,7 @@ export class AddTeamComponent {
     this.teamplayers.unshift({
       id: uuidv4(),
       name: "",
-      team: this.selectedTeam,
+      team: this.selectedTeamId,
       category: this.selectedCategoria,
       age: "",
       height: "",
@@ -130,8 +133,8 @@ export class AddTeamComponent {
     console.log("Players to save");
     console.log(updatedPlayers);
 
-    let newTeam : Team = {id: uuidv4(),
-      name: this.selectedTeam,
+    let newTeam : Team = {id: this.selectedTeamId,
+      name: this.selectedTeamName,
       captainId: this.teamForm.value.captainId == null ? "" : this.teamForm.value.captainId,
       coachId: this.userId,
       coachName: this.userName,

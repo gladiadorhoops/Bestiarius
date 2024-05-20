@@ -79,7 +79,7 @@ export class AddPlayerComponent {
       name: (<HTMLInputElement>document.getElementById("nombre"+this.playerId)).value,
       height: (<HTMLInputElement>document.getElementById("altura"+this.playerId)).value,
       weight: (<HTMLInputElement>document.getElementById("peso"+this.playerId)).value,
-      position: (<HTMLInputElement>document.getElementById("posicion"+this.playerId)).value,
+      position: (<HTMLInputElement>document.getElementById("position"+this.playerId)).value,
       birthday: new Date((<HTMLInputElement>document.getElementById("bday"+this.playerId)).value)
     }
     return inputplayer;

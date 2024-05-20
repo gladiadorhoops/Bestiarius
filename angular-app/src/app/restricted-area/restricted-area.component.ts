@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
+import { ViewTeamsComponent } from '../view-teams/view-teams.component';
 
 export interface MenuItem {
   text: string
@@ -34,6 +35,8 @@ export class RestrictedAreaComponent {
     addTeamView = false;
     viewUsersView = false;
     viewTeamsView = false;
+    listTeamsView = false;
+
     ddb!: DynamoDb;
     loading = true;
 
@@ -72,6 +75,9 @@ export class RestrictedAreaComponent {
       this.reloadLoginStatus()
     }
     
+    @ViewChild(ViewTeamsComponent)
+    viewTeamsComponent!: ViewTeamsComponent;
+
     reloadLoginStatus() {
       this.isLoggedIn = this.authService.isLoggedIn();
       this.userid = this.authService.getUserId();
@@ -118,7 +124,7 @@ export class RestrictedAreaComponent {
 
       // all roles can view teams
       this.menuItems = this.menuItems.concat([
-        {value: "viewTeams", text: "Equipos Registrados"}
+        {value: "listTeams", text: "Equipos Registrados"}
       ]);
 
       this.menuItems = this.menuItems.sort((a, b) => a.text.localeCompare(b.text))
@@ -158,8 +164,8 @@ export class RestrictedAreaComponent {
            this.showViewUsers()
            break; 
         } 
-        case 'viewTeams': { 
-           this.showViewTeams()
+        case 'listTeams': { 
+           this.showListTeams()
            break; 
         } 
         default: { 
@@ -178,6 +184,7 @@ export class RestrictedAreaComponent {
     this.addTeamView = false;
     this.viewUsersView = false;
     this.viewTeamsView = false;
+    this.listTeamsView = false;
   }
 
   showEvaluacion() {
@@ -208,8 +215,13 @@ export class RestrictedAreaComponent {
     this.hideAll();
     this.viewUsersView = true;
   }
-  showViewTeams(){
+  async showViewTeams(teamId: string){
     this.hideAll();
     this.viewTeamsView = true;
+    await this.viewTeamsComponent.loadTeam(teamId);
+  }
+  showListTeams(){
+    this.hideAll();
+    this.listTeamsView = true;
   }
 }

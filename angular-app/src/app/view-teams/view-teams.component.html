@@ -1,30 +1,41 @@
 
-<h2 class="text-center mb-3">
-    Equipos Registrados
-</h2>
-
 <div class="spinner-border text-light" role="status" *ngIf="loading">
     <span class="sr-only">Loading...</span>
 </div>
 <div class="mainpanel" *ngIf="!loading">
+    <h2 class="text-center mb-3">
+        {{team?.name}}
+    </h2>
+
     <table class="row">
         <tr class="row">
-            <th class="col col-lg-4 col-12"> <a [routerLink]="" (click)="sortTeamsByName()">Equipo</a></th>
-            <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortTeamsByCategory()">Categoria</a></th>
-            <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortTeamsByLocation()">Localidad</a></th>
-            <th *ngIf="!isCoach" class="col col-lg-2 col-12 groupLast"> <a [routerLink]="" (click)="sortTeamsByCoach()">Coach</a></th>
-            <th *ngIf="isCoach" class="col col-lg-2 col-12 groupLast"></th>
+            <th class="col col-lg-3 col-12"> <a [routerLink]="">Category</a></th>
+            <td class="col col-lg-9 col-12"> <a [routerLink]="">{{team?.category}}</a></td>
         </tr>
-        <tr class="row" *ngFor="let team of teams" >
-            <td class="col col-lg-4 col-12">{{team.name}}</td>
-            <td class="col col-lg-3 col-12">{{team.category}}</td>
-            <td class="col col-lg-3 col-12">{{team.location}}</td>
-            <td *ngIf="!isCoach" class="col col-lg-2 col-12">{{coaches.get(team.coachId)?.name}}</td>
-            <td *ngIf="isCoach" class="col col-lg-2 col-12">  <a [routerLink]="" (click)="editTeam(team.id)">Editar</a> - <a [routerLink]="" (click)="removeTeam(team.id)">Remover</a></td>
+        <tr class="row">
+            <th class="col col-lg-3 col-12">Location</th>
+            <td class="col col-lg-9 col-12">{{team?.location}}</td>
+        </tr>
+    </table>
+    <p></p>
+    <table class="row">
+        <tr class="row">
+            <th class="col col-lg-4 col-12"> <a [routerLink]="">Player</a></th>
+            <th class="col col-lg-2 col-12"> <a [routerLink]="">Position</a></th>
+            <th class="col col-lg-2 col-12"> <a [routerLink]="">Brithday</a></th>
+            <th class="col col-lg-2 col-12"> <a [routerLink]="">Height</a></th>
+            <th class="col col-lg-2 col-12"> <a [routerLink]="">Weight</a></th>
+        </tr>
+        <tr class="row" *ngFor="let player of players" >
+            <td class="col col-lg-4 col-12">{{player.name}}</td>
+            <td class="col col-lg-2 col-12">{{player.position}}</td>
+            <td class="col col-lg-2 col-12">{{getDate(player.birthday!)}}</td>
+            <td class="col col-lg-2 col-12">{{player.height}}</td>
+            <td class="col col-lg-2 col-12">{{player.weight}}</td>
         </tr>
     </table>
     <br><br>
     <div class="frow" >
-        <button type="button" (click)="callParentToAddTeam()" class="btn btn-dark">Registrar Nuevo Equipo</button>
+        <button type="button" (click)="callParentToListTeams()" class="btn btn-dark">Volver</button>
     </div>
 </div>  

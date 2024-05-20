@@ -32,7 +32,7 @@
                     </div>
                     
                     <div *ngIf="addTeamView">
-                        <app-add-team [ddb]="ddb" (callListTeam)="showViewTeams()"></app-add-team>
+                        <app-add-team [ddb]="ddb" (callListTeam)="showListTeams()"></app-add-team>
                     </div>
                     
                     <div *ngIf="matchGenView">
@@ -47,8 +47,12 @@
                         <app-view-users [ddb]="ddb"></app-view-users>
                     </div>
                     
-                    <div *ngIf="viewTeamsView">
-                        <app-view-teams [ddb]="ddb" (callAddTeam)="showAddTeam()"></app-view-teams>
+                    <div *ngIf="listTeamsView">
+                        <app-list-teams [ddb]="ddb" (callViewTeam)="showViewTeams($event)" (callAddTeam)="showAddTeam()"></app-list-teams>
+                    </div>
+                    
+                    <div [hidden]="!viewTeamsView">
+                        <app-view-teams [ddb]="ddb" (callListTeam)="showListTeams()"></app-view-teams>
                     </div>
                 </div>
                 

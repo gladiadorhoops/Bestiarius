@@ -55,7 +55,7 @@ export class TeamBuilder {
     async getTeam(ddb: DynamoDb, id: string): Promise<Team | undefined> {
         let record: Record<string, AttributeValue> = {}
 
-        record[PK_KEY] = {S: `${id}`}
+        record[PK_KEY] = {S: `${TeamKey.PREFIX}.${id}`}
         record[SK_KEY] = {S: `${TeamKey.SK}`}
         
         var response = await ddb.getItem(record)

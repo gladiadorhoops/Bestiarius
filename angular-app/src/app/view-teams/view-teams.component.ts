@@ -3,9 +3,9 @@ import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { TeamBuilder } from '../Builders/team-builder';
 import { Team } from '../interfaces/team';
-import { Coach } from '../interfaces/coach';
-import { UserBuilder } from '../Builders/user-builder';
-
+import { Player } from '../interfaces/player';
+import { PlayerBuilder } from '../Builders/player-builder';
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: 'app-view-teams',
@@ -17,14 +17,14 @@ export class ViewTeamsComponent {
   constructor(
       private authService: AuthService,
       private teamBuilder: TeamBuilder,
-      private userBuilder: UserBuilder
+      private playerBuilder: PlayerBuilder
     ){}
 
+    @Input() ddb!: DynamoDb;
 
-  @Input() ddb!: DynamoDb;
   loading = true;
-  teams: Team[] = [];
-  coaches: Map<string,Coach> = new Map<string, Coach>;
+  team: Team | undefined;
+  players: Player[] = [];
 
   isAdmin = false;
   isScout = false;
@@ -54,54 +54,24 @@ export class ViewTeamsComponent {
   }
 
   async ngOnInit() {
-
-    this.reloadLoginStatus()
     
-    if (this.userrole == "coach"){
-      this.teams = await this.teamBuilder.getTeamsByCoach(this.ddb, this.userId);
-    }
-    else{
-      this.teams = await this.teamBuilder.getListOfTeams(this.ddb);
-    }
-    this.sortTeamsByCategory()
-    let coachesList:Coach[] = await this.userBuilder.getCoaches(this.ddb);
-
-    coachesList.forEach(coach => {
-      this.coaches.set(coach.id, coach);
-    });
-
+    this.reloadLoginStatus();
+  }
+  
+  async loadTeam(teamId: string){
+    this.loading = true;
+    this.team = await this.teamBuilder.getTeam(this.ddb, teamId);
+    this.players = await this.playerBuilder.getPlayersByTeam(this.ddb, teamId);
     this.loading = false;
   }
 
-  sortTeamsByCategory(){
-    this.teams = this.teams.sort((a, b) => a.category!.localeCompare(b.category!))
+  @Output() callListTeam = new EventEmitter<string>();
+
+  callParentToListTeams() {
+    this.callListTeam.emit('callListTeam');
   }
 
-  sortTeamsByName(){
-    this.teams = this.teams.sort((a, b) => a.name.localeCompare(b.name))
-  }
-
-  sortTeamsByLocation(){
-    this.teams = this.teams.sort((a, b) => (a.location? a.location : "").localeCompare((b.location ? b.location : "")))
-  }
-
-  sortTeamsByCoach(){
-    this.teams = this.teams.sort((a, b) => ((a.coachId ? this.coaches.get(a.coachId!)?.name! : "").localeCompare(b.coachId ? this.coaches.get(b.coachId!)?.name! : "")))
-  }
-
-  @Output() callAddTeam = new EventEmitter<string>();
-
-  callParentToAddTeam() {
-    this.callAddTeam.emit('callAddTeam');
-  }
-
-  editTeam(teamId: string){
-    // TODO: implement
-    console.log("Edit team "+teamId);
-  }
-
-  removeTeam(teamId: string){
-    // TODO: implement
-    console.log("Remove team "+teamId);
+  getDate(birthday: Date){
+    return formatDate(birthday, 'dd/MM/yyyy', 'en-US')
   }
 }
