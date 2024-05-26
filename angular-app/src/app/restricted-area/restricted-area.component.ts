@@ -52,10 +52,10 @@ export class RestrictedAreaComponent {
         });
 
         if(this.authService.isLoggedIn()){
-          let user = this.authService.getUserName();
+          let username = this.authService.getUserUsername();
           let pass = this.authService.getUserPass();
 
-          this.authService.getCredentials(user, pass).then(
+          this.authService.getCredentials(username, pass).then(
             (credentials) => {
               if (credentials == undefined) {
                 throw Error("AWS Credentials are undefined. Unable to set DDB client")
