@@ -53,7 +53,7 @@ export class AddTeamComponent {
   async loadTeams() {
     this.teams = []
     this.selectedCategoria = this.teamForm.value.category!
-    let teams = await this.teamBuilder.getListOfTeams(this.ddb, this.selectedCategoria).then(
+    let teams = await this.teamBuilder.getTeamsByCategory(this.ddb, this.selectedCategoria).then(
       (output) => {
         return output
       }

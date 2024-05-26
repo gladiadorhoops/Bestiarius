@@ -60,7 +60,7 @@ export class ListTeamsComponent {
         this.teams = await this.teamBuilder.getTeamsByCoach(this.ddb, this.userId);
       }
       else{
-        this.teams = await this.teamBuilder.getListOfTeams(this.ddb);
+        this.teams = await this.teamBuilder.getTeamsByCategory(this.ddb);
       }
       this.sortTeamsByCategory()
       let coachesList:Coach[] = await this.userBuilder.getCoaches(this.ddb);

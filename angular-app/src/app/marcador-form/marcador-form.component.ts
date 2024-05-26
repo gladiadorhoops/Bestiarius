@@ -61,7 +61,7 @@ export class MarcadorFormComponent implements OnInit {
 
   async loadMatches(){
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb)
-    this.equipos = await this.teamBuilder.getListOfTeams(this.ddb)
+    this.equipos = await this.teamBuilder.getTeamsByCategory(this.ddb)
     this.filteredMatches = this.allMatches;
     this.loading = false;
   }

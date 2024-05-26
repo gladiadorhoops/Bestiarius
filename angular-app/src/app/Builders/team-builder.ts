@@ -26,16 +26,26 @@ export class TeamBuilder {
         await ddb.putItem(record);
     }
 
-    async getListOfTeams(ddb: DynamoDb, category?: string | undefined): Promise<Team[]> {
+    async getTeamsByCategory(ddb: DynamoDb, category?: string | undefined): Promise<Team[]> {
         var teams: Team[] = []
         teams = await ddb.listQuery(`${TeamKey.SK}`, category).then(
             (items) => {
-                items.sort((a, b) => a['name'].S!.localeCompare(b['name'].S!))
+                items.sort((a, b) => a[TeamKey.NAME].S!.localeCompare(b[TeamKey.NAME].S!))
                 return items.map((item) => {return this.buildTeam(item)})
             }
         )
-
         console.log('teams', teams)
+        return teams
+    }
+
+    async getTeams(ddb: DynamoDb): Promise<Team[]> {
+        var teams: Team[] = []
+        teams = await ddb.listByYearQuery(`${TeamKey.PREFIX}.data`).then(
+            (items) => {
+                items.sort((a, b) => a[TeamKey.NAME].S!.localeCompare(b[TeamKey.NAME].S!))
+                return items.map((item) => {return this.buildTeam(item)})
+            }
+        )
         return teams
     }
 

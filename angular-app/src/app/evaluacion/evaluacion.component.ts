@@ -70,7 +70,7 @@ export class EvaluacionComponent {
   async loadTeams() {
     this.teams = []
     this.selectedCategoria = this.evaluationForm.value.categoria!
-    let teams = await this.teamBuilder.getListOfTeams(this.ddb, this.selectedCategoria).then(
+    let teams = await this.teamBuilder.getTeamsByCategory(this.ddb, this.selectedCategoria).then(
       (output) => {
         return output
       }
