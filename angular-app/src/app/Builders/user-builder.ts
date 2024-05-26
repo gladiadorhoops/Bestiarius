@@ -102,7 +102,7 @@ export class UserBuilder {
 
     private buildUser(item: Record<string, AttributeValue>, role: Role): User {
         var user =  {
-            id: item[PK_KEY].S!,
+            id: item[PK_KEY].S!.split('.')[1],
             name: item[UserKey.NAME].S!,        
             email: item[UserKey.EMAIL].S!,
             phone: item[UserKey.PHONE].S!,
