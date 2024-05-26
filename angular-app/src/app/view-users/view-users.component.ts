@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
+import { UserBuilder } from '../Builders/user-builder';
 
 export interface User {
   id: string
@@ -20,6 +21,7 @@ export class ViewUsersComponent {
 
   constructor(
       private authService: AuthService,
+      private userBuilder: UserBuilder
     ){}
 
 
@@ -31,17 +33,23 @@ export class ViewUsersComponent {
 
   async ngOnInit() {
 
-    // this.users = await this.userBuilder.getListOfUsers(this.ddb)
+    let coaches = await this.userBuilder.getCoaches(this.ddb);
+    let scouts = await this.userBuilder.getScouts(this.ddb);
+    let admins = await this.userBuilder.getAdmins(this.ddb);
 
-    this.users = [
-      {id: "0", name: "Jose Rodriguez"                , phone: "123457667457", email: "abc123@gmail.com", role: "scout", other: ""},
-      {id: "1", name: "Juan Loya"                     , phone: "123458668458", email: "abc446@gmail.com", role: "scout", other: ""},
-      {id: "2", name: "Carlos Loya"                   , phone: "123454664454", email: "abc578@gmail.com", role: "scout", other: ""},
-      {id: "3", name: "Angel Mihai Castro Ortiz"      , phone: "123452662452", email: "abc343@gmail.com", role: "coach", other: "ALBA"},
-      {id: "4", name: "Roberto Jaimes López"          , phone: "123453663453", email: "abc457@gmail.com", role: "coach", other: "ROQUI"},
-      {id: "5", name: "Gabriel Alvarez Matzumara"     , phone: "123459669459", email: "abc375@gmail.com", role: "coach", other: "LOBOS"},
-      {id: "6", name: "Arturo Adrián Méndez Gutiérrez", phone: "123450660450", email: "abc346@gmail.com", role: "coach", other: "GANSOS"},
-    ]
+    this.users = []
+
+    coaches.forEach(element => {
+      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.role, other: element.teamIds ? element.teamIds.join(",") : ""})
+    });
+
+    scouts.forEach(element => {
+      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.role, other: ""})
+    });
+
+    admins.forEach(element => {
+      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.role, other: ""})
+    });
 
     this.loading = false;
   }

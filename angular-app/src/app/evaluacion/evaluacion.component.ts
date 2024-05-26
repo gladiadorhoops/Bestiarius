@@ -9,6 +9,7 @@ import { PlayerBuilder } from '../Builders/player-builder';
 import { ReporteBuilder } from '../Builders/reporte-builder';
 import { Skills, Skill } from '../interfaces/reporte';
 import { Scout } from '../interfaces/scout';
+import { Role } from '../enum/Role';
 
 
 @Component({
@@ -104,7 +105,10 @@ export class EvaluacionComponent {
 
     let scout: Scout = {
       id: this.scout_id,
-      name: this.scout_name
+      name: this.scout_name,
+      phone: "",
+      email: "",
+      role: Role.SCOUT
     }
 
     this.evaluationForm = await this.reporteBuilder.getReport(

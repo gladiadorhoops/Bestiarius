@@ -12,15 +12,15 @@
             <th class="col col-lg-4 col-12"> <a [routerLink]="" (click)="sortTeamsByName()">Equipo</a></th>
             <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortTeamsByCategory()">Categoria</a></th>
             <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortTeamsByLocation()">Localidad</a></th>
-            <th *ngIf="!isCoach" class="col col-lg-2 col-12 groupLast"> <a [routerLink]="" (click)="sortTeamsByCoach()">Coach</a></th>
-            <th *ngIf="isCoach" class="col col-lg-2 col-12 groupLast"></th>
+            <th *ngIf="userrole != 'coach'" class="col col-lg-2 col-12 groupLast"> <a [routerLink]="" (click)="sortTeamsByCoach()">Coach</a></th>
+            <th *ngIf="userrole == 'coach'" class="col col-lg-2 col-12 groupLast"></th>
         </tr>
         <tr class="row" *ngFor="let team of teams" >
             <td class="col col-lg-4 col-12"><a [routerLink]="" (click)="viewTeam(team.id)"> {{team.name}} </a></td>
             <td class="col col-lg-3 col-12">{{team.category}}</td>
             <td class="col col-lg-3 col-12">{{team.location}}</td>
-            <td *ngIf="!isCoach" class="col col-lg-2 col-12">{{coaches.get(team.coachId)?.name}}</td>
-            <td *ngIf="isCoach" class="col col-lg-2 col-12">  <a [routerLink]="" (click)="editTeam(team.id)">Editar</a> - <a [routerLink]="" (click)="removeTeam(team.id)">Remover</a></td>
+            <td *ngIf="userrole != 'coach'" class="col col-lg-2 col-12">{{coaches.get(team.coachId)?.name}}</td>
+            <td *ngIf="userrole == 'coach'" class="col col-lg-2 col-12">  <a [routerLink]="" (click)="editTeam(team.id)">Editar</a> - <a [routerLink]="" (click)="removeTeam(team.id)">Remover</a></td>
         </tr>
     </table>
     <br><br>

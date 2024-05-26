@@ -1,4 +1,4 @@
-export interface Scout {
-    id: string,
-    name: string
+import { User } from "./user";
+
+export interface Scout extends User{
 }
