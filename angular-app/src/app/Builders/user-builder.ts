@@ -81,18 +81,13 @@ export class UserBuilder {
         await this.deleteUserItem(ddb, userId, Role.ADMIN);
     }
 
-
     async getUsers(ddb: DynamoDb, role: Role): Promise<User[]> {
         var users: User[] = []
         users = await ddb.listByYearQuery(`${role}.data`).then(
             (items) => {
                 items.sort((a, b) => a[UserKey.NAME].S!.localeCompare(b[UserKey.NAME].S!))
                 return items.map((item) => {
-                    let coach =  this.buildUser(item, Role.COACH) as Coach
-                    let teamIds = item[CoachKey.TEAM_IDS]
-                    if (teamIds === undefined) return coach
-                    coach.teamIds = DynamoDb.convertToStringList(teamIds.L!)
-                    return coach
+                    return this.buildUser(item, role)
                 })
             }
         )
@@ -113,6 +108,14 @@ export class UserBuilder {
             phone: item[UserKey.PHONE].S!,
             role: role
         }
+
+        if(role === Role.COACH){
+            let coach = user as Coach
+            let teamIds = item[CoachKey.TEAM_IDS]
+            if (teamIds === undefined) return coach
+            coach.teamIds = DynamoDb.convertToStringList(teamIds.L!)
+        }
+
         return user;
     }
 
