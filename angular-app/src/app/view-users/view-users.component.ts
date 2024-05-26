@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { UserBuilder } from '../Builders/user-builder';
+import { TeamBuilder } from '../Builders/team-builder';
 
 export interface User {
   id: string
@@ -21,7 +22,8 @@ export class ViewUsersComponent {
 
   constructor(
       private authService: AuthService,
-      private userBuilder: UserBuilder
+      private userBuilder: UserBuilder,
+      private teamBuilder: TeamBuilder
     ){}
 
 
@@ -36,11 +38,13 @@ export class ViewUsersComponent {
     let coaches = await this.userBuilder.getCoaches(this.ddb);
     let scouts = await this.userBuilder.getScouts(this.ddb);
     let admins = await this.userBuilder.getAdmins(this.ddb);
+    let teams = await this.teamBuilder.getListOfTeams(this.ddb);
 
     this.users = []
 
     coaches.forEach(element => {
-      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.role, other: element.teamIds ? element.teamIds.join(",") : ""})
+      let teamNames = teams.filter((team)=>team.coachId == element.id).map((team) => team.name);
+      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.role, other: teamNames.join(",")})
     });
 
     scouts.forEach(element => {
