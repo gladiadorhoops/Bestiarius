@@ -15,6 +15,7 @@ import { Cognito } from '../aws-clients/cognito';
 export class LoginComponent {
 
   form:FormGroup;
+  passform: FormGroup;
   isLoggedIn: boolean = false;
   ddb!: DynamoDb;
   loading = true;
@@ -23,6 +24,10 @@ export class LoginComponent {
   name: string = "";
   email: string = "";
   failed: boolean = false;
+
+  recoverPassView: boolean = false;
+  codeSent: boolean = false;
+
   tokenId: string = "";
 
     constructor(private fb:FormBuilder, 
@@ -32,6 +37,12 @@ export class LoginComponent {
         this.form = this.fb.group({
             email: ['',Validators.required],
             password: ['',Validators.required]
+        });
+
+        this.passform = this.fb.group({
+          email: ['',Validators.required],
+          password: ['',Validators.required],
+          codigo: ['', Validators.required]
         });
 
         if(this.authService.isLoggedIn()){
@@ -77,6 +88,32 @@ export class LoginComponent {
       this.username = this.authService.getUserUsername();
       this.name = this.authService.getUserName();
       console.log("Reloaded");
+    }
+
+    async enterRecoverPassword(){
+      this.recoverPassView = true;
+    }
+
+    async getCode(){
+      const val = this.passform.value;
+      if (!(val.email)) {
+        this.failed = true;
+        return;
+      }
+
+      await this.authService.forgotUserPassword(val.email);
+      this.codeSent = true;
+    }
+
+    async changePassword() {
+      const val = this.passform.value;
+      if (!(val.email && val.password && val.codigo)) {
+        this.failed = true;
+        return;
+      }
+
+      await this.authService.confirmForgotUserPassword(val.email, val.password, val.codigo);
+      this.recoverPassView = false;
     }
 
     async login() {

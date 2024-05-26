@@ -4,26 +4,60 @@
             <div style="width: 100%" class="text-justify outer">
             <ng-container *ngIf="!isLoggedIn">    
                 <div class="container page-content">
-                    <h1>Login</h1>
-                    <form [formGroup]="form">
-                        <fieldset>
-                            <div class="form-field">
-                                <label>Email:</label>
-                                <input name="email" formControlName="email">
+                    <ng-container *ngIf="!recoverPassView">
+                        <h1>Login</h1>
+                        <form [formGroup]="form">
+                            <fieldset>
+                                <div class="form-field">
+                                    <label>Email:</label>
+                                    <input name="email" formControlName="email">
+                                </div>
+                                <div class="form-field">
+                                    <label>Password:</label>
+                                    <input name="password" formControlName="password" 
+                                        type="password">
+                                </div>
+                            </fieldset>
+                            <div class="form-buttons">
+                                <button class="button button-primary" 
+                                        (click)="login()">Login</button>
                             </div>
-                            <div class="form-field">
-                                <label>Password:</label>
-                                <input name="password" formControlName="password" 
-                                    type="password">
+                            <div class="form-buttons">
+                                <button class="button" 
+                                        (click)="enterRecoverPassword()">Cambiar contraseña</button>
                             </div>
-                        </fieldset>
-                        <div class="form-buttons">
-                            <button class="button button-primary" 
-                                    (click)="login()">Login</button>
-                        </div>
-                    </form>
-                    <br>
-                    <span style="background-color: red" *ngIf="failed"> Failed to Login </span>
+                        </form>
+                        <br>
+                        <span style="background-color: red" *ngIf="failed"> Failed to Login </span>
+                    </ng-container>
+                    <ng-container *ngIf="recoverPassView">
+                        <h1>Cambiar Contraseña</h1>
+                        <form [formGroup]="passform">
+                            <fieldset>
+                                <div class="form-field">
+                                    <label>Email:</label>
+                                    <input name="email" formControlName="email">
+                                </div>
+                                <div class="form-field">
+                                    <label>New Password:</label>
+                                    <input name="password" formControlName="password" 
+                                        type="password">
+                                </div>
+                                <div class="form-field">
+                                    <label>Codigo:</label>
+                                    <input name="codigo" formControlName="codigo">
+                                </div>
+                            </fieldset>
+                            <div class="form-buttons">
+                                <button [disabled]="codeSent" class="button" 
+                                        (click)="getCode()">Enviar Codigo</button>
+                            </div>
+                            <div class="form-buttons">
+                                <button [disabled]="!codeSent" class="button button-primary" 
+                                        (click)="changePassword()">Cambiar Password</button>
+                            </div>
+                        </form>
+                    </ng-container>
                 </div>
             </ng-container>
             <ng-container *ngIf="isLoggedIn">
