@@ -92,6 +92,10 @@ export class LoginComponent {
 
     async enterRecoverPassword(){
       this.recoverPassView = true;
+      
+
+      this.passform.get('codigo')?.disable();
+      this.passform.get('password')?.disable();
     }
 
     async getCode(){
@@ -103,6 +107,9 @@ export class LoginComponent {
 
       await this.authService.forgotUserPassword(val.email);
       this.codeSent = true;
+
+      this.passform.get('codigo')?.enable();
+      this.passform.get('password')?.enable();
     }
 
     async changePassword() {
