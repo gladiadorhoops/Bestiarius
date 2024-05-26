@@ -51,16 +51,15 @@ export class ListTeamsComponent {
         this.isCoach = true;
       }
     }
-  
-    async ngOnInit() {
-  
+
+    async refreshTeams(){
       this.reloadLoginStatus()
       
       if (this.userrole == "coach"){
         this.teams = await this.teamBuilder.getTeamsByCoach(this.ddb, this.userId);
       }
       else{
-        this.teams = await this.teamBuilder.getTeamsByCategory(this.ddb);
+        this.teams = await this.teamBuilder.getTeams(this.ddb);
       }
       this.sortTeamsByCategory()
       let coachesList:Coach[] = await this.userBuilder.getCoaches(this.ddb);
@@ -68,7 +67,10 @@ export class ListTeamsComponent {
       coachesList.forEach(coach => {
         this.coaches.set(coach.id, coach);
       });
-  
+    }
+
+    async ngOnInit() {
+      await this.refreshTeams();
       this.loading = false;
     }
   

@@ -6,6 +6,7 @@ import { Team } from '../interfaces/team';
 import { Player } from '../interfaces/player';
 import { PlayerBuilder } from '../Builders/player-builder';
 import { formatDate } from "@angular/common";
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-view-teams',
@@ -14,7 +15,9 @@ import { formatDate } from "@angular/common";
 })
 export class ViewTeamsComponent {
 
-  constructor(
+  displayStyle = "none";
+
+  constructor(private fb: FormBuilder,
       private authService: AuthService,
       private teamBuilder: TeamBuilder,
       private playerBuilder: PlayerBuilder
@@ -25,7 +28,9 @@ export class ViewTeamsComponent {
   loading = true;
   team: Team | undefined;
   players: Player[] = [];
+  deleteForm : FormGroup = this.fb.group({teamToDelete: ''});
 
+  errorMsg = "";
   isAdmin = false;
   isScout = false;
   isCoach = false;
@@ -69,6 +74,26 @@ export class ViewTeamsComponent {
 
   callParentToListTeams() {
     this.callListTeam.emit('callListTeam');
+  }
+
+  removeTeam(){
+    this.displayStyle = "block";
+  }
+
+  closePopup() {
+    this.displayStyle = "none";
+    this.errorMsg = "";
+    this.deleteForm.get("teamToDelete")?.reset();
+  }
+  async confirmDelete() {
+    if(this.team!.name == this.deleteForm.value.teamToDelete ){
+      await this.playerBuilder.deletePlayersByTeam(this.ddb, this.team!.id);
+      await this.teamBuilder.deleteTeam(this.ddb, this.team!.id);
+      this.callParentToListTeams();
+    }
+    else{
+      this.errorMsg = "Nombre del equipo no coincide!";
+    }
   }
 
   getDate(birthday: Date){

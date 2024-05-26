@@ -43,7 +43,7 @@ export class ResultadosEvaluacionComponent {
   async ngOnInit() {
 
     if(this.authService.isLoggedIn()){
-      let user = this.authService.getUserName();
+      let user = this.authService.getUserUsername();
       let pass = this.authService.getUserPass();
 
       let credentials = await this.authService.getCredentials(user, pass)

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { ViewTeamsComponent } from '../view-teams/view-teams.component';
+import { ListTeamsComponent } from '../list-teams/list-teams.component';
 
 export interface MenuItem {
   text: string
@@ -77,6 +78,9 @@ export class RestrictedAreaComponent {
     
     @ViewChild(ViewTeamsComponent)
     viewTeamsComponent!: ViewTeamsComponent;
+
+    @ViewChild(ListTeamsComponent)
+    listTeamsComponent!: ListTeamsComponent;
 
     reloadLoginStatus() {
       this.isLoggedIn = this.authService.isLoggedIn();
@@ -223,5 +227,10 @@ export class RestrictedAreaComponent {
   showListTeams(){
     this.hideAll();
     this.listTeamsView = true;
+  }
+
+  async reloadListTeams(){
+    this.showListTeams();
+    await this.listTeamsComponent.refreshTeams();
   }
 }

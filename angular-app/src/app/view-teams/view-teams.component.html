@@ -36,6 +36,35 @@
     </table>
     <br><br>
     <div class="frow" >
-        <button type="button" (click)="callParentToListTeams()" class="btn btn-dark">Volver</button>
+        <button type="button" (click)="callParentToListTeams()" class="btn btn-dark">Volver a Equipos Registrados</button>
+        <button type="button" (click)="removeTeam()" class="btn btn-danger">Eliminar Equipo</button>
     </div>
 </div>  
+
+<div class="modal"
+      tabindex="-1"
+      role="dialog"
+      [ngStyle]="{'display':displayStyle}">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <p>Estas seguro que quieres eliminar el equipo "{{team?.name}}". Esta accion es irreversible.</p>
+            <p>Para confirmar la eliminacion escribe el nombre del equipo:</p> 
+            <span style="background-color: red">{{errorMsg}}</span>
+            <form [formGroup]="deleteForm" class ="fcol">
+                <input name="teamToDelete" formControlName="teamToDelete" type="text" required>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn" 
+                    (click)="closePopup()">
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger" 
+                    (click)="confirmDelete()">
+              Confirmar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
