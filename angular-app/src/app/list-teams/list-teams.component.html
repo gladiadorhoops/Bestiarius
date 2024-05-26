@@ -9,13 +9,13 @@
 <div class="mainpanel" *ngIf="!loading">
     <table class="row">
         <tr class="row">
-            <th class="col col-lg-4 col-12"> <a [routerLink]="" (click)="sortTeamsByName()">Equipo</a></th>
+            <th [ngClass]="{'col': true, 'col-12': true, 'col-lg-4': userrole != 'coach', 'col-lg-6': userrole === 'coach'}"> <a [routerLink]="" (click)="sortTeamsByName()">Equipo</a></th>
             <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortTeamsByCategory()">Categoria</a></th>
             <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortTeamsByLocation()">Localidad</a></th>
             <th *ngIf="userrole != 'coach'" class="col col-lg-2 col-12 groupLast"> <a [routerLink]="" (click)="sortTeamsByCoach()">Coach</a></th>
         </tr>
         <tr class="row" *ngFor="let team of teams" [routerLink]="" (click)="viewTeam(team.id)">
-            <td class="col col-lg-4 col-12">{{team.name}}</td>
+            <td [ngClass]="{'col': true, 'col-12': true, 'col-lg-4': userrole != 'coach', 'col-lg-6': userrole === 'coach'}">{{team.name}}</td>
             <td class="col col-lg-3 col-12">{{team.category}}</td>
             <td class="col col-lg-3 col-12">{{team.location}}</td>
             <td *ngIf="userrole != 'coach'" class="col col-lg-2 col-12">{{coaches.get(team.coachId)?.name}}</td>
