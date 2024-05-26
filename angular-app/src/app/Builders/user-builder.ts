@@ -99,14 +99,9 @@ export class UserBuilder {
         return users
     }
 
-    private updateCoachRecord(record: Record<string, any>, coach: Coach): Record<string, any> { 
-        
-        var teamIdAttributes: AttributeValue[] = []
-        if (coach.teamIds) {
-            teamIdAttributes = DynamoDb.convertFromStringList(coach.teamIds)
-        }
-
-        record[CoachKey.TEAM_IDS] = teamIdAttributes
+    private updateCoachRecord(record: Record<string, any>, coach: Coach): Record<string, any> {
+        if (coach.teamIds === undefined) return record 
+        record[CoachKey.TEAM_IDS] = DynamoDb.convertFromStringList(coach.teamIds)
         return record
     }
 
