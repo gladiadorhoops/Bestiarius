@@ -5,6 +5,8 @@ import { User, UserKey } from '../interfaces/user';
 import { Coach, CoachKey } from '../interfaces/coach';
 import { Role } from '../enum/Role';
 import { CURRENT_YEAR } from '../aws-clients/constants';
+import { Scout } from '../interfaces/scout';
+import { Admin } from '../interfaces/admin';
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +24,6 @@ export class UserBuilder {
         await ddb.putItem(record);
     }
 
-
     async getCoach(ddb: DynamoDb, coachId: string): Promise<Coach | undefined> {
         let item = await this.getUserItem(ddb, coachId, Role.COACH)
         if(item === undefined) return
@@ -35,9 +36,55 @@ export class UserBuilder {
         return coach
     }
 
+    async getScout(ddb: DynamoDb, scoutId: string): Promise<Scout | undefined> {
+        let item = await this.getUserItem(ddb, scoutId, Role.SCOUT)
+        if(item === undefined) return
+        return this.buildUser(item, Role.SCOUT) as Scout
+    }
+
+    async getAdmin(ddb: DynamoDb, adminId: string): Promise<Admin | undefined> {
+        let item = await this.getUserItem(ddb, adminId, Role.ADMIN)
+        if(item === undefined) return
+        return this.buildUser(item, Role.ADMIN) as Admin
+    }
+
     async getCoaches(ddb: DynamoDb): Promise<Coach[]> {
         var coaches: Coach[] = []
-        coaches = await ddb.listByYearQuery(`${Role.COACH}.data`).then(
+        coaches = await this.getUsers(ddb, Role.COACH) as Coach[]
+        console.log('coaches', coaches)
+        return coaches
+    }
+
+    async getScouts(ddb: DynamoDb): Promise<Scout[]> {
+        var scouts: Scout[] = []
+        scouts = await this.getUsers(ddb, Role.SCOUT) as Scout[]
+        console.log('scouts', scouts)
+        return scouts
+    }
+
+    async getAdmins(ddb: DynamoDb): Promise<Admin[]> {
+        var admins: Admin[] = []
+        admins = await this.getUsers(ddb, Role.ADMIN) as Admin[]
+        console.log('admins', admins)
+        return admins
+    }
+
+    async deleteCoach(ddb: DynamoDb, userId: string) {
+        await this.deleteUserItem(ddb, userId, Role.COACH);
+    }
+
+    async deleteScout(ddb: DynamoDb, userId: string) {
+        await this.deleteUserItem(ddb, userId, Role.SCOUT);
+    }
+
+    async deleteAdmin(ddb: DynamoDb, userId: string) {
+        await this.deleteUserItem(ddb, userId, Role.ADMIN);
+    }
+
+
+    async getUsers(ddb: DynamoDb, role: Role): Promise<User[]> {
+        var users: User[] = []
+        users = await ddb.listByYearQuery(`${role}.data`).then(
             (items) => {
                 items.sort((a, b) => a[UserKey.NAME].S!.localeCompare(b[UserKey.NAME].S!))
                 return items.map((item) => {
@@ -49,21 +96,16 @@ export class UserBuilder {
                 })
             }
         )
-
-        console.log('teams', coaches)
-        return coaches
-    }
-
-    async deleteCoach(ddb: DynamoDb, userId: string) {
-        await this.deleteUserItem(ddb, userId, Role.COACH);
-    }
-
-    async deleteScout(ddb: DynamoDb, userId: string) {
-        await this.deleteUserItem(ddb, userId, Role.SCOUT);
+        return users
     }
 
     private updateCoachRecord(record: Record<string, any>, coach: Coach): Record<string, any> { 
-        let teamIdAttributes = DynamoDb.convertFromStringList(coach.teamIds)
+        
+        var teamIdAttributes: AttributeValue[] = []
+        if (coach.teamIds) {
+            teamIdAttributes = DynamoDb.convertFromStringList(coach.teamIds)
+        }
+
         record[CoachKey.TEAM_IDS] = teamIdAttributes
         return record
     }
