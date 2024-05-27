@@ -20,17 +20,11 @@
                     <input class="col col-8" name="password" formControlName="password" 
                         type="password">
                 </div>
-                <div class="form-field">
-                    <label class="col col-4">Código de Verificación:</label>
-                    <input class="col col-8" name="codigo" formControlName="codigo">
-                </div>
             </fieldset>
             <p></p>
             <div class="form-buttons">
-                <button  [disabled]="confirmation" class="button button-primary" 
-                        (click)="signup(); $event.preventDefault()">Verificar E-MAIL</button>
-                <button [disabled]="!confirmation" class="button button-primary" 
-                        (click)="confirm(); $event.preventDefault()">Registrar</button>
+                <button class="btn btn-danger" 
+                        (click)="signup(); $event.preventDefault()">Registrar</button>
             </div>
         </form>
         <br>

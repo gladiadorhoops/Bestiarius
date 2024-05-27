@@ -4,7 +4,7 @@
             <div style="width: 100%" class="text-justify outer">
             <ng-container *ngIf="!isLoggedIn">    
                 <div class="container page-content">
-                    <ng-container *ngIf="!recoverPassView">
+                    <ng-container>
                         <h1>Login</h1>
                         <form [formGroup]="form">
                             <fieldset>
@@ -19,44 +19,17 @@
                                 </div>
                             </fieldset>
                             <div class="form-buttons">
-                                <button class="button button-primary" 
+                                <button class="btn btn-danger" 
                                         (click)="login()">Login</button>
-                            </div>
-                            <div class="form-buttons">
-                                <button class="button" 
-                                        (click)="enterRecoverPassword()">Cambiar contraseña</button>
-                            </div>
+                            </div><br><br>
+                            <b>Problemas iniciando sesion?</b>
+                            <ul>
+                                <li><a [routerLink]="" (click)="enterRecoverPassword()"><u>Cambiar contraseña</u></a></li>
+                                <li><a [routerLink]="" (click)="openCodigoPopup()"><u>Verificar email</u></a></li>
+                            </ul>
                         </form>
                         <br>
                         <span style="background-color: red" *ngIf="failed"> Failed to Login </span>
-                    </ng-container>
-                    <ng-container *ngIf="recoverPassView">
-                        <h1>Cambiar Contraseña</h1>
-                        <form [formGroup]="passform">
-                            <fieldset>
-                                <div class="form-field">
-                                    <label>Email:</label>
-                                    <input name="email" formControlName="email">
-                                </div>
-                                <div class="form-field">
-                                    <label>New Password:</label>
-                                    <input name="password" formControlName="password" 
-                                        type="password">
-                                </div>
-                                <div class="form-field">
-                                    <label>Codigo:</label>
-                                    <input name="codigo" formControlName="codigo">
-                                </div>
-                            </fieldset>
-                            <div class="form-buttons">
-                                <button [disabled]="codeSent" class="button" 
-                                        (click)="getCode()">Enviar Codigo</button>
-                            </div>
-                            <div class="form-buttons">
-                                <button [disabled]="!codeSent" class="button button-primary" 
-                                        (click)="changePassword()">Cambiar Password</button>
-                            </div>
-                        </form>
                     </ng-container>
                 </div>
             </ng-container>
@@ -73,8 +46,89 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
     
+
+<div class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayCodigo}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form [formGroup]="codigoForm" class ="fcol">
+            <div [hidden]="email===''">
+                <p>Email no verificado. Verifica tu correo introduciendo tu código de verificación.  No olvides buscar en la carpeta de correo no deseado.</p> 
+                <span style="background-color: red">{{codigoErrorMsg}}</span>
+                <input name="codigo" formControlName="codigo" type="text" required>
+            </div>
+            <div [hidden]="email!=''">
+                <label>Email:</label>
+                <input name="email" formControlName="email" type="text">
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div [hidden]="email===''">
+            <button type="button" class="btn" 
+                (click)="resendCode()">
+                Reenviar codigo
+            </button>
+            <button type="button" class="btn btn-danger" 
+                (click)="confirm()">
+                Confirmar
+            </button>
+        </div>
+        <div [hidden]="email!=''">
+            <button type="button" class="btn btn-danger" 
+                (click)="confirmEmail()">
+                Confirmar
+            </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayChangePassword}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h1>Cambiar Contraseña</h1>
+    <form [formGroup]="passform">
+        <fieldset>
+            <div class="form-field">
+                <label>Email:</label>
+                <input name="email" formControlName="email">
+            </div>
+            <div class="form-field" [hidden]="codeSent!=true">
+                <label>Contraseña:</label>
+                <input name="password" formControlName="password" 
+                    type="password">
+            </div>
+            <div class="form-field" [hidden]="codeSent!=true">
+                <label>Codigo:</label>
+                <input name="codigo" formControlName="codigo">
+            </div>
+        </fieldset>
+    </form>
+      </div>
+      <div class="modal-footer">
+        <button [hidden]="codeSent" class="btn btn-dark" 
+                    (click)="getCode()">Enviar Codigo</button>
+        <button [hidden]="!codeSent" class="btn btn-danger" 
+                    (click)="changePassword()">Cambiar Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div
     class="modal"
     tabindex="-1"
