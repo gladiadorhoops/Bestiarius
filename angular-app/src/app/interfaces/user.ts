@@ -6,6 +6,8 @@ export interface User {
     email: string,
     role: Role,
     phone: string,
+    accessToken?: string | undefined,
+    idToken?: string | undefined,
 }
 
 export enum UserKey {
@@ -14,4 +16,5 @@ export enum UserKey {
     EMAIL = 'email',
     ROLE = 'role',
     PHONE = 'phone',
+    ACCESS_TOKEN = 'accessToken'
 }

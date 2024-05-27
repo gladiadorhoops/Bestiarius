@@ -17,7 +17,9 @@ import {
     ForgotPasswordCommandOutput,
     ConfirmForgotPasswordCommandInput,
     ConfirmForgotPasswordCommandOutput,
-    ConfirmForgotPasswordCommand
+    ConfirmForgotPasswordCommand,
+    DeleteUserCommandInput,
+    DeleteUserCommand
 } from "@aws-sdk/client-cognito-identity-provider";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 import { CognitoIdentityCredentialProvider, fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
@@ -53,7 +55,7 @@ export class Cognito {
         }                
     }
 
-    static async authenticateUser(username: string, password: string, identity: CognitoIdentity = AUTHENTICATED_COGNITO_IDENTITY): Promise<string | undefined> {
+    static async authenticateUser(username: string, password: string, identity: CognitoIdentity = AUTHENTICATED_COGNITO_IDENTITY): Promise<InitiateAuthCommandOutput | undefined> {
         const initiateAuthCommandInput: InitiateAuthCommandInput = {
             AuthFlow: 'USER_PASSWORD_AUTH',
             ClientId: identity.clientId,
@@ -63,19 +65,9 @@ export class Cognito {
             }
         }
 
-        let response: InitiateAuthCommandOutput | undefined
-
         const command = new InitiateAuthCommand(initiateAuthCommandInput);
-        console.log("command: ", command)
-        response = await client.send(command);
-
-        let token = response.AuthenticationResult?.IdToken
-        if(token == undefined) {
-            console.log("ERROR: ID Token not found on user authentication output")
-            return
-        }
-        console.log(`Found User ${username} ID Token`)
-        return token
+        console.log("command: ", command);
+        return await client.send(command); 
     }
 
     static async signUpUser(name: string, email: string, phoneNumber: string, password: string, role: string): Promise<SignUpCommandOutput  | undefined> {
@@ -177,7 +169,22 @@ export class Cognito {
         }
     }
 
-    static getUserFromToken(idToken: string): User {
+    static async deleteUser(accessToken: string) {
+        const deleteUserCommandInput: DeleteUserCommandInput = {
+            AccessToken: accessToken
+        }
+
+        try {
+            const command = new DeleteUserCommand(deleteUserCommandInput);
+            console.log("command: ", command);
+            let response = await client.send(command);
+            console.log("response: ", command);
+          } catch (error) {
+            console.log(error)
+        }
+    }
+
+    static getUserFromToken(idToken: string, accessToken?: string): User {
         let jwt = jwtDecode(idToken) as {[key:string]: string}
         return {
             id: jwt['sub'],
@@ -185,6 +192,8 @@ export class Cognito {
             phone: jwt['phone_number'],
             email: jwt['email'],
             role: roleFromString(jwt['custom:role']),
+            accessToken: accessToken,
+            idToken: idToken
         }
     }
 }

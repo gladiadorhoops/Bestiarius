@@ -7,6 +7,7 @@ import { Role } from '../enum/Role';
 import { CURRENT_YEAR } from '../aws-clients/constants';
 import { Scout } from '../interfaces/scout';
 import { Admin } from '../interfaces/admin';
+import { Cognito } from '../aws-clients/cognito';
 
 @Injectable({
     providedIn: 'root'
@@ -69,15 +70,18 @@ export class UserBuilder {
         return admins
     }
 
-    async deleteCoach(ddb: DynamoDb, userId: string) {
+    async deleteCoach(ddb: DynamoDb, userId: string, accessToken: string) {
+        await Cognito.deleteUser(accessToken);
         await this.deleteUserItem(ddb, userId, Role.COACH);
     }
 
-    async deleteScout(ddb: DynamoDb, userId: string) {
+    async deleteScout(ddb: DynamoDb, userId: string, accessToken: string) {
+        await Cognito.deleteUser(accessToken);
         await this.deleteUserItem(ddb, userId, Role.SCOUT);
     }
 
-    async deleteAdmin(ddb: DynamoDb, userId: string) {
+    async deleteAdmin(ddb: DynamoDb, userId: string, accessToken: string) {
+        await Cognito.deleteUser(accessToken);
         await this.deleteUserItem(ddb, userId, Role.ADMIN);
     }
 
