@@ -8,6 +8,10 @@
     </h2>
 
     <table class="row">
+        <tr class="row" *ngIf="userrole!='coach'">
+            <th class="col col-lg-3 col-12"> <a [routerLink]="">Coach</a></th>
+            <td class="col col-lg-9 col-12"> <a [routerLink]="">{{team?.coachName}}</a></td>
+        </tr>
         <tr class="row">
             <th class="col col-lg-3 col-12"> <a [routerLink]="">Category</a></th>
             <td class="col col-lg-9 col-12"> <a [routerLink]="">{{team?.category}}</a></td>
@@ -20,20 +24,16 @@
     <p></p>
     <table class="row">
         <tr class="row">
-            <th class="col col-lg-4 col-12"> <a [routerLink]="">Player</a></th>
-            <th class="col col-lg-2 col-12"> <a [routerLink]="">Position</a></th>
-            <th class="col col-lg-2 col-12"> <a [routerLink]="">Brithday</a></th>
-            <th class="col col-lg-2 col-12"> <a [routerLink]="">Height</a></th>
-            <th class="col col-lg-2 col-12"> <a [routerLink]="">Weight</a></th>
+            <th class="col col-lg-8 col-12"> <a [routerLink]="">Player</a></th>
+            <th class="col col-lg-4 col-12"> <a [routerLink]="">Position</a></th>
         </tr>
-        <tr class="row" *ngFor="let player of players" >
-            <td class="col col-lg-4 col-12">{{player.name}}</td>
-            <td class="col col-lg-2 col-12">{{player.position}}</td>
-            <td class="col col-lg-2 col-12">{{getDate(player.birthday!)}}</td>
-            <td class="col col-lg-2 col-12">{{player.height}}</td>
-            <td class="col col-lg-2 col-12">{{player.weight}}</td>
+        <tr class="row" *ngFor="let player of players" [routerLink]="" (click)="viewPlayer(player.id)">
+            <td class="col col-lg-8 col-12"><u>{{player.name}}{{(player.id === team?.captainId) ? " (Capitán)" : ""}}</u></td>
+            <td class="col col-lg-4 col-12">{{player.position}}</td>
         </tr>
     </table>
+    <button type="button" (click)="addPlayer()" class="btn btn-danger"> Aggregar Jugador</button>
+
     <br><br>
     <div class="frow" >
         <button type="button" (click)="callParentToListTeams()" class="btn btn-dark">Volver a Equipos Registrados</button>
@@ -42,29 +42,138 @@
 </div>  
 
 <div class="modal"
-      tabindex="-1"
-      role="dialog"
-      [ngStyle]="{'display':displayStyle}">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-body">
-            <p>Estas seguro que quieres eliminar el equipo "{{team?.name}}". Esta accion es irreversible.</p>
-            <p>Para confirmar la eliminacion escribe el nombre del equipo:</p> 
-            <span style="background-color: red">{{errorMsg}}</span>
-            <form [formGroup]="deleteForm" class ="fcol">
-                <input name="teamToDelete" formControlName="teamToDelete" type="text" required>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn" 
-                    (click)="closePopup()">
-              Cancelar
-            </button>
-            <button type="button" class="btn btn-danger" 
-                    (click)="confirmDelete()">
-              Confirmar
-            </button>
-          </div>
-        </div>
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayConfirmDeleteTeam}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Estas seguro que quieres eliminar el equipo "{{team?.name}}". Esta accion es irreversible.</p>
+        <p>Para confirmar la eliminacion escribe el nombre del equipo:</p> 
+        <span style="background-color: red">{{errorMsg}}</span>
+        <form [formGroup]="deleteForm" class ="fcol">
+            <input name="teamToDelete" formControlName="teamToDelete" type="text" required>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" 
+                (click)="closePopup()">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-danger" 
+                (click)="confirmDeleteTeam()">
+          Confirmar
+        </button>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="modal"
+      tabindex="-1"
+      role="dialog"
+      [ngStyle]="{'display':displayPlayer}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+
+        <h2 class="text-center mb-3">
+          Detalles del Jugador
+        </h2>
+
+        <tr class="row">
+          <th class="col col-lg-3 col-12">Nombre</th>
+          <td class="col col-lg-9 col-12">{{selectedPlayer!.name}}{{(selectedPlayer.id === team?.captainId) ? " (Capitán)" : ""}}</td>
+        </tr>
+        
+        <tr class="row">
+          <th class="col col-lg-3 col-12">Fecha de Nacimiento</th>
+          <td class="col col-lg-9 col-12">{{getDate(selectedPlayer!.birthday!)}}</td>
+        </tr>
+        
+        <tr class="row">
+          <th class="col col-lg-3 col-12">Posición</th>
+          <td class="col col-lg-9 col-12">{{selectedPlayer!.position}}</td>
+        </tr>
+
+        <tr class="row">
+          <th class="col col-lg-3 col-12">Altura (cm)</th>
+          <td class="col col-lg-9 col-12">{{selectedPlayer!.height}}</td>
+        </tr>
+        
+        <tr class="row">
+          <th class="col col-lg-3 col-12">Peso (kg)</th>
+          <td class="col col-lg-9 col-12">{{selectedPlayer!.weight}}</td>
+        </tr>
+        
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="deletePlayer()">
+          Eliminar Jugador
+        </button>
+        <button type="button" class="btn btn-danger" 
+                (click)="editPlayer()">
+          Editar Jugador
+        </button>
+        <button type="button" class="btn btn-dark" 
+                (click)="closePlayer()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayConfirmDeletePlayer}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Estas seguro que quieres eliminar el jugador "{{selectedPlayer.name}}". Esta accion es irreversible.</p>
+        <p>Para confirmar la eliminacion escribe el nombre del jugador:</p> 
+        <span style="background-color: red">{{errorMsg}}</span>
+        <form [formGroup]="deletePlayerForm" class ="fcol">
+            <input name="playerToDelete" formControlName="playerToDelete" type="text" required>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" 
+                (click)="closeDeletePlayerPopup()">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-danger" 
+                (click)="confirmDeletePlayer()">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayAddPlayer}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-add-player [teamplayers]="players" [equipoId]="team?.id!" [categoria]="team?.category!" [playerId]="newplayerid" [ddb]="ddb"></app-add-player>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" 
+                (click)="closeAddPlayerPopup()">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-danger" 
+                (click)="confirmAddPlayer()">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

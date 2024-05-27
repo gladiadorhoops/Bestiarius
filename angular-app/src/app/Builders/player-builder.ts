@@ -81,6 +81,22 @@ export class PlayerBuilder {
         }
     }
 
+
+
+    getEmptyPlayer(): Player {
+        return {
+            id: "",
+            team: "",
+            name: "",
+            category: "",
+            age: "",
+            height: "",
+            weight: "",
+            position: "",
+            birthday: new Date("Tue Mar 05 2013")
+        }
+    }
+
     static defaultForm = {
         scoutId: ['', Validators.required],
         scoutname: ['', Validators.required],

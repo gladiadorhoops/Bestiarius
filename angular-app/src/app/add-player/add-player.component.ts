@@ -50,24 +50,7 @@ export class AddPlayerComponent {
   emptyTxt : string = "";
 
   async ngOnInit() {
-
-    this.player = {
-      id: this.playerId,
-      name: "",
-      team: this.equipoId,
-      category: this.categoria,
-      age: "",
-      height: "",
-      weight: "",
-      position: "",
-      birthday: new Date()
-    }
-
-    this.teamplayers.forEach(p => {
-      if(p.id == this.playerId){
-        this.player = p;
-      }
-    });
+    this.loadPlayer(this.playerId);
   }
 
   getPlayerInput(): Player{
@@ -85,6 +68,25 @@ export class AddPlayerComponent {
     return inputplayer;
   }
 
+  loadPlayer(playerId: string){
+    this.player = {
+      id: this.playerId,
+      name: "",
+      team: this.equipoId,
+      category: this.categoria,
+      age: "",
+      height: "",
+      weight: "",
+      position: "",
+      birthday: new Date()
+    }
+    
+    this.teamplayers.forEach(p => {
+      if(p.id == playerId){
+        this.player = p;
+      }
+    });
+  }
   savePlayer(){
 
     if(document.getElementById("nombre"+this.playerId)){

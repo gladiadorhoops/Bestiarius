@@ -1,16 +1,15 @@
 import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Team, getCategories } from '../interfaces/team';
 import { Player } from '../interfaces/player';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { TeamBuilder } from '../Builders/team-builder';
 import { PlayerBuilder } from '../Builders/player-builder';
-import { ReporteBuilder } from '../Builders/reporte-builder';
-import { Skills, Skill } from '../interfaces/reporte';
-import { Scout } from '../interfaces/scout';
 import { AddPlayerComponent } from '../add-player/add-player.component';
 import {v4 as uuidv4} from 'uuid';
+import { Coach } from '../interfaces/coach';
+import { UserBuilder } from '../Builders/user-builder';
 
 
 @Component({
@@ -23,17 +22,28 @@ export class AddTeamComponent {
   constructor(private fb: FormBuilder,
     private authService: AuthService,
     private teamBuilder: TeamBuilder,
+    private userBuilder: UserBuilder,
     private playerBuilder: PlayerBuilder,
-    private reporteBuilder: ReporteBuilder,
-  ) {}
+  ) {
+    this.userrole = this.authService.getUserRole();
+
+  }
 
   @Input() ddb!: DynamoDb;
 
   userId = this.authService.getUserId();
   userName = this.authService.getUserName();
   categories = getCategories();
-  teamForm =  this.fb.group(TeamBuilder.defaultForm);
+  teamForm =  this.fb.group({
+    coachId: ['', Validators.required],
+    teamName: ['', Validators.required],
+    category: ['', Validators.required],
+    location: [''],
+    captainId: ['']
+  });
+  userrole: string;
 
+  coaches: Coach[] = [];
   teams: Team[] = [];
   teamplayers: Player[] = [];
   selectedCaptan : boolean = false;
@@ -45,6 +55,10 @@ export class AddTeamComponent {
   displayStyle = "none";
 
   async ngOnInit() {
+    if(this.userrole != "coach"){
+      this.coaches = await this.userBuilder.getCoaches(this.ddb);
+    }
+
   }
 
   @ViewChildren(AddPlayerComponent) viewChildren!: QueryList<AddPlayerComponent>;
@@ -101,9 +115,6 @@ export class AddTeamComponent {
       birthday: undefined
     }); 
 
-    //this.viewChildren.forEach(element => {
-    //  element.loadPlayerDetails(this.teamplayers);
-    //});
   }
 
   async getInputPlayersList(){
@@ -133,11 +144,24 @@ export class AddTeamComponent {
     console.log("Players to save");
     console.log(updatedPlayers);
 
+    let selectedCoachId = this.userId;
+    let selectedCoachName = this.userName;
+    if(this.userrole != "coach"){
+      selectedCoachId = this.teamForm.value.coachId!;
+      let selectedCoach = this.coaches.filter((c)=>c.id === selectedCoachId);
+      if(selectedCoach.length != 1){
+        this.popUpMsg = "Coach not found!";
+        this.openPopup();
+        return;
+      }
+      selectedCoachName = selectedCoach[0].name!;
+    }
+
     let newTeam : Team = {id: this.selectedTeamId,
       name: this.selectedTeamName,
       captainId: this.teamForm.value.captainId == null ? "" : this.teamForm.value.captainId,
-      coachId: this.userId,
-      coachName: this.userName,
+      coachId: selectedCoachId,
+      coachName: selectedCoachName,
       category: this.selectedCategoria,
       location: this.teamForm.value.location == null ? "" : this.teamForm.value.location
     }
@@ -153,17 +177,6 @@ export class AddTeamComponent {
     this.popUpMsg = "Team Saved!";
     this.openPopup();
 
-    // TODO: refresh database with team data
-
-    /*try {
-      await this.reporteBuilder.submit(this.ddb, this.teamForm)
-    } catch (err) {
-      this.submitReportMessage = `Error gurardong evaluacion. Contacta a Paco.\n${err}`
-      console.error("Error Submitting report")
-    }
-    this.popUpMsg = "Evaluacion guardada!";
-    this.openPopup();
-    */
   }
 
   openPopup() {

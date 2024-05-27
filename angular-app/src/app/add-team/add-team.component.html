@@ -4,9 +4,6 @@
         Registro de Equipo
     </h2>
     <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" class ="fcol">
-            <input name="scout" type="text" formControlName="coachId" value="{{userId}}" hidden readonly required>
-            <input name="scout" type="text" formControlName="coachName" value="{{userName}}" hidden readonly required>
-    
             <div class="accordion accordion-flush" id="accordionFlushExample">
                 <div class="accordion-item">
                   <h2 class="accordion-header">
@@ -16,6 +13,17 @@
                   </h2>
                   <div id="flush-collapseOne" class="accordion-collapse collapse show" >
                     <div class="accordion-body">
+                        <label class="frow" [hidden]="userrole==='coach'" for="coachId">Coach:&nbsp;</label>
+                        <div class="frow" *ngIf="userrole==='coach'" >
+                          <input name="coachId" type="text" formControlName="coachId" value="{{userId}}" hidden readonly required>
+                        </div>
+                        <div class="frow" *ngIf="userrole!='coach'">
+                          <select id="coachId" formControlName="coachId" required>
+                              <option value=""></option>
+                              <option *ngFor="let coach of coaches" value="{{coach.id}}">{{coach.name}}</option>
+                          </select>
+                        </div>
+
                         <label class="frow" for="categoria">Categoria:&nbsp;</label>
                         <div class="frow">
                             <select id="categorias" formControlName="category" (change)="loadTeams()" required>
