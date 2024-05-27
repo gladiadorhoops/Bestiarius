@@ -237,7 +237,6 @@ export class LoginComponent {
         var user = await this.performLogin(this.form.value.email, this.form.value.password);
     
         await this.authService.setUserSession(user!, this.form.value.password);
-        await this.storeUserData(user!, this.form.value.password);
   
         this.reloadLoginStatus();
         console.log("User is logged in");
@@ -266,15 +265,5 @@ export class LoginComponent {
       } catch (error) {
         console.error('User Exists: ', error);
       }
-    }
-  
-    private async storeUserData(user: User, password: string){
-      let credentials = await this.authService.getCredentials(user.email, password)
-      if (credentials == undefined) {
-        throw Error("AWS Credentials are undefined. Unable to set DDB client")
-      }
-      this.ddb = await DynamoDb.build(credentials);
-      
-      await this.userBuilder.createUser(this.ddb, user)
     }
 }

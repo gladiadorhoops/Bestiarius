@@ -20,6 +20,7 @@ export class SignupComponent {
   email = "";
   password = "";
   failed: boolean = false;
+  success: boolean = false;
   displayStyle = "none";
   popUpnMsg = "";
   userId = "";
@@ -98,14 +99,20 @@ export class SignupComponent {
       return
     }
 
-    await this.router.navigateByUrl('/login');
+    this.success = true;
+    this.popUpnMsg = "Registro completo. Por Favor iniciar session";
+    this.openPopup();
+
   }
 
   openPopup() {
     this.displayStyle = "block";
   }
-  closePopup() {
+  async closePopup() {
     this.displayStyle = "none";
+    if(this.success){
+      await this.router.navigateByUrl('/login');
+    }
   }
 
 }
