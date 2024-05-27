@@ -9,15 +9,15 @@
                         <form [formGroup]="form">
                             <fieldset>
                                 <div class="form-field">
-                                    <label>Email:</label>
+                                    <label>Email:</label><br>
                                     <input name="email" formControlName="email">
                                 </div>
                                 <div class="form-field">
-                                    <label>Password:</label>
+                                    <label>Password:</label><br>
                                     <input name="password" formControlName="password" 
                                         type="password">
                                 </div>
-                            </fieldset>
+                            </fieldset><br>
                             <div class="form-buttons">
                                 <button class="btn btn-danger" 
                                         (click)="login()">Login</button>
@@ -55,6 +55,11 @@
   [ngStyle]="{'display':displayCodigo}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Verificar Email</h5>
+        <button type="button" class="btn-close" (click)="closeCodigoPopup()" aria-label="Close">
+        </button>
+    </div>
       <div class="modal-body">
         <form [formGroup]="codigoForm" class ="fcol">
             <div [hidden]="email===''">
@@ -98,25 +103,29 @@
   [ngStyle]="{'display':displayChangePassword}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-body">
-        <h1>Cambiar Contraseña</h1>
-    <form [formGroup]="passform">
-        <fieldset>
-            <div class="form-field">
-                <label>Email:</label>
-                <input name="email" formControlName="email">
-            </div>
-            <div class="form-field" [hidden]="codeSent!=true">
-                <label>Contraseña:</label>
-                <input name="password" formControlName="password" 
-                    type="password">
-            </div>
-            <div class="form-field" [hidden]="codeSent!=true">
-                <label>Codigo:</label>
-                <input name="codigo" formControlName="codigo">
-            </div>
-        </fieldset>
-    </form>
+        <div class="modal-header">
+            <h5 class="modal-title">Cambiar Contraseña</h5>
+            <button type="button" class="btn-close" (click)="closeChangePassword()" aria-label="Close">
+            </button>
+        </div>
+        <div class="modal-body">
+        <form [formGroup]="passform">
+            <fieldset>
+                <div class="form-field">
+                    <label>Email:</label>
+                    <input name="email" formControlName="email">
+                </div>
+                <div class="form-field" [hidden]="codeSent!=true">
+                    <label>Contraseña:</label>
+                    <input name="password" formControlName="password" 
+                        type="password">
+                </div>
+                <div class="form-field" [hidden]="codeSent!=true">
+                    <label>Codigo:</label>
+                    <input name="codigo" formControlName="codigo">
+                </div>
+            </fieldset>
+        </form>
       </div>
       <div class="modal-footer">
         <button [hidden]="codeSent" class="btn btn-dark" 

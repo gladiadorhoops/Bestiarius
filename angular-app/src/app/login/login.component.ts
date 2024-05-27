@@ -101,40 +101,6 @@ export class LoginComponent {
       console.log("Log in Status Reloaded");
     }
 
-    async enterRecoverPassword(){
-      this.displayChangePassword = 'block';
-      
-
-      this.passform.get('codigo')?.disable();
-      this.passform.get('password')?.disable();
-    }
-
-    async getCode(){
-      const val = this.passform.value;
-      if (!(val.email)) {
-        this.failed = true;
-        return;
-      }
-
-      await this.authService.forgotUserPassword(val.email);
-      this.codeSent = true;
-
-      this.passform.get('codigo')?.enable();
-      this.passform.get('password')?.enable();
-    }
-
-    async changePassword() {
-      const val = this.passform.value;
-      if (!(val.email && val.password && val.codigo)) {
-        this.failed = true;
-        return;
-      }
-
-      await this.authService.confirmForgotUserPassword(val.email, val.password, val.codigo);
-      this.displayChangePassword = 'none';
-      this.codeSent = false;
-    }
-
     async performLogin(email: string, password: string){
       var user = undefined
       try {
@@ -195,6 +161,46 @@ export class LoginComponent {
       window.location.reload();
     }
 
+    // change password modal
+    closeChangePassword(){
+      this.displayChangePassword = 'none';
+      this.passform.reset();
+    }
+
+    async enterRecoverPassword(){
+      this.displayChangePassword = 'block';
+
+      this.passform.get('codigo')?.disable();
+      this.passform.get('password')?.disable();
+    }
+
+    async getCode(){
+      const val = this.passform.value;
+      if (!(val.email)) {
+        this.failed = true;
+        return;
+      }
+
+      await this.authService.forgotUserPassword(val.email);
+      this.codeSent = true;
+
+      this.passform.get('codigo')?.enable();
+      this.passform.get('password')?.enable();
+    }
+
+    async changePassword() {
+      const val = this.passform.value;
+      if (!(val.email && val.password && val.codigo)) {
+        this.failed = true;
+        return;
+      }
+
+      await this.authService.confirmForgotUserPassword(val.email, val.password, val.codigo);
+      this.closeChangePassword();
+      this.codeSent = false;
+    }
+
+    // error message popup
     openPopup() {
       this.displayStyle = "block";
     }
@@ -202,6 +208,7 @@ export class LoginComponent {
       this.displayStyle = "none";
     }
 
+    // email verification modal
     async confirm() {
       console.log("Validating user: " + this.email);
   
@@ -247,6 +254,8 @@ export class LoginComponent {
     }
 
     closeCodigoPopup(){
+      this.email = "";
+      this.codigoForm.reset();
       this.displayCodigo = "none";
     }
 
