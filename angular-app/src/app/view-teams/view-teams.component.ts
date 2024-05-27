@@ -2,13 +2,15 @@ import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from 
 import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { TeamBuilder } from '../Builders/team-builder';
-import { Team } from '../interfaces/team';
+import { Team, getCategories } from '../interfaces/team';
 import { Player } from '../interfaces/player';
 import { PlayerBuilder } from '../Builders/player-builder';
 import { formatDate } from "@angular/common";
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {v4 as uuidv4} from 'uuid';
 import { AddPlayerComponent } from '../add-player/add-player.component';
+import { Coach } from '../interfaces/coach';
+import { UserBuilder } from '../Builders/user-builder';
 
 @Component({
   selector: 'app-view-teams',
@@ -21,22 +23,27 @@ export class ViewTeamsComponent {
   displayConfirmDeleteTeam = "none";
   displayAddPlayer = "none";
   displayPlayer = "none";
+  displayEditTeam = "none";
 
   constructor(private fb: FormBuilder,
-      private authService: AuthService,
-      private teamBuilder: TeamBuilder,
-      private playerBuilder: PlayerBuilder
-    ){
-      this.selectedPlayer=this.playerBuilder.getEmptyPlayer();
-    }
+    private authService: AuthService,
+    private teamBuilder: TeamBuilder,
+    private userBuilder: UserBuilder,
+    private playerBuilder: PlayerBuilder
+  ){
+    this.selectedPlayer=this.playerBuilder.getEmptyPlayer();
+  }
 
-    @Input() ddb!: DynamoDb;
+  @Input() ddb!: DynamoDb;
 
   loading = true;
   team: Team | undefined;
   players: Player[] = [];
+  coaches: Coach[] = [];
+  categories = getCategories();
   deleteForm : FormGroup = this.fb.group({teamToDelete: ''});
   deletePlayerForm : FormGroup = this.fb.group({playerToDelete: ''});
+  editForm : FormGroup = this.fb.group({coachId: '', category: '', teamName: '', location: '', captainId: ''});
   selectedPlayer: Player;
 
   errorMsg = "";
@@ -69,6 +76,9 @@ export class ViewTeamsComponent {
   }
 
   async ngOnInit() {
+    if(this.userrole != "coach"){
+      this.coaches = await this.userBuilder.getCoaches(this.ddb);
+    }
     
     this.reloadLoginStatus();
   }
@@ -106,6 +116,37 @@ export class ViewTeamsComponent {
     else{
       this.errorMsg = "Nombre del equipo no coincide!";
     }
+  }
+
+  openEditTeam(){
+    //category: '', teamName: '', location: '', captainId: ''});
+    this.editForm.get('coachId')?.setValue(this.team!.coachId);
+    this.editForm.get('category')?.setValue(this.team!.category);
+    this.editForm.get('teamName')?.setValue(this.team!.name);
+    this.editForm.get('location')?.setValue(this.team!.location);
+    this.editForm.get('captainId')?.setValue(this.team!.captainId);
+    this.displayEditTeam = "block";
+  }
+
+  closeEditPopup(){
+    this.displayEditTeam = "none";
+  }
+
+  async confirmEditTeam(){
+    let val = this.editForm.value;
+
+    this.team = {id: this.team?.id!,
+      name: val.teamName,
+      captainId: val.captainId,
+      coachId: val.coachId,
+      coachName: this.coaches.filter((c)=>c.id === val.coachId)[0].name,
+      category: val.category,
+      location: val.location
+    }
+
+    await this.teamBuilder.createTeam(this.ddb, this.team);
+    this.loadTeam(this.team?.id);
+    this.displayEditTeam = "none";
   }
 
   getDate(birthday: Date){

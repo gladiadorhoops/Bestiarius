@@ -8,6 +8,11 @@
                 </div>
             </ng-container>
             <ng-container *ngIf="isLoggedIn">
+                <div style="display: flex; flex-direction: column; align-items:flex-end;">
+                    <form [formGroup]="form">
+                        <label>Usuario: <i>{{username}}</i></label>
+                    </form>
+                </div>
                 <select #feature (change)="changeFeature(feature.value)">
                     <option *ngFor="let menuItem of menuItems" value="{{menuItem.value}}">{{menuItem.text}}</option>
                 </select>

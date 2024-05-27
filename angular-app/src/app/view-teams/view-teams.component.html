@@ -4,7 +4,10 @@
 </div>
 <div class="mainpanel" *ngIf="!loading">
     <h2 class="text-center mb-3">
-        {{team?.name}}
+        {{team?.name}} 
+        <button class="btn btn-outline-danger btn-sm" (click)="openEditTeam()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+          <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+        </svg></button>
     </h2>
 
     <table class="row">
@@ -41,12 +44,79 @@
     </div>
 </div>  
 
+<!--Edit team modal-->
+<div class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayEditTeam}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Equipo</h5>
+        <button type="button" class="btn-close" (click)="closeEditPopup()" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editForm" class ="fcol">
+          <div class="frow" *ngIf="userrole==='coach'" >
+            <input name="coachId" type="text" formControlName="coachId" value="{{userId}}" hidden readonly required>
+          </div>
+          <div class="frow" *ngIf="userrole!='coach'">
+            <label class="frow" for="categoria">Coach:&nbsp;</label>
+            <div class="frow">
+              <select id="coachId" formControlName="coachId" required>
+                  <option value=""></option>
+                  <option *ngFor="let coach of coaches" value="{{coach.id}}">{{coach.name}}</option>
+              </select>
+            </div>
+          </div>
+
+          <label class="frow" for="categoria">Categoria:&nbsp;</label>
+          <div class="frow">
+              <select id="categorias" formControlName="category" required>
+                  <option *ngFor="let cat of categories" value="{{cat}}">{{cat}}</option>
+              </select>
+          </div>
+          <label class="frow" for="equipo">Equipo:&nbsp;</label>
+          <div class="frow">
+              <input type="text" id="equipo" formControlName="teamName" class="form-control" required>
+          </div>
+          <label class="frow" for="location">Ciudad, Estado y País:&nbsp;</label>
+          <div class="frow">
+              <input type="text" id="location" formControlName="location" class="form-control">
+          </div>
+          <label class="frow" for="captan">Capitán:&nbsp;</label>
+          <div class="frow">
+            <select id="captan" formControlName="captainId">
+              <option value=""></option>
+              <option *ngFor="let player of players" value="{{player.id}}">{{player.name}}</option>
+            </select>
+          </div>
+        </form>
+        <span style="background-color: red">{{errorMsg}}</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="confirmEditTeam()">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Delete team modal-->
 <div class="modal"
   tabindex="-1"
   role="dialog"
   [ngStyle]="{'display':displayConfirmDeleteTeam}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminar Equipo</h5>
+        <button type="button" class="btn-close" (click)="closePopup()" aria-label="Close">
+        </button>
+      </div>
       <div class="modal-body">
         <p>Estas seguro que quieres eliminar el equipo "{{team?.name}}". Esta accion es irreversible.</p>
         <p>Para confirmar la eliminacion escribe el nombre del equipo:</p> 
@@ -56,10 +126,6 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn" 
-                (click)="closePopup()">
-          Cancelar
-        </button>
         <button type="button" class="btn btn-danger" 
                 (click)="confirmDeleteTeam()">
           Confirmar
@@ -69,17 +135,19 @@
   </div>
 </div>
 
+<!--View player modal-->
 <div class="modal"
       tabindex="-1"
       role="dialog"
       [ngStyle]="{'display':displayPlayer}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalles del Jugador</h5>
+        <button type="button" class="btn-close" (click)="closePlayer()" aria-label="Close">
+        </button>
+      </div>
       <div class="modal-body">
-
-        <h2 class="text-center mb-3">
-          Detalles del Jugador
-        </h2>
 
         <tr class="row">
           <th class="col col-lg-3 col-12">Nombre</th>
@@ -117,22 +185,23 @@
                 (click)="editPlayer()">
           Editar Jugador
         </button>
-        <button type="button" class="btn btn-dark" 
-                (click)="closePlayer()">
-          Cerrar
-        </button>
       </div>
     </div>
   </div>
 </div>
 
-
+<!--Delete player modal-->
 <div class="modal"
   tabindex="-1"
   role="dialog"
   [ngStyle]="{'display':displayConfirmDeletePlayer}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminar Jugador</h5>
+        <button type="button" class="btn-close" (click)="closeDeletePlayerPopup()" aria-label="Close">
+        </button>
+      </div>
       <div class="modal-body">
         <p>Estas seguro que quieres eliminar el jugador "{{selectedPlayer.name}}". Esta accion es irreversible.</p>
         <p>Para confirmar la eliminacion escribe el nombre del jugador:</p> 
@@ -142,10 +211,6 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn" 
-                (click)="closeDeletePlayerPopup()">
-          Cancelar
-        </button>
         <button type="button" class="btn btn-danger" 
                 (click)="confirmDeletePlayer()">
           Confirmar
@@ -155,20 +220,22 @@
   </div>
 </div>
 
+<!--Add player modal-->
 <div class="modal"
   tabindex="-1"
   role="dialog"
   [ngStyle]="{'display':displayAddPlayer}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Jugador</h5>
+        <button type="button" class="btn-close" (click)="closeAddPlayerPopup()" aria-label="Close">
+        </button>
+      </div>
       <div class="modal-body">
         <app-add-player [teamplayers]="players" [equipoId]="team?.id!" [categoria]="team?.category!" [playerId]="newplayerid" [ddb]="ddb"></app-add-player>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn" 
-                (click)="closeAddPlayerPopup()">
-          Cancelar
-        </button>
         <button type="button" class="btn btn-danger" 
                 (click)="confirmAddPlayer()">
           Confirmar
