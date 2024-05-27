@@ -22,6 +22,7 @@ export class BracketsComponent implements OnInit {
   allMatches: Match[] = [];
   loading = true;
 
+
   isEditing: boolean = false;
   editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   phases = ["Octavos", "Cuartos", "Semi-Finaless", "Finales"]
@@ -36,12 +37,16 @@ export class BracketsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.loadMatches()
+    await this.loadMatches("2023");
   }  
 
-  async loadMatches(){
+  async loadMatches(year: string){
 
-    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb)
+    this.phaseMatches = {}
+    this.phaseMatchesElite = {}
+
+    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, year)
+    console.log("matches: ", this.allMatches)
     
     this.allMatches.forEach(element => {
       if(this.phases.includes(element.juego) && element.braketPlace != undefined){

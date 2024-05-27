@@ -17,19 +17,28 @@ export class MatchBuilder {
     ) {}
 
     
-    async getListOfMatch(ddb: DynamoDb): Promise<Match[]> {
+    async getListOfMatch(ddb: DynamoDb, year?: string|undefined): Promise<Match[]> {
         var matches: Match[] = []
-        var items = await ddb.listByYearQuery('match.data');
-        items.sort((a, b) => a['time'].S!.localeCompare(b['time'].S!))
+        if(year === undefined){
+            var items = await ddb.listSecondaryQuery('match.data');
+        }
+        else if(year==='2023'){
+            var items = await ddb.listSecondaryQuery('match.data');
+        }
+        else{
+            var items = await ddb.listByYearQuery('match.data', year);
+        }
+        
         var teams = await this.teamBuilder.getTeamsByCategory(ddb);
+        items.sort((a, b) => a['time'].S!.localeCompare(b['time'].S!))
         for (const item of items) {
-            let vteamId = item['visitorTeam'].S!
+            let vteamId = item['visitorTeam'].S!.split('.')[1]
             let vteams = teams.filter(t => t.id == vteamId)
             let vteam : MatchTeam = {id: vteamId, name: " - "}
             if( vteams.length == 1){
                 vteam = vteams[0]
             }
-            let hteamId = item['homeTeam'].S!
+            let hteamId = item['homeTeam'].S!.split('.')[1]
             let hteams = teams.filter(t => t.id == hteamId)
             let hteam: MatchTeam = {id: hteamId, name: " - "}
             if( hteams.length == 1){
@@ -43,7 +52,7 @@ export class MatchBuilder {
 
     private buildMatch(item: Record<string, AttributeValue>, vteam: MatchTeam, hteam: MatchTeam): Match {
         return {
-            id: item['pk'].S,
+            id: item[PK_KEY].S!.split('.')[1],
             category: item['category'].S,
             location: item['ssk'].S!,
             day: item['spk'].S!,
