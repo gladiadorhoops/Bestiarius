@@ -26,6 +26,10 @@ export class AuthService {
     return await Cognito.getAwsCredentials(idToken, identity)
   }
 
+  async resendConfirmationCode(email: string) {
+    await Cognito.resendConfirmationCode(email);
+  }
+
   async forgotUserPassword(email: string) {
     await Cognito.forgotPassword(email)
   }

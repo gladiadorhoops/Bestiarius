@@ -5,7 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
-import { Cognito } from '../aws-clients/cognito';
+import { NotAuthorizedException, UserNotConfirmedException, UsernameExistsException } from '@aws-sdk/client-cognito-identity-provider';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +24,9 @@ export class LoginComponent {
   name: string = "";
   email: string = "";
   failed: boolean = false;
+  errorMessage: string | undefined = undefined;
+  displayStyle = "none";
+  popUpnMsg = "";
 
   recoverPassView: boolean = false;
   codeSent: boolean = false;
@@ -87,7 +90,7 @@ export class LoginComponent {
       this.userId = this.authService.getUserId();
       this.username = this.authService.getUserUsername();
       this.name = this.authService.getUserName();
-      console.log("Reloaded");
+      console.log("Log in Status Reloaded");
     }
 
     async enterRecoverPassword(){
@@ -133,7 +136,24 @@ export class LoginComponent {
         return
       }
       
-      let user = await this.authService.login(val.email, val.password)
+      var user = undefined
+      try {
+        user = await this.authService.login(val.email, val.password)
+      } catch(error) {
+        console.warn('Login Error', error)
+        this.failed = true;
+        if (error instanceof NotAuthorizedException) {
+          this.popUpnMsg = 'Email o Contraseña Incorrecta'
+          this.openPopup();
+        } else if (error instanceof UserNotConfirmedException) {
+          this.popUpnMsg = 'Email no verificado'
+          this.openPopup();        
+        }else {
+          this.popUpnMsg = 'Error. Intentat de nuevo'
+          this.openPopup();
+        }
+      }
+      
       if (user == undefined) {
         console.log("Failed to log in");
         this.failed = true;
@@ -158,5 +178,12 @@ export class LoginComponent {
       console.log("User is logged out");
       await this.router.navigateByUrl('/login');
       window.location.reload();
+    }
+
+    openPopup() {
+      this.displayStyle = "block";
+    }
+    closePopup() {
+      this.displayStyle = "none";
     }
 }

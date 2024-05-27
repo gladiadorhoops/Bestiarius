@@ -7,6 +7,7 @@ import { AuthService } from '../auth.service';
 import { UserBuilder } from '../Builders/user-builder';
 import { roleFromString } from '../enum/Role';
 import { User } from '../interfaces/user';
+import { CodeMismatchException, InvalidParameterException, InvalidPasswordException, NotAuthorizedException, UsernameExistsException } from '@aws-sdk/client-cognito-identity-provider';
 
 @Component({
   selector: 'app-signup',
@@ -27,6 +28,8 @@ export class SignupComponent {
   userId = "";
   phone = "";
   name = "";
+  errorMessage: string = 'Ocurrio un error. Revisa tu informacion e intenta de nuevo';
+  passwordPolicyMessage = 'La contraseña necesita minimo: 1 mayuscula, 1 minuscula, 1 numero y 8 caracteres'
 
   constructor(
     private fb:FormBuilder, 
@@ -61,29 +64,70 @@ export class SignupComponent {
     this.phone = this.signupForm.value.phone
     this.name = this.signupForm.value.nombre
 
-    let output = await Cognito.signUpUser(this.signupForm.value.nombre, this.email, this.signupForm.value.phone, this.password, this.role!)
-    
+    var output = undefined
+    try {
+      output = await Cognito.signUpUser(this.signupForm.value.nombre, this.email, this.signupForm.value.phone, this.password, this.role!)
+    } catch (error){
+      
+      console.warn("Signup Error: ", error);
+      
+      if(error instanceof InvalidParameterException){
+        if(error.message.includes('Invalid phone number')) this.errorMessage = 'Formato the telefono invalido. Ejemplo de Formato: +526561234567';
+      } else if (error instanceof UsernameExistsException) {
+        try {
+          await this.authService.resendConfirmationCode(this.email);
+        } catch (error) {
+          console.error('User Exists: ', error);
+        }
+        this.enableConfirmationUI();
+        return
+      } else if (error instanceof InvalidPasswordException) {        
+        if(error.message.includes('Password not long enough')) this.errorMessage = 'La Contraseña es muy corta. ' + this.passwordPolicyMessage
+        if(error.message.includes('uppercase characters')) this.errorMessage = 'La Contraseña no tiene mayusculas. ' + this.passwordPolicyMessage
+        if(error.message.includes('lowercase characters')) this.errorMessage = 'La Contraseña no tiene minusculas. ' + this.passwordPolicyMessage
+        if(error.message.includes('numeric characters')) this.errorMessage = 'La Contraseña no tiene numeros. ' + this.passwordPolicyMessage
+      } else {
+        console.error('Unrecognized Error', error);
+      }
+      return
+    }
+     
     if(!output?.UserSub) {
-      this.popUpnMsg = "Ocurrio un error. Intenta de nuevo";
+      this.popUpnMsg = this.errorMessage;
       this.openPopup();
       return
     }
 
     this.userId = output?.UserSub
-
-    this.confirmation = true;
-    this.signupForm.get('nombre')?.disable();
-    this.signupForm.get('email')?.disable();
-    this.signupForm.get('phone')?.disable();
-    this.signupForm.get('password')?.disable();
-    this.signupForm.get('codigo')?.enable();
-    this.popUpnMsg = "Verifica tu correo introduciendo tu código de verificación.  No olvides buscar en la carpeta de correo no deseado";
-    this.openPopup();
+    this.enableConfirmationUI()
   }
 
   async confirm() {
     console.log("Validating "+this.role+": " + this.email);
-    await Cognito.confirmSignUpUser(this.signupForm.value.codigo, this.email);
+
+    try {
+      await Cognito.confirmSignUpUser(this.signupForm.value.codigo, this.email);
+    } catch (error){
+      console.warn('User Confirmation Error: ', error)
+
+      if(error instanceof NotAuthorizedException) {
+        if(!error.message.includes('Current status is CONFIRMED')) {
+          this.confirmation = false;
+          this.popUpnMsg = "Error verificando codigo. Intenta de nuevo";
+          this.openPopup();
+          return
+        }         
+      }else if(error instanceof CodeMismatchException || error instanceof InvalidParameterException) {
+        this.errorMessage = 'Codigo de verificacion incorrecto. Intenta de nuevo'
+        this.confirmation = false;
+        this.popUpnMsg = this.errorMessage;
+        this.openPopup();
+        return
+      } else {
+        console.error('Unrecognized Error', error);
+        return
+      }        
+    }
 
     let user = {
       id: this.userId,
@@ -123,5 +167,16 @@ export class SignupComponent {
   }
   closePopup() {
     this.displayStyle = "none";
+  }
+
+  private enableConfirmationUI(){
+    this.confirmation = true;
+    this.signupForm.get('nombre')?.disable();
+    this.signupForm.get('email')?.disable();
+    this.signupForm.get('phone')?.disable();
+    this.signupForm.get('password')?.disable();
+    this.signupForm.get('codigo')?.enable();
+    this.popUpnMsg = "Verifica tu correo introduciendo tu código de verificación.  No olvides buscar en la carpeta de correo no deseado";
+    this.openPopup();
   }
 }

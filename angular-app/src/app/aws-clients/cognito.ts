@@ -65,19 +65,10 @@ export class Cognito {
 
         let response: InitiateAuthCommandOutput | undefined
 
-        try {
-            const command = new InitiateAuthCommand(initiateAuthCommandInput);
-            console.log("command: ", command)
-            response = await client.send(command);
-          } catch (error) {
-            console.log(error)
-            return undefined
-        }
+        const command = new InitiateAuthCommand(initiateAuthCommandInput);
+        console.log("command: ", command)
+        response = await client.send(command);
 
-        if(response == undefined) {
-            console.log("ERROR: User authentication returned undefined")
-            return
-        }
         let token = response.AuthenticationResult?.IdToken
         if(token == undefined) {
             console.log("ERROR: ID Token not found on user authentication output")
@@ -111,16 +102,11 @@ export class Cognito {
                 }     
             ],
         }
-
-        try {
-            const command = new SignUpCommand(signUpCommandInput);
-            console.log("command: ", command)
-            let response = await client.send(command);
-            return response
-          } catch (error) {
-            console.log(error)
-            return undefined
-        }
+        
+        const command = new SignUpCommand(signUpCommandInput);
+        console.log("command: ", command)
+        let response = await client.send(command);
+        return response
     }
 
     static async confirmSignUpUser(code: string, email: string): Promise<ConfirmSignUpCommandOutput  | undefined> {
@@ -130,15 +116,10 @@ export class Cognito {
             Username: email,
         }
 
-        try {
-            const command = new ConfirmSignUpCommand(confirmSignUpCommandInput);
-            console.log("command: ", command)
-            let response = await client.send(command);
-            return response
-          } catch (error) {
-            console.log(error)
-            return undefined
-        }
+        const command = new ConfirmSignUpCommand(confirmSignUpCommandInput);
+        console.log("command: ", command)
+        let response = await client.send(command);
+        return response
     }
 
     static async resendConfirmationCode(email: string): Promise<ResendConfirmationCodeCommandOutput  | undefined> {
@@ -151,6 +132,7 @@ export class Cognito {
             const command = new ResendConfirmationCodeCommand(resendConfirmationCodeCommandInput);
             console.log("command: ", command)
             let response = await client.send(command);
+            console.log("resendConfirmationCode respose", response);
             return response
           } catch (error) {
             console.log(error)
@@ -168,6 +150,7 @@ export class Cognito {
             const command = new ForgotPasswordCommand(forgotPasswordCommandInput);
             console.log("command: ", command)
             let response = await client.send(command);
+            console.log("forgotPassword respose", response);
             return response
           } catch (error) {
             console.log(error)
