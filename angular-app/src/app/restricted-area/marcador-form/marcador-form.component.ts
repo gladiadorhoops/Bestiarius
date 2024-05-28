@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Match } from '../interfaces/match';
+import { Match } from '../../interfaces/match';
 import { FormBuilder } from '@angular/forms';
-import { MatchBuilder } from '../Builders/match-builder';
-import { TeamBuilder } from '../Builders/team-builder';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { Team } from '../interfaces/team';
+import { MatchBuilder } from '../../Builders/match-builder';
+import { TeamBuilder } from '../../Builders/team-builder';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { Team } from '../../interfaces/team';
 
 const S3_BUCKET_URL = (day: string) => `https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-11/category-matches-2023-07-${day}.json`
 

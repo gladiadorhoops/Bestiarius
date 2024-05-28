@@ -1,14 +1,14 @@
 import { Component, Input } from '@angular/core';
-import { ReporteBuilder } from '../Builders/reporte-builder';
-import { DisplayReport, Reporte, TopReporte } from '../interfaces/reporte';
-import { AuthService } from '../auth.service';
-import { S3 } from '../aws-clients/s3';
+import { ReporteBuilder } from '../../Builders/reporte-builder';
+import { DisplayReport, Reporte, TopReporte } from '../../interfaces/reporte';
+import { AuthService } from '../../auth.service';
+import { S3 } from '../../aws-clients/s3';
 import { FormBuilder } from '@angular/forms';
-import { Category, Player } from '../interfaces/player';
-import { PlayerBuilder } from '../Builders/player-builder';
-import { TeamBuilder } from '../Builders/team-builder';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { Team } from '../interfaces/team';
+import { Category, Player } from '../../interfaces/player';
+import { PlayerBuilder } from '../../Builders/player-builder';
+import { TeamBuilder } from '../../Builders/team-builder';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { Team } from '../../interfaces/team';
 
 @Component({
   selector: 'app-resultados-evaluacion',

@@ -1,16 +1,16 @@
 import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
-import { AuthService } from '../auth.service';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { TeamBuilder } from '../Builders/team-builder';
-import { Team, getCategories } from '../interfaces/team';
-import { Player } from '../interfaces/player';
-import { PlayerBuilder } from '../Builders/player-builder';
+import { AuthService } from '../../auth.service';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { TeamBuilder } from '../../Builders/team-builder';
+import { Team, getCategories } from '../../interfaces/team';
+import { Player } from '../../interfaces/player';
+import { PlayerBuilder } from '../../Builders/player-builder';
 import { formatDate } from "@angular/common";
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {v4 as uuidv4} from 'uuid';
-import { AddPlayerComponent } from '../add-player/add-player.component';
-import { Coach } from '../interfaces/coach';
-import { UserBuilder } from '../Builders/user-builder';
+import { AddPlayerComponent } from '../add-team/add-player/add-player.component';
+import { Coach } from '../../interfaces/coach';
+import { UserBuilder } from '../../Builders/user-builder';
 
 @Component({
   selector: 'app-view-teams',

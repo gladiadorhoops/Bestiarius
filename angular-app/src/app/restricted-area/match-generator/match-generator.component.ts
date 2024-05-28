@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { MatchBuilder } from '../Builders/match-builder';
-import { TeamBuilder } from '../Builders/team-builder';
-import { Team } from '../interfaces/team';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { MatchBuilder } from '../../Builders/match-builder';
+import { TeamBuilder } from '../../Builders/team-builder';
+import { Team } from '../../interfaces/team';
 
 @Component({
   selector: 'app-match-generator',

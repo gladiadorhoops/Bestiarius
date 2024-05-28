@@ -10,7 +10,7 @@ import { TurismoComponent } from './turismo/turismo.component';
 import { RedesSocialesComponent } from './redes-sociales/redes-sociales.component';
 import { FotosComponent } from './fotos/fotos.component';
 import { TorneospasadosComponent } from './torneospasados/torneospasados.component';
-import { EvaluacionComponent } from './evaluacion/evaluacion.component'
+import { EvaluacionComponent } from './restricted-area/evaluacion/evaluacion.component'
 import { GroupsComponent } from './results/groups/groups.component';
 import { BracketsComponent } from './results/brackets/brackets.component';
 import { StandingMatchesComponent } from './results/standing-matches/standing-matches.component';

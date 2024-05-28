@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Match } from '../interfaces/match';
+import { Match } from '../../interfaces/match';
 import { FormBuilder } from '@angular/forms';
-import { MatchBuilder } from '../Builders/match-builder';
-import { TeamBuilder } from '../Builders/team-builder';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { Team } from '../interfaces/team';
+import { MatchBuilder } from '../../Builders/match-builder';
+import { TeamBuilder } from '../../Builders/team-builder';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { Team } from '../../interfaces/team';
 
 @Component({
   selector: 'app-match-editor',

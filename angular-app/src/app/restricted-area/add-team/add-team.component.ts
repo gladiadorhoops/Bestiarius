@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '../auth.service';
-import { Team, getCategories } from '../interfaces/team';
-import { Player } from '../interfaces/player';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { TeamBuilder } from '../Builders/team-builder';
-import { PlayerBuilder } from '../Builders/player-builder';
-import { AddPlayerComponent } from '../add-player/add-player.component';
+import { AuthService } from '../../auth.service';
+import { Team, getCategories } from '../../interfaces/team';
+import { Player } from '../../interfaces/player';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { TeamBuilder } from '../../Builders/team-builder';
+import { PlayerBuilder } from '../../Builders/player-builder';
+import { AddPlayerComponent } from './add-player/add-player.component';
 import {v4 as uuidv4} from 'uuid';
-import { Coach } from '../interfaces/coach';
-import { UserBuilder } from '../Builders/user-builder';
+import { Coach } from '../../interfaces/coach';
+import { UserBuilder } from '../../Builders/user-builder';
 
 
 @Component({

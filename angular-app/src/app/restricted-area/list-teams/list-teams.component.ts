@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AuthService } from '../auth.service';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { TeamBuilder } from '../Builders/team-builder';
-import { Team } from '../interfaces/team';
-import { Coach } from '../interfaces/coach';
-import { UserBuilder } from '../Builders/user-builder';
+import { AuthService } from '../../auth.service';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { TeamBuilder } from '../../Builders/team-builder';
+import { Team } from '../../interfaces/team';
+import { Coach } from '../../interfaces/coach';
+import { UserBuilder } from '../../Builders/user-builder';
 
 @Component({
   selector: 'app-list-teams',

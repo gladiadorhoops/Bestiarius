@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { AuthService } from '../auth.service';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { UserBuilder } from '../Builders/user-builder';
-import { TeamBuilder } from '../Builders/team-builder';
+import { AuthService } from '../../auth.service';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { UserBuilder } from '../../Builders/user-builder';
+import { TeamBuilder } from '../../Builders/team-builder';
 
 export interface User {
   id: string

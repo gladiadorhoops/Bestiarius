@@ -5,8 +5,8 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
-import { ViewTeamsComponent } from '../view-teams/view-teams.component';
-import { ListTeamsComponent } from '../list-teams/list-teams.component';
+import { ViewTeamsComponent } from './view-teams/view-teams.component';
+import { ListTeamsComponent } from './list-teams/list-teams.component';
 
 export interface MenuItem {
   text: string

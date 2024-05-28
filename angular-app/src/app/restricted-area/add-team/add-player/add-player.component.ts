@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { AuthService } from '../auth.service';
-import { getCategories } from '../interfaces/team';
-import { Category, Player } from '../interfaces/player';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { PlayerBuilder } from '../Builders/player-builder';
-import { ReporteBuilder } from '../Builders/reporte-builder';
+import { AuthService } from '../../../auth.service';
+import { getCategories } from '../../../interfaces/team';
+import { Category, Player } from '../../../interfaces/player';
+import { DynamoDb } from '../../../aws-clients/dynamodb';
+import { PlayerBuilder } from '../../../Builders/player-builder';
+import { ReporteBuilder } from '../../../Builders/reporte-builder';
 
 @Component({
   selector: 'app-add-player',

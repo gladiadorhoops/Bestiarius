@@ -1,15 +1,15 @@
 import { Component, Input } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { AuthService } from '../auth.service';
-import { Team, getCategories } from '../interfaces/team';
-import { Player } from '../interfaces/player';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { TeamBuilder } from '../Builders/team-builder';
-import { PlayerBuilder } from '../Builders/player-builder';
-import { ReporteBuilder } from '../Builders/reporte-builder';
-import { Skills, Skill } from '../interfaces/reporte';
-import { Scout } from '../interfaces/scout';
-import { Role } from '../enum/Role';
+import { AuthService } from '../../auth.service';
+import { Team, getCategories } from '../../interfaces/team';
+import { Player } from '../../interfaces/player';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { TeamBuilder } from '../../Builders/team-builder';
+import { PlayerBuilder } from '../../Builders/player-builder';
+import { ReporteBuilder } from '../../Builders/reporte-builder';
+import { Skills, Skill } from '../../interfaces/reporte';
+import { Scout } from '../../interfaces/scout';
+import { Role } from '../../enum/Role';
 
 
 @Component({
