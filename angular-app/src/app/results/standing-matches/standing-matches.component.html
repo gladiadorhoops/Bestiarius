@@ -1,53 +1,63 @@
-<div class="row justify-content-md-center padded-page">
-    <h2 class="text-center mb-3">
-        Standings - {{selectedYear}}
-    </h2>
-    <div class="spinner-border text-light" role="status" *ngIf="loading">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="row" *ngIf="!loading">
-        <div class="col col-12 col-md-6 padded-col">
-            <div class="row text-center">
-                <h2>Aprendiz</h2>
-            </div>
-            <div class="row">
-                    <div class="row marcadorItem" *ngFor="let match of standingMatches; let idx=index" >
-                        
-                        <div class="col col-2"></div> <!--#{{idx+1}}</div-->
-                        <div class="col col-8" > 
-                            <div class="row">{{match.homeTeam.name}}</div>
-                            <div class="row">{{match.visitorTeam.name}}</div>
+<div class="row justify-content-md-center">
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseStd" aria-expanded="false" aria-controls="flush-collapseOne">
+                Standings
+            </button>
+            </h2>
+            <div id="flush-collapseStd" class="accordion-collapse collapse show" >
+            <div class="accordion-body"> 
+                <div class="spinner-border text-light" role="status" *ngIf="loading">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="row" *ngIf="!loading">
+                    <div class="col col-12 col-md-6 padded-col">
+                        <div class="row text-center">
+                            <h2>Aprendiz</h2>
                         </div>
-                        <div class="col col-2">
-                            <div class="row">{{match.homePoints}}</div>
-                            <div class="row">{{match.visitorPoints}}</div>
-                        </div>
-                        <div class="col col-12 text-center">
-                            {{match.location}} - {{match.time}}
-                        </div>
-                    </div>
-            </div>
-        </div>
-        <div class="col col-12 col-md-6 padded-col">
-            <div class="row text-center">
-                <h2>Elite</h2>
-            </div>
-            <div class="row">
-                    <div class="row marcadorItem" *ngFor="let match of standingMatchesElite; let idx=index" >
-                        
-                        <div class="col col-2"></div>
-                        <div class="col col-8" > 
-                            <div class="row">{{match.homeTeam.name}}</div>
-                            <div class="row">{{match.visitorTeam.name}}</div>
-                        </div>
-                        <div class="col col-2">
-                            <div class="row">{{match.homePoints}}</div>
-                            <div class="row">{{match.visitorPoints}}</div>
-                        </div>
-                        <div class="col col-12 text-center">
-                            {{match.location}} - {{match.time}}
+                        <div class="row">
+                                <div class="row marcadorItem" *ngFor="let match of standingMatches; let idx=index" >
+                                    
+                                    <div class="col col-2"></div> <!--#{{idx+1}}</div-->
+                                    <div class="col col-8" > 
+                                        <div class="row">{{match.homeTeam.name}}</div>
+                                        <div class="row">{{match.visitorTeam.name}}</div>
+                                    </div>
+                                    <div class="col col-2">
+                                        <div class="row">{{match.homePoints}}</div>
+                                        <div class="row">{{match.visitorPoints}}</div>
+                                    </div>
+                                    <div class="col col-12 text-center">
+                                        {{match.location}} - {{match.time}}
+                                    </div>
+                                </div>
                         </div>
                     </div>
+                    <div class="col col-12 col-md-6 padded-col">
+                        <div class="row text-center">
+                            <h2>Elite</h2>
+                        </div>
+                        <div class="row">
+                            <div class="row marcadorItem" *ngFor="let match of standingMatchesElite; let idx=index" >
+                                
+                                <div class="col col-2"></div>
+                                <div class="col col-8" > 
+                                    <div class="row">{{match.homeTeam.name}}</div>
+                                    <div class="row">{{match.visitorTeam.name}}</div>
+                                </div>
+                                <div class="col col-2">
+                                    <div class="row">{{match.homePoints}}</div>
+                                    <div class="row">{{match.visitorPoints}}</div>
+                                </div>
+                                <div class="col col-12 text-center">
+                                    {{match.location}} - {{match.time}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
     </div>

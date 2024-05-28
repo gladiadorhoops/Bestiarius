@@ -1,35 +1,29 @@
 <div class="row justify-content-md-center padded-page">
-    <div class="searchbar">
-        <form class="row" style="display: flex; flex-direction: row; text-align: center; vertical-align: middle;">
-            <div class="col col-12 col-md-6" style="vertical-align: middle;">
-                <h4 class="text-center" style="vertical-align: middle;">
-                    Búsqueda de Resultados
-                </h4>
+    <form class="row" style="display: flex; flex-direction: row; text-align: center; vertical-align: middle;">
+        <div class="col" style="display: flex; flex-direction: row-reverse; text-align: right;">
+            <div class="frow">
+                <select [formControl]="year" (change)="loadResults()" >
+                    <option *ngFor="let yr of years" value="{{yr}}">{{yr}}</option>
+                </select>
             </div>
-            <div class="col col-6 col-md-3">
-                <label class="frow" for="year">Año:&nbsp;</label>
-                <div class="frow">
-                    <select [formControl]="year" (change)="loadResults()" >
-                        <option *ngFor="let yr of years" value="{{yr}}">{{yr}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col col-6 col-md-3">
-                <label class="frow" for="option">Option:&nbsp;</label>
-                <div class="frow">
-                    <select [formControl]="option" (change)="showViews()" >
-                        <option *ngFor="let opt of options" value="{{opt}}">{{opt}}</option>
-                    </select>
-                </div>
-            </div>
-        </form>
-    </div>
-    
-    <app-resultados *ngIf="selectedOption==='resultados'"></app-resultados>
-    <app-marcadores *ngIf="selectedOption==='marcadores'"></app-marcadores>
-    <app-brackets [hidden]="selectedOption!='brackets'"></app-brackets>
-    <app-standing-matches [hidden]="selectedOption!='standings'"></app-standing-matches>
-    <app-groups [hidden]="selectedOption!='grupos'"></app-groups>
+            <label class="frow" for="year">Año:&nbsp;</label>
+        </div>
+        <div class="col col-12" style="vertical-align: middle;">
+            <h1 class="text-center">
+                {{TournmentEdition}}º Torneo Gladiadores Hoops
+            </h1>
+            <h1 class="text-center">
+                Resultados
+            </h1>
+        </div>
+    </form>
 
-
+    <!--app-resultados *ngIf="selectedYear==='2022'"></app-resultados-->
+    <app-marcadores *ngIf="selectedYear==='2022'"></app-marcadores>
+    <app-awards [hidden]="selectedYear==='2022'"></app-awards>
+    <app-brackets [hidden]="selectedYear==='2022'"></app-brackets>
+    <app-standing-matches [hidden]="selectedYear==='2022'"></app-standing-matches>
+    <app-groups [hidden]="selectedYear==='2022'"></app-groups>
 </div>
+    
+

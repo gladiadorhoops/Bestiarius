@@ -1,78 +1,89 @@
-<div class="row justify-content-md-center padded-page">
-    <h2 class="text-center mb-3">
-        Fase de Grupos - {{selectedYear}}
-    </h2>
-    <div class="spinner-border text-light" role="status" *ngIf="loading">
-        <span class="sr-only">Loading...</span>
-    </div>
-    <div class="row" *ngIf="!loading">
-        <div class="col col-12">
-            <div class="row text-center">
-                <h2>Aprendiz</h2>
-            </div>
-            <div class="row">
-                <div class="col col-12 col-md-6" *ngFor="let group of groups">
-                    <h3 class="text-center">{{group}}</h3>
-                    <div class="row marcadorItem" *ngFor="let match of groupMatches[group]; let idx=index" >
-                        
-                        <div class="col col-2"></div> <!--#{{idx+1}}</div-->
-                        <div class="col col-8" > 
-                            <div class="row">{{match.homeTeam.name}}</div>
-                            <div class="row">{{match.visitorTeam.name}}</div>
+<div class="row justify-content-md-center">
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseGps" aria-expanded="false" aria-controls="flush-collapseOne">
+                Fase de Grupos
+            </button>
+            </h2>
+            <div id="flush-collapseGps" class="accordion-collapse collapse show" >
+            <div class="accordion-body">
+                <div class="spinner-border text-light" role="status" *ngIf="loading">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="row" *ngIf="!loading">
+                    <div class="col col-12">
+                        <div class="row text-center">
+                            <h2>Aprendiz</h2>
                         </div>
-                        <div class="col col-2">
-                            <div class="row">{{match.homePoints}}</div>
-                            <div class="row">{{match.visitorPoints}}</div>
-                        </div>
-                        <div class="col col-12 text-center">
-                            {{match.location}} - {{match.time}}
+                        <div class="row">
+                            <div class="col col-12 col-md-6" *ngFor="let group of groups">
+                                <h3 class="text-center">{{group}}</h3>
+                                <div class="row marcadorItem" *ngFor="let match of groupMatches[group]; let idx=index" >
+                                    
+                                    <div class="col col-2"></div> <!--#{{idx+1}}</div-->
+                                    <div class="col col-8" > 
+                                        <div class="row">{{match.homeTeam.name}}</div>
+                                        <div class="row">{{match.visitorTeam.name}}</div>
+                                    </div>
+                                    <div class="col col-2">
+                                        <div class="row">{{match.homePoints}}</div>
+                                        <div class="row">{{match.visitorPoints}}</div>
+                                    </div>
+                                    <div class="col col-12 text-center">
+                                        {{match.location}} - {{match.time}}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col col-12">
-            <div class="row text-center">
-                <h2>Elite</h2>
-            </div>
-            <div class="row">
-                <div class="col col-12 col-md-6" *ngFor="let group of groups">
-                    <h3 class="text-center">{{group}}</h3>
-                    <div class="row marcadorItem" *ngFor="let match of groupMatchesElite[group]; let idx=index" >
-                        
-                        <div class="col col-2"></div>
-                        <div class="col col-8" > 
-                            <div class="row">{{match.homeTeam.name}}</div>
-                            <div class="row">{{match.visitorTeam.name}}</div>
+                    <div class="col col-12">
+                        <div class="row text-center">
+                            <h2>Elite</h2>
                         </div>
-                        <div class="col col-2">
-                            <div class="row">{{match.homePoints}}</div>
-                            <div class="row">{{match.visitorPoints}}</div>
-                        </div>
-                        <div class="col col-12 text-center">
-                            {{match.location}} - {{match.time}}
+                        <div class="row">
+                            <div class="col col-12 col-md-6" *ngFor="let group of groups">
+                                <h3 class="text-center">{{group}}</h3>
+                                <div class="row marcadorItem" *ngFor="let match of groupMatchesElite[group]; let idx=index" >
+                                    
+                                    <div class="col col-2"></div>
+                                    <div class="col col-8" > 
+                                        <div class="row">{{match.homeTeam.name}}</div>
+                                        <div class="row">{{match.visitorTeam.name}}</div>
+                                    </div>
+                                    <div class="col col-2">
+                                        <div class="row">{{match.homePoints}}</div>
+                                        <div class="row">{{match.visitorPoints}}</div>
+                                    </div>
+                                    <div class="col col-12 text-center">
+                                        {{match.location}} - {{match.time}}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="row foto-slider">
-            <div class="col col-12 col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <img src="assets/grupos_aprendiz.jpeg" class="d-block w-100" alt="...">
+                    <div class="row foto-slider">
+                        <div class="col col-12 col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <img *ngIf="selectedYear==='2023'" src="assets/grupos_aprendiz.jpeg" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-12 col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <img *ngIf="selectedYear==='2023'" src="assets/grupos_elite.jpeg" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col col-12 col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <img src="assets/grupos_elite.jpeg" class="d-block w-100" alt="...">
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
+              
     

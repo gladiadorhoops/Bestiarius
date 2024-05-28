@@ -133,12 +133,12 @@
       display: block;
       width: 1em;
       height: 45%;
-      border-right: 2px solid $light-color;
+      border-right: 2px solid $mid-light-color;
     }
 
     &:nth-child(odd)::after {
       top: 50%;
-      border-top: 2px solid $light-color;
+      border-top: 2px solid $mid-light-color;
       transform: translateY(-1px);
       
       .tournament-bracket--rounded & {
@@ -148,7 +148,7 @@
     
     &:nth-child(even)::after {
       bottom: 50%;
-      border-bottom: 2px solid $light-color;
+      border-bottom: 2px solid $mid-light-color;
       transform: translateY(1px);
       
       .tournament-bracket--rounded & {
@@ -218,12 +218,12 @@
       display: block;
       width: 1em;
       height: 10%;
-      border-left: 2px solid $light-color;
+      border-left: 2px solid $mid-light-color;
     }
 
     &::before  {
       bottom: 50%;
-      border-bottom: 2px solid $light-color;
+      border-bottom: 2px solid $mid-light-color;
       transform: translate(0, 1px);
       
       .tournament-bracket--rounded & {
@@ -233,7 +233,7 @@
 
     &::after  {
       top: 50%;
-      border-top: 2px solid $light-color;
+      border-top: 2px solid $mid-light-color;
       transform: translate(0, -1px);
       
       .tournament-bracket--rounded & {
@@ -441,6 +441,6 @@
   
   .tournament-bracket__team--winner & {
     background-color: $mid-dark-color;
-    border-color: spin(shade($light-color, 2%), -10);
+    border-color: spin(shade($mid-light-color, 2%), -10);
   }
 }

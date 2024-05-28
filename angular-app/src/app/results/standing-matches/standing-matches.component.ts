@@ -58,6 +58,4 @@ export class StandingMatchesComponent implements OnInit {
     this.loading = false;
 
   }
-
-
 }  

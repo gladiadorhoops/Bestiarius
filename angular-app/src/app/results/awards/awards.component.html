@@ -1,0 +1,43 @@
+<div class="row justify-content-md-center" *ngIf="!loading">
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseAwd" aria-expanded="false" aria-controls="flush-collapseOne">
+                Premios
+            </button>
+          </h2>
+          <div id="flush-collapseAwd" class="accordion-collapse collapse show" >
+            <div class="accordion-body">
+                <h2 class="text-center mb-3">
+                    <br>
+                    Equipos
+                    <br>
+                </h2>
+                <div class="row justify-content-xs-center align-items-center resultItem" 
+                            style="margin:2% 0%; padding: 2% ;" 
+                            *ngFor="let categoria of teamWinners">
+                    <h4 style="cursor: help;" title="{{categoria.meaning}}">Categoria {{categoria.category}}</h4>
+                    <div class="row" *ngFor="let ganador of categoria.winners; let i=index">
+                        <h6>{{i+1}}: {{ganador}}</h6> 
+                    </div>
+                </div>
+            
+                <br><br>
+                <h2 class="text-center mb-3">
+                    <br>
+                    Individuales
+                    <br>
+                </h2>
+                <div class="row justify-content-xs-center align-items-center resultItem"
+                            style="margin:2% 0%; padding: 2%;" 
+                            *ngFor="let categoria of individualWinners">
+                    <h4 style="cursor: help;" title="{{categoria.meaning}}">Categoria {{categoria.category}</h4>
+                    <div class="row" *ngFor="let ganador of categoria.winners">
+                        <h6>{{ganador}}</h6>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
