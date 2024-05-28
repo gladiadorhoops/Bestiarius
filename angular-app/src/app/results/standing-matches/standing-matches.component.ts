@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Match } from '../interfaces/match';
+import { Match } from '../../interfaces/match';
 import { FormBuilder } from '@angular/forms';
-import { MatchBuilder } from '../Builders/match-builder';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { COGNITO_UNAUTHENTICATED_CREDENTIALS, REGION } from '../aws-clients/constants'
+import { MatchBuilder } from '../../Builders/match-builder';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { COGNITO_UNAUTHENTICATED_CREDENTIALS, REGION } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 @Component({
@@ -32,12 +32,19 @@ export class StandingMatchesComponent implements OnInit {
     ) {
   }
 
+  selectedYear:string = "";
+
   async ngOnInit() {
-    await this.loadMatches()
+    await this.loadMatches("2023")
   }  
 
-  async loadMatches(){
-    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb)
+  async loadMatches(year: string){
+    this.selectedYear = year;
+
+    this.standingMatches = []
+    this.standingMatchesElite = []
+
+    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, year)
     this.allMatches.forEach(element => {
       if(element.juego == 'Standing'){
         if(element.category == "elite"){

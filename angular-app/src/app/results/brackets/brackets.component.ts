@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Match } from '../interfaces/match';
+import { Match } from '../../interfaces/match';
 import { FormBuilder } from '@angular/forms';
-import { MatchBuilder } from '../Builders/match-builder';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { COGNITO_UNAUTHENTICATED_CREDENTIALS, REGION } from '../aws-clients/constants'
+import { MatchBuilder } from '../../Builders/match-builder';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { COGNITO_UNAUTHENTICATED_CREDENTIALS, REGION } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 @Component({
@@ -22,13 +22,14 @@ export class BracketsComponent implements OnInit {
   allMatches: Match[] = [];
   loading = true;
 
-
   isEditing: boolean = false;
   editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   phases = ["Octavos", "Cuartos", "Semi-Finaless", "Finales"]
 
   phaseMatches: {[place: string]: Match} = {}
   phaseMatchesElite: {[place: string]: Match} = {}
+  showAprendiz: boolean = false;
+  showElite: boolean = false;
 
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
@@ -36,11 +37,15 @@ export class BracketsComponent implements OnInit {
     ) {
   }
 
+  selectedYear:string = "";
+
   async ngOnInit() {
     await this.loadMatches("2023");
   }  
 
   async loadMatches(year: string){
+
+    this.selectedYear = year;
 
     this.phaseMatches = {}
     this.phaseMatchesElite = {}
@@ -59,7 +64,9 @@ export class BracketsComponent implements OnInit {
       }
     });
 
-    console.warn(this.phaseMatches)
+
+    this.showAprendiz = Object.keys(this.phaseMatches).length != 0;
+    this.showElite = Object.keys(this.phaseMatchesElite).length != 0;
 
     this.loading = false;
   }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Ganadores } from '../interfaces/ganadores';
+import { Ganadores } from '../../interfaces/ganadores';
 
 const S3_BUCKET_URL = `https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-10/ganadores.json`
 

@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AcercaComponent } from './acerca/acerca.component';
 import { InicioComponent } from './inicio/inicio.component';
-import { ResultadosComponent } from './resultados/resultados.component';
-import { MarcadoresComponent } from './marcadores/marcadores.component';
+import { ResultadosComponent } from './results/resultados/resultados.component';
+import { MarcadoresComponent } from './results/marcadores/marcadores.component';
 import { TorneoComponent } from './torneo/torneo.component';
 import { PatrociniosComponent } from './patrocinios/patrocinios.component';
 import { TurismoComponent } from './turismo/turismo.component';
@@ -11,17 +11,19 @@ import { RedesSocialesComponent } from './redes-sociales/redes-sociales.componen
 import { FotosComponent } from './fotos/fotos.component';
 import { TorneospasadosComponent } from './torneospasados/torneospasados.component';
 import { EvaluacionComponent } from './evaluacion/evaluacion.component'
-import { GroupsComponent } from './groups/groups.component';
-import { BracketsComponent } from './brackets/brackets.component';
-import { StandingMatchesComponent } from './standing-matches/standing-matches.component';
+import { GroupsComponent } from './results/groups/groups.component';
+import { BracketsComponent } from './results/brackets/brackets.component';
+import { StandingMatchesComponent } from './results/standing-matches/standing-matches.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { RestrictedAreaComponent } from './restricted-area/restricted-area.component';
+import { ResultsComponent } from './results/results.component';
 
 const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
   { path: 'acerca', component: AcercaComponent },
   { path: 'resultados', component: ResultadosComponent },
+  { path: 'results', component: ResultsComponent },
   { path: 'marcadores', component: MarcadoresComponent },
   { path: 'torneo', component: TorneoComponent },
   { path: 'redes-sociales', component: RedesSocialesComponent },

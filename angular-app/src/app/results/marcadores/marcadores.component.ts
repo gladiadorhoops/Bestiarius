@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Match } from '../interfaces/match';
+import { Match } from '../../interfaces/match';
 
 const S3_BUCKET_URL = (day: number) => `https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-10/category-matches-2022-07-${day}.json`
 

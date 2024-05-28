@@ -22,9 +22,6 @@ export class MatchBuilder {
         if(year === undefined){
             var items = await ddb.listSecondaryQuery('match.data');
         }
-        else if(year==='2023'){
-            var items = await ddb.listSecondaryQuery('match.data');
-        }
         else{
             var items = await ddb.listByYearQuery('match.data', year);
         }

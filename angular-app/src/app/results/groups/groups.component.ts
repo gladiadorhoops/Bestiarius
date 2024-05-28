@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Match } from '../interfaces/match';
+import { Match } from '../../interfaces/match';
 import { FormBuilder } from '@angular/forms';
-import { MatchBuilder } from '../Builders/match-builder';
-import { DynamoDb } from '../aws-clients/dynamodb';
-import { COGNITO_UNAUTHENTICATED_CREDENTIALS, REGION } from '../aws-clients/constants'
+import { MatchBuilder } from '../../Builders/match-builder';
+import { DynamoDb } from '../../aws-clients/dynamodb';
+import { COGNITO_UNAUTHENTICATED_CREDENTIALS, REGION } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 @Component({
@@ -33,18 +33,25 @@ export class GroupsComponent implements OnInit {
     private httpService: HttpClient
     ) {
   }
+  selectedYear = "";
 
   async ngOnInit() {
-    await this.loadMatches()
+    await this.loadMatches("2023")
   }  
 
-  async loadMatches(){
+  async loadMatches(year: string){
+
+    this.selectedYear = year;
+
+    this.groupMatches = {}
+    this.groupMatchesElite = {}
+
     this.groups.forEach(element => {
       this.groupMatches[element] = [];
       this.groupMatchesElite[element] = [];
     });
 
-    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb)
+    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, this.selectedYear)
     this.allMatches.forEach(element => {
       if(this.groups.includes(element.juego)){
         if(element.category == "elite"){

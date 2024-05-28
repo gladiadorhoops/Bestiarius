@@ -29,17 +29,17 @@ import { TorneoComponent } from './torneo/torneo.component';
 import { RedesSocialesComponent } from './redes-sociales/redes-sociales.component';
 import { PatrociniosComponent } from './patrocinios/patrocinios.component';
 import { TurismoComponent } from './turismo/turismo.component';
-import { ResultadosComponent } from './resultados/resultados.component';
-import { MarcadoresComponent } from './marcadores/marcadores.component';
+import { ResultadosComponent } from './results/resultados/resultados.component';
+import { MarcadoresComponent } from './results/marcadores/marcadores.component';
 import { EvaluacionComponent } from './evaluacion/evaluacion.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { MarcadorFormComponent } from './marcador-form/marcador-form.component';
 import { ResultadosEvaluacionComponent } from './resultados-evaluacion/resultados-evaluacion.component';
-import { BracketsComponent } from './brackets/brackets.component';
-import { GroupsComponent } from './groups/groups.component';
+import { BracketsComponent } from './results/brackets/brackets.component';
+import { GroupsComponent } from './results/groups/groups.component';
 import { MatchGeneratorComponent } from './match-generator/match-generator.component';
 import { MatchEditorComponent } from './match-editor/match-editor.component';
-import { StandingMatchesComponent } from './standing-matches/standing-matches.component';
+import { StandingMatchesComponent } from './results/standing-matches/standing-matches.component';
 import { AddPlayerComponent } from './add-player/add-player.component';
 import { AddTeamComponent } from './add-team/add-team.component';
 import { SignupComponent } from './signup/signup.component';
@@ -48,6 +48,7 @@ import { RestrictedAreaComponent } from './restricted-area/restricted-area.compo
 import { ViewUsersComponent } from './view-users/view-users.component';
 import { ViewTeamsComponent } from './view-teams/view-teams.component';
 import { ListTeamsComponent } from './list-teams/list-teams.component';
+import { ResultsComponent } from './results/results.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { ListTeamsComponent } from './list-teams/list-teams.component';
     RestrictedAreaComponent,
     ViewUsersComponent,
     ViewTeamsComponent,
-    ListTeamsComponent
+    ListTeamsComponent,
+    ResultsComponent
   ],
   imports: [
     BrowserModule,
