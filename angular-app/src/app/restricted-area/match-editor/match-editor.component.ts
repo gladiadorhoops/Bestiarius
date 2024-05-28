@@ -6,6 +6,7 @@ import { MatchBuilder } from '../../Builders/match-builder';
 import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { Team } from '../../interfaces/team';
+import { CURRENT_YEAR } from 'src/app/aws-clients/constants';
 
 @Component({
   selector: 'app-match-editor',
@@ -15,7 +16,7 @@ import { Team } from '../../interfaces/team';
 export class MatchEditorComponent implements OnInit {
   @Input() ddb!: DynamoDb;
   
-  days: number[] = [28, 29, 30];
+  days: number[] = [26, 27, 28];
   allMatches: Match[] = [];
   matchesAprendizDays: Match[][] = [];
   matchesEliteDays: Match[][] = [];
@@ -57,7 +58,7 @@ export class MatchEditorComponent implements OnInit {
   }  
 
   async loadMatches(){
-    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb)
+    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, CURRENT_YEAR)
     this.equipos = await this.teamBuilder.getTeamsByCategory(this.ddb)
     this.filteredMatches = this.allMatches;
     this.loading = false;
