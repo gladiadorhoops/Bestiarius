@@ -55,7 +55,7 @@ export class ResultadosEvaluacionComponent {
     this.topApprendizPlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3, Category.APRENDIZ)
     this.topElitePlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3, Category.ELITE)
     this.selectedCategoryTop = this.topElitePlayers
-    this.equipos = await this.teamBuilder.getTeamsByCategory(this.ddb)
+    this.equipos = await this.teamBuilder.getTeams(this.ddb)
     this.loading = false
     this.applyFilters()
   }

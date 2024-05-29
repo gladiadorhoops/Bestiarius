@@ -38,7 +38,7 @@ export class ViewUsersComponent {
     let coaches = await this.userBuilder.getCoaches(this.ddb);
     let scouts = await this.userBuilder.getScouts(this.ddb);
     let admins = await this.userBuilder.getAdmins(this.ddb);
-    let teams = await this.teamBuilder.getTeamsByCategory(this.ddb);
+    let teams = await this.teamBuilder.getTeams(this.ddb);
 
     this.users = []
 

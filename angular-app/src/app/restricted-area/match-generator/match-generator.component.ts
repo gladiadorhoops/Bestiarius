@@ -44,7 +44,7 @@ export class MatchGeneratorComponent  implements OnInit {
 
   async loadTeams() {
     this.teams = []
-    let teams = await this.teamBuilder.getTeamsByCategory(this.ddb).then(
+    let teams = await this.teamBuilder.getTeams(this.ddb).then(
       (output) => {
         return output
       }

@@ -19,7 +19,8 @@ export enum TeamKey {
     COACH_NAME = 'coachName',
     LOACTION = 'location',
     PREFIX = 'team',
-    SK = 'team.data'
+    SK = 'team.data',
+    CATEGORY = 'category',
 }
 
 export interface Team {

@@ -59,7 +59,7 @@ export class MatchEditorComponent implements OnInit {
 
   async loadMatches(){
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, CURRENT_YEAR)
-    this.equipos = await this.teamBuilder.getTeamsByCategory(this.ddb)
+    this.equipos = await this.teamBuilder.getTeams(this.ddb)
     this.filteredMatches = this.allMatches;
     this.loading = false;
   }

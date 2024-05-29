@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CY_KEY, DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
+import { CY_KEY, DynamoDb, IndexId, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
 import { Team, TeamKey } from "../interfaces/team";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import {v4 as uuidv4} from 'uuid';
@@ -26,9 +26,20 @@ export class TeamBuilder {
         await ddb.putItem(record);
     }
 
-    async getTeamsByCategory(ddb: DynamoDb, category?: string | undefined): Promise<Team[]> {
+    async getTeamsByCategory(ddb: DynamoDb, category: string, year: string = CURRENT_YEAR): Promise<Team[]> {
         var teams: Team[] = []
-        teams = await ddb.listQuery(`${TeamKey.SK}`, category).then(
+        
+        let keyConditionExpression = ddb.indexes[IndexId.LIST_GSI].keyConditionExpression(year);
+        let filterExpression = '#cat = :cat';
+        let expressionAttributeNames: Record<string, string> = {
+            '#cat': `${TeamKey.CATEGORY}`,
+        }
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            [`${ddb.indexes[IndexId.LIST_GSI].pkAttributeKey}`]: {S: TeamKey.SK},
+            ':cat': {S: category}
+        }
+        
+        teams = await ddb.query(IndexId.LIST_GSI, keyConditionExpression, expressionAttributeValues, filterExpression, expressionAttributeNames).then(
             (items) => {
                 items.sort((a, b) => a[TeamKey.NAME].S!.localeCompare(b[TeamKey.NAME].S!))
                 return items.map((item) => {return this.buildTeam(item)})

@@ -26,7 +26,7 @@ export class MatchBuilder {
             var items = await ddb.listByYearQuery('match.data', year);
         }
         
-        var teams = await this.teamBuilder.getTeamsByCategory(ddb);
+        var teams = await this.teamBuilder.getTeams(ddb);
         items.sort((a, b) => a['time'].S!.localeCompare(b['time'].S!))
         for (const item of items) {
             let vteamId = item['visitorTeam'].S!.split('.')[1]

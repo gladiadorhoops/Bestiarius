@@ -116,7 +116,7 @@ export class DynamoDb {
 
     async findIdQuery(pk: string, sk: string | undefined): Promise<Record<string, AttributeValue> | undefined> {        
         let item: Record<string, AttributeValue> | undefined
-        let items = await this.query(pk, sk,  IndexId.MAIN_GSI);
+        let items = await this.simpleQuery(pk, sk,  IndexId.MAIN_GSI);
         if(items != undefined) item = items.pop();
         else item = undefined;
         return item;
@@ -125,42 +125,52 @@ export class DynamoDb {
     async listQuery(pk: string, sk?: string | undefined): Promise<Record<string, AttributeValue>[]> {
         let resultItems: Record<string, AttributeValue>[] = [];
         let index = sk ? IndexId.SK_SPK : IndexId.LIST_GSI;
-        let results = await this.query(pk, sk, index);
+        let results = await this.simpleQuery(pk, sk, index);
         if(results != undefined) resultItems = resultItems.concat(results);
         return resultItems;
     }
 
     async listSecondaryQuery(sk: string, ssk?: string | undefined): Promise<Record<string, AttributeValue>[]> {
         let resultItems: Record<string, AttributeValue>[] = [];
-        let results = await this.query(sk, ssk, IndexId.SK_SSK);
+        let results = await this.simpleQuery(sk, ssk, IndexId.SK_SSK);
         if(results != undefined) resultItems = resultItems.concat(results);
         return resultItems;
     }
 
     async listByYearQuery(sk: string, cy: string = CURRENT_YEAR): Promise<Record<string, AttributeValue>[]> {
         let resultItems: Record<string, AttributeValue>[] = [];
-        let results = await this.query(sk, cy, IndexId.LIST_GSI);
+        let results = await this.simpleQuery(sk, cy, IndexId.LIST_GSI);
         if(results != undefined) resultItems = resultItems.concat(results);
         return resultItems;
     }
 
-    private async query(pk: string, sk: string | undefined, index: IndexId): Promise<Record<string, AttributeValue>[] | undefined> {
+    private async simpleQuery(pk: string, sk: string | undefined, index: IndexId): Promise<Record<string, AttributeValue>[] | undefined> {
         console.log(`Reading Item (pk: ${pk}, sk: ${sk})`)
-        
+
+        return await this.query(
+            index, 
+            this.indexes[index].keyConditionExpression(sk),
+            this.indexes[index].getExpressionAttributeValues(pk, sk),            
+        )
+    }
+
+    async query(index: IndexId, keyConditionExpression: string, expressionAttributeValues:  Record<string, AttributeValue>, filterExpression: string | undefined = undefined, expressionAttributeNames: Record<string, string> | undefined = undefined): Promise<Record<string, AttributeValue>[]> {        
         try {
             const input: QueryCommandInput = {
               TableName: DDB_TABLE_NAME,
               IndexName: this.indexes[index].name(),
-              KeyConditionExpression: this.indexes[index].keyConditionExpression(sk),
-              ExpressionAttributeValues: this.indexes[index].getExpressionAttributeValues(pk, sk),
+              KeyConditionExpression: keyConditionExpression,
+              FilterExpression: filterExpression,
+              ExpressionAttributeNames: expressionAttributeNames,
+              ExpressionAttributeValues: expressionAttributeValues,
               ReturnConsumedCapacity: "TOTAL",
             };
             const command = new QueryCommand(input);
             const response = await this.client.send(command);
-            return response?.Items
+            return response?.Items ? response?.Items : []
         } catch (err) {
             console.log("Error", err);
-            return undefined
+            return []
         }
     }
 
