@@ -16,6 +16,7 @@ export class TeamBuilder {
         record[PK_KEY] = {S: `${TeamKey.PREFIX}.${team.id}`};
         record[SK_KEY] = {S: `${TeamKey.SK}`};
         record[SPK_KEY] = {S: `${team.category}`};
+        record[TeamKey.CATEGORY] = {S: `${team.category}`};
         record[SSK_KEY] = {S: `${team.coachId}`};
         record[TeamKey.NAME] = {S: `${team.name}`};
         record[TeamKey.CAPTAIN_ID] = {S: `${team.captainId}`};
@@ -36,7 +37,8 @@ export class TeamBuilder {
         }
         let expressionAttributeValues: Record<string, AttributeValue> = {
             [`${ddb.indexes[IndexId.LIST_GSI].pkAttributeKey}`]: {S: TeamKey.SK},
-            ':cat': {S: category}
+            ':cat': {S: category},
+            [`${ddb.indexes[IndexId.LIST_GSI].skAttributeKey}`]: {S: year}
         }
         
         teams = await ddb.query(IndexId.LIST_GSI, keyConditionExpression, expressionAttributeValues, filterExpression, expressionAttributeNames).then(

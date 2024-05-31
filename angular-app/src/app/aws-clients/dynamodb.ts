@@ -166,6 +166,7 @@ export class DynamoDb {
               ReturnConsumedCapacity: "TOTAL",
             };
             const command = new QueryCommand(input);
+            console.log('query command: ', command)
             const response = await this.client.send(command);
             return response?.Items ? response?.Items : []
         } catch (err) {
