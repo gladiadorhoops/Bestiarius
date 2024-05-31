@@ -26,16 +26,16 @@ export class MatchBuilder {
             var items = await ddb.listByYearQuery('match.data', year);
         }
         
-        var teams = await this.teamBuilder.getTeams(ddb);
+        var teams = await this.teamBuilder.getTeams(ddb, year);
         items.sort((a, b) => (a['ssk'].S!+a['time'].S!).localeCompare(b['ssk'].S!+b['time'].S!))
         for (const item of items) {
-            let vteamId = item['visitorTeam'].S!
+            let vteamId = item['visitorTeam'].S!.replace("team.","")
             let vteams = teams.filter(t => t.id == vteamId)
             let vteam : MatchTeam = {id: vteamId, name: " - "}
             if( vteams.length == 1){
                 vteam = vteams[0]
             }
-            let hteamId = item['homeTeam'].S!
+            let hteamId = item['homeTeam'].S!.replace("team.","")
             let hteams = teams.filter(t => t.id == hteamId)
             let hteam: MatchTeam = {id: hteamId, name: " - "}
             if( hteams.length == 1){
