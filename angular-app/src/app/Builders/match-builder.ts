@@ -27,7 +27,7 @@ export class MatchBuilder {
         }
         
         var teams = await this.teamBuilder.getTeams(ddb);
-        items.sort((a, b) => a['time'].S!.localeCompare(b['time'].S!))
+        items.sort((a, b) => (a['ssk'].S!+a['time'].S!).localeCompare(b['ssk'].S!+b['time'].S!))
         for (const item of items) {
             let vteamId = item['visitorTeam'].S!
             let vteams = teams.filter(t => t.id == vteamId)
@@ -53,7 +53,7 @@ export class MatchBuilder {
             category: item['category'].S,
             location: item['ssk'].S!,
             day: item['spk'].S!,
-            time: item['time'].S!,
+            time: item["spk"].S!+"/07 - "+item['time'].S!,
             juego: item['juego'].S!,
             visitorPoints: item['visitorPoints'].S!,
             homePoints: item['homePoints'].S!,

@@ -89,7 +89,10 @@
             </div>
             <div class="row">
                 <div class="filterPadding">
-                    <input type="text" id="bracket" name="bracket" formControlName="bracket">
+                    <select class="col-12" id="bracket" formControlName="bracket" require>
+                        <option value={{null}}></option>
+                        <option *ngFor="let bkt of brackets" value="{{bkt}}">{{bkt}}</option>
+                    </select>
                 </div>
             </div>
         </div>
