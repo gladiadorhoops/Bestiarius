@@ -141,6 +141,7 @@ export class MatchBuilder {
         record['time'] = {S: `${time}`};
         record['juego'] = {S: `${juego}`};
         record['braketPlace'] = {S: `${bracket}`};
+        record[CY_KEY] = {S: CURRENT_YEAR};
 
         await ddb.putItem(record);
     }

@@ -31,9 +31,7 @@
                 <label for="day">Day:</label>
             </div>
             <select class="col-12" id="day" formControlName="day" require>
-                <option value=28>28</option>
-                <option value=29>29</option>
-                <option value=30>30</option>
+                <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
             </select>
         </div>
         <div class="col col-md-3 col-12">
@@ -101,3 +99,27 @@
         </div>
     </div>
 </form>
+
+
+
+    
+<div
+class="modal"
+tabindex="-1"
+role="dialog"
+[ngStyle]="{'display':displayStyle}">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-body">
+      <p>{{popUpMsg}}</p>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" 
+              (click)="closePopup()">
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>
+</div>

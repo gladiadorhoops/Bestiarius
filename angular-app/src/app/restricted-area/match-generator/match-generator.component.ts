@@ -40,6 +40,9 @@ export class MatchGeneratorComponent  implements OnInit {
   selectedCategoria = "";
   gyms = ['Gimnasio Nuevo', 'Gimnasio Tecnológico', 'Cancha Sindicato', 'Gimnasio Municipal', 'Gimnasio Municipal (afuera)', 'Gimnasio Federal'];
   phases = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4", "Octavos", "Cuartos", "Semi-Finaless", "Finales", "Standing"]
+  days: number[] = [26, 27, 28];
+  displayStyle = "none";
+  popUpMsg = "";
 
 
   async loadTeams() {
@@ -77,8 +80,23 @@ export class MatchGeneratorComponent  implements OnInit {
     try {
       await this.matchBuilder.addEpmtyMatch(this.ddb, this.matchForm.value.categoria!, this.matchForm.value.juego!, this.matchForm.value.bracket!, this.matchForm.value.hometeam!, this.matchForm.value.visitorteam!, this.matchForm.value.day!, this.matchForm.value.time!, this.matchForm.value.gym!)
       console.warn ('Saved sucessfully!')
+      this.popUpMsg = "Partido Registrado!";
+      this.openPopup();
+      this.matchForm.reset();
+
     } catch (err) {
       console.error("Error Submitting report")
+      this.popUpMsg = "Error! Partido no registrado. Intenta otra vez.";
+      this.openPopup();
     }
+  }
+
+
+
+  openPopup() {
+    this.displayStyle = "block";
+  }
+  closePopup() {
+    this.displayStyle = "none";
   }
 }
