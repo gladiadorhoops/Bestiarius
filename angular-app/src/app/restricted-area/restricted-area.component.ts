@@ -122,14 +122,10 @@ export class RestrictedAreaComponent {
       }
       if(this.isCoach){
         this.menuItems = this.menuItems.concat([
-          {value: "addTeam", text: "Registrar Equipo"}
+          {value: "listTeams", text: "Equipos Registrados"},
+          {value: "addTeam", text: "Registrar Equipo"},          
         ]);
       }
-
-      // all roles can view teams
-      this.menuItems = this.menuItems.concat([
-        {value: "listTeams", text: "Equipos Registrados"}
-      ]);
 
       this.menuItems = this.menuItems.sort((a, b) => a.text.localeCompare(b.text))
 
