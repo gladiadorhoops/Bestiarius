@@ -29,13 +29,13 @@ export class MatchBuilder {
         var teams = await this.teamBuilder.getTeams(ddb);
         items.sort((a, b) => a['time'].S!.localeCompare(b['time'].S!))
         for (const item of items) {
-            let vteamId = item['visitorTeam'].S!.split('.')[1]
+            let vteamId = item['visitorTeam'].S!
             let vteams = teams.filter(t => t.id == vteamId)
             let vteam : MatchTeam = {id: vteamId, name: " - "}
             if( vteams.length == 1){
                 vteam = vteams[0]
             }
-            let hteamId = item['homeTeam'].S!.split('.')[1]
+            let hteamId = item['homeTeam'].S!
             let hteams = teams.filter(t => t.id == hteamId)
             let hteam: MatchTeam = {id: hteamId, name: " - "}
             if( hteams.length == 1){

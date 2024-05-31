@@ -26,10 +26,7 @@ export class MarcadorFormComponent implements OnInit {
   gyms = ['Gimnasio Nuevo', 'Gimnasio Tecnológico', 'Cancha Sindicato', 'Gimnasio Municipal', 'Gimnasio Municipal (afuera)', 'Gimnasio Federal'];
 
 
-  equiposAp : string[] = [ "Raptors", "RoQui", "Bulldogs", "ABA", "Lions", "Abejas", "Rawigas", "Gansos", "Borreguitos", "Falcons", "Tigres", "ESBAL"];
-  equiposEl : string[] = [ "Leñadores", "Selec. Chih.", "Mambas", "ESCOBA", "RoQui", "Mini Regios", "SAHQ", "Carrilleros", "Rawigas", "Black Devils", "Mineros", "24 Cent"];
   equipos : Team[] = [];
-
   filteredMatches: Match[] = [];
 
   isEditing: boolean = false;
