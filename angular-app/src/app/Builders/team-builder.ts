@@ -51,9 +51,9 @@ export class TeamBuilder {
         return teams
     }
 
-    async getTeams(ddb: DynamoDb): Promise<Team[]> {
+    async getTeams(ddb: DynamoDb, year: string = CURRENT_YEAR): Promise<Team[]> {
         var teams: Team[] = []
-        teams = await ddb.listByYearQuery(`${TeamKey.PREFIX}.data`).then(
+        teams = await ddb.listByYearQuery(`${TeamKey.PREFIX}.data`, year).then(
             (items) => {
                 items.sort((a, b) => a[TeamKey.NAME].S!.localeCompare(b[TeamKey.NAME].S!))
                 return items.map((item) => {return this.buildTeam(item)})
