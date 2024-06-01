@@ -53,6 +53,8 @@ export class ViewTeamsComponent {
   userId = "";
   userrole = "";
   newplayerid = uuidv4();
+
+  editable = true;
   
   reloadLoginStatus() {
     this.userrole = this.authService.getUserRole();
