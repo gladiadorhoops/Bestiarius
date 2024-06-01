@@ -73,6 +73,7 @@ export class SignupComponent {
       if(error instanceof InvalidParameterException){
         if(error.message.includes('Invalid phone number')) this.errorMessage = 'Formato the telefono invalido. Ejemplo de Formato: +526561234567';
         if(error.message.includes('Invalid email address')) this.errorMessage = 'Formato the email invalido.';
+        if(error.message.includes('password')) this.errorMessage = 'Formato the contraseña invalido. ' + this.passwordPolicyMessage;
       } else if (error instanceof UsernameExistsException) {
         /*try {
           await this.authService.resendConfirmationCode(this.email);
