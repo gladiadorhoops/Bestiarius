@@ -4,7 +4,7 @@ import { Match } from '../../interfaces/match';
 import { FormBuilder } from '@angular/forms';
 import { MatchBuilder } from '../../Builders/match-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
-import { COGNITO_UNAUTHENTICATED_CREDENTIALS, REGION } from '../../aws-clients/constants'
+import { COGNITO_UNAUTHENTICATED_CREDENTIALS, CURRENT_YEAR, REGION } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 @Component({
@@ -40,7 +40,8 @@ export class BracketsComponent implements OnInit {
   selectedYear:string = "";
 
   async ngOnInit() {
-    await this.loadMatches("2023");
+    console.log("init brackets");
+    await this.loadMatches(CURRENT_YEAR);
   }  
 
   async loadMatches(year: string){
@@ -69,7 +70,9 @@ export class BracketsComponent implements OnInit {
     this.showElite = Object.keys(this.phaseMatchesElite).length != 0;
 
     this.loading = false;
-  }
 
+    console.log("loaded bracket")
+
+  }
 
 }  

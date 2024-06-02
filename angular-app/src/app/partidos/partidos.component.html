@@ -1,0 +1,26 @@
+<div class="row justify-content-md-center padded-page">
+
+<div *ngIf="loading">
+    <h2>Loading ...</h2>
+</div>
+
+<div [hidden]="loading">
+    <div class="col col-12" style="vertical-align: middle;">
+        <h1 class="text-center">
+            {{TournmentEdition}}º Torneo Gladiadores Hoops
+        </h1>
+        <br>
+        <br>
+        <br>
+        
+        <h2 *ngIf="!(showBrackets||showAwards||showStandings||showGroups)" class="text-center">
+            No disponible
+        </h2>
+    </div>
+    
+    <app-awards *ngIf="showAwards"></app-awards>
+    <app-brackets *ngIf="showBrackets"></app-brackets>
+    <app-standing-matches *ngIf="showStandings"></app-standing-matches>
+    <app-groups *ngIf="showGroups"></app-groups>
+</div>
+</div>

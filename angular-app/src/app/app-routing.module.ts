@@ -18,6 +18,8 @@ import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { RestrictedAreaComponent } from './restricted-area/restricted-area.component';
 import { ResultsComponent } from './results/results.component';
+import { ParticipantsComponent } from './participants/participants.component';
+import { PartidosComponent } from './partidos/partidos.component';
 
 const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
@@ -28,6 +30,7 @@ const routes: Routes = [
   { path: 'torneo', component: TorneoComponent },
   { path: 'redes-sociales', component: RedesSocialesComponent },
   { path: 'patrocinios', component: PatrociniosComponent },
+  { path: 'participantes', component: ParticipantsComponent },
   { path: 'turismo', component: TurismoComponent },
   { path: 'fotos', component: FotosComponent },
   { path: 'torneospasados', component: TorneospasadosComponent },
@@ -38,6 +41,7 @@ const routes: Routes = [
   { path: 'brackets', component: BracketsComponent },
   { path: 'standings', component: StandingMatchesComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'partidos', component: PartidosComponent },
   { path: '**', component: InicioComponent, data: { 
     breadcrumb: 'Gladiadores Hoops', 
     title: 'GladiadoresHoops',

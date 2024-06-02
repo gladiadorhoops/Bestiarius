@@ -50,6 +50,8 @@ import { ViewTeamsComponent } from './restricted-area/view-teams/view-teams.comp
 import { ListTeamsComponent } from './restricted-area/list-teams/list-teams.component';
 import { ResultsComponent } from './results/results.component';
 import { AwardsComponent } from './results/awards/awards.component';
+import { ParticipantsComponent } from './participants/participants.component';
+import { PartidosComponent } from './partidos/partidos.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +83,9 @@ import { AwardsComponent } from './results/awards/awards.component';
     ViewTeamsComponent,
     ListTeamsComponent,
     ResultsComponent,
-    AwardsComponent
+    AwardsComponent,
+    ParticipantsComponent,
+    PartidosComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,62 @@
+<div class="bg-image lower-corner-img" style="background-image: url('assets/no-background-logo-transparent.png');">
+    <div class="container page-content">
+
+            <h1 class="text-center mb-3">
+                Equipos Registrados
+            </h1> <br>
+
+            <div class="spinner-border text-light" role="status" *ngIf="loading">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div class="text-center mb-3" *ngIf="!available">
+                <h2>No Disponible</h2>
+            </div>
+            <div class="mainpanel" *ngIf="!loading&&available">
+                <table class="row">
+                    <tr class="row">
+                        <th [ngClass]="{'col': true, 'col-12': true, 'col-lg-4': true}"> <a [routerLink]="" (click)="sortTeamsByName()">Equipo</a></th>
+                        <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortTeamsByCategory()">Categoria</a></th>
+                        <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortTeamsByLocation()">Localidad</a></th>
+                        <th class="col col-lg-2 col-12 groupLast"> <a [routerLink]="" (click)="sortTeamsByCoach()">Coach</a></th>
+                    </tr>
+                    <tr class="row" *ngFor="let team of teams" [routerLink]="" (click)="viewPlayers(team.id)">
+                        <td [ngClass]="{'col': true, 'col-12': true, 'col-lg-4': true}"><u>{{team.name}}</u></td>
+                        <td class="col col-lg-3 col-12">{{team.category}}</td>
+                        <td class="col col-lg-3 col-12">{{team.location}}</td>
+                        <td class="col col-lg-2 col-12">{{team.coachName}}</td>
+                    </tr>
+                </table>
+            </div>
+
+    </div>
+</div>
+
+<!--list player modal-->
+<div class="modal"
+      tabindex="-1"
+      role="dialog"
+      [ngStyle]="{'display':displayPlayers}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Jugadores</h5>
+        <button type="button" class="btn-close" (click)="closePlayers()" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <table class="row">
+            <tr class="row">
+                <th class="col col-lg-8 col-12"> <a [routerLink]="">Player</a></th>
+                <th class="col col-lg-4 col-12"> <a [routerLink]="">Position</a></th>
+            </tr>
+            <tr class="row" *ngFor="let player of players">
+                <td class="col col-lg-8 col-12">{{player.name}}{{(player.id === team?.captainId) ? " (Capitán)" : ""}}</td>
+                <td class="col col-lg-4 col-12">{{player.position}}</td>
+            </tr>
+        </table>
+        
+      </div>
+    </div>
+  </div>
+</div>

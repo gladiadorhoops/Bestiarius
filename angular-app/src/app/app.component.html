@@ -22,8 +22,14 @@
           <li class="nav-item active">
             <a routerLink="/inicio" routerLinkActive="active" class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Inicio</a>
           </li>
-          <li class="nav-item">
-            <a routerLink="/results" routerLinkActive="active" class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show">Resultados</a>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Informaciones del Torneo</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" [hidden]="hideParticipants" routerLink="participantes">Equipos Registrados</a></li>
+              <li><a class="dropdown-item" routerLink="partidos">Partidos</a></li>
+              <li><a class="dropdown-item" routerLink="results">Torneos Anteriores</a></li>
+            </ul>
           </li>
 
           <li class="nav-item dropdown">

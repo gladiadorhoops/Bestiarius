@@ -17,7 +17,7 @@ export class ResultsComponent {
 
   TournmentEdition = 0;
 
-  years = ["2024", "2023", "2022"]
+  years = ["2023", "2022"]
 
 
   @ViewChildren(BracketsComponent) bracketChild!: QueryList<BracketsComponent>;
@@ -29,6 +29,7 @@ export class ResultsComponent {
   
 
   async ngOnInit() {
+    console.log("init results");
     await this.loadResults();
   } 
   
@@ -42,17 +43,21 @@ export class ResultsComponent {
   }
 
   async showViews(){
+    await this.bracketChild;
     await this.bracketChild.forEach(element => {
       element.loadMatches(this.selectedYear);
     });
+    await this.standingsChild;
     await this.standingsChild.forEach(element => {
       element.loadMatches(this.selectedYear);
       return;
     });
+    await this.groupsChild;
     await this.groupsChild.forEach(element => {
       element.loadMatches(this.selectedYear);
       return;
     });
+    await this.awardsChild;
     await this.awardsChild.forEach(element => {
       element.loadWinners(this.selectedYear);
       return;

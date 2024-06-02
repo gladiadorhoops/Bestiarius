@@ -20,6 +20,8 @@ export class AppComponent {
   isScout = false;
   isCoach = false;
 
+  hideParticipants = false;
+
   ngOnInit(){
     this.isLoggedIn = this.authService.isLoggedIn();
     // TODO: update role
