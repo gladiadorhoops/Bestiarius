@@ -39,7 +39,12 @@ export class FeatureFlagBuilder {
         if(item === undefined) return;
 
         return {
-            [Feature.EDIT_TEAMS]: item[Feature.EDIT_TEAMS] ? item[Feature.EDIT_TEAMS].BOOL! : false
+            [Feature.EDIT_TEAMS]: item[Feature.EDIT_TEAMS] ? item[Feature.EDIT_TEAMS].BOOL! : false,
+            [Feature.SHOW_AWARDS]: item[Feature.SHOW_AWARDS] ? item[Feature.SHOW_AWARDS].BOOL! : false,
+            [Feature.SHOW_BRACKETS]: item[Feature.SHOW_BRACKETS] ? item[Feature.SHOW_BRACKETS].BOOL! : false,
+            [Feature.SHOW_GROUPS]: item[Feature.SHOW_GROUPS] ? item[Feature.SHOW_GROUPS].BOOL! : false,
+            [Feature.SHOW_STANDINGS]: item[Feature.SHOW_PARTICIPANTS] ? item[Feature.SHOW_PARTICIPANTS].BOOL! : false,
+            [Feature.SHOW_PARTICIPANTS]: item[Feature.SHOW_PARTICIPANTS] ? item[Feature.SHOW_PARTICIPANTS].BOOL! : false
         };
     }
 }
