@@ -11,6 +11,9 @@ import {v4 as uuidv4} from 'uuid';
 import { AddPlayerComponent } from '../add-team/add-player/add-player.component';
 import { Coach } from '../../interfaces/coach';
 import { UserBuilder } from '../../Builders/user-builder';
+import { FeatureFlag } from 'src/app/interfaces/feature-flag';
+import { FeatureFlagBuilder } from 'src/app/Builders/feature-flag-builder';
+import { Feature } from 'src/app/enum/feature-flag';
 
 @Component({
   selector: 'app-view-teams',
@@ -29,7 +32,8 @@ export class ViewTeamsComponent {
     private authService: AuthService,
     private teamBuilder: TeamBuilder,
     private userBuilder: UserBuilder,
-    private playerBuilder: PlayerBuilder
+    private playerBuilder: PlayerBuilder,
+    private featureFlagBuilder: FeatureFlagBuilder
   ){
     this.selectedPlayer=this.playerBuilder.getEmptyPlayer();
   }
@@ -53,6 +57,7 @@ export class ViewTeamsComponent {
   userId = "";
   userrole = "";
   newplayerid = uuidv4();
+  featureFlags: FeatureFlag | undefined = undefined
 
   editable = true;
   
@@ -81,6 +86,9 @@ export class ViewTeamsComponent {
     if(this.userrole != "coach"){
       this.coaches = await this.userBuilder.getCoaches(this.ddb);
     }
+
+    this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
+    this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
     
     this.reloadLoginStatus();
   }

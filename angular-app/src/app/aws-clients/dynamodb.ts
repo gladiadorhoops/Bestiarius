@@ -11,6 +11,8 @@ import {
     DeleteItemCommand,
     BatchGetItemCommandInput,
     BatchGetItemCommand,
+    UpdateItemCommandInput,
+    UpdateItemCommand,
 } from "@aws-sdk/client-dynamodb";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 import { REGION, DDB_TABLE_NAME, CURRENT_YEAR } from "./constants";
@@ -56,6 +58,28 @@ export class DynamoDb {
             const command = new PutItemCommand(input);
 
             const response = await this.client.send(command);
+        } catch (err) {
+            console.error("Error", err);
+            throw err
+        }
+    }
+
+    async updateItem(key: Record<string, AttributeValue>, updateExpression: string, expressionAttributeNames: Record<string, string>, expressionAttributeValues:  Record<string, AttributeValue>) {
+        try {
+            const input: UpdateItemCommandInput = {
+                TableName: DDB_TABLE_NAME,
+                Key: key,
+                UpdateExpression: updateExpression, 
+                ExpressionAttributeNames: expressionAttributeNames,
+                ExpressionAttributeValues: expressionAttributeValues,
+                ReturnValues: "NONE",
+                ReturnConsumedCapacity: "TOTAL",
+                ReturnItemCollectionMetrics: "SIZE",
+            };
+            const command = new UpdateItemCommand(input);
+            console.log('Update Item command', command)
+            const response = await this.client.send(command);
+            console.log('Update Item response', response)
         } catch (err) {
             console.error("Error", err);
             throw err
