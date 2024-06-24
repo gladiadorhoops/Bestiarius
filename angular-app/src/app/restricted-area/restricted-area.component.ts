@@ -34,6 +34,7 @@ export class RestrictedAreaComponent {
     matchGenView = false;
     matchEditView = false;
     addTeamView = false;
+    addGymView = false;
     viewUsersView = false;
     viewTeamsView = false;
     listTeamsView = false;
@@ -108,6 +109,7 @@ export class RestrictedAreaComponent {
       
       if(this.isAdmin){
         this.menuItems = this.menuItems.concat([
+          {value: "addGym", text: "Add Gym"},
           {value: "addMatch", text: "Add Match"},
           {value: "editMatch", text: "Edit Match"},
           {value: "viewUsers", text: "Usuarios Registrados"}
@@ -168,6 +170,10 @@ export class RestrictedAreaComponent {
            this.showListTeams()
            break; 
         } 
+        case 'addGym': { 
+           this.showAddGym()
+           break; 
+        } 
         default: { 
             this.hideAll();
            break; 
@@ -182,6 +188,7 @@ export class RestrictedAreaComponent {
     this.matchGenView = false;
     this.matchEditView = false;
     this.addTeamView = false;
+    this.addGymView = false;
     this.viewUsersView = false;
     this.viewTeamsView = false;
     this.listTeamsView = false;
@@ -202,6 +209,10 @@ export class RestrictedAreaComponent {
   showAddTeam(){
     this.hideAll();
     this.addTeamView = true;
+  }
+  showAddGym(){
+    this.hideAll();
+    this.addGymView = true;
   }
   showMatchGen(){
     this.hideAll();

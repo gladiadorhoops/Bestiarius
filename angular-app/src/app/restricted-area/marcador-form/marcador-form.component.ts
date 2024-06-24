@@ -31,7 +31,7 @@ export class MarcadorFormComponent implements OnInit {
 
   isEditing: boolean = false;
   loading: boolean = true;
-  editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
+  editingMatch: Match = {location: {id: "", name: ""}, time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   
 
   constructor(private fb: FormBuilder, 
@@ -112,7 +112,7 @@ export class MarcadorFormComponent implements OnInit {
       let matches : Match[] = []
       this.filteredMatches.forEach(
         async (match) => {
-          if(match.location == gym){
+          if(match.location.id == gym){
             matches.push(match);
           }
         }

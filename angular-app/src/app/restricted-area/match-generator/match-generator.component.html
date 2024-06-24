@@ -21,7 +21,7 @@
                 <div class="filterPadding">
                     <select class="col-12" id="gyms" formControlName="gym" require>
                         <option value={{null}}></option>
-                        <option *ngFor="let gym of gyms" value="{{gym}}">{{gym}}</option>
+                        <option *ngFor="let gym of gyms" value="{{gym.id}}">{{gym.name}}</option>
                     </select>
                 </div>
             </div>

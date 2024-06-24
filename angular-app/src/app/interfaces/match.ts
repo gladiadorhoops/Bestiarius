@@ -1,9 +1,10 @@
+import { Gym } from "./gym"
 import { MatchTeam } from "./team"
 
 export interface Match {
     id?: string | undefined
     category?: string | undefined
-    location: string
+    location: Gym
     day?: string | undefined
     time: string
     juego: string

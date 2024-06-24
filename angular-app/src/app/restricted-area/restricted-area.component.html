@@ -40,6 +40,10 @@
                         <app-add-team [ddb]="ddb" (callListTeam)="showListTeams()"></app-add-team>
                     </div>
                     
+                    <div *ngIf="addGymView">
+                        <app-add-gym [ddb]="ddb" ></app-add-gym>
+                    </div>
+                    
                     <div *ngIf="matchGenView">
                         <app-match-generator [ddb]="ddb"></app-match-generator>
                     </div>

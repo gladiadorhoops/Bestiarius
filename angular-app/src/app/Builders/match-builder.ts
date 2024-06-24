@@ -6,6 +6,8 @@ import { TeamBuilder } from './team-builder';
 import { MatchTeam } from '../interfaces/team';
 import {v4 as uuidv4} from 'uuid';
 import { CURRENT_YEAR } from '../aws-clients/constants';
+import { GymBuilder } from './gym-builder';
+import { Gym } from '../interfaces/gym';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +15,8 @@ import { CURRENT_YEAR } from '../aws-clients/constants';
 export class MatchBuilder {
 
     constructor(
-        private teamBuilder: TeamBuilder
+        private teamBuilder: TeamBuilder,
+        private gymBuilder: GymBuilder
     ) {}
 
     
@@ -27,6 +30,7 @@ export class MatchBuilder {
         }
         
         var teams = await this.teamBuilder.getTeams(ddb, year);
+        var gyms = await this.gymBuilder.getListOfGyms(ddb);
         items.sort((a, b) => (a['ssk'].S!+a['time'].S!).localeCompare(b['ssk'].S!+b['time'].S!))
         for (const item of items) {
             let vteamId = item['visitorTeam'].S!.replace("team.","")
@@ -41,17 +45,21 @@ export class MatchBuilder {
             if( hteams.length == 1){
                 hteam = hteams[0]
             }
-            matches.push(this.buildMatch(item, vteam, hteam))
+            console.debug("match: ", item)
+            let gym_id = item['ssk'].S!.replace("gym.","")
+            console.debug("gyms: ", gyms)
+            let gym = gyms.filter(g => g.id! == gym_id)[0]
+            matches.push(this.buildMatch(item, vteam, hteam, gym))
         } 
 
         return matches
     }
 
-    private buildMatch(item: Record<string, AttributeValue>, vteam: MatchTeam, hteam: MatchTeam): Match {
+    private buildMatch(item: Record<string, AttributeValue>, vteam: MatchTeam, hteam: MatchTeam, gym: Gym): Match {
         return {
             id: item[PK_KEY].S!.split('.')[1],
             category: item['category'].S,
-            location: item['ssk'].S!,
+            location: gym,
             day: item['spk'].S!,
             time: item["spk"].S!+"/07 - "+item['time'].S!,
             juego: item['juego'].S!,

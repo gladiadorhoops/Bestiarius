@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { CURRENT_YEAR } from 'src/app/aws-clients/constants';
+import { GymBuilder } from 'src/app/Builders/gym-builder';
+import { Gym } from 'src/app/interfaces/gym';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { MatchBuilder } from '../../Builders/match-builder';
 import { TeamBuilder } from '../../Builders/team-builder';
@@ -15,11 +18,13 @@ export class MatchGeneratorComponent  implements OnInit {
 
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
+    private gymBuilder: GymBuilder,
     private teamBuilder: TeamBuilder
     ) {
   }
 
     ngOnInit(): void {
+      this.loadGyms()
       this.loadTeams()
     }
 
@@ -38,13 +43,23 @@ export class MatchGeneratorComponent  implements OnInit {
   teams: Team[] = [];
   filteredTeams: Team[] = [];
   selectedCategoria = "";
-  gyms = ['Gimnasio Nuevo', 'Gimnasio Tecnológico', 'Cancha Sindicato', 'Gimnasio Municipal', 'Gimnasio Municipal (afuera)', 'Gimnasio Federal'];
+  gyms : Gym[] = [];
   phases = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4", "Octavos", "Cuartos", "Semi-Finaless", "Finales", "Standing"]
   brackets = ["grupos", "o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "q9", "q10", "q11", "q12", "s13", "s14", "f15", "p16", "p17", "p18", "p19", "p20", "p21", "f22" ]
   days: number[] = [26, 27, 28];
   displayStyle = "none";
   popUpMsg = "";
 
+  async loadGyms() {
+    this.gyms = []
+    let gyms = await this.gymBuilder.getListOfGyms(this.ddb).then(
+      (output) => {
+        return output
+      }
+    )
+    this.gyms = this.gyms.concat(gyms);
+    console.debug("gyms: ", this.gyms);
+  }
 
   async loadTeams() {
     this.teams = []

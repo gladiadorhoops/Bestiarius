@@ -29,7 +29,7 @@
                                         <div class="row">{{match.visitorPoints}}</div>
                                     </div>
                                     <div class="col col-12 text-center">
-                                        {{match.location}} - {{match.time}}
+                                        <a href="https://www.google.com/maps/search/?api=1&query_place_id={{match.location.place_id}}&query={{match.location.address}}">{{match.location.name}}</a> - {{match.time}}
                                     </div>
                                 </div>
                         </div>
@@ -51,7 +51,7 @@
                                     <div class="row">{{match.visitorPoints}}</div>
                                 </div>
                                 <div class="col col-12 text-center">
-                                    {{match.location}} - {{match.time}}
+                                    <a href="https://www.google.com/maps/search/?api=1&query_place_id={{match.location.place_id}}&query={{match.location.address}}">{{match.location.name}}</a> - {{match.time}}
                                 </div>
                             </div>
                         </div>

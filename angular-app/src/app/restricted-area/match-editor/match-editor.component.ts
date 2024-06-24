@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Match } from '../../interfaces/match';
+import { Gym } from '../../interfaces/gym';
 import { FormBuilder } from '@angular/forms';
 import { MatchBuilder } from '../../Builders/match-builder';
+import { GymBuilder } from '../../Builders/gym-builder';
 import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { Team } from '../../interfaces/team';
@@ -21,7 +23,7 @@ export class MatchEditorComponent implements OnInit {
   matchesAprendizDays: Match[][] = [];
   matchesEliteDays: Match[][] = [];
   todayDay = new Date().getDate();
-  gyms = ['Gimnasio Nuevo', 'Gimnasio Tecnológico', 'Cancha Sindicato', 'Gimnasio Municipal', 'Gimnasio Municipal (afuera)', 'Gimnasio Federal'];
+  gyms : Gym[] = [];//['Gimnasio Nuevo', 'Gimnasio Tecnológico', 'Cancha Sindicato', 'Gimnasio Municipal', 'Gimnasio Municipal (afuera)', 'Gimnasio Federal'];
 
 
   equipos : Team[] = [];
@@ -31,11 +33,12 @@ export class MatchEditorComponent implements OnInit {
 
   isEditing: boolean = false;
   loading: boolean = true;
-  editingMatch: Match = {location: "", time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
+  editingMatch: Match = {location: {id: "", name: ""}, time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   
 
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
+    private gymBuilder: GymBuilder,
     private teamBuilder: TeamBuilder,
     private httpService: HttpClient
     ) {
@@ -58,6 +61,7 @@ export class MatchEditorComponent implements OnInit {
   }  
 
   async loadMatches(){
+    this.gyms = await this.gymBuilder.getListOfGyms(this.ddb);
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, CURRENT_YEAR)
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
     this.filteredMatches = this.allMatches;
@@ -112,7 +116,7 @@ export class MatchEditorComponent implements OnInit {
       let matches : Match[] = []
       this.filteredMatches.forEach(
         async (match) => {
-          if(match.location == gym){
+          if(match.location.id == gym){
             matches.push(match);
           }
         }

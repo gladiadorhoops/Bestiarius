@@ -1,0 +1,88 @@
+<form [formGroup]="gymForm" (ngSubmit)="onSubmit()" >
+    <div class="row mainpanel">
+        <div class="col col-md-3 col-12">
+            <div class="row">
+                <label for="id">Id:</label>
+            </div>
+            <div class="row">
+                <div class="filterPadding">
+                    <input type="text" id="id" name="id" formControlName="id">
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-3 col-12">
+            <div class="row">
+                <label for="name">Name:</label>
+            </div>
+            <div class="row">
+                <div class="filterPadding">
+                    <input type="text" id="name" name="name" formControlName="name">
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-3 col-12">
+            <div class="row">
+                <label for="address">Address:</label>
+            </div>
+            <div class="row">
+                <div class="filterPadding">
+                    <input type="text" id="address" name="address" formControlName="address">
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-3 col-12">
+            <div class="row">
+                <label for="place_id">Place ID:</label>
+            </div>
+            <div class="row">
+                <div class="filterPadding">
+                    <input type="text" id="place_id" name="place_id" formControlName="place_id">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="frow">
+            <button type="submit" [disabled]="!gymForm.valid">Guardar</button>
+        </div>
+
+        <br>
+        <br>
+        <table *ngIf="!isLoading" class="row">
+            <tr class="row">
+                <th class="col col-lg-2 col-12"> <a [routerLink]="">Id</a></th>
+                <th class="col col-lg-3 col-12"> <a [routerLink]="">Name</a></th>
+                <th class="col col-lg-7 col-12"> <a [routerLink]="">Address</a></th>
+            </tr>
+            <tr class="row" *ngFor="let gym of gyms">
+                <td class="col col-lg-2 col-12">{{gym.id}}</td>
+                <td class="col col-lg-3 col-12">{{gym.name}}</td>
+                <td class="col col-lg-7 col-12"><a href="https://www.google.com/maps/search/?api=1&query_place_id={{gym.place_id}}&query={{gym.address}}">{{gym.address}}</a></td>
+            </tr>
+        </table>
+    </div>
+</form>
+
+
+
+    
+<div
+class="modal"
+tabindex="-1"
+role="dialog"
+[ngStyle]="{'display':displayStyle}">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-body">
+      <p>{{popUpMsg}}</p>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" 
+              (click)="closePopup()">
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>
+</div>
