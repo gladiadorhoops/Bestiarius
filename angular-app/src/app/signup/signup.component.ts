@@ -6,6 +6,7 @@ import { DynamoDb } from "src/app/aws-clients/dynamodb";
 import { AuthService } from '../auth.service';
 import { UserBuilder } from '../Builders/user-builder';
 import { InvalidParameterException, InvalidPasswordException, UsernameExistsException } from '@aws-sdk/client-cognito-identity-provider';
+import { Role } from '../enum/Role';
 
 @Component({
   selector: 'app-signup',
@@ -52,6 +53,11 @@ export class SignupComponent {
     this.activatedRoute.queryParams.subscribe(params => {
         this.role = params['role'];
         console.log(this.role);
+        if(this.role != Role.COACH && this.role != Role.SCOUT ){
+          console.error("Invlaid Role");
+          this.popUpnMsg = "La liga de registro es invalida. Contacta a la organizacion per la liga de registro corecta";
+          this.openPopup();
+        }
       });
   }
 
@@ -113,6 +119,8 @@ export class SignupComponent {
     this.displayStyle = "none";
     if(this.success){
       await this.router.navigateByUrl('/login');
+    } else {
+      await this.router.navigateByUrl('/')
     }
   }
 
