@@ -37,8 +37,8 @@
                         <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.name}}</option>
                     </select>
                 </div>
-                <label class="frow" for="edad">Edad:&nbsp;</label>
-                <input class="frow" disabled id="edad" type="number" min="1" max="99" value="{{selectedEdad}}">
+                <label class="frow" for="edad">Posicion Registrada:&nbsp;</label>
+                <input class="frow" disabled id="position" type="text" value="{{selectedPlayer.position}}">
             </div>
           </div>
         </div>

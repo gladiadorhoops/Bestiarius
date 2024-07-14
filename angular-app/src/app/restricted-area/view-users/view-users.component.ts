@@ -3,6 +3,7 @@ import { AuthService } from '../../auth.service';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { UserBuilder } from '../../Builders/user-builder';
 import { TeamBuilder } from '../../Builders/team-builder';
+import { Role } from 'src/app/enum/Role';
 
 export interface User {
   id: string
@@ -37,22 +38,17 @@ export class ViewUsersComponent {
 
     let coaches = await this.userBuilder.getCoaches(this.ddb);
     let scouts = await this.userBuilder.getScouts(this.ddb);
-    let admins = await this.userBuilder.getAdmins(this.ddb);
     let teams = await this.teamBuilder.getTeams(this.ddb);
 
     this.users = []
 
     coaches.forEach(element => {
       let teamNames = teams.filter((team)=>team.coachId == element.id).map((team) => team.name);
-      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.role, other: teamNames.join(",")})
+      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.admin ? Role.ADMIN : element.role, other: teamNames.join(",")})
     });
 
     scouts.forEach(element => {
-      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.role, other: ""})
-    });
-
-    admins.forEach(element => {
-      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.role, other: ""})
+      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.admin ? Role.ADMIN : element.role, other: ""})
     });
 
     this.loading = false;

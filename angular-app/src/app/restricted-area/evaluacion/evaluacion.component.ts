@@ -35,8 +35,8 @@ export class EvaluacionComponent {
 
   teams: Team[] = [];
   teamplayers: Player[] = [];
-  selectedEdad : string = "";
   selectedCategoria: string = "";
+  selectedPlayer: Player = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:new Date()};;
   displayStyle = "none";
   submitReportMessage = "Evaluacion guardada!"
 
@@ -76,6 +76,8 @@ export class EvaluacionComponent {
       }
     )
     this.teams = this.teams.concat(teams)
+    this.teamplayers = [];
+    this.selectedPlayer = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:new Date()};
   }
 
   async loadPlayers() {
@@ -90,18 +92,13 @@ export class EvaluacionComponent {
           )
         }
     });
+    this.selectedPlayer = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:new Date()};
   }
 
   async loadPlayerDetails() {
-    var selectedPlayer = this.evaluationForm.value.playerId;
+    var selectedPlayerId = this.evaluationForm.value.playerId;
 
-    var selectedteamplayer: Player = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:new Date()};
-    this.teamplayers.forEach(function(value){
-      if(value.id == selectedPlayer){
-        selectedteamplayer = value;
-      }
-    });
-    this.selectedEdad = selectedteamplayer.age;
+    this.selectedPlayer = this.teamplayers.find(p => p.id == selectedPlayerId)!;
 
     let scout: Scout = {
       id: this.scout_id,
@@ -112,7 +109,7 @@ export class EvaluacionComponent {
     }
 
     this.evaluationForm = await this.reporteBuilder.getReport(
-      this.ddb, scout, selectedteamplayer.id, this.evaluationForm.value.equipo!, this.selectedCategoria
+      this.ddb, scout, this.selectedPlayer.id, this.evaluationForm.value.equipo!, this.selectedCategoria,
     )
   }
 

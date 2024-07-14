@@ -8,6 +8,7 @@ export interface User {
     phone: string,
     accessToken?: string | undefined,
     idToken?: string | undefined,
+    admin?: boolean | undefined
 }
 
 export enum UserKey {

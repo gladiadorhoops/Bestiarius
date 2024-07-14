@@ -90,12 +90,13 @@ export class UserBuilder {
         users = await ddb.listByYearQuery(`${role}.data`).then(
             (items) => {
                 items.sort((a, b) => a[UserKey.NAME].S!.localeCompare(b[UserKey.NAME].S!))
+                
                 return items.map((item) => {
                     return this.buildUser(item, role)
                 })
             }
         )
-        return users
+        return users;
     }
 
     private updateCoachRecord(record: Record<string, any>, coach: Coach): Record<string, any> {
@@ -110,6 +111,7 @@ export class UserBuilder {
             name: item[UserKey.NAME].S!,        
             email: item[UserKey.EMAIL].S!,
             phone: item[UserKey.PHONE].S!,
+            admin: item['admin']?.BOOL,
             role: role
         }
 
