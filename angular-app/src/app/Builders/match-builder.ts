@@ -5,7 +5,7 @@ import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { TeamBuilder } from './team-builder';
 import { MatchTeam } from '../interfaces/team';
 import {v4 as uuidv4} from 'uuid';
-import { CURRENT_YEAR } from '../aws-clients/constants';
+import { TOURNAMENT_YEAR } from '../aws-clients/constants';
 import { GymBuilder } from './gym-builder';
 import { Gym } from '../interfaces/gym';
 
@@ -89,7 +89,7 @@ export class MatchBuilder {
                 }
                 record['homePoints'] = {S: `${homePoints}`};
                 record['visitorPoints'] = {S: `${visitorPoints}`};
-                record[CY_KEY] = {S: CURRENT_YEAR};
+                record[CY_KEY] = {S: TOURNAMENT_YEAR};
                 console.warn(record)
                 
                 return await ddb.putItem(record).then(
@@ -149,7 +149,7 @@ export class MatchBuilder {
         record['time'] = {S: `${time}`};
         record['juego'] = {S: `${juego}`};
         record['braketPlace'] = {S: `${bracket}`};
-        record[CY_KEY] = {S: CURRENT_YEAR};
+        record[CY_KEY] = {S: TOURNAMENT_YEAR};
 
         await ddb.putItem(record);
     }

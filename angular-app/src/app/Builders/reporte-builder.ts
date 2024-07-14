@@ -4,9 +4,9 @@ import { DisplayReport, Reporte, Section, Skill, Skills, TopReporte } from "../i
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Scout } from '../interfaces/scout';
-import { ReportType, S3, TOURNAMENT_YEAR } from '../aws-clients/s3';
+import { ReportType, S3 } from '../aws-clients/s3';
 import { Category } from '../interfaces/player';
-import { CURRENT_YEAR } from '../aws-clients/constants';
+import { TOURNAMENT_YEAR } from '../aws-clients/constants';
 
 @Injectable({
     providedIn: 'root'
@@ -90,7 +90,7 @@ export class ReporteBuilder {
         record[Section.CATEGORIA] = {S: categoria};
         record[SPK_KEY] = {S: 'reporte'}
         record[SSK_KEY] = {S: TOURNAMENT_YEAR}
-        record[CY_KEY] = {S: CURRENT_YEAR};
+        record[CY_KEY] = {S: TOURNAMENT_YEAR};
 
         if( Object.keys(posicionSkills).length != 0) record[Section.POSICION] = {M: posicionSkills};        
         if( Object.keys(tiroSkills).length != 0) record[Section.TIRO] = {M: tiroSkills};

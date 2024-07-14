@@ -5,7 +5,7 @@ import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { TeamBuilder } from './team-builder';
 import { MatchTeam } from '../interfaces/team';
 import {v4 as uuidv4} from 'uuid';
-import { CURRENT_YEAR } from '../aws-clients/constants';
+import { TOURNAMENT_YEAR } from '../aws-clients/constants';
 
 @Injectable({
     providedIn: 'root'

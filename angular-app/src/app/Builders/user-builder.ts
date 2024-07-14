@@ -4,7 +4,7 @@ import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { User, UserKey } from '../interfaces/user';
 import { Coach, CoachKey } from '../interfaces/coach';
 import { Role } from '../enum/Role';
-import { CURRENT_YEAR } from '../aws-clients/constants';
+import { TOURNAMENT_YEAR } from '../aws-clients/constants';
 import { Scout } from '../interfaces/scout';
 import { Admin } from '../interfaces/admin';
 import { Cognito } from '../aws-clients/cognito';
@@ -148,7 +148,7 @@ export class UserBuilder {
         record[UserKey.NAME] = {S: `${user.name}`}
         record[UserKey.EMAIL] = {S: `${user.email}`}
         record[UserKey.PHONE] = {S: `${user.phone}`}
-        record[CY_KEY] = {S: CURRENT_YEAR};
+        record[CY_KEY] = {S: TOURNAMENT_YEAR};
         return record
     }
 }

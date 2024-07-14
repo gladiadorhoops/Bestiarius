@@ -1,7 +1,7 @@
 import {fromCognitoIdentityPool} from "@aws-sdk/credential-providers";
 import { CognitoIdentity } from "../interfaces/cognito-identity";
 
-export const CURRENT_YEAR = '2024'
+export const TOURNAMENT_YEAR = '2024'
 
 export const REGION = 'us-east-1'
 export const COGNITO_IDENTITY_POOL = 'us-east-1:66bd9702-735d-4e68-a155-76fb7fb20547'

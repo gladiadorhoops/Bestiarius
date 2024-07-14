@@ -15,7 +15,7 @@ import {
     UpdateItemCommand,
 } from "@aws-sdk/client-dynamodb";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
-import { REGION, DDB_TABLE_NAME, CURRENT_YEAR } from "./constants";
+import { REGION, DDB_TABLE_NAME, TOURNAMENT_YEAR } from "./constants";
 import { DynamoDbIndex } from "./dynamodb-index"
 
 export const PK_KEY = 'pk'
@@ -161,7 +161,7 @@ export class DynamoDb {
         return resultItems;
     }
 
-    async listByYearQuery(sk: string, cy: string = CURRENT_YEAR): Promise<Record<string, AttributeValue>[]> {
+    async listByYearQuery(sk: string, cy: string = TOURNAMENT_YEAR): Promise<Record<string, AttributeValue>[]> {
         let resultItems: Record<string, AttributeValue>[] = [];
         let results = await this.simpleQuery(sk, cy, IndexId.LIST_GSI);
         if(results != undefined) resultItems = resultItems.concat(results);

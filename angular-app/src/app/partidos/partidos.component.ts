@@ -3,7 +3,7 @@ import { BracketsComponent } from '../results/brackets/brackets.component';
 import { StandingMatchesComponent } from '../results/standing-matches/standing-matches.component';
 import { GroupsComponent } from '../results/groups/groups.component';
 import { AwardsComponent } from '../results/awards/awards.component';
-import { COGNITO_UNAUTHENTICATED_CREDENTIALS, CURRENT_YEAR, REGION } from '../aws-clients/constants';
+import { COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR, REGION } from '../aws-clients/constants';
 import { FeatureFlag } from '../interfaces/feature-flag';
 import { FeatureFlagBuilder } from '../Builders/feature-flag-builder';
 import { DynamoDb } from '../aws-clients/dynamodb';
@@ -22,7 +22,7 @@ export class PartidosComponent {
   }
 
   loading = false;
-  TournmentEdition = Number(CURRENT_YEAR)-2012;
+  TournmentEdition = Number(TOURNAMENT_YEAR)-2012;
   ddbClient = new DynamoDBClient({ 
     region: REGION,
     credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
@@ -63,7 +63,7 @@ export class PartidosComponent {
     if(this.showAwards){
       await this.awardsChild;
       await this.awardsChild.forEach(element => {
-        element.loadWinners(CURRENT_YEAR);
+        element.loadWinners(TOURNAMENT_YEAR);
         return;
       });
     }
@@ -71,7 +71,7 @@ export class PartidosComponent {
     if(this.showGroups){
       await this.groupsChild;
       await this.groupsChild.forEach(element => {
-        element.loadMatches(CURRENT_YEAR);
+        element.loadMatches(TOURNAMENT_YEAR);
         return;
       });
     }
@@ -79,14 +79,14 @@ export class PartidosComponent {
     if(this.showBrackets){
       await this.bracketChild;
       await this.bracketChild.forEach(element => {
-        element.loadMatches(CURRENT_YEAR);
+        element.loadMatches(TOURNAMENT_YEAR);
       });
     }
 
     if(this.showStandings){
       await this.standingsChild;
       await this.standingsChild.forEach(element => {
-        element.loadMatches(CURRENT_YEAR);
+        element.loadMatches(TOURNAMENT_YEAR);
         return;
       });
     }

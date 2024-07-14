@@ -4,7 +4,7 @@ import { Team, TeamKey } from "../interfaces/team";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import {v4 as uuidv4} from 'uuid';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CURRENT_YEAR } from '../aws-clients/constants';
+import { TOURNAMENT_YEAR } from '../aws-clients/constants';
 
 @Injectable({
     providedIn: 'root'
@@ -22,12 +22,12 @@ export class TeamBuilder {
         record[TeamKey.CAPTAIN_ID] = {S: `${team.captainId}`};
         record[TeamKey.COACH_NAME] = {S: `${team.coachName}`};
         record[TeamKey.LOACTION] = {S: `${team.location}`};
-        record[CY_KEY] = {S: CURRENT_YEAR};
+        record[CY_KEY] = {S: TOURNAMENT_YEAR};
 
         await ddb.putItem(record);
     }
 
-    async getTeamsByCategory(ddb: DynamoDb, category: string, year: string = CURRENT_YEAR): Promise<Team[]> {
+    async getTeamsByCategory(ddb: DynamoDb, category: string, year: string = TOURNAMENT_YEAR): Promise<Team[]> {
         var teams: Team[] = []
         
         let keyConditionExpression = ddb.indexes[IndexId.LIST_GSI].keyConditionExpression(year);
@@ -51,7 +51,7 @@ export class TeamBuilder {
         return teams
     }
 
-    async getTeams(ddb: DynamoDb, year: string = CURRENT_YEAR): Promise<Team[]> {
+    async getTeams(ddb: DynamoDb, year: string = TOURNAMENT_YEAR): Promise<Team[]> {
         var teams: Team[] = []
         teams = await ddb.listByYearQuery(`${TeamKey.PREFIX}.data`, year).then(
             (items) => {

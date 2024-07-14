@@ -4,7 +4,7 @@ import { Match } from '../../interfaces/match';
 import { FormBuilder } from '@angular/forms';
 import { MatchBuilder } from '../../Builders/match-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
-import { COGNITO_UNAUTHENTICATED_CREDENTIALS, CURRENT_YEAR, REGION } from '../../aws-clients/constants'
+import { COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR, REGION } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 @Component({
@@ -36,7 +36,7 @@ export class GroupsComponent implements OnInit {
   selectedYear = "";
 
   async ngOnInit() {
-    await this.loadMatches(CURRENT_YEAR)
+    await this.loadMatches(TOURNAMENT_YEAR)
   }  
 
   async loadMatches(year: string){

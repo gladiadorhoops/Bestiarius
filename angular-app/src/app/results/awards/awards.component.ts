@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Award } from 'src/app/interfaces/award';
 import { AwardBuilder } from '../../Builders/award-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
-import { COGNITO_UNAUTHENTICATED_CREDENTIALS, CURRENT_YEAR, REGION } from '../../aws-clients/constants'
+import { COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR, REGION } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 @Component({
@@ -26,7 +26,7 @@ export class AwardsComponent implements OnInit {
   loading = true;
 
   async ngOnInit() {
-    await this.loadWinners(CURRENT_YEAR)
+    await this.loadWinners(TOURNAMENT_YEAR)
   }  
 
   async loadWinners(year: string){

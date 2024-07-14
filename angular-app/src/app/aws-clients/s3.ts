@@ -1,5 +1,5 @@
 import { S3Client, GetObjectCommand, ListObjectsCommand, ListObjectsCommandInput, GetObjectCommandInput } from "@aws-sdk/client-s3";
-import { REGION, COGNITO_UNAUTHENTICATED_CREDENTIALS } from "./constants";
+import { REGION, COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR } from "./constants";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 
 const client = new S3Client({ 
@@ -10,7 +10,6 @@ const GLADIADORES_BUCKET_NAME = "gladiadores-hoops"
 const MATCH_DATA = "match-data"
 const TOURNAMENT_PREFIX = "tournament-"
 const CURRENT_TOURNAMENT = "10"
-export const TOURNAMENT_YEAR = "2023"
 const MATCH_DATA_PATH = `${MATCH_DATA}/${TOURNAMENT_PREFIX}${CURRENT_TOURNAMENT}`
 const REPORT_DATA = "reports"
 const REPORT_PATH = `${REPORT_DATA}/${TOURNAMENT_PREFIX}${TOURNAMENT_YEAR}`

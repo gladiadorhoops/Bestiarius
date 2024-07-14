@@ -8,7 +8,7 @@ import { GymBuilder } from '../../Builders/gym-builder';
 import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { Team } from '../../interfaces/team';
-import { CURRENT_YEAR } from 'src/app/aws-clients/constants';
+import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 
 @Component({
   selector: 'app-match-editor',
@@ -62,7 +62,7 @@ export class MatchEditorComponent implements OnInit {
 
   async loadMatches(){
     this.gyms = await this.gymBuilder.getListOfGyms(this.ddb);
-    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, CURRENT_YEAR)
+    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, TOURNAMENT_YEAR)
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
     this.filteredMatches = this.allMatches;
     this.loading = false;

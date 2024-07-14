@@ -5,7 +5,7 @@ import { Player, PlayerKey } from "../interfaces/player";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { Validators } from '@angular/forms';
 import { TeamKey } from '../interfaces/team';
-import { CURRENT_YEAR } from '../aws-clients/constants';
+import { TOURNAMENT_YEAR } from '../aws-clients/constants';
 
 @Injectable({
     providedIn: 'root'
@@ -23,7 +23,7 @@ export class PlayerBuilder {
         playerRecord[PlayerKey.HEIGHT] = {S: `${player.height}`};
         playerRecord[PlayerKey.WEIGHT] = {S: `${player.weight}`};
         playerRecord[PlayerKey.POSITION] = {S: `${player.position}`};
-        playerRecord[CY_KEY] = {S: CURRENT_YEAR};
+        playerRecord[CY_KEY] = {S: TOURNAMENT_YEAR};
         if(player.birthday) playerRecord[PlayerKey.BIRTHDAY] = {S: `${player.birthday?.toDateString()}`};
         await ddb.putItem(playerRecord);
     }

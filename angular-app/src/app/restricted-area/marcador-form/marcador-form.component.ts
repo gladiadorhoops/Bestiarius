@@ -6,7 +6,7 @@ import { MatchBuilder } from '../../Builders/match-builder';
 import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { Team } from '../../interfaces/team';
-import { CURRENT_YEAR } from 'src/app/aws-clients/constants';
+import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 
 const S3_BUCKET_URL = (day: string) => `https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-11/category-matches-2023-07-${day}.json`
 
@@ -58,7 +58,7 @@ export class MarcadorFormComponent implements OnInit {
   }  
 
   async loadMatches(){
-    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, CURRENT_YEAR)
+    this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, TOURNAMENT_YEAR)
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
     this.filteredMatches = this.allMatches;
     this.loading = false;

@@ -3,7 +3,7 @@ import { CY_KEY, DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-
 import { Gym } from "../interfaces/gym";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import {v4 as uuidv4} from 'uuid';
-import { CURRENT_YEAR } from '../aws-clients/constants';
+import { TOURNAMENT_YEAR } from '../aws-clients/constants';
 
 @Injectable({
     providedIn: 'root'
@@ -20,14 +20,14 @@ export class GymBuilder {
         gymRecord["name"] = {S: `${name}`};
         gymRecord["address"] = {S: `${address}`};
         gymRecord["place_id"] = {S: `${place_id}`};
-        gymRecord[CY_KEY] = {S: CURRENT_YEAR};
+        gymRecord[CY_KEY] = {S: TOURNAMENT_YEAR};
         await ddb.putItem(gymRecord);
     }
     
     async getListOfGyms(ddb: DynamoDb, year?: string|undefined): Promise<Gym[]> {
         console.debug("year:", year)
         var gyms: Gym[] = []
-        var items = await ddb.listByYearQuery('gym.data', CURRENT_YEAR);
+        var items = await ddb.listByYearQuery('gym.data', TOURNAMENT_YEAR);
         
         console.debug("all gyms:", items)
         for (const item of items) {

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { CURRENT_YEAR } from 'src/app/aws-clients/constants';
+import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 import { GymBuilder } from 'src/app/Builders/gym-builder';
 import { Gym } from 'src/app/interfaces/gym';
 import { DynamoDb } from '../../aws-clients/dynamodb';
