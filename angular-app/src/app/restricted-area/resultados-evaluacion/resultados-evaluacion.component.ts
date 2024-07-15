@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ReporteBuilder } from '../../Builders/reporte-builder';
-import { DisplayReport, Reporte, TopReporte } from '../../interfaces/reporte';
+import { DisplayReport, Reporte, SectionType, TopReporte, TopSkillsMap } from '../../interfaces/reporte';
 import { AuthService } from '../../auth.service';
 import { S3 } from '../../aws-clients/s3';
 import { FormBuilder } from '@angular/forms';
@@ -27,7 +27,10 @@ export class ResultadosEvaluacionComponent {
 
   topElitePlayers!: TopReporte
   topApprendizPlayers!: TopReporte
+  topSkillsElitePlayers: TopSkillsMap[] = []
+  topSkillsApprendizPlayers: TopSkillsMap[] = []
   selectedCategoryTop!: TopReporte
+  selectedCategorySkillTop!: TopSkillsMap[]
   selectedCategory: Category = Category.ELITE
   selectedPlayerReport!: DisplayReport
   selectedPlayer: Player | undefined
@@ -53,8 +56,15 @@ export class ResultadosEvaluacionComponent {
       this.s3 = await S3.build(credentials)
     }
     this.topApprendizPlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3, Category.APRENDIZ)
+    this.topApprendizPlayers.forEach( topAward => {
+      if(topAward.sectionType == SectionType.CHECKBOX) this.topSkillsApprendizPlayers.push(topAward.skillsTop)
+    })
     this.topElitePlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3, Category.ELITE)
+    this.topElitePlayers.forEach( topAward => {
+      if(topAward.sectionType == SectionType.CHECKBOX) this.topSkillsElitePlayers.push(topAward.skillsTop)
+    })
     this.selectedCategoryTop = this.topElitePlayers
+    this.selectedCategorySkillTop = this.topSkillsElitePlayers
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
     this.loading = false
     this.applyFilters()
@@ -62,11 +72,13 @@ export class ResultadosEvaluacionComponent {
 
   showElite() {
     this.selectedCategoryTop = this.topElitePlayers
+    this.selectedCategorySkillTop = this.topSkillsElitePlayers
     this.selectedCategory = Category.ELITE
   }
 
   showAprendiz() {
     this.selectedCategoryTop = this.topApprendizPlayers
+    this.selectedCategorySkillTop = this.topSkillsApprendizPlayers
     this.selectedCategory = Category.APRENDIZ
   }
   

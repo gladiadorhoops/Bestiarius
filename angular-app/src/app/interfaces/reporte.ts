@@ -39,8 +39,10 @@ export enum SectionType {
 }
 
 export interface TopAward {
-    name: string,
-    top: TopScore[]
+    sectionName: string,
+    sectionType?: SectionType | undefined,
+    sectionTop: SectionTop[],
+    skillsTop: TopSkillsMap
 }
 
 export type TopReporte = TopAward[]
@@ -147,18 +149,27 @@ export enum Section {
 
 export interface Skill {
     value?: number | string | boolean | undefined
+    count?: number,
+    avg?: number,
     localized?: string | undefined,
     report: string,
 }
 
-export interface TopScore {
+export interface TopScoreInterface {
     playerId: string,
-    score: number,
-    name: string,
     team: string,
+    name: string,
 }
 
-export type topScoreMap = {[section: string]: TopScore}
+export interface SectionTop extends TopScoreInterface {
+    section: BaseSection,
+}
+
+export interface SkillTop extends TopScoreInterface {
+    skill: Skill,
+}
+
+export type TopSkillsMap = Map<string, SkillTop[]>
 
 export class Skills {
 
