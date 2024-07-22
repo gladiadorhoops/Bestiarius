@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ReporteBuilder } from '../../Builders/reporte-builder';
-import { DisplayReport, Reporte, SectionType, TopReporte, TopSkillsMap } from '../../interfaces/reporte';
+import { DisplayReport, Reporte, Section, TopAward, TopReporte, SectionType, TopSkillsMap } from '../../interfaces/reporte';
 import { AuthService } from '../../auth.service';
 import { S3 } from '../../aws-clients/s3';
 import { FormBuilder } from '@angular/forms';
@@ -16,7 +16,7 @@ import { Team } from '../../interfaces/team';
   styleUrls: ['./resultados-evaluacion.component.scss']
 })
 export class ResultadosEvaluacionComponent {
-
+  
   constructor(
   private fb: FormBuilder,
     private reporteBuilder: ReporteBuilder,
@@ -34,11 +34,15 @@ export class ResultadosEvaluacionComponent {
   selectedCategory: Category = Category.ELITE
   selectedPlayerReport!: DisplayReport
   selectedPlayer: Player | undefined
+  selectedAwardCat: TopAward | undefined | null;
   equipos : Team[] = [];
   catEquipos : Team[] = [];
   players : Player[] = [];
   selectedPlayerTeam!: Team;
   loading = true;
+
+  awardCategories : string[] = []
+  
   
   s3!: S3
   @Input() ddb!: DynamoDb;
@@ -65,6 +69,9 @@ export class ResultadosEvaluacionComponent {
     })
     this.selectedCategoryTop = this.topElitePlayers
     this.selectedCategorySkillTop = this.topSkillsElitePlayers
+    this.awardCategories = this.selectedCategoryTop.map(c => c.sectionName);
+    this.selectedAwardCat = this.selectedCategoryTop[0];
+
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
     this.loading = false
     this.applyFilters()
@@ -89,10 +96,12 @@ export class ResultadosEvaluacionComponent {
     else{
       this.showElite()
     }
+    this.awardCategories = this.selectedCategoryTop.map(c => c.sectionName);
   }
       
   filterForm = this.fb.group({
     cat: Category.ELITE,
+    awardCat: "Tiro",
     equipo: null,
     player: null,
   });
@@ -113,8 +122,12 @@ export class ResultadosEvaluacionComponent {
 
   async applyFilters(){
 
-
     this.switchCategory(this.filterForm.value.cat!)
+
+    let awardCat = this.filterForm.value.awardCat?.toLowerCase();
+    if(awardCat){
+      this.selectedAwardCat = this.selectedCategoryTop.find(c => c.sectionName.toLowerCase() == awardCat);
+    }
     
     this.catEquipos = this.equipos.filter(e => e.category == this.filterForm.value.cat)
     
