@@ -117,9 +117,9 @@ export class RestrictedAreaComponent {
       }
       if(this.isScout){
         this.menuItems = this.menuItems.concat([
-          {value: "evaluar", text: "Evaluar"},
-          {value: "marcadores", text: "Marcadores"},
-          {value: "resultados", text: "Resultados"}
+          {value: "evaluar", text: " Evaluar Jugador"},
+          {value: "resultados", text: "Estadisticas de Evaluacion"},
+          {value: "marcadores", text: "Marcadores"}
         ]);
       }
       if(this.isCoach){
