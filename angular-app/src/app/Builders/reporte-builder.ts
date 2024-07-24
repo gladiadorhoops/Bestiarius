@@ -7,6 +7,7 @@ import { Scout } from '../interfaces/scout';
 import { ReportType, S3 } from '../aws-clients/s3';
 import { Category } from '../interfaces/player';
 import { TOURNAMENT_YEAR } from '../aws-clients/constants';
+import { Role } from '../enum/Role';
 
 @Injectable({
     providedIn: 'root'
@@ -84,8 +85,8 @@ export class ReporteBuilder {
 
         let record: Record<string, AttributeValue> = {}
 
-        record[PK_KEY] = {S: `${scoutId}`}
-        record[SK_KEY] = {S: `report.${playerId}`}
+        record[PK_KEY] = {S: `${Role.SCOUT}.${scoutId}`}
+        record[SK_KEY] = {S: `report.player.${playerId}`}
 
         record[Section.CATEGORIA] = {S: categoria};
         record[SPK_KEY] = {S: 'reporte'}
@@ -110,8 +111,8 @@ export class ReporteBuilder {
     async getReport(ddb: DynamoDb, scout: Scout, playerId: string, equipo: string, categoria: string): Promise<FormGroup> {
 
         let record: Record<string, AttributeValue> = {
-            [PK_KEY]: {S: `${scout.id}`},
-            [SK_KEY]: {S: `report.${playerId}`}
+            [PK_KEY]: {S: `${scout.role}.${scout.id}`},
+            [SK_KEY]: {S: `report.player.${playerId}`}
         }
 
         let form = {... ReporteBuilder.defaultForm}
