@@ -5,7 +5,7 @@ import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Scout } from '../interfaces/scout';
 import { ReportType, S3 } from '../aws-clients/s3';
-import { Category } from '../interfaces/player';
+import { Category, PlayerKey } from '../interfaces/player';
 import { TOURNAMENT_YEAR } from '../aws-clients/constants';
 import { Role } from '../enum/Role';
 
@@ -156,7 +156,7 @@ export class ReporteBuilder {
     }
 
     async getPlayerCombinedReport(s3: S3, playerId: string): Promise<Reporte | undefined> {
-        let topsString = await s3.readObject(playerId, ReportType.PLAYER_REPORT)
+        let topsString = await s3.readObject(`${PlayerKey.PREFIX}.${playerId}`, ReportType.PLAYER_REPORT)
         if(topsString) return JSON.parse(topsString)        
         return 
     }
