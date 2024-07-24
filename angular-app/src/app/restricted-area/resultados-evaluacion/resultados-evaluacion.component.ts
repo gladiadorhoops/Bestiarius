@@ -27,14 +27,12 @@ export class ResultadosEvaluacionComponent {
 
   topElitePlayers!: TopReporte
   topApprendizPlayers!: TopReporte
-  topSkillsElitePlayers: TopSkillsMap[] = []
-  topSkillsApprendizPlayers: TopSkillsMap[] = []
   selectedCategoryTop!: TopReporte
-  selectedCategorySkillTop!: TopSkillsMap[]
   selectedCategory: Category = Category.ELITE
   selectedPlayerReport!: DisplayReport
   selectedPlayer: Player | undefined
   selectedAwardCat: TopAward | undefined | null;
+  selectedAwardCatSkills: TopSkillsMap | undefined | null;
   equipos : Team[] = [];
   catEquipos : Team[] = [];
   players : Player[] = [];
@@ -60,17 +58,14 @@ export class ResultadosEvaluacionComponent {
       this.s3 = await S3.build(credentials)
     }
     this.topApprendizPlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3, Category.APRENDIZ)
-    this.topApprendizPlayers.forEach( topAward => {
-      if(topAward.sectionType == SectionType.CHECKBOX) this.topSkillsApprendizPlayers.push(topAward.skillsTop)
-    })
     this.topElitePlayers = await this.reporteBuilder.retriveEvaluationResults(this.s3, Category.ELITE)
-    this.topElitePlayers.forEach( topAward => {
-      if(topAward.sectionType == SectionType.CHECKBOX) this.topSkillsElitePlayers.push(topAward.skillsTop)
-    })
     this.selectedCategoryTop = this.topElitePlayers
-    this.selectedCategorySkillTop = this.topSkillsElitePlayers
     this.awardCategories = this.selectedCategoryTop.map(c => c.sectionName);
-    this.selectedAwardCat = this.selectedCategoryTop[0];
+    if(this.selectedCategoryTop.length > 0){
+      this.selectedAwardCat = this.selectedCategoryTop[0];
+      this.selectedAwardCatSkills = this.selectedAwardCat.skillsTop;
+    }
+    console.debug(this.selectedAwardCatSkills)
 
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
     this.loading = false
@@ -79,13 +74,11 @@ export class ResultadosEvaluacionComponent {
 
   showElite() {
     this.selectedCategoryTop = this.topElitePlayers
-    this.selectedCategorySkillTop = this.topSkillsElitePlayers
     this.selectedCategory = Category.ELITE
   }
 
   showAprendiz() {
     this.selectedCategoryTop = this.topApprendizPlayers
-    this.selectedCategorySkillTop = this.topSkillsApprendizPlayers
     this.selectedCategory = Category.APRENDIZ
   }
   
@@ -123,16 +116,19 @@ export class ResultadosEvaluacionComponent {
   async applyFilters(){
 
     this.switchCategory(this.filterForm.value.cat!)
-
-    let awardCat = this.filterForm.value.awardCat?.toLowerCase();
-    if(awardCat){
-      this.selectedAwardCat = this.selectedCategoryTop.find(c => c.sectionName.toLowerCase() == awardCat);
-    }
     
     this.catEquipos = this.equipos.filter(e => e.category == this.filterForm.value.cat)
     
     if(this.filterForm.value.equipo) {
       this.players = await this.playerBuilder.getPlayersByTeam(this.ddb, this.filterForm.value.equipo)
+    }
+
+    let awardCat = this.filterForm.value.awardCat?.toLowerCase();
+    if(awardCat){
+      this.selectedAwardCat = this.selectedCategoryTop.find(c => c.sectionName.toLowerCase() == awardCat);
+      this.selectedAwardCatSkills = this.selectedAwardCat!.skillsTop;
+      console.debug(this.selectedAwardCatSkills)
+      
     }
 
     // TODO: filter teams and players based on category/team selection
