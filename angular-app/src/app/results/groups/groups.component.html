@@ -18,7 +18,7 @@
                         </div>
                         <div class="row">
                             <div class="col col-12 col-md-6" *ngFor="let group of groups">
-                                <h3 class="text-center">{{group}}</h3>
+                                <h3 class="text-center"  *ngIf="groupMatches[group].length > 0">{{group}}</h3>
                                 <div class="row marcadorItem" *ngFor="let match of groupMatches[group]; let idx=index" >
                                     
                                     <div class="col col-2"></div> <!--#{{idx+1}}</div-->
@@ -42,8 +42,8 @@
                             <h2>Elite</h2>
                         </div>
                         <div class="row">
-                            <div class="col col-12 col-md-6" *ngFor="let group of groups">
-                                <h3 class="text-center">{{group}}</h3>
+                            <div class="col col-12 col-md-6" *ngFor="let group of groups" >
+                                <h3 class="text-center" *ngIf="groupMatchesElite[group].length > 0">{{group}}</h3>
                                 <div class="row marcadorItem" *ngFor="let match of groupMatchesElite[group]; let idx=index" >
                                     
                                     <div class="col col-2"></div>
@@ -63,7 +63,7 @@
                         </div>
                     </div>
 
-                    <div class="row foto-slider">
+                    <div class="row foto-slider" *ngIf="selectedYear==='2023'" >
                         <div class="col col-12 col-md-6">
                             <div class="card">
                                 <div class="card-body">
