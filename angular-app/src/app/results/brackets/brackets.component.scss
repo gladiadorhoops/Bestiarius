@@ -444,3 +444,15 @@
     border-color: spin(shade($mid-light-color, 2%), -10);
   }
 }
+
+
+
+/* unvisited link */
+a:link {
+  color: white;
+}
+
+/* visited link */
+a:visited {
+  color: white;
+}

@@ -1,3 +1,5 @@
+@import 'colors.scss';
+
 .filterPadding{
     padding: 2%;
 }
@@ -19,3 +21,15 @@
 .padded-page{
     padding: 5%;
 }
+
+
+
+/* unvisited link */
+a:link {
+    color: white;
+  }
+  
+  /* visited link */
+  a:visited {
+    color: white;
+  }

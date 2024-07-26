@@ -52,6 +52,8 @@ export class GroupsComponent implements OnInit {
     });
 
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, this.selectedYear)
+    this.allMatches = this.allMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!))
+    
     this.allMatches.forEach(element => {
       if(this.groups.includes(element.juego)){
         if(element.category == "elite"){

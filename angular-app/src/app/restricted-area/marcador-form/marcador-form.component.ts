@@ -65,6 +65,7 @@ export class MarcadorFormComponent implements OnInit {
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, TOURNAMENT_YEAR)
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
     this.filteredMatches = this.allMatches;
+    this.filteredMatches = this.filteredMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!))
     this.loading = false;
   }
 
@@ -142,6 +143,7 @@ export class MarcadorFormComponent implements OnInit {
       this.filteredMatches = matches;
     }
 
+    this.filteredMatches = this.filteredMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!))
     console.log(day);
     console.log(gym);
     console.log(equipo);

@@ -45,6 +45,7 @@ export class StandingMatchesComponent implements OnInit {
     this.standingMatchesElite = []
 
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, year)
+    this.allMatches = this.allMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!))
     this.allMatches.forEach(element => {
       if(element.juego == 'Standing'){
         if(element.category == "elite"){
