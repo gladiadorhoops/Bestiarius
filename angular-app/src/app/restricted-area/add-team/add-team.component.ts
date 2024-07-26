@@ -10,6 +10,8 @@ import { AddPlayerComponent } from './add-player/add-player.component';
 import {v4 as uuidv4} from 'uuid';
 import { Coach } from '../../interfaces/coach';
 import { UserBuilder } from '../../Builders/user-builder';
+import { FeatureFlagBuilder } from 'src/app/Builders/feature-flag-builder';
+import { FeatureFlag } from 'src/app/interfaces/feature-flag';
 
 
 @Component({
@@ -24,7 +26,8 @@ export class AddTeamComponent {
     private teamBuilder: TeamBuilder,
     private userBuilder: UserBuilder,
     private playerBuilder: PlayerBuilder,
-  ) {
+    private featureFlagBuilder: FeatureFlagBuilder
+    ) {
     this.userrole = this.authService.getUserRole();
 
   }
@@ -53,12 +56,17 @@ export class AddTeamComponent {
   selectedTeamId: string = "";
   popUpMsg = "";
   displayStyle = "none";
+  featureFlags: FeatureFlag | undefined = undefined
+  editable = true;
 
   async ngOnInit() {
     if(this.userrole != "coach"){
       this.coaches = await this.userBuilder.getCoaches(this.ddb);
     }
 
+    this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
+    this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
+    
   }
 
   @ViewChildren(AddPlayerComponent) viewChildren!: QueryList<AddPlayerComponent>;

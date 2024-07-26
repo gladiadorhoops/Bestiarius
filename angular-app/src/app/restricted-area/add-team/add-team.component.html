@@ -3,7 +3,11 @@
       <h2 class="text-center mb-3">
         Registro de Equipo
     </h2>
-    <form [formGroup]="teamForm" (ngSubmit)="onSubmit()" class ="fcol">
+
+    <h2 *ngIf="!editable" class="text-center">
+      No disponible
+  </h2>
+    <form *ngIf="editable"  [formGroup]="teamForm" (ngSubmit)="onSubmit()" class ="fcol">
             <div class="accordion accordion-flush" id="accordionFlushExample">
                 <div class="accordion-item">
                   <h2 class="accordion-header">
