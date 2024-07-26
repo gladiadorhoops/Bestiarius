@@ -85,7 +85,7 @@
             </table>
         </div>
 
-        <h3 class="text-center mb-3" *ngIf="selectedAwardCat != null && selectedAwardCat != undefined"> Breakdown de {{selectedAwardCat.sectionName}} </h3>
+        <h3 class="text-center mb-3" *ngIf="selectedAwardCat != null && selectedAwardCat != undefined"> Desglose de {{selectedAwardCat.sectionName}} </h3>
 
         <div  *ngFor="let topSkill of selectedAwardCatSkills | keyvalue; let i=index" class="accordion accordion-flush" id="accordionFlushExample">
             <div class="accordion-item">

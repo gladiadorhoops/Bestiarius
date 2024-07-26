@@ -106,7 +106,8 @@ export class MatchBuilder {
 
         let record: Record<string, AttributeValue> = {}
 
-        record[PK_KEY] = {S: `${id}`}
+        console.debug("Editing match ", id)
+        record[PK_KEY] = {S: `match.${id}`}
         record[SK_KEY] = {S: `match.data`}
         
         

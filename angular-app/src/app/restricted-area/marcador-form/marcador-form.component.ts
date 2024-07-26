@@ -7,6 +7,8 @@ import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { Team } from '../../interfaces/team';
 import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
+import { Gym } from 'src/app/interfaces/gym';
+import { GymBuilder } from 'src/app/Builders/gym-builder';
 
 const S3_BUCKET_URL = (day: string) => `https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-11/category-matches-2023-07-${day}.json`
 
@@ -23,7 +25,7 @@ export class MarcadorFormComponent implements OnInit {
   matchesAprendizDays: Match[][] = [];
   matchesEliteDays: Match[][] = [];
   todayDay = new Date().getDate();
-  gyms = ['Gimnasio Nuevo', 'Gimnasio Tecnológico', 'Cancha Sindicato', 'Gimnasio Municipal', 'Gimnasio Municipal (afuera)', 'Gimnasio Federal'];
+  gyms : Gym[] = []; //['Gimnasio Nuevo', 'Gimnasio Tecnológico', 'Cancha Sindicato', 'Gimnasio Municipal', 'Gimnasio Municipal (afuera)', 'Gimnasio Federal'];
 
 
   equipos : Team[] = [];
@@ -37,6 +39,7 @@ export class MarcadorFormComponent implements OnInit {
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
     private teamBuilder: TeamBuilder,
+    private gymBuilder: GymBuilder,
     private httpService: HttpClient
     ) {
   }
@@ -54,9 +57,10 @@ export class MarcadorFormComponent implements OnInit {
   });
 
   async ngOnInit() {
-    await this.loadMatches()
+    this.gyms = await this.gymBuilder.getListOfGyms(this.ddb, TOURNAMENT_YEAR);
+    await this.loadMatches();
   }  
-
+  
   async loadMatches(){
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, TOURNAMENT_YEAR)
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
