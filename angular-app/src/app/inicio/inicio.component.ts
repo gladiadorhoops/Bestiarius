@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
+import { Router } from '@angular/router'
 
 
 @Component({
@@ -9,7 +10,7 @@ import { HttpClient } from '@angular/common/http'
 })
 export class InicioComponent implements OnInit {
 
-  constructor(private httpService: HttpClient) { }
+  constructor(private httpService: HttpClient, public router: Router) { }
   ngOnInit(): void {
   }
 
