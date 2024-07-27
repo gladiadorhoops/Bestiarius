@@ -74,13 +74,15 @@
                     <th class="col col-1">#</th>
                     <th class="col col-5">Nombre</th>
                     <th class="col col-4">Equipo</th>
-                    <th class="col col-2">Pts</th>
+                    <th *ngIf="showAvg" class="col col-2">Pts</th>
+                    <th *ngIf="!showAvg" class="col col-2">Votos</th>
                 </tr>
                 <tr class="row" *ngFor="let player of selectedAwardCat.sectionTop; let i=index" (click)="updateSelected(player.playerId)">
                     <td class="col col-1">{{i+1}}</td>
                     <td class="col col-5">{{player.name}}</td>
                     <td class="col col-4">{{player.team}}</td>
-                    <td class="col col-2">{{player.section.score.avg}}</td>
+                    <td *ngIf="showAvg" class="col col-2">{{player.section.score.avg}}</td>
+                    <td *ngIf="!showAvg" class="col col-2">{{player.section.score.count}}</td>
                 </tr>
             </table>
         </div>
@@ -101,13 +103,15 @@
                             <th class="col col-1">#</th>
                             <th class="col col-5">Nombre</th>
                             <th class="col col-4">Equipo</th>
-                            <th class="col col-2">Pts</th>
+                            <th *ngIf="showAvg" class="col col-2">Pts</th>
+                            <th *ngIf="!showAvg" class="col col-2">Votos</th>
                         </tr>
                         <tr class="row" *ngFor="let player of topSkill.value; let i=index" (click)="updateSelected(player.playerId)">
                             <td class="col col-1">{{i+1}}</td>
                             <td class="col col-5">{{player.name}}</td>
                             <td class="col col-4">{{player.team}}</td>
-                            <td class="col col-2">{{player.skill.avg}}</td>
+                            <td *ngIf="showAvg" class="col col-2">{{player.skill.avg}}</td>
+                            <td *ngIf="!showAvg" class="col col-2">{{player.skill.count}}</td>
                         </tr>
                     </table>
                 </div>

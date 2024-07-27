@@ -33,6 +33,7 @@ export class ResultadosEvaluacionComponent {
   selectedPlayer: Player | undefined
   selectedAwardCat: TopAward | undefined | null;
   selectedAwardCatSkills: TopSkillsMap | undefined | null;
+  showAvg = true;
   equipos : Team[] = [];
   catEquipos : Team[] = [];
   players : Player[] = [];
@@ -64,6 +65,13 @@ export class ResultadosEvaluacionComponent {
     if(this.selectedCategoryTop.length > 0){
       this.selectedAwardCat = this.selectedCategoryTop[0];
       this.selectedAwardCatSkills = this.selectedAwardCat.skillsTop;
+      console.warn("section type: ", this.selectedAwardCat.sectionType)
+      if(this.selectedAwardCat.sectionType && this.selectedAwardCat.sectionType == "checkbox"){
+        this.showAvg = false;
+      }
+      else{
+        this.showAvg = true;
+      }
     }
     console.debug(this.selectedAwardCatSkills)
 
@@ -128,7 +136,14 @@ export class ResultadosEvaluacionComponent {
       this.selectedAwardCat = this.selectedCategoryTop.find(c => c.sectionName.toLowerCase() == awardCat);
       this.selectedAwardCatSkills = this.selectedAwardCat!.skillsTop;
       console.debug(this.selectedAwardCatSkills)
-      
+
+      console.warn("section type: ", this.selectedAwardCat!.sectionType)
+      if(this.selectedAwardCat!.sectionType && this.selectedAwardCat!.sectionType == "checkbox"){
+        this.showAvg = false;
+      }
+      else{
+        this.showAvg = true;
+      }
     }
 
     // TODO: filter teams and players based on category/team selection
