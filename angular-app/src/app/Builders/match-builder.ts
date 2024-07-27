@@ -67,7 +67,8 @@ export class MatchBuilder {
             homePoints: item['homePoints'].S!,
             braketPlace: item['braketPlace'].S!,
             visitorTeam: vteam,
-            homeTeam: hteam
+            homeTeam: hteam,
+            singleTeam: item['singleTeam']?.BOOL,
         }
     }
 

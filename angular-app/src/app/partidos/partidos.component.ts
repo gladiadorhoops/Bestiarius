@@ -56,7 +56,7 @@ export class PartidosComponent {
 
   async showViews(){
     this.showAwards = this.featureFlags ? this.featureFlags.showAwards : false;
-    this.showBrackets = this.featureFlags ? this.featureFlags.showAwards : false;
+    this.showBrackets = this.featureFlags ? this.featureFlags.showBrackets : false;
     this.showGroups = this.featureFlags ? this.featureFlags.showGroups : false;
     this.showStandings = this.featureFlags ? this.featureFlags.showStandings : false;
 

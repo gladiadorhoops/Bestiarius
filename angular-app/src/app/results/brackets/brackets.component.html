@@ -198,7 +198,7 @@
                                     </li>
                                     <li class="tournament-bracket__item">
                                         <div class="tournament-bracket__match" tabindex="0">
-                                            <table class="tournament-bracket__table">
+                                            <table *ngIf="phaseMatches['o2'].singleTeam==undefined" class="tournament-bracket__table">
                                             <caption class="tournament-bracket__caption">
                                                 <a href="https://www.google.com/maps/search/?api=1&query_place_id={{phaseMatches['o2'].location.place_id}}&query={{phaseMatches['o2'].location.address}}">{{phaseMatches['o2'].location.name}}</a> {{phaseMatches['o2'].time}}
                                             </caption>
@@ -226,6 +226,35 @@
                                                 </td>
                                                 </tr>
                                             </tbody>
+                                            </table>
+                                            <table *ngIf="phaseMatches['o2'].singleTeam" class="tournament-bracket__table">
+                                                <caption class="tournament-bracket__caption">
+                                                    {{phaseMatches['o2'].homeTeam.name}} <br> .
+                                                </caption>
+                                                <thead class="sr-only">
+                                                    <tr>
+                                                    <th>Equipo</th>
+                                                    <th>Puntos</th>
+                                                    </tr>
+                                                </thead>  
+                                                <tbody class="tournament-bracket__content">
+                                                    <tr class="tournament-bracket__team">
+                                                    <td class="tournament-bracket__country">.
+                                                        <abbr class="tournament-bracket__code" title="">&#32;</abbr>
+                                                    </td>
+                                                    <td class="tournament-bracket__score">
+                                                        .
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="tournament-bracket__team">
+                                                    <td class="tournament-bracket__country">
+                                                        <abbr class="tournament-bracket__code" title="">&#32;</abbr>
+                                                    </td>
+                                                    <td class="tournament-bracket__score">
+                                                       &#32;
+                                                    </td>
+                                                    </tr>
+                                                </tbody>
                                             </table>
                                         </div>
                                     </li>
@@ -264,7 +293,7 @@
                                     </li>
                                     <li class="tournament-bracket__item">
                                         <div class="tournament-bracket__match" tabindex="0">
-                                            <table class="tournament-bracket__table">
+                                            <table *ngIf="phaseMatches['o4'].singleTeam==undefined" class="tournament-bracket__table">
                                             <caption class="tournament-bracket__caption">
                                                 <a href="https://www.google.com/maps/search/?api=1&query_place_id={{phaseMatches['o4'].location.place_id}}&query={{phaseMatches['o4'].location.address}}">{{phaseMatches['o4'].location.name}}</a> {{phaseMatches['o4'].time}}
                                             </caption>
@@ -292,6 +321,35 @@
                                                 </td>
                                                 </tr>
                                             </tbody>
+                                            </table>
+                                            <table *ngIf="phaseMatches['o4'].singleTeam" class="tournament-bracket__table">
+                                                <caption class="tournament-bracket__caption">
+                                                    {{phaseMatches['o4'].homeTeam.name}}  <br> .
+                                                </caption>
+                                                <thead class="sr-only">
+                                                    <tr>
+                                                    <th>Equipo</th>
+                                                    <th>Puntos</th>
+                                                    </tr>
+                                                </thead>  
+                                                <tbody class="tournament-bracket__content">
+                                                    <tr class="tournament-bracket__team">
+                                                    <td class="tournament-bracket__country">.
+                                                        <abbr class="tournament-bracket__code" title="">&#32;</abbr>
+                                                    </td>
+                                                    <td class="tournament-bracket__score">
+                                                        .
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="tournament-bracket__team">
+                                                    <td class="tournament-bracket__country">
+                                                        <abbr class="tournament-bracket__code" title="">&#32;</abbr>
+                                                    </td>
+                                                    <td class="tournament-bracket__score">
+                                                       &#32;
+                                                    </td>
+                                                    </tr>
+                                                </tbody>
                                             </table>
                                         </div>
                                     </li>
@@ -330,7 +388,7 @@
                                     </li>
                                     <li class="tournament-bracket__item">
                                         <div class="tournament-bracket__match" tabindex="0">
-                                            <table class="tournament-bracket__table">
+                                            <table *ngIf="phaseMatches['o6'].singleTeam==undefined" class="tournament-bracket__table">
                                             <caption class="tournament-bracket__caption">
                                                 <a href="https://www.google.com/maps/search/?api=1&query_place_id={{phaseMatches['o6'].location.place_id}}&query={{phaseMatches['o6'].location.address}}">{{phaseMatches['o6'].location.name}}</a> {{phaseMatches['o6'].time}}
                                             </caption>
@@ -358,6 +416,35 @@
                                                 </td>
                                                 </tr>
                                             </tbody>
+                                            </table>
+                                            <table *ngIf="phaseMatches['o6'].singleTeam" class="tournament-bracket__table">
+                                                <caption class="tournament-bracket__caption">
+                                                    {{phaseMatches['o6'].homeTeam.name}}  <br> .
+                                                </caption>
+                                                <thead class="sr-only">
+                                                    <tr>
+                                                    <th>Equipo</th>
+                                                    <th>Puntos</th>
+                                                    </tr>
+                                                </thead> 
+                                                <tbody class="tournament-bracket__content">
+                                                    <tr class="tournament-bracket__team">
+                                                    <td class="tournament-bracket__country">.
+                                                        <abbr class="tournament-bracket__code" title="">&#32;</abbr>
+                                                    </td>
+                                                    <td class="tournament-bracket__score">
+                                                        .
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="tournament-bracket__team">
+                                                    <td class="tournament-bracket__country">
+                                                        <abbr class="tournament-bracket__code" title="">&#32;</abbr>
+                                                    </td>
+                                                    <td class="tournament-bracket__score">
+                                                       &#32;
+                                                    </td>
+                                                    </tr>
+                                                </tbody>
                                             </table>
                                         </div>
                                     </li>
@@ -396,7 +483,7 @@
                                     </li>
                                     <li class="tournament-bracket__item">
                                         <div class="tournament-bracket__match" tabindex="0">
-                                            <table class="tournament-bracket__table">
+                                            <table *ngIf="phaseMatches['o8'].singleTeam==undefined" class="tournament-bracket__table">
                                             <caption class="tournament-bracket__caption">
                                                 <a href="https://www.google.com/maps/search/?api=1&query_place_id={{phaseMatches['o8'].location.place_id}}&query={{phaseMatches['o8'].location.address}}">{{phaseMatches['o8'].location.name}}</a> {{phaseMatches['o8'].time}}
                                             </caption>
@@ -424,6 +511,36 @@
                                                 </td>
                                                 </tr>
                                             </tbody>
+                                            </table>
+
+                                            <table *ngIf="phaseMatches['o8'].singleTeam" class="tournament-bracket__table">
+                                                <caption class="tournament-bracket__caption">
+                                                    {{phaseMatches['o8'].homeTeam.name}}  <br> .
+                                                </caption>
+                                                <thead class="sr-only">
+                                                    <tr>
+                                                    <th>Equipo</th>
+                                                    <th>Puntos</th>
+                                                    </tr>
+                                                </thead>  
+                                                <tbody class="tournament-bracket__content">
+                                                    <tr class="tournament-bracket__team">
+                                                    <td class="tournament-bracket__country">.
+                                                        <abbr class="tournament-bracket__code" title="">&#32;</abbr>
+                                                    </td>
+                                                    <td class="tournament-bracket__score">
+                                                        .
+                                                    </td>
+                                                    </tr>
+                                                    <tr class="tournament-bracket__team">
+                                                    <td class="tournament-bracket__country">
+                                                        <abbr class="tournament-bracket__code" title="">&#32;</abbr>
+                                                    </td>
+                                                    <td class="tournament-bracket__score">
+                                                       &#32;
+                                                    </td>
+                                                    </tr>
+                                                </tbody>
                                             </table>
                                         </div>
                                     </li>
