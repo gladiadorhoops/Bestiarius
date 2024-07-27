@@ -21,7 +21,7 @@
                                 <h3 class="text-center"  *ngIf="groupMatches[group].length > 0">{{group}}</h3>
                                 <div class="row marcadorItem" *ngFor="let match of groupMatches[group]; let idx=index" >
                                     
-                                    <div class="col col-12 text-center">{{match.category}}</div> <!--#{{idx+1}}</div-->
+                                    <div class="col col-12 text-center">{{match.category}}</div> 
                                     <div class="col col-2"></div> <!--#{{idx+1}}</div-->
                                     <div class="col col-8" > 
                                         <div class="row">{{match.homeTeam.name}}</div>
@@ -47,6 +47,7 @@
                                 <h3 class="text-center" *ngIf="groupMatchesElite[group].length > 0">{{group}}</h3>
                                 <div class="row marcadorItem" *ngFor="let match of groupMatchesElite[group]; let idx=index" >
                                     
+                                    <div class="col col-12 text-center">{{match.category}}</div>
                                     <div class="col col-2"></div>
                                     <div class="col col-8" > 
                                         <div class="row">{{match.homeTeam.name}}</div>
