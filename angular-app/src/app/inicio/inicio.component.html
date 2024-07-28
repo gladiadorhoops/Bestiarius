@@ -8,6 +8,34 @@
         <div class="d-flex justify-content-center align-items-center" >
             
             <div class="text-justify outer">
+                <div class=" text-center row" >
+                    <h2>Podio 2024</h2>
+                    <div class="maincol col col-lg-6 col-12">
+                        <table class="row">
+                            <tr class="row">
+                                <th class="col col-12">Elite</th>
+                            </tr>
+                            <tr class="row" *ngFor="let res of resultsEL" [routerLink]="" >
+                                <td class="col col-2">{{res.pos}}</td>
+                                <td class="col col-10">{{res.team}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="maincol col col-lg-6 col-12">
+                        <table class="row">
+                            <tr class="row">
+                                <th class="col col-12">Aprendiz</th>
+                            </tr>
+                            <tr class="row" *ngFor="let res of resultsAP" [routerLink]="" >
+                                <td class="col col-2">{{res.pos}}</td>
+                                <td class="col col-10">{{res.team}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>  
+
+                <br><br>
+
                 <div class="row">
                     <button class="btn col-12 col-md-7" (click)="router.navigate(['/partidos'])">
                         <img width="100%" src="assets/ResultadosBnt.png" class="rounded" alt="Resultados de Partidos" >
@@ -19,23 +47,6 @@
             
                 <br>
                 <br>
-                
-            <h3 class="text-center mb-3">
-                Doceavo Torneo Gladiadores
-            </h3><br>
-
-            <h5 class="text-center mb-3">
-                Cuando?
-            </h5>
-            <p>El torneo se llevará a cabo los días 26, 27 y 28 de julio.</p>
-            <br><br>
-
-
-            <h5 class="text-center mb-3">
-                Dónde?
-            </h5>
-            <p>La ciudad de Parral es la sede del Torneo Gladiadores.</p>
-            <br><br>
 
             </div>
         </div>

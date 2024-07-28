@@ -14,4 +14,16 @@ export class InicioComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  resultsAP = [
+    {pos: "#1", team: "ALUTEC"},
+    {pos: "#2", team: "Pioneros de Delicias"},
+    {pos: "#3", team: "Esbal"}
+  ]
+
+  resultsEL = [
+    {pos: "#1", team: "Juarez"},
+    {pos: "#2", team: "SAHQ Academy"},
+    {pos: "#3", team: "Wildcats Torreon"}
+  ]
+
 }
