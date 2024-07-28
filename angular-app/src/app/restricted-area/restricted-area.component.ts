@@ -38,6 +38,7 @@ export class RestrictedAreaComponent {
     viewUsersView = false;
     viewTeamsView = false;
     listTeamsView = false;
+    listPlayersView = false;
 
     ddb!: DynamoDb;
     loading = true;
@@ -112,6 +113,7 @@ export class RestrictedAreaComponent {
           {value: "addGym", text: "Add Gym"},
           {value: "addMatch", text: "Add Match"},
           {value: "editMatch", text: "Edit Match"},
+          {value: "listPlayers", text: "Jugadores Registrados"},
           {value: "viewUsers", text: "Usuarios Registrados"}
         ]);
       }
@@ -169,6 +171,10 @@ export class RestrictedAreaComponent {
         case 'listTeams': { 
            this.showListTeams()
            break; 
+        }  
+        case 'listPlayers': { 
+           this.showListPlayers()
+           break; 
         } 
         case 'addGym': { 
            this.showAddGym()
@@ -192,6 +198,7 @@ export class RestrictedAreaComponent {
     this.viewUsersView = false;
     this.viewTeamsView = false;
     this.listTeamsView = false;
+    this.listPlayersView = false;
   }
 
   showEvaluacion() {
@@ -234,6 +241,10 @@ export class RestrictedAreaComponent {
   showListTeams(){
     this.hideAll();
     this.listTeamsView = true;
+  }
+  showListPlayers(){
+    this.hideAll();
+    this.listPlayersView = true;
   }
 
   async reloadListTeams(){

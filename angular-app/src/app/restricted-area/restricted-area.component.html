@@ -56,6 +56,10 @@
                         <app-view-users [ddb]="ddb"></app-view-users>
                     </div>
                     
+                    <div *ngIf="listPlayersView">
+                        <app-list-players [ddb]="ddb" ></app-list-players>
+                    </div>
+                    
                     <div *ngIf="listTeamsView">
                         <app-list-teams [ddb]="ddb" (callViewTeam)="showViewTeams($event)" (callAddTeam)="showAddTeam()"></app-list-teams>
                     </div>

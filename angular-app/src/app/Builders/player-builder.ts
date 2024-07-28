@@ -40,6 +40,20 @@ export class PlayerBuilder {
         return players
     }
 
+
+
+    async getAllPlayers(ddb: DynamoDb): Promise<Player[]> {
+        let players: Player[] = []
+        players = await ddb.listByYearQuery(`${PlayerKey.PREFIX}.data`, TOURNAMENT_YEAR).then(
+            (items) => {
+                items.sort((a, b) => a[PlayerKey.NAME].S!.localeCompare(b[PlayerKey.NAME].S!))
+                return items.map((item) => {return this.buildPlayer(item)})
+            }
+        )
+        console.log('Players', players)
+        return players
+    }
+
     async deletePlayersByTeam(ddb: DynamoDb, teamId: string) {
         let players: Player[] = await this.getPlayersByTeam(ddb, teamId)
         console.log('Players to delete', players)

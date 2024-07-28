@@ -53,6 +53,7 @@ import { AwardsComponent } from './results/awards/awards.component';
 import { ParticipantsComponent } from './participants/participants.component';
 import { PartidosComponent } from './partidos/partidos.component';
 import { AddGymComponent } from './restricted-area/add-gym/add-gym.component';
+import { ListPlayersComponent } from './restricted-area/list-players/list-players.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { AddGymComponent } from './restricted-area/add-gym/add-gym.component';
     AwardsComponent,
     ParticipantsComponent,
     PartidosComponent,
-    AddGymComponent
+    AddGymComponent,
+    ListPlayersComponent
   ],
   imports: [
     BrowserModule,

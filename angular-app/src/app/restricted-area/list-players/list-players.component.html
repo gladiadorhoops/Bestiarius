@@ -1,0 +1,22 @@
+
+<h2 class="text-center mb-3">
+    Jugadores Registrados
+</h2>
+
+<div class="spinner-border text-light" role="status" *ngIf="loading">
+    <span class="sr-only">Loading...</span>
+</div>
+<div class="mainpanel" *ngIf="!loading">
+    <table class="row">
+        <tr class="row">
+            <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortPlayersByEquipo()">Equipo</a></th>
+            <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortPlayersByCategory()">Categoria</a></th>
+            <th class="col col-lg-6 col-12"> <a [routerLink]="" (click)="sortPlayersByName()">Jugador</a></th>
+        </tr>
+        <tr class="row" *ngFor="let player of players" [routerLink]="" >
+            <td class="col col-lg-3 col-12">{{uTeams.get(player.team)}}</td>
+            <td class="col col-lg-3 col-12">{{player.category}}</td>
+            <td class="col col-lg-6 col-12">{{player.name}}</td>
+        </tr>
+    </table>
+</div>  
