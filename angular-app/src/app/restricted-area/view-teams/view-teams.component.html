@@ -3,11 +3,18 @@
     <span class="sr-only">Loading...</span>
 </div>
 <div class="mainpanel" *ngIf="!loading">
+  <button class="btn btn-outline-danger btn-floating m-1" title="Volver a Equipos Registrados" (click)="callParentToListTeams()" target="_blank" role="button">
+    <i class="fas fa-arrow-left"></i>
+  </button>
+  
     <h2 class="text-center mb-3">
-        {{team?.name}} 
-        <button *ngIf="editable" class="btn btn-outline-danger btn-sm" (click)="openEditTeam()"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-          <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-        </svg></button>
+      {{team?.name}} &nbsp;
+      <button class="btn btn-outline-danger btn-sm" title="Editar Equipo" (click)="openEditTeam()" target="_blank" role="button">
+        <i class="fa fa-pencil"></i>
+      </button>&nbsp;
+      <button class="btn btn-outline-danger  btn-sm" title="Eliminar Equipo" (click)="removeTeam()" target="_blank" role="button">
+        <i class="fa fa-trash"></i>
+      </button>
     </h2>
 
     <table class="row">
@@ -25,23 +32,21 @@
         </tr>
     </table>
     <p></p>
+    <button *ngIf="editable" type="button" (click)="selectCaptan()" class="btn btn-outline-warning"> Seleccionar Capitán</button>
+    <p></p>
     <table class="row">
         <tr class="row">
             <th class="col col-lg-8 col-12"> <a [routerLink]="">Player</a></th>
             <th class="col col-lg-4 col-12"> <a [routerLink]="">Position</a></th>
         </tr>
-        <tr class="row" *ngFor="let player of players" [routerLink]="" (click)="viewPlayer(player.id)">
+        <tr class="row" *ngFor="let player of players" [routerLink]="" (click)="editPlayer(player.id)">
             <td class="col col-lg-8 col-12"><u>{{player.name}}{{(player.id === team?.captainId) ? " (Capitán)" : ""}}</u></td>
             <td class="col col-lg-4 col-12">{{player.position}}</td>
         </tr>
     </table>
-    <button *ngIf="editable" type="button" (click)="addPlayer()" class="btn btn-danger"> Aggregar Jugador</button>
-
-    <br><br>
-    <div class="frow" >
-        <button type="button" (click)="callParentToListTeams()" class="btn btn-dark">Volver a Equipos Registrados</button>
-        <button *ngIf="editable" type="button" (click)="removeTeam()" class="btn btn-danger">Eliminar Equipo</button>
-    </div>
+    <p></p>
+    <button *ngIf="editable" type="button" (click)="addPlayer()" class="btn btn-outline-warning"> Aggregar Nuevo Jugador</button>&nbsp;
+    <button *ngIf="editable" type="button" (click)="addExistingPlayer()" class="btn btn-outline-warning"> Aggregar Jugadores Existentes</button>
 </div>  
 
 <!--Edit team modal-->
@@ -97,6 +102,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" 
+                (click)="deletePlayer()">
+          Eliminar Jugador
+        </button>
+        <button type="button" class="btn btn-danger" 
                 (click)="confirmEditTeam()">
           Confirmar
         </button>
@@ -135,56 +144,62 @@
   </div>
 </div>
 
-<!--View player modal-->
+<!--Select captan modal-->
 <div class="modal"
       tabindex="-1"
       role="dialog"
-      [ngStyle]="{'display':displayPlayer}">
+      [ngStyle]="{'display':displayCaptan}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Detalles del Jugador</h5>
-        <button type="button" class="btn-close" (click)="closePlayer()" aria-label="Close">
+        <h5 class="modal-title">Selecciona Capitán</h5>
+        <button type="button" class="btn-close" (click)="closeCaptan()" aria-label="Close">
         </button>
       </div>
       <div class="modal-body">
-
-        <tr class="row">
-          <th class="col col-lg-3 col-12">Nombre</th>
-          <td class="col col-lg-9 col-12">{{selectedPlayer!.name}}{{(selectedPlayer.id === team?.captainId) ? " (Capitán)" : ""}}</td>
-        </tr>
-        
-        <tr class="row">
-          <th class="col col-lg-3 col-12">Fecha de Nacimiento</th>
-          <td class="col col-lg-9 col-12">{{getDate(selectedPlayer!.birthday!)}}</td>
-        </tr>
-        
-        <tr class="row">
-          <th class="col col-lg-3 col-12">Posición</th>
-          <td class="col col-lg-9 col-12">{{selectedPlayer!.position}}</td>
-        </tr>
-
-        <tr class="row">
-          <th class="col col-lg-3 col-12">Altura (cm)</th>
-          <td class="col col-lg-9 col-12">{{selectedPlayer!.height}}</td>
-        </tr>
-        
-        <tr class="row">
-          <th class="col col-lg-3 col-12">Peso (kg)</th>
-          <td class="col col-lg-9 col-12">{{selectedPlayer!.weight}}</td>
-        </tr>
-        
-        
+        <div class="frow">
+          <select id="captan" #selcapt (change)="onChangeCapt(selcapt.value)">
+            <option default value=""></option>
+            <option *ngFor="let player of players" value="{{player.id}}">{{player.name}}</option>
+          </select><br><br>
+          <button type="button" class="btn btn-outline-danger" 
+          (click)="saveCaptan()">
+          Confirmar
+          </button>
+        </div>
       </div>
-      <div *ngIf="editable" class="modal-footer">
-        <button type="button" class="btn btn-danger" 
-                (click)="deletePlayer()">
-          Eliminar Jugador
+    </div>
+  </div>
+</div>
+
+<!--Add existing player modal-->
+<div class="modal"
+      tabindex="-1"
+      role="dialog"
+      [ngStyle]="{'display':displayAddExistingPlayer}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Aggregar Jugadores Existentes</h5>
+        <button type="button" class="btn-close" (click)="closeAddExistingPlayer()" aria-label="Close">
         </button>
-        <button *ngIf="editable" type="button" class="btn btn-danger" 
-                (click)="editPlayer()">
-          Editar Jugador
-        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="frow">
+          <p>Por favor seleccione los jugadores que desea registrar en este equipo:</p>
+          <form [formGroup]="addExistingPlayerForm" (ngSubmit)="addExistingPlayerSubmit()" class ="fcol">
+              <div *ngFor="let option of ordersFormArray.controls; let i = index">
+                  <label formArrayName="selectedOptions" >
+                    <input type="checkbox" [formControlName]="i">
+                    {{ availablePlayers![i].name }}
+                  </label>
+              </div>
+              <div class="frow">
+                  <button type="submit" [disabled]="!addExistingPlayerForm.valid">Registrar</button>
+              </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -236,7 +251,7 @@
         <app-add-player [teamplayers]="players" [equipoId]="team?.id!" [categoria]="team?.category!" [playerId]="newplayerid" [ddb]="ddb"></app-add-player>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" 
+        <button *ngIf="editable" type="button" class="btn btn-danger" 
                 (click)="confirmAddPlayer()">
           Confirmar
         </button>

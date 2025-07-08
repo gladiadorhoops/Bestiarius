@@ -5,6 +5,7 @@ import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import {v4 as uuidv4} from 'uuid';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TOURNAMENT_YEAR } from '../aws-clients/constants';
+import { CoachKey } from '../interfaces/coach';
 
 @Injectable({
     providedIn: 'root'
@@ -23,8 +24,45 @@ export class TeamBuilder {
         record[TeamKey.COACH_NAME] = {S: `${team.coachName}`};
         record[TeamKey.LOACTION] = {S: `${team.location}`};
         record[CY_KEY] = {S: TOURNAMENT_YEAR};
-
+        console.log('record', record)
+        
         await ddb.putItem(record);
+    }
+
+    async updateTeamYear(ddb: DynamoDb, team: Team, year: string) {
+
+        let key = {
+            [PK_KEY]: {S: `${TeamKey.PREFIX}.${team.id}`},
+            [SK_KEY]: {S: `${TeamKey.SK}`}
+        };
+        let updateExpression = 'SET #yearattr = :val';
+        let expressionAttributeNames: Record<string, string> = {
+            '#yearattr': `${CY_KEY}`,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':val': {S: year},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
+    }
+
+
+
+    async updateCaptainId(ddb: DynamoDb, teamId: string, captainId: string) {
+
+        let key = {
+            [PK_KEY]: {S: `${TeamKey.PREFIX}.${teamId}`},
+            [SK_KEY]: {S: `${TeamKey.SK}`}
+        };
+        let updateExpression = 'SET #capattr = :val';
+        let expressionAttributeNames: Record<string, string> = {
+            '#capattr': `${TeamKey.CAPTAIN_ID}`,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':val': {S: `${captainId}`},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
     }
 
     async getTeamsByCategory(ddb: DynamoDb, category: string, year: string = TOURNAMENT_YEAR): Promise<Team[]> {
@@ -63,8 +101,7 @@ export class TeamBuilder {
     }
 
     async getTeamsByCoach(ddb: DynamoDb, coachId: string): Promise<Team[]> {
-        var teams: Team[] = []
-        teams = await ddb.listSecondaryQuery(`${TeamKey.SK}`, coachId).then(
+        var teams: Team[] = await ddb.listSecondaryQuery(`${TeamKey.SK}`, coachId).then(
             (items) => {
                 items.sort((a, b) => a['name'].S!.localeCompare(b['name'].S!))
                 return items.map((item) => {return this.buildTeam(item)})
@@ -106,6 +143,18 @@ export class TeamBuilder {
             coachId: item[SSK_KEY]?.S ? item[SSK_KEY]?.S! : "",
             coachName: item[TeamKey.COACH_NAME]?.S,
             location: item[TeamKey.LOACTION]?.S,
+            year: item[TeamKey.YEAR].S ? item[TeamKey.YEAR].S : "",
+        }
+    }
+
+    getEmptyTeam(): Team {
+        return {
+            id: "",
+            name: "",
+            captainId: "",
+            coachId: "",
+            coachName: "",
+            location: ""
         }
     }
 

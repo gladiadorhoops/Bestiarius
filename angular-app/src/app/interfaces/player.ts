@@ -9,6 +9,7 @@ export interface Player {
     weight: string,
     position: string,
     birthday: Date | undefined
+    year?: string
 }
 
 export enum PlayerKey {

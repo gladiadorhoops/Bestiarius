@@ -37,7 +37,7 @@
                     </div>
                     
                     <div *ngIf="addTeamView">
-                        <app-add-team [ddb]="ddb" (callListTeam)="showListTeams()"></app-add-team>
+                        <app-add-team [ddb]="ddb" (callViewTeam)="showViewTeams($event)" (callListTeam)="showListTeams()"></app-add-team>
                     </div>
                     
                     <div *ngIf="addGymView">

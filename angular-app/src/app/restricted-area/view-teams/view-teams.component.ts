@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from 
 import { AuthService } from '../../auth.service';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { TeamBuilder } from '../../Builders/team-builder';
-import { Team, getCategories } from '../../interfaces/team';
-import { Player } from '../../interfaces/player';
+import { Team, getCategories, TeamKey } from '../../interfaces/team';
+import { Player, PlayerKey } from '../../interfaces/player';
 import { PlayerBuilder } from '../../Builders/player-builder';
 import { formatDate } from "@angular/common";
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import {v4 as uuidv4} from 'uuid';
 import { AddPlayerComponent } from '../add-team/add-player/add-player.component';
 import { Coach } from '../../interfaces/coach';
@@ -14,6 +14,7 @@ import { UserBuilder } from '../../Builders/user-builder';
 import { FeatureFlag } from 'src/app/interfaces/feature-flag';
 import { FeatureFlagBuilder } from 'src/app/Builders/feature-flag-builder';
 import { Feature } from 'src/app/enum/feature-flag';
+import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 
 @Component({
   selector: 'app-view-teams',
@@ -25,8 +26,10 @@ export class ViewTeamsComponent {
   displayConfirmDeletePlayer = "none";
   displayConfirmDeleteTeam = "none";
   displayAddPlayer = "none";
-  displayPlayer = "none";
+  displayCaptan = "none";
   displayEditTeam = "none";
+  displayAddExistingPlayer = "none";
+  addExistingPlayerForm: FormGroup;
 
   constructor(private fb: FormBuilder,
     private authService: AuthService,
@@ -36,6 +39,9 @@ export class ViewTeamsComponent {
     private featureFlagBuilder: FeatureFlagBuilder
   ){
     this.selectedPlayer=this.playerBuilder.getEmptyPlayer();
+    this.addExistingPlayerForm = this.fb.group({
+      selectedOptions: new FormArray([])
+    });
   }
 
   @Input() ddb!: DynamoDb;
@@ -43,6 +49,7 @@ export class ViewTeamsComponent {
   loading = true;
   team: Team | undefined;
   players: Player[] = [];
+  availablePlayers: Player[] = []
   coaches: Coach[] = [];
   categories = getCategories();
   deleteForm : FormGroup = this.fb.group({teamToDelete: ''});
@@ -58,8 +65,20 @@ export class ViewTeamsComponent {
   userrole = "";
   newplayerid = uuidv4();
   featureFlags: FeatureFlag | undefined = undefined
+  selectedCaptain:string = "";
 
   editable = true;
+
+  get ordersFormArray() {
+    return this.addExistingPlayerForm.controls['selectedOptions'] as FormArray;
+  }
+
+  private addCheckboxes() {
+    this.addExistingPlayerForm = this.fb.group({
+      selectedOptions:  new FormArray([])
+    });
+    this.availablePlayers!.forEach(() => this.ordersFormArray.push(new FormControl(false)));
+  }
   
   reloadLoginStatus() {
     this.userrole = this.authService.getUserRole();
@@ -88,7 +107,7 @@ export class ViewTeamsComponent {
     }
 
     this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
-    this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
+    //this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
     
     this.reloadLoginStatus();
   }
@@ -97,6 +116,8 @@ export class ViewTeamsComponent {
     this.loading = true;
     this.team = await this.teamBuilder.getTeam(this.ddb, teamId);
     this.players = await this.playerBuilder.getPlayersByTeam(this.ddb, teamId);
+    this.players = this.players.filter((p: Player) => p.year! === this.team!.year!);
+    await this.getAllPlayers();
     this.loading = false;
   }
 
@@ -128,6 +149,27 @@ export class ViewTeamsComponent {
     }
   }
 
+  async saveCaptan(){
+    console.log("captan: ", this.selectedCaptain)
+    await this.teamBuilder.updateCaptainId(this.ddb, this.team?.id!, this.selectedCaptain)
+    await this.loadTeam(this.team?.id!);
+    
+    this.displayCaptan = "none"
+  }
+
+  onChangeCapt(value:string): void {
+		this.selectedCaptain = value;
+	}
+
+  selectCaptan(){
+		this.selectedCaptain = "";
+    this.displayCaptan = "block"
+  }
+
+  closeCaptan(){
+    this.displayCaptan = "none";
+  }
+
   openEditTeam(){
     //category: '', teamName: '', location: '', captainId: ''});
     this.editForm.get('coachId')?.setValue(this.team!.coachId);
@@ -155,7 +197,7 @@ export class ViewTeamsComponent {
     }
 
     await this.teamBuilder.createTeam(this.ddb, this.team);
-    this.loadTeam(this.team?.id);
+    await this.loadTeam(this.team?.id);
     this.displayEditTeam = "none";
   }
 
@@ -163,14 +205,15 @@ export class ViewTeamsComponent {
     return formatDate(birthday, 'dd/MM/yyyy', 'en-US')
   }
 
-  viewPlayer(playerId: string){
+
+  async editPlayer(playerId: string) {
     console.log("View player "+playerId);
     this.selectedPlayer = (this.players.filter((p)=>p.id === playerId))[0];
-    
-    this.displayPlayer = "block";
-  }
-  closePlayer(){
-    this.displayPlayer = "none";
+    this.newplayerid = this.selectedPlayer.id;
+    await this.viewChildren.forEach(element => {
+      element.loadPlayer(this.newplayerid);
+    });
+    this.addPlayer();
   }
 
   deletePlayer(){
@@ -187,11 +230,54 @@ export class ViewTeamsComponent {
       this.displayConfirmDeletePlayer = "none";
       this.errorMsg = "";
       this.loadTeam(this.team!.id);
-      this.closePlayer();
+      this.closeAddPlayerPopup();
     }
     else{
       this.errorMsg = "Nombre del jugador no coincide!";
     }
+  }
+
+  async getAllPlayers(){
+    let teams: Team[] = []
+    if (this.userrole == "coach"){
+      teams = await this.teamBuilder.getTeamsByCoach(this.ddb, this.userId);
+    }
+    else{
+      teams = await this.teamBuilder.getTeams(this.ddb);
+    }
+    this.availablePlayers = []
+    teams.forEach(async element => {
+      let teamPlayers = await this.playerBuilder.getPlayersByTeam(this.ddb, element.id)
+      this.availablePlayers.push(...teamPlayers)
+    });
+  }
+
+  closeAddExistingPlayer(){
+    this.displayAddExistingPlayer = "none"
+  }
+
+  addExistingPlayer(){
+    this.displayAddExistingPlayer = "block"
+    this.addCheckboxes();
+  }
+  
+  async addExistingPlayerSubmit() {
+
+    var selectedPlayers = this.addExistingPlayerForm.value.selectedOptions
+      .map((checked: boolean, i: number) => checked ? this.availablePlayers![i] : null)
+      .filter((p: Player | null) => p !== null);
+
+    try {
+      for (let p of selectedPlayers) {
+        console.log("Updating player ", p.name)
+        await this.playerBuilder.updatePlayerYear(this.ddb, p, TOURNAMENT_YEAR, this.team!.id)
+      }
+    } catch (err) {
+      console.error("Error updating year")
+    }
+    
+    await this.loadTeam(this.team?.id!);
+    this.closeAddExistingPlayer();
   }
 
   async addPlayer(){
@@ -225,14 +311,5 @@ export class ViewTeamsComponent {
     this.loadTeam(this.team!.id);
     this.newplayerid = uuidv4();
     this.displayAddPlayer = "none";
-    this.closePlayer();
-  }
-
-  async editPlayer() {
-    this.newplayerid = this.selectedPlayer.id;
-    await this.viewChildren.forEach(element => {
-      element.loadPlayer(this.newplayerid);
-    });
-    this.addPlayer();
   }
 }

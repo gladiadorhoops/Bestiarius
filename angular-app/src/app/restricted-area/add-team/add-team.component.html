@@ -30,58 +30,23 @@
 
                         <label class="frow" for="categoria">Categoria:&nbsp;</label>
                         <div class="frow">
-                            <select id="categorias" formControlName="category" (change)="loadTeams()" required>
+                            <select id="categorias" formControlName="category" required>
                                 <option value=""></option>
                                 <option *ngFor="let cat of categories" value="{{cat}}">{{cat}}</option>
                             </select>
                         </div>
                         <label class="frow" for="equipo">Equipo:&nbsp;</label>
                         <div class="frow">
-                            <input type="text" id="equipos" formControlName="teamName" class="form-control" list="equipolist" (change)="loadPlayers()" required>
-                            <datalist id="equipolist">
-                                <option *ngFor="let team of teams" value="{{team.name}}">{{team.name}}</option>
-                            </datalist>
+                            <input type="text" id="equipos" formControlName="teamName" class="form-control" required>
                         </div>
                         <label class="frow" for="location">Ciudad, Estado y País:&nbsp;</label>
                         <div class="frow">
                             <input type="text" id="location" formControlName="location" class="form-control">
                         </div>
-                        <label class="frow" for="captan">Capitán:&nbsp;</label>
-                        <div class="frow">
-                          <select id="captan" formControlName="captainId">
-                            <option value=""></option>
-                            <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.name}}</option>
-                          </select>
-                          <button type="button" class="btn btn-light" 
-                          (click)="refreshPlayersList()">
-                          Actualizar
-                          </button>
-                        </div>
-                        <div class="frow">
-                        <button type="button" class="btn btn-dark" 
-                      (click)="addPlayer()">
-                          Agregar Jugador
-                      </button>
-                    </div>
                     </div>
                   </div>
                 </div>
             </div>
-            <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseOne">
-                    Jugadores
-                </button>
-              </h2>
-                <div id="flush-collapseTwo" class="accordion-collapse collapse show" >
-                      <div id="players">
-                          <app-add-player *ngFor="let player of teamplayers" [teamplayers]="teamplayers" [equipoId]="selectedTeamId" [categoria]="selectedCategoria" [playerId]="player.id" [ddb]="ddb"></app-add-player>
-                      </div>
-                </div>
-            </div>
-            
-        </div>
         <div class="frow">
           <button type="button" (click)="callParentToListTeam()" class="btn btn-dark">Volver a Equipos Registrados</button>
           <button type="submit"  class="btn btn-danger">Guardar</button>

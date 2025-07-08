@@ -5,6 +5,10 @@ import { TeamBuilder } from '../../Builders/team-builder';
 import { Team } from '../../interfaces/team';
 import { Coach } from '../../interfaces/coach';
 import { UserBuilder } from '../../Builders/user-builder';
+import { TOURNAMENT_YEAR } from '../../aws-clients/constants';
+import { Player } from 'src/app/interfaces/player';
+import { PlayerBuilder } from 'src/app/Builders/player-builder';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-list-teams',
@@ -12,25 +16,47 @@ import { UserBuilder } from '../../Builders/user-builder';
   styleUrls: ['./list-teams.component.scss']
 })
 export class ListTeamsComponent {
+    teamRenewalForm: FormGroup;
   
-    constructor(
-        private authService: AuthService,
-        private teamBuilder: TeamBuilder,
-        private userBuilder: UserBuilder
-      ){}
+    constructor(private fb: FormBuilder,
+      private authService: AuthService,
+      private teamBuilder: TeamBuilder,
+      private playerBuilder: PlayerBuilder,
+      private userBuilder: UserBuilder
+    ){
+      this.teamRenewalForm = this.fb.group({
+        selectedOptions: new FormArray([])
+      });
+    }
+
+    get ordersFormArray() {
+      return this.teamRenewalForm.controls['selectedOptions'] as FormArray;
+    }
+
+    private addCheckboxes() {
+      this.teamRenewalForm = this.fb.group({
+        selectedOptions:  new FormArray([])
+      });
+      this.renewalPlayers!.forEach(() => this.ordersFormArray.push(new FormControl(false)));
+    }
   
   
     @Input() ddb!: DynamoDb;
     loading = true;
     teams: Team[] = [];
-    coaches: Map<string,Coach> = new Map<string, Coach>;
+    pastTeams: Team[] = [];
+    coaches: Map<string,Coach> = new Map<string, Coach>();
+    year = TOURNAMENT_YEAR;
   
     isAdmin = false;
     isScout = false;
     isCoach = false;
     userId = "";
     userrole = "";
-    
+    selectedRenewalTeam: Team | undefined
+    renewalPlayers: Player[] | undefined
+
+
     reloadLoginStatus() {
       this.userrole = this.authService.getUserRole();
       this.userId = this.authService.getUserId();
@@ -52,6 +78,34 @@ export class ListTeamsComponent {
       }
     }
 
+    async updateSelectedRenewalTeam(teamId: string){
+      this.selectedRenewalTeam = await this.teamBuilder.getTeam(this.ddb, teamId);
+      this.renewalPlayers = await this.playerBuilder.getPlayersByTeam(this.ddb, teamId);
+      this.addCheckboxes();
+      this.openPopup();
+    }
+
+    async onSubmit() {
+      // TODO: Use EventEmitter with form value
+
+      var selectedPlayers = this.teamRenewalForm.value.selectedOptions
+        .map((checked: boolean, i: number) => checked ? this.renewalPlayers![i] : null)
+        .filter((p: Player | null) => p !== null);
+  
+      await this.userBuilder.updateCoachYear(this.ddb, this.selectedRenewalTeam!.coachId, TOURNAMENT_YEAR)
+      try {
+        for (let p of selectedPlayers) {
+          console.log("Updating player ", p.name)
+          await this.playerBuilder.updatePlayerYear(this.ddb, p, TOURNAMENT_YEAR, this.selectedRenewalTeam!.id)
+        }
+        await this.teamBuilder.updateTeamYear(this.ddb, this.selectedRenewalTeam!, TOURNAMENT_YEAR)
+      } catch (err) {
+        console.error("Error updating year")
+      }
+      this.refreshTeams()
+      this.closePopup()
+    }
+
     async refreshTeams(){
       this.reloadLoginStatus()
       
@@ -61,6 +115,8 @@ export class ListTeamsComponent {
       else{
         this.teams = await this.teamBuilder.getTeams(this.ddb);
       }
+      this.pastTeams = this.teams.filter(t => t.year != TOURNAMENT_YEAR)
+      this.teams = this.teams.filter(t => t.year === TOURNAMENT_YEAR)
       this.sortTeamsByCategory()
       let coachesList:Coach[] = await this.userBuilder.getCoaches(this.ddb);
   
@@ -110,6 +166,22 @@ export class ListTeamsComponent {
     removeTeam(teamId: string){
       // TODO: implement
       console.log("Remove team "+teamId);
+    }
+    displayStyle = "none";
+    openPopup() {
+      this.displayStyle = "block";
+    }
+    closePopup() {
+      this.selectedRenewalTeam = this.teamBuilder.getEmptyTeam();
+      this.renewalPlayers = [];
+      this.displayStyle = "none";
+    }
+    errordisplayStyle = "none";
+    openErrorPopup() {
+      this.errordisplayStyle = "block";
+    }
+    closeErrorPopup() {
+      this.errordisplayStyle = "none";
     }
   }
   

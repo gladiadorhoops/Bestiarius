@@ -25,4 +25,77 @@
     <div class="frow" >
         <button type="button" (click)="callParentToAddTeam()" class="btn btn-dark">Registrar Nuevo Equipo</button>
     </div>
+    <div *ngIf="pastTeams.length>0">
+        <h3 class="text-center mb-3">
+            Años Anteriores
+        </h3>
+        <table class="row">
+            <tr class="row">
+                <th [ngClass]="{'col': true, 'col-12': true, 'col-lg-4': userrole != 'coach', 'col-lg-6': userrole === 'coach'}">Equipo</th>
+                <th class="col col-lg-2 col-12"> <a [routerLink]="">Categoria</a></th>
+                <th class="col col-lg-2 col-12"> <a [routerLink]="">Localidad</a></th>
+                <th class="col col-lg-2 col-12"> <a [routerLink]="">Year</a></th>
+                <th *ngIf="userrole != 'coach'" class="col col-lg-2 col-12 groupLast"> <a [routerLink]="">Coach</a></th>
+            </tr>
+            <tr class="row" *ngFor="let team of pastTeams" [routerLink]="">
+                <td [ngClass]="{'col': true, 'col-12': true, 'col-lg-4': userrole != 'coach', 'col-lg-6': userrole === 'coach'}"><u>{{team.name}}</u></td>
+                <td class="col col-lg-2 col-12">{{team.category}}</td>
+                <td class="col col-lg-2 col-12">{{team.location}}</td>
+                <td *ngIf="userrole != 'coach'" class="col col-lg-2 col-12">{{coaches.get(team.coachId)?.name}}</td>
+                <td class="col col-lg-2 col-12"> {{team.year}}<a *ngIf="team.id != ''" [routerLink]="" (click)="updateSelectedRenewalTeam(team.id)"> | <u>Renovar</u></a> </td>
+            </tr>
+        </table>
+    </div>
 </div>  
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" *ngIf="selectedRenewalTeam!=undefined">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+
+                <h4 class="text-center mb-3">
+                    Registrar Equipo: {{selectedRenewalTeam.name}}
+                </h4>
+
+                <p>Por favor seleccione los jugadores que desea registrar este año:</p>
+                <form [formGroup]="teamRenewalForm" (ngSubmit)="onSubmit()" class ="fcol">
+                    <div *ngFor="let option of ordersFormArray.controls; let i = index">
+                        <label formArrayName="selectedOptions" >
+                          <input type="checkbox" [formControlName]="i">
+                          {{ renewalPlayers![i].name }}
+                        </label>
+                    </div>
+                    <div class="frow">
+                        <button type="submit" [disabled]="!teamRenewalForm.valid">Registrar</button>
+                    </div>
+                </form>
+                
+                <button type="button" class="btn btn-danger" 
+                    (click)="closePopup()">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':errordisplayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Failed!</p>
+  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="closeErrorPopup()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

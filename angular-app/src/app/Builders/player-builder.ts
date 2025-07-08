@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CY_KEY, DynamoDb, PK_KEY, SK_KEY, SPK_KEY } from "src/app/aws-clients/dynamodb";
+import { CY_KEY, DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
 import { Player, PlayerKey } from "../interfaces/player";
 
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
@@ -39,8 +39,6 @@ export class PlayerBuilder {
         console.log('Players', players)
         return players
     }
-
-
 
     async getAllPlayers(ddb: DynamoDb): Promise<Player[]> {
         let players: Player[] = []
@@ -91,10 +89,29 @@ export class PlayerBuilder {
             height: item[PlayerKey.HEIGHT].S ? item[PlayerKey.HEIGHT].S : "",
             weight: item[PlayerKey.WEIGHT].S ? item[PlayerKey.WEIGHT].S : "",
             position: item[PlayerKey.POSITION].S ? item[PlayerKey.POSITION].S : "",
-            birthday: item[PlayerKey.BIRTHDAY].S ? new Date(item[PlayerKey.BIRTHDAY].S) : undefined
+            birthday: item[PlayerKey.BIRTHDAY].S ? new Date(item[PlayerKey.BIRTHDAY].S) : undefined,
+            year: item[CY_KEY].S ? item[CY_KEY].S : ""
         }
     }
 
+    async updatePlayerYear(ddb: DynamoDb, player: Player, year: string, teamId: string) {
+
+        let key = {
+            [PK_KEY]: {S: `${PlayerKey.PREFIX}.${player.id}`},
+            [SK_KEY]: {S: `${PlayerKey.PREFIX}.data`}
+        };
+        let updateExpression = 'SET #yearattr = :val, #teamattr = :val2';
+        let expressionAttributeNames: Record<string, string> = {
+            '#yearattr': `${CY_KEY}`,
+            '#teamattr': `${SPK_KEY}`,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':val': {S: year},
+            ':val2': {S: `${TeamKey.PREFIX}.${teamId}`},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
+    }
 
 
     getEmptyPlayer(): Player {
