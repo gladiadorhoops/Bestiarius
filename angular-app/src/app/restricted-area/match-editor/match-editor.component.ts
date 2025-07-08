@@ -8,7 +8,7 @@ import { GymBuilder } from '../../Builders/gym-builder';
 import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { Team } from '../../interfaces/team';
-import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
+import { TOURNAMENT_DAYS, TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 
 @Component({
   selector: 'app-match-editor',
@@ -18,7 +18,7 @@ import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 export class MatchEditorComponent implements OnInit {
   @Input() ddb!: DynamoDb;
   
-  days: number[] = [26, 27, 28];
+  days: number[] = TOURNAMENT_DAYS;
   allMatches: Match[] = [];
   matchesAprendizDays: Match[][] = [];
   matchesEliteDays: Match[][] = [];
