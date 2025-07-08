@@ -50,14 +50,18 @@ export class AddTeamComponent {
   teams: Team[] = [];
   teamplayers: Player[] = [];
   selectedCaptan : boolean = false;
+  showAddNewPlayer : boolean = false;
 
   selectedCategoria: string = "";
   selectedTeamName: string = "";
   selectedTeamId: string = "";
   popUpMsg = "";
   displayStyle = "none";
+  addPlayerDisplayStyle = "none";
   featureFlags: FeatureFlag | undefined = undefined
   editable = true;
+
+  saved: boolean = false;
 
   async ngOnInit() {
     if(this.userrole != "coach"){
@@ -65,14 +69,14 @@ export class AddTeamComponent {
     }
 
     this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
-    this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
+    //this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
     
   }
 
   @ViewChildren(AddPlayerComponent) viewChildren!: QueryList<AddPlayerComponent>;
 
 
-  async loadTeams() {
+  async validateTeam() {
     this.teams = []
     this.selectedCategoria = this.teamForm.value.category!
     let teams = await this.teamBuilder.getTeamsByCategory(this.ddb, this.selectedCategoria).then(
@@ -80,78 +84,22 @@ export class AddTeamComponent {
         return output
       }
     )
-
     this.teams = this.teams.concat(teams)
-
-  }
-
-  async loadPlayers() {
     this.selectedTeamName = this.teamForm.value.teamName!;
-    this.selectedCategoria = this.teamForm.value.category!
-    console.log(this.selectedTeamName);
-    console.log(this.selectedCategoria);
-    var playersLoaded = false;
     this.teams.forEach(
       async (team) => {
         if(team.name == this.selectedTeamName){
           this.selectedTeamId = team.id;
-          this.teamplayers = await this.playerBuilder.getPlayersByTeam(this.ddb, team.id!).then(
-            (players) => {
-              return players;
-            }
-          );
-          playersLoaded = true;
         }
     });
-    if(!playersLoaded){
-      this.teamplayers = [];
-      this.selectedTeamId = uuidv4();
+    if(this.selectedTeamId!=""){
+      return false
     }
-
-  }
-
-  addPlayer() {
-    this.teamplayers.unshift({
-      id: uuidv4(),
-      name: "",
-      team: this.selectedTeamId,
-      category: this.selectedCategoria,
-      age: "",
-      height: "",
-      weight: "",
-      position: "",
-      birthday: undefined
-    }); 
-
-  }
-
-  async getInputPlayersList(){
-    let updatedPlayers: Player[] = [];
-    await this.viewChildren.forEach(element => {
-      element.savePlayer();
-      console.log("updated player:");
-      console.log(element.player);
-      updatedPlayers = updatedPlayers.concat(element.player);
-    });
-    return updatedPlayers;
-  }
-
-  async refreshPlayersList(){
-    console.log("Players list:");
-    this.teamplayers = await this.getInputPlayersList();
-    console.log(this.teamplayers);
-
-    if(this.teamplayers.length == 0){
-      this.popUpMsg = "Jugadores no encontrados. Agrega jugadores para continuar.";
-      this.openPopup();
-    }
+    this.selectedTeamId = uuidv4();
+    return true
   }
 
   async onSubmit() {
-    let updatedPlayers = await this.getInputPlayersList();
-    console.log("Players to save");
-    console.log(updatedPlayers);
-
     let selectedCoachId = this.userId;
     let selectedCoachName = this.userName;
     if(this.userrole != "coach"){
@@ -165,9 +113,14 @@ export class AddTeamComponent {
       selectedCoachName = selectedCoach[0].name!;
     }
 
+    if (!await this.validateTeam()){
+      this.popUpMsg = "Este equipo ya existe!";
+      this.openPopup();
+    }
+
     let newTeam : Team = {id: this.selectedTeamId,
       name: this.selectedTeamName,
-      captainId: this.teamForm.value.captainId == null ? "" : this.teamForm.value.captainId,
+      captainId: "",
       coachId: selectedCoachId,
       coachName: selectedCoachName,
       category: this.selectedCategoria,
@@ -176,13 +129,8 @@ export class AddTeamComponent {
 
     await this.teamBuilder.createTeam(this.ddb, newTeam);
 
-    updatedPlayers.forEach(player => {
-      this.playerBuilder.createPlayer(this.ddb, player).then(()=> {
-        console.log("Saved "+player.name);
-      });
-    });
-
-    this.popUpMsg = "Team Saved!";
+    this.saved = true;
+    this.popUpMsg = "Equipo guardado!";
     this.openPopup();
 
   }
@@ -191,15 +139,22 @@ export class AddTeamComponent {
     this.displayStyle = "block";
   }
   closePopup() {
-    this.callParentToListTeam();
+    if (this.saved){
+      this.viewTeam(this.selectedTeamId)
+    }
     this.displayStyle = "none";
   }
 
 
   @Output() callListTeam = new EventEmitter<string>();
-
   callParentToListTeam() {
     this.callListTeam.emit('callListTeam');
+  }
+
+  @Output() callViewTeam = new EventEmitter<string>();
+  viewTeam(teamId: string){
+    console.log("View team "+teamId);
+    this.callViewTeam.emit(teamId)
   }
 }
 

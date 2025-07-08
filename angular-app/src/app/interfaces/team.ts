@@ -18,6 +18,7 @@ export enum TeamKey {
     CAPTAIN_ID = 'captainId',
     COACH_NAME = 'coachName',
     LOACTION = 'location',
+    YEAR = 'cy',
     PREFIX = 'team',
     SK = 'team.data',
     CATEGORY = 'category',
@@ -31,6 +32,7 @@ export interface Team {
     coachName: string | undefined
     category?: string
     location: string | undefined
+    year?: string
 }
 
 export interface MatchTeam {

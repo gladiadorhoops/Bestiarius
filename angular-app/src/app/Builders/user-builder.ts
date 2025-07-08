@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CY_KEY, DynamoDb, PK_KEY, SK_KEY } from "src/app/aws-clients/dynamodb";
+import { CY_KEY, DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { User, UserKey } from '../interfaces/user';
 import { Coach, CoachKey } from '../interfaces/coach';
@@ -103,6 +103,23 @@ export class UserBuilder {
         if (coach.teamIds === undefined) return record 
         record[CoachKey.TEAM_IDS] = DynamoDb.convertFromStringList(coach.teamIds)
         return record
+    }
+
+    async updateCoachYear(ddb: DynamoDb, coachId: string, year: string) {
+
+        let key = {
+            [PK_KEY]: {S: `coach.${coachId}`},
+            [SK_KEY]: {S: `coach.data`}
+        };
+        let updateExpression = 'SET #yearattr = :val';
+        let expressionAttributeNames: Record<string, string> = {
+            '#yearattr': `${CY_KEY}`,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':val': {S: year},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
     }
 
     private buildUser(item: Record<string, AttributeValue>, role: Role): User {
