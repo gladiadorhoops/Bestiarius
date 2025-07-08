@@ -12,4 +12,6 @@ export class TorneoComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  count = new Date().getFullYear()-2013;
+
 }
