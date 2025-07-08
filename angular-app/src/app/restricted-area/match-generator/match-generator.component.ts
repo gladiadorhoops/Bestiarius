@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
+import { TOURNAMENT_DAYS, TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 import { GymBuilder } from 'src/app/Builders/gym-builder';
 import { Gym } from 'src/app/interfaces/gym';
 import { DynamoDb } from '../../aws-clients/dynamodb';
@@ -46,7 +46,7 @@ export class MatchGeneratorComponent  implements OnInit {
   gyms : Gym[] = [];
   phases = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4", "Octavos", "Cuartos", "Semi-Finaless", "Finales", "Standing"]
   brackets = ["grupos", "o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "q9", "q10", "q11", "q12", "s13", "s14", "f15", "p16", "p17", "p18", "p19", "p20", "p21", "f22" ]
-  days: number[] = [26, 27, 28];
+  days: number[] = TOURNAMENT_DAYS;
   displayStyle = "none";
   popUpMsg = "";
 

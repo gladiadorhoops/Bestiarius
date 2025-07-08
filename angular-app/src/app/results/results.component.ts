@@ -17,7 +17,7 @@ export class ResultsComponent {
 
   TournmentEdition = 0;
 
-  years = ["2023", "2022"]
+  years = ["2024", "2023", "2022"]
 
 
   @ViewChildren(BracketsComponent) bracketChild!: QueryList<BracketsComponent>;
@@ -25,7 +25,7 @@ export class ResultsComponent {
   @ViewChildren(GroupsComponent) groupsChild!: QueryList<GroupsComponent>;
   @ViewChildren(AwardsComponent) awardsChild!: QueryList<AwardsComponent>;
 
-  year = new FormControl("2023");
+  year = new FormControl((new Date().getFullYear()-1).toString());
   
 
   async ngOnInit() {

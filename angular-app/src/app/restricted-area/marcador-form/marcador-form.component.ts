@@ -6,7 +6,7 @@ import { MatchBuilder } from '../../Builders/match-builder';
 import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { Team } from '../../interfaces/team';
-import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
+import { TOURNAMENT_DAYS, TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 import { Gym } from 'src/app/interfaces/gym';
 import { GymBuilder } from 'src/app/Builders/gym-builder';
 
@@ -20,7 +20,7 @@ const S3_BUCKET_URL = (day: string) => `https://gladiadores-hoops.s3.amazonaws.c
 export class MarcadorFormComponent implements OnInit {
   @Input() ddb!: DynamoDb;
   
-  days: number[] = [26, 27, 28];
+  days: number[] = TOURNAMENT_DAYS;
   allMatches: Match[] = [];
   matchesAprendizDays: Match[][] = [];
   matchesEliteDays: Match[][] = [];
