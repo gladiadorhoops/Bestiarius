@@ -1,5 +1,5 @@
 <img src="assets/grupos_2024.jpeg" class="d-lg-block d-none w-100" alt="...">
-<mdb-carousel class="d-lg-none d-block" [controls]="true">
+<mdb-carousel *ngIf="available" class="d-lg-none d-block" [controls]="true">
     <mdb-carousel-item>
       <img
         src="assets/grupos_aprendiz_2024.jpeg"
@@ -15,8 +15,18 @@
       />
     </mdb-carousel-item>
   </mdb-carousel>
+<div class="bg-image lower-corner-img" *ngIf="!available" style="background-image: url('assets/no-background-logo-transparent.png');">
+<div class="container page-content">
 
-<div class="bg-image lower-corner-img"  *ngIf="available" style="background-image: url('assets/no-background-logo-transparent.png');">
+        <h1 class="text-center mb-3">
+            Equipos Registrados
+        </h1> <br>
+        <h2>
+          No Disponible
+        </h2>
+</div>
+</div>
+<div class="bg-image lower-corner-img" *ngIf="available" style="background-image: url('assets/no-background-logo-transparent.png');">
     <div class="container page-content">
 
             <h1 class="text-center mb-3">
