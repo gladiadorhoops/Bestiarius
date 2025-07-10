@@ -9,10 +9,10 @@
   
     <h2 class="text-center mb-3">
       {{team?.name}} &nbsp;
-      <button class="btn btn-outline-danger btn-sm" title="Editar Equipo" (click)="openEditTeam()" target="_blank" role="button">
+      <button class="btn btn-outline-danger btn-sm" *ngIf="editable" title="Editar Equipo" (click)="openEditTeam()" target="_blank" role="button">
         <i class="fa fa-pencil"></i>
       </button>&nbsp;
-      <button class="btn btn-outline-danger  btn-sm" title="Eliminar Equipo" (click)="removeTeam()" target="_blank" role="button">
+      <button class="btn btn-outline-danger  btn-sm" *ngIf="editable" title="Eliminar Equipo" (click)="removeTeam()" target="_blank" role="button">
         <i class="fa fa-trash"></i>
       </button>
     </h2>

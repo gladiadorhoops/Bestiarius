@@ -9,6 +9,8 @@ import { TOURNAMENT_YEAR } from '../../aws-clients/constants';
 import { Player } from 'src/app/interfaces/player';
 import { PlayerBuilder } from 'src/app/Builders/player-builder';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FeatureFlag } from 'src/app/interfaces/feature-flag';
+import { FeatureFlagBuilder } from 'src/app/Builders/feature-flag-builder';
 
 @Component({
   selector: 'app-list-teams',
@@ -22,7 +24,8 @@ export class ListTeamsComponent {
       private authService: AuthService,
       private teamBuilder: TeamBuilder,
       private playerBuilder: PlayerBuilder,
-      private userBuilder: UserBuilder
+      private userBuilder: UserBuilder,
+      private featureFlagBuilder: FeatureFlagBuilder
     ){
       this.teamRenewalForm = this.fb.group({
         selectedOptions: new FormArray([])
@@ -40,6 +43,8 @@ export class ListTeamsComponent {
       this.renewalPlayers!.forEach(() => this.ordersFormArray.push(new FormControl(false)));
     }
   
+    editable = true;
+    featureFlags: FeatureFlag | undefined = undefined
   
     @Input() ddb!: DynamoDb;
     loading = true;
@@ -55,7 +60,6 @@ export class ListTeamsComponent {
     userrole = "";
     selectedRenewalTeam: Team | undefined
     renewalPlayers: Player[] | undefined
-
 
     reloadLoginStatus() {
       this.userrole = this.authService.getUserRole();
@@ -128,6 +132,10 @@ export class ListTeamsComponent {
     async ngOnInit() {
       await this.refreshTeams();
       this.loading = false;
+
+      this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
+      this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
+      console.log("editable ", this.editable)
     }
   
     sortTeamsByCategory(){
