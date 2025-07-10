@@ -69,7 +69,7 @@ export class AddTeamComponent {
     }
 
     this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
-    //this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
+    this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
     
   }
 

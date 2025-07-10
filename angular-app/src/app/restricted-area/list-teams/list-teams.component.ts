@@ -113,7 +113,7 @@ export class ListTeamsComponent {
         this.teams = await this.teamBuilder.getTeamsByCoach(this.ddb, this.userId);
       }
       else{
-        this.teams = await this.teamBuilder.getTeams(this.ddb);
+        this.teams = await this.teamBuilder.getTeamsAllYears(this.ddb);
       }
       this.pastTeams = this.teams.filter(t => t.year != TOURNAMENT_YEAR)
       this.teams = this.teams.filter(t => t.year === TOURNAMENT_YEAR)
