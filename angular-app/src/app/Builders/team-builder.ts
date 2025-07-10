@@ -100,6 +100,18 @@ export class TeamBuilder {
         return teams
     }
 
+
+    async getTeamsAllYears(ddb: DynamoDb): Promise<Team[]> {
+        var teams: Team[] = []
+        teams = await ddb.listSecondaryQuery(`${TeamKey.SK}`).then(
+            (items) => {
+                items.sort((a, b) => a[TeamKey.NAME].S!.localeCompare(b[TeamKey.NAME].S!))
+                return items.map((item) => {return this.buildTeam(item)})
+            }
+        )
+        return teams
+    }
+
     async getTeamsByCoach(ddb: DynamoDb, coachId: string): Promise<Team[]> {
         var teams: Team[] = await ddb.listSecondaryQuery(`${TeamKey.SK}`, coachId).then(
             (items) => {

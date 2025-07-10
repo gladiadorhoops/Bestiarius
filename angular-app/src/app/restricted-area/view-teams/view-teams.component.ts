@@ -107,7 +107,7 @@ export class ViewTeamsComponent {
     }
 
     this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
-    //this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
+    this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
     
     this.reloadLoginStatus();
   }
@@ -238,13 +238,8 @@ export class ViewTeamsComponent {
   }
 
   async getAllPlayers(){
-    let teams: Team[] = []
-    if (this.userrole == "coach"){
-      teams = await this.teamBuilder.getTeamsByCoach(this.ddb, this.userId);
-    }
-    else{
-      teams = await this.teamBuilder.getTeams(this.ddb);
-    }
+    let teams = await this.teamBuilder.getTeamsByCoach(this.ddb, this.team!.coachId);
+
     this.availablePlayers = []
     teams.forEach(async element => {
       let teamPlayers = await this.playerBuilder.getPlayersByTeam(this.ddb, element.id)
