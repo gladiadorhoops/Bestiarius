@@ -42,7 +42,7 @@
                 <td class="col col-lg-2 col-12">{{team.category}}</td>
                 <td class="col col-lg-2 col-12">{{team.location}}</td>
                 <td *ngIf="userrole != 'coach'" class="col col-lg-2 col-12">{{coaches.get(team.coachId)?.name}}</td>
-                <td class="col col-lg-2 col-12"> {{team.year}}<a *ngIf="team.id != ''" [routerLink]="" (click)="updateSelectedRenewalTeam(team.id)"> | <u>Renovar</u></a> </td>
+                <td class="col col-lg-2 col-12"> {{team.year}}<a *ngIf="team.id != '' && editable" [routerLink]="" (click)="updateSelectedRenewalTeam(team.id)"> | <u>Renovar</u></a> </td>
             </tr>
         </table>
     </div>
