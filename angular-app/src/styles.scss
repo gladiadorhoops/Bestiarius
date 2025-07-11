@@ -65,6 +65,12 @@ height: 100%;
     
 }
 
+
+.dark-header{
+    background-color: $dark-color;
+    color: $light-color;
+}
+
 .accordion-button{
     background-color: $dark-color;
     color: $light-color;

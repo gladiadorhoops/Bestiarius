@@ -1,5 +1,7 @@
 <ng-container>   
     <div class="container page-content">
+      <div class="row">
+      <div class="col col-12 col-lg-5">
         <h1>Registro de {{role}}</h1>
         <form [formGroup]="signupForm">
             <fieldset>
@@ -28,7 +30,16 @@
             </div>
         </form>
         <br>
-        <span style="background-color: red" *ngIf="failed"> Failed to Login </span>
+        <span *ngIf="failed"> Failed to Login </span>
+      </div>
+      <div class="col col-12 col-lg-2"></div>
+      <div class="col col-12 col-lg-5">
+        <h1>Login de {{role}}</h1>
+        <h3>¿Te has registrado como {{role}} en años anteriores? Haz login aqui:</h3>
+        <button class="btn btn-danger" 
+        (click)="login()">Login</button>
+      </div>
+    </div>
     </div>
 </ng-container>
 

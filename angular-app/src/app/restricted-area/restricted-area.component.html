@@ -13,59 +13,70 @@
                         <label>Usuario: <i>{{username}}</i></label>
                     </form>
                 </div>
-                <select #feature (change)="changeFeature(feature.value)">
-                    <option *ngFor="let menuItem of menuItems" value="{{menuItem.value}}">{{menuItem.text}}</option>
-                </select>
-                <br>
-                <br>
-                <br>
-
-                <div class="spinner-border text-light" role="status" *ngIf="loading">
-                    <span class="sr-only">Loading...</span>
+                <div *ngIf="!loading && !registrationYear">
+                    <p>renew registration</p>
+                    <label for="code" >Codigo de Renovaccion: </label>
+                    <input type="text" #codeInput>
+                    <button type="submit" (click)="onRenewRegistration(codeInput.value)">Registrar</button>
+                    <p>{{validationMsg}}</p>
                 </div>
-                <div class="row" *ngIf="!loading">
-                    <div class="text-center" *ngIf="marcadoresView">
-                        <app-marcador-form [ddb]="ddb"></app-marcador-form>
+
+                <div *ngIf="registrationYear">
+                    <select #feature (change)="changeFeature(feature.value)">
+                        <option *ngFor="let menuItem of menuItems" value="{{menuItem.value}}">{{menuItem.text}}</option>
+                    </select>
+                    <br>
+                    <br>
+                    <br>
+
+                    <div class="spinner-border text-light" role="status" *ngIf="loading">
+                        <span class="sr-only">Loading...</span>
                     </div>
-                    
-                    <div class="text-center" *ngIf="evaluarView">
-                        <app-evaluacion [ddb]="ddb"></app-evaluacion>
-                    </div>
-                    
-                    <div *ngIf="resultadosView">
-                        <app-resultados-evaluacion [ddb]="ddb"></app-resultados-evaluacion>
-                    </div>
-                    
-                    <div *ngIf="addTeamView">
-                        <app-add-team [ddb]="ddb" (callViewTeam)="showViewTeams($event)" (callListTeam)="showListTeams()"></app-add-team>
-                    </div>
-                    
-                    <div *ngIf="addGymView">
-                        <app-add-gym [ddb]="ddb" ></app-add-gym>
-                    </div>
-                    
-                    <div *ngIf="matchGenView">
-                        <app-match-generator [ddb]="ddb"></app-match-generator>
-                    </div>
-                    
-                    <div *ngIf="matchEditView">
-                        <app-match-editor [ddb]="ddb"></app-match-editor>
-                    </div>
-                    
-                    <div *ngIf="viewUsersView">
-                        <app-view-users [ddb]="ddb"></app-view-users>
-                    </div>
-                    
-                    <div *ngIf="listPlayersView">
-                        <app-list-players [ddb]="ddb" ></app-list-players>
-                    </div>
-                    
-                    <div *ngIf="listTeamsView">
-                        <app-list-teams [ddb]="ddb" (callViewTeam)="showViewTeams($event)" (callAddTeam)="showAddTeam()"></app-list-teams>
-                    </div>
-                    
-                    <div [hidden]="!viewTeamsView">
-                        <app-view-teams [ddb]="ddb" (callListTeam)="showListTeams()"></app-view-teams>
+                
+                    <div class="row" *ngIf="!loading">
+                        <div class="text-center" *ngIf="marcadoresView">
+                            <app-marcador-form [ddb]="ddb"></app-marcador-form>
+                        </div>
+                        
+                        <div class="text-center" *ngIf="evaluarView">
+                            <app-evaluacion [ddb]="ddb"></app-evaluacion>
+                        </div>
+                        
+                        <div *ngIf="resultadosView">
+                            <app-resultados-evaluacion [ddb]="ddb"></app-resultados-evaluacion>
+                        </div>
+                        
+                        <div *ngIf="addTeamView">
+                            <app-add-team [ddb]="ddb" (callViewTeam)="showViewTeams($event)" (callListTeam)="showListTeams()"></app-add-team>
+                        </div>
+                        
+                        <div *ngIf="addGymView">
+                            <app-add-gym [ddb]="ddb" ></app-add-gym>
+                        </div>
+                        
+                        <div *ngIf="matchGenView">
+                            <app-match-generator [ddb]="ddb"></app-match-generator>
+                        </div>
+                        
+                        <div *ngIf="matchEditView">
+                            <app-match-editor [ddb]="ddb"></app-match-editor>
+                        </div>
+                        
+                        <div *ngIf="viewUsersView">
+                            <app-view-users [ddb]="ddb"></app-view-users>
+                        </div>
+                        
+                        <div *ngIf="listPlayersView">
+                            <app-list-players [ddb]="ddb" ></app-list-players>
+                        </div>
+                        
+                        <div *ngIf="listTeamsView">
+                            <app-list-teams [ddb]="ddb" (callViewTeam)="showViewTeams($event)" (callAddTeam)="showAddTeam()"></app-list-teams>
+                        </div>
+                        
+                        <div [hidden]="!viewTeamsView">
+                            <app-view-teams [ddb]="ddb" (callListTeam)="showListTeams()"></app-view-teams>
+                        </div>
                     </div>
                 </div>
                 

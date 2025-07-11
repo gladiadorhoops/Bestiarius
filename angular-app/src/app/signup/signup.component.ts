@@ -58,7 +58,18 @@ export class SignupComponent {
           this.popUpnMsg = "La liga de registro es invalida. Contacta a la organizacion per la liga de registro corecta";
           this.openPopup();
         }
+        
+        let paramCode = params['code'];
+        if (paramCode) {
+          localStorage.setItem('code', paramCode);
+        }
       });
+  }
+
+  async login(){
+
+    // redirect to login page
+    return await this.router.navigateByUrl('/login');
   }
 
   async signup() {

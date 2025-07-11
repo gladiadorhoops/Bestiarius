@@ -1,5 +1,9 @@
 <div class="row justify-content-md-center">
     <div class="col-12 col-md-6">
+      <button class="btn btn-outline-danger btn-floating m-1" title="Volver a Equipos Registrados" (click)="callParentToListTeam()" target="_blank" role="button">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+
       <h2 class="text-center mb-3">
         Registro de Equipo
     </h2>
@@ -48,7 +52,6 @@
                 </div>
             </div>
         <div class="frow">
-          <button type="button" (click)="callParentToListTeam()" class="btn btn-dark">Volver a Equipos Registrados</button>
           <button type="submit"  class="btn btn-danger">Guardar</button>
         </div>
     </form>

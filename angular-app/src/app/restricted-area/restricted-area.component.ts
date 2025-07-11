@@ -2,11 +2,15 @@ import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { ViewTeamsComponent } from './view-teams/view-teams.component';
 import { ListTeamsComponent } from './list-teams/list-teams.component';
+import { UserBuilder } from '../Builders/user-builder';
+import { Role } from '../enum/Role';
+import { TOURNAMENT_YEAR } from '../aws-clients/constants';
+import { User } from '../interfaces/user';
 
 export interface MenuItem {
   text: string
@@ -39,15 +43,19 @@ export class RestrictedAreaComponent {
     viewTeamsView = false;
     listTeamsView = false;
     listPlayersView = false;
+    registrationYear = false;
+    userEntry: User | undefined;
+    paramCode: string | undefined;
 
     ddb!: DynamoDb;
     loading = true;
 
     menuItems: MenuItem[] = [];
+    validationMsg: string = "";
 
     constructor(private fb:FormBuilder, 
                  private authService: AuthService,
-                 private router: Router) {
+                 private userBuilder: UserBuilder) {
 
         this.form = this.fb.group({
             scout: ['',Validators.required],
@@ -67,15 +75,22 @@ export class RestrictedAreaComponent {
                 (client) => {
                   console.log('Iniitation DDB', client)
                   this.ddb = client;
-                  this.loading = false;
+            
+                  this.reloadLoginStatus().then( () => this.loading = false)
+
                 });
             }
           )
         }
     }
 
-    ngOnInit(){
-      this.reloadLoginStatus()
+    async ngOnInit(){
+      // read code from cookies and then remove it from cookie
+      let cookieCode = localStorage.getItem('code');
+      localStorage.removeItem('code');
+      if (cookieCode != null){
+        this.paramCode = cookieCode
+      }
     }
     
     @ViewChild(ViewTeamsComponent)
@@ -84,7 +99,7 @@ export class RestrictedAreaComponent {
     @ViewChild(ListTeamsComponent)
     listTeamsComponent!: ListTeamsComponent;
 
-    reloadLoginStatus() {
+    async reloadLoginStatus() {
       this.isLoggedIn = this.authService.isLoggedIn();
       this.userid = this.authService.getUserId();
       this.username = this.authService.getUserName();
@@ -131,11 +146,30 @@ export class RestrictedAreaComponent {
         ]);
       }
 
+
+      let role = this.isAdmin ? Role.ADMIN : (this.isScout ? Role.SCOUT : Role.COACH);
+      this.userEntry = await this.userBuilder.getUser(this.ddb, this.userid, role)
+      this.registrationYear = this.userEntry!.year! === TOURNAMENT_YEAR
+
+      if(!this.registrationYear && this.paramCode){
+        this.validationMsg = await this.userBuilder.tryUpdateUserYear(this.ddb, this.userEntry?.role!, this.userEntry?.id!, this.paramCode)
+        if(this.validationMsg === ""){
+          this.reloadLoginStatus()
+        }
+      }
+
       this.menuItems = this.menuItems.sort((a, b) => a.text.localeCompare(b.text))
 
       console.log("Reloaded");
 
       this.changeFeature(this.menuItems[0].value);
+    }
+
+    async onRenewRegistration(code: string){
+      this.validationMsg = await this.userBuilder.tryUpdateUserYear(this.ddb, this.userEntry?.role!, this.userEntry?.id!, code)
+      if(this.validationMsg === ""){
+        this.reloadLoginStatus()
+      }
     }
 
     changeFeature(feature: string){
