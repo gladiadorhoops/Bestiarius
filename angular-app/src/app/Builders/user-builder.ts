@@ -143,7 +143,7 @@ export class UserBuilder {
 
 
 
-    async updateUserYear(ddb: DynamoDb, role: Role, userId: string, year: string) {
+    private async updateUserYear(ddb: DynamoDb, role: Role, userId: string, year: string) {
 
         let key = {
             [PK_KEY]: {S: `${role}.${userId}`},
