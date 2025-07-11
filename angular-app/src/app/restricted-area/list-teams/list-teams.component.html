@@ -23,7 +23,7 @@
     </table>
     <br><br>
     <div class="frow" >
-        <button type="button" (click)="callParentToAddTeam()" class="btn btn-dark">Registrar Nuevo Equipo</button>
+        <button *ngIf="editable" type="button" (click)="callParentToAddTeam()" class="btn btn-dark">Registrar Nuevo Equipo</button>
     </div>
     <div *ngIf="pastTeams.length>0">
         <h3 class="text-center mb-3">
@@ -40,7 +40,7 @@
                 <td class="col col-12 col-lg-6"><u>{{team.name}}</u></td>
                 <td class="col col-lg-2 col-12">{{team.category}}</td>
                 <td class="col col-lg-2 col-12">{{team.location}}</td>
-                <td class="col col-lg-2 col-12"> {{team.year}} &nbsp; <button type="button" class="btn btn-dark" (click)="updateSelectedRenewalTeam(team.id)">Renovar</button>
+                <td class="col col-lg-2 col-12"> {{team.year}} &nbsp; <button *ngIf="editable" type="button" class="btn btn-dark" (click)="updateSelectedRenewalTeam(team.id)">Renovar</button>
                 </td>
             </tr>
         </table>
