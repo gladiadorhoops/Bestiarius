@@ -25,6 +25,25 @@ export class UserBuilder {
         await ddb.putItem(record);
     }
 
+    async getUser(ddb: DynamoDb, user_id: string, role: Role){
+        // admin requires special handling
+        if (role === Role.ADMIN){
+            let actualRole = Role.COACH
+            let item = await this.getUserItem(ddb, user_id, actualRole)
+            if(item === undefined){
+                actualRole = Role.SCOUT
+                item = await this.getUserItem(ddb, user_id, actualRole)
+            }
+            if(item === undefined) return
+            return this.buildUser(item,actualRole)
+        }
+
+        let item = await this.getUserItem(ddb, user_id, role)
+        if(item === undefined) return
+        
+        return this.buildUser(item,role)
+    }
+
     async getCoach(ddb: DynamoDb, coachId: string): Promise<Coach | undefined> {
         let item = await this.getUserItem(ddb, coachId, Role.COACH)
         if(item === undefined) return
@@ -122,6 +141,50 @@ export class UserBuilder {
         await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
     }
 
+
+
+    private async updateUserYear(ddb: DynamoDb, role: Role, userId: string, year: string) {
+
+        let key = {
+            [PK_KEY]: {S: `${role}.${userId}`},
+            [SK_KEY]: {S: `${role}.data`}
+        };
+        let updateExpression = 'SET #yearattr = :val';
+        let expressionAttributeNames: Record<string, string> = {
+            '#yearattr': `${CY_KEY}`,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':val': {S: year},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
+    }
+
+
+
+    async tryUpdateUserYear(ddb: DynamoDb, role: Role, userid: string, code: string):Promise<string>{
+        // get validation code
+        let record = {
+          [PK_KEY]: {S: `renew.code`},
+          [SK_KEY]: {S: `${role}`}
+        };
+        let item = await ddb.getItem(record);
+  
+        if(item === undefined) {
+          return "ERROR"
+        }
+        let expectedCode = item['code'].S!
+        console.log(expectedCode)      
+  
+        if (code == expectedCode) {
+          // update year
+          await this.updateUserYear(ddb, role, userid, TOURNAMENT_YEAR)
+        } else {
+          return "Codigo no es valido. Contacta la organizacion del torneo para obtener un codigo valido"
+        }
+        return "";
+      }
+
     private buildUser(item: Record<string, AttributeValue>, role: Role): User {
         var user =  {
             id: item[PK_KEY].S!.split('.')[1],
@@ -129,7 +192,8 @@ export class UserBuilder {
             email: item[UserKey.EMAIL].S!,
             phone: item[UserKey.PHONE].S!,
             admin: item['admin']?.BOOL,
-            role: role
+            role: role,
+            year: item[CY_KEY].S!
         }
 
         if(role === Role.COACH){

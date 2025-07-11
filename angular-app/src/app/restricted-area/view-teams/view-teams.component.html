@@ -32,7 +32,7 @@
         </tr>
     </table>
     <p></p>
-    <button *ngIf="editable" type="button" (click)="selectCaptan()" class="btn btn-outline-warning"> Seleccionar Capitán</button>
+    <button *ngIf="editable" type="button" (click)="selectCaptan()" class="btn btn-dark"> Seleccionar Capitán</button>
     <p></p>
     <table class="row">
         <tr class="row">
@@ -45,8 +45,8 @@
         </tr>
     </table>
     <p></p>
-    <button *ngIf="editable" type="button" (click)="addPlayer()" class="btn btn-outline-warning"> Aggregar Nuevo Jugador</button>&nbsp;
-    <button *ngIf="editable" type="button" (click)="addExistingPlayer()" class="btn btn-outline-warning"> Aggregar Jugadores Existentes</button>
+    <button *ngIf="editable" type="button" (click)="addPlayer()" class="btn btn-dark"> Aggregar Nuevo Jugador</button>&nbsp;
+    <button *ngIf="editable" type="button" (click)="addExistingPlayer()" class="btn btn-dark"> Aggregar Jugadores Existentes</button>
 </div>  
 
 <!--Edit team modal-->
@@ -56,7 +56,7 @@
   [ngStyle]="{'display':displayEditTeam}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header dark-header">
         <h5 class="modal-title">Editar Equipo</h5>
         <button type="button" class="btn-close" (click)="closeEditPopup()" aria-label="Close">
         </button>
@@ -121,7 +121,7 @@
   [ngStyle]="{'display':displayConfirmDeleteTeam}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header dark-header">
         <h5 class="modal-title">Eliminar Equipo</h5>
         <button type="button" class="btn-close" (click)="closePopup()" aria-label="Close">
         </button>
@@ -151,22 +151,25 @@
       [ngStyle]="{'display':displayCaptan}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header dark-header">
         <h5 class="modal-title">Selecciona Capitán</h5>
         <button type="button" class="btn-close" (click)="closeCaptan()" aria-label="Close">
         </button>
       </div>
       <div class="modal-body">
         <div class="frow">
+          <label for="captan">Capitán: &nbsp;</label>
           <select id="captan" #selcapt (change)="onChangeCapt(selcapt.value)">
             <option default value=""></option>
             <option *ngFor="let player of players" value="{{player.id}}">{{player.name}}</option>
-          </select><br><br>
-          <button type="button" class="btn btn-outline-danger" 
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
           (click)="saveCaptan()">
           Confirmar
-          </button>
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -179,7 +182,7 @@
       [ngStyle]="{'display':displayAddExistingPlayer}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header dark-header">
         <h5 class="modal-title">Aggregar Jugadores Existentes</h5>
         <button type="button" class="btn-close" (click)="closeAddExistingPlayer()" aria-label="Close">
         </button>
@@ -195,10 +198,12 @@
                     {{ availablePlayers![i].name }}
                   </label>
               </div>
-              <div class="frow">
-                  <button type="submit" [disabled]="!addExistingPlayerForm.valid">Registrar</button>
-              </div>
           </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="frow">
+            <button class="btn btn-danger" type="submit" [disabled]="!addExistingPlayerForm.valid">Registrar</button>
         </div>
       </div>
     </div>
@@ -212,7 +217,7 @@
   [ngStyle]="{'display':displayConfirmDeletePlayer}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header dark-header">
         <h5 class="modal-title">Eliminar Jugador</h5>
         <button type="button" class="btn-close" (click)="closeDeletePlayerPopup()" aria-label="Close">
         </button>
@@ -242,7 +247,7 @@
   [ngStyle]="{'display':displayAddPlayer}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header dark-header">
         <h5 class="modal-title">Jugador</h5>
         <button type="button" class="btn-close" (click)="closeAddPlayerPopup()" aria-label="Close">
         </button>
