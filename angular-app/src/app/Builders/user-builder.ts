@@ -165,7 +165,7 @@ export class UserBuilder {
     async tryUpdateUserYear(ddb: DynamoDb, role: Role, userid: string, code: string):Promise<string>{
         // get validation code
         let record = {
-          [PK_KEY]: {S: `renewCode`},
+          [PK_KEY]: {S: `renew.code`},
           [SK_KEY]: {S: `${role}`}
         };
         let item = await ddb.getItem(record);
