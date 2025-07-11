@@ -198,12 +198,10 @@
                     {{ availablePlayers![i].name }}
                   </label>
               </div>
+              <div class="frow">
+                <button class="btn btn-danger" type="submit" [disabled]="!addExistingPlayerForm.valid">Registrar</button>
+              </div>
           </form>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <div class="frow">
-            <button class="btn btn-danger" type="submit" [disabled]="!addExistingPlayerForm.valid">Registrar</button>
         </div>
       </div>
     </div>
