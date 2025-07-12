@@ -89,6 +89,27 @@ export class UserBuilder {
         return admins
     }
 
+    async getAllCoaches(ddb: DynamoDb): Promise<Coach[]> {
+        var coaches: Coach[] = []
+        coaches = await this.getAllUsers(ddb, Role.COACH) as Coach[]
+        console.log('coaches', coaches)
+        return coaches
+    }
+
+    async getAllScouts(ddb: DynamoDb): Promise<Scout[]> {
+        var scouts: Scout[] = []
+        scouts = await this.getAllUsers(ddb, Role.SCOUT) as Scout[]
+        console.log('scouts', scouts)
+        return scouts
+    }
+
+    async getAllAdmins(ddb: DynamoDb): Promise<Admin[]> {
+        var admins: Admin[] = []
+        admins = await this.getAllUsers(ddb, Role.ADMIN) as Admin[]
+        console.log('admins', admins)
+        return admins
+    }
+
     async deleteCoach(ddb: DynamoDb, userId: string, accessToken: string) {
         await Cognito.deleteUser(accessToken);
         await this.deleteUserItem(ddb, userId, Role.COACH);
@@ -117,6 +138,21 @@ export class UserBuilder {
         )
         return users;
     }
+
+    async getAllUsers(ddb: DynamoDb, role: Role): Promise<User[]> {
+        var users: User[] = []
+        users = await ddb.listByYearQueryNoDefault(`${role}.data`, undefined).then(
+            (items) => {
+                items.sort((a, b) => a[UserKey.NAME].S!.localeCompare(b[UserKey.NAME].S!))
+                
+                return items.map((item) => {
+                    return this.buildUser(item, role)
+                })
+            }
+        )
+        return users;
+    }
+
 
     private updateCoachRecord(record: Record<string, any>, coach: Coach): Record<string, any> {
         if (coach.teamIds === undefined) return record 

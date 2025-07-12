@@ -86,10 +86,10 @@ export class ReporteBuilder {
         let record: Record<string, AttributeValue> = {}
 
         record[PK_KEY] = {S: `${Role.SCOUT}.${scoutId}`}
-        record[SK_KEY] = {S: `report.player.${playerId}`}
+        record[SK_KEY] = {S: `report.${TOURNAMENT_YEAR}.player.${playerId}`}
 
         record[Section.CATEGORIA] = {S: categoria};
-        record[SPK_KEY] = {S: 'reporte'}
+        record[SPK_KEY] = {S: 'report'}
         record[SSK_KEY] = {S: TOURNAMENT_YEAR}
         record[CY_KEY] = {S: TOURNAMENT_YEAR};
 
@@ -112,7 +112,7 @@ export class ReporteBuilder {
 
         let record: Record<string, AttributeValue> = {
             [PK_KEY]: {S: `${scout.role}.${scout.id}`},
-            [SK_KEY]: {S: `report.player.${playerId}`}
+            [SK_KEY]: {S: `report.${TOURNAMENT_YEAR}.player.${playerId}`}
         }
 
         let form = {... ReporteBuilder.defaultForm}

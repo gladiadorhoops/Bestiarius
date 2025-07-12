@@ -4,6 +4,7 @@ import { DynamoDb } from '../../aws-clients/dynamodb';
 import { UserBuilder } from '../../Builders/user-builder';
 import { TeamBuilder } from '../../Builders/team-builder';
 import { Role } from 'src/app/enum/Role';
+import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 
 export interface User {
   id: string
@@ -11,6 +12,7 @@ export interface User {
   phone: string
   email: string
   role: string
+  year: string
   other: string
 }
 
@@ -31,24 +33,32 @@ export class ViewUsersComponent {
   @Input() ddb!: DynamoDb;
   loading = true;
   users: User[] = []
-
+  inactiveUsers: User[] = []
 
 
   async ngOnInit() {
 
-    let coaches = await this.userBuilder.getCoaches(this.ddb);
-    let scouts = await this.userBuilder.getScouts(this.ddb);
+    let coaches = await this.userBuilder.getAllCoaches(this.ddb);
+    let scouts = await this.userBuilder.getAllScouts(this.ddb);
     let teams = await this.teamBuilder.getTeams(this.ddb);
 
     this.users = []
 
     coaches.forEach(element => {
       let teamNames = teams.filter((team)=>team.coachId == element.id).map((team) => team.name);
-      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.admin ? Role.ADMIN : element.role, other: teamNames.join(",")})
+      if (element.year === TOURNAMENT_YEAR){
+        this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.admin ? Role.ADMIN : element.role, year: element.year, other: teamNames.join(",")})
+      } else {
+        this.inactiveUsers.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.admin ? Role.ADMIN : element.role, year: element.year!, other: teamNames.join(",")})
+      }
     });
 
     scouts.forEach(element => {
-      this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.admin ? Role.ADMIN : element.role, other: ""})
+      if (element.year === TOURNAMENT_YEAR){
+        this.users.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.admin ? Role.ADMIN : element.role, year: element.year, other: ""})
+      } else {
+        this.inactiveUsers.push({id: element.id, name: element.name, phone: element.phone, email: element.email, role: element.admin ? Role.ADMIN : element.role, year: element.year!, other: ""})
+      }
     });
 
     this.loading = false;
