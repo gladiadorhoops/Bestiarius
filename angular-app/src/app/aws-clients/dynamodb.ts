@@ -168,6 +168,13 @@ export class DynamoDb {
         return resultItems;
     }
 
+    async listByYearQueryNoDefault(sk: string, cy?: string | undefined): Promise<Record<string, AttributeValue>[]> {
+        let resultItems: Record<string, AttributeValue>[] = [];
+        let results = await this.simpleQuery(sk, cy, IndexId.LIST_GSI);
+        if(results != undefined) resultItems = resultItems.concat(results);
+        return resultItems;
+    }
+
     private async simpleQuery(pk: string, sk: string | undefined, index: IndexId): Promise<Record<string, AttributeValue>[] | undefined> {
         console.log(`Reading Item (pk: ${pk}, sk: ${sk})`)
 
