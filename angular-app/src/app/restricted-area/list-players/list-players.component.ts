@@ -7,6 +7,7 @@ import { UserBuilder } from '../../Builders/user-builder';
 import { Player } from 'src/app/interfaces/player';
 import { PlayerBuilder } from 'src/app/Builders/player-builder';
 import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
+import { S3 } from 'src/app/aws-clients/s3';
 
 @Component({
   selector: 'app-list-players',
@@ -24,6 +25,8 @@ export class ListPlayersComponent {
   
   
     @Input() ddb!: DynamoDb;
+    @Input() s3!: S3;
+
     loading = true;
     teams: Team[] = [];
     uTeams: Map<string,string> = new Map<string, string>;
