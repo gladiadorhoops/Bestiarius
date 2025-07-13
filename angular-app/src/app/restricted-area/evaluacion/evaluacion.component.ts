@@ -10,7 +10,8 @@ import { ReporteBuilder } from '../../Builders/reporte-builder';
 import { Skills, Skill } from '../../interfaces/reporte';
 import { Scout } from '../../interfaces/scout';
 import { Role } from '../../enum/Role';
-
+import { S3 } from 'src/app/aws-clients/s3';
+import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-evaluacion',
@@ -50,6 +51,39 @@ export class EvaluacionComponent {
   evalGens: Skill[] = Skills.getEvaluaciones()
   nominaciones: Skill[] = Skills.getNominaciones()
 
+  @Input() s3!: S3;
+  imageUrl: string | ArrayBuffer | null | undefined = "assets/no-avatar.png";
+  blob: Blob | undefined
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onload = async () => {
+        try {
+          await this.s3.uploadFile(
+            this.selectedPlayer.id,
+            Buffer.from(reader.result as ArrayBuffer),
+            file.type,
+          );
+          // set image preview locally
+          this.imageUrl = URL.createObjectURL(file);
+
+          // update player entry with image
+          if(this.selectedPlayer.imageType != file.type){
+            this.selectedPlayer.imageType = file.type
+            await this.playerBuilder.updatePlayerImageType(this.ddb, this.selectedPlayer.id, file.type)
+          }
+        } catch (e) {
+          console.log("error", e);
+        }
+
+      };
+    } else {
+      console.log("No file selected.");
+    }
+  }
+  
   async ngOnInit() {
   }
 
@@ -111,6 +145,26 @@ export class EvaluacionComponent {
     this.evaluationForm = await this.reporteBuilder.getReport(
       this.ddb, scout, this.selectedPlayer.id, this.evaluationForm.value.equipo!, this.selectedCategoria,
     )
+
+    if (this.selectedPlayer.imageType){
+      await this.s3.downloadFile(this.selectedPlayer.id).then((data) => {
+        console.log("Downloaded data:", data);
+        if (data) {
+          this.blob = new Blob([data], { type: this.selectedPlayer.imageType });
+            // display blob as img
+          const reader2 = new FileReader();
+          reader2.readAsDataURL(this.blob);
+          reader2.onload = () => {
+          this.imageUrl = reader2.result;
+        };
+        } else {
+          this.imageUrl = "assets/no-avatar.png";
+          console.error("No data returned from downloadFile");
+        }
+      })
+    }  else {
+      this.imageUrl = "assets/no-avatar.png"
+    }
   }
 
   openPopup() {

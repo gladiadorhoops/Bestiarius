@@ -15,30 +15,39 @@
             </button>
           </h2>
           <div id="flush-collapseOne" class="accordion-collapse collapse show" >
-            <div class="accordion-body">
-                <label class="frow" for="categoria">Categoria:&nbsp;</label>
-                <div class="frow">
-                    <select id="categorias" formControlName="categoria" (change)="loadTeams()" required>
-                        <option value=""></option>
-                        <option *ngFor="let cat of categories" value="{{cat}}">{{cat}}</option>
-                    </select>
+              <div class="accordion-body">
+                <div class="row">
+                  <div class="col col-12 col-lg-5" *ngIf="scout_id==='6418c438-b0d1-700f-bd7c-cc6b60764124'" style="position: relative;z-index: 1; height:200px">
+                  <img id="image" style="max-height: 200px; max-width:90%;position: absolute; top:0; left:0; ;z-index: 1;" [src]="imageUrl">
+                  <label *ngIf="this.selectedPlayer.id" style="position: absolute;top: 0;left: 0;z-index: 2;" for="photoFile"><i class="fa fa-camera" style="font-size: 2em;"></i></label>
+                  <input *ngIf="this.selectedPlayer.id" style="display:none;" id="photoFile" type="file" (change)="onFileSelected($event)" accept="image/*" maxFileSize="10000000">
                 </div>
-                <label class="frow" for="equipo">Equipo:&nbsp;</label>
-                <div class="frow">
-                    <select id="equipos" formControlName="equipo" (change)="loadPlayers()" required>
-                        <option value=""></option>
-                        <option *ngFor="let team of teams" value="{{team.name}}">{{team.name}}</option>
-                    </select>
+                <div class="col col-12 col-lg-7">
+                  <label class="frow" for="categoria">Categoria:&nbsp;</label>
+                  <div class="frow">
+                      <select id="categorias" formControlName="categoria" (change)="loadTeams()" required>
+                          <option value=""></option>
+                          <option *ngFor="let cat of categories" value="{{cat}}">{{cat}}</option>
+                      </select>
+                  </div>
+                  <label class="frow" for="equipo">Equipo:&nbsp;</label>
+                  <div class="frow">
+                      <select id="equipos" formControlName="equipo" (change)="loadPlayers()" required>
+                          <option value=""></option>
+                          <option *ngFor="let team of teams" value="{{team.name}}">{{team.name}}</option>
+                      </select>
+                  </div>
+                  <label class="frow" for="nombre">Nombre:&nbsp;</label>
+                  <div class="frow">
+                      <select id="players" formControlName="playerId" (change)="loadPlayerDetails()" required>
+                          <option value=""></option>
+                          <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.name}}</option>
+                      </select>
+                  </div>
+                  <label class="frow" for="edad">Posicion Registrada:&nbsp;</label>
+                  <input class="frow" disabled id="position" type="text" value="{{selectedPlayer.position}}">
                 </div>
-                <label class="frow" for="nombre">Nombre:&nbsp;</label>
-                <div class="frow">
-                    <select id="players" formControlName="playerId" (change)="loadPlayerDetails()" required>
-                        <option value=""></option>
-                        <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.name}}</option>
-                    </select>
-                </div>
-                <label class="frow" for="edad">Posicion Registrada:&nbsp;</label>
-                <input class="frow" disabled id="position" type="text" value="{{selectedPlayer.position}}">
+              </div>
             </div>
           </div>
         </div>
