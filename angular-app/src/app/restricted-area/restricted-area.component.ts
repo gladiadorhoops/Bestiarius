@@ -11,6 +11,7 @@ import { UserBuilder } from '../Builders/user-builder';
 import { Role } from '../enum/Role';
 import { TOURNAMENT_YEAR } from '../aws-clients/constants';
 import { User } from '../interfaces/user';
+import { S3 } from '../aws-clients/s3';
 
 export interface MenuItem {
   text: string
@@ -48,6 +49,7 @@ export class RestrictedAreaComponent {
     paramCode: string | undefined;
 
     ddb!: DynamoDb;
+    s3!: S3;
     loading = true;
 
     menuItems: MenuItem[] = [];
@@ -71,14 +73,23 @@ export class RestrictedAreaComponent {
               if (credentials == undefined) {
                 throw Error("AWS Credentials are undefined. Unable to set DDB client")
               }
+              
+              S3.build(credentials).then(
+                (client) => {
+                  console.log('Initiating S3', client)
+                  this.s3 = client;
+                }
+              );
+              
               DynamoDb.build(credentials).then(
                 (client) => {
-                  console.log('Iniitation DDB', client)
+                  console.log('Initiating DDB', client)
                   this.ddb = client;
             
                   this.reloadLoginStatus().then( () => this.loading = false)
 
-                });
+                }
+              );
             }
           )
         }
