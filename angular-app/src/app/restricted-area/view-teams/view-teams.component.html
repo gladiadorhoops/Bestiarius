@@ -37,11 +37,17 @@
     <table class="row">
         <tr class="row">
             <th class="col col-lg-8 col-12"> <a [routerLink]="">Player</a></th>
-            <th class="col col-lg-4 col-12"> <a [routerLink]="">Position</a></th>
+            <th class="col col-lg-3 col-8"> <a [routerLink]="">Position</a></th>
+            <th class="col col-lg-1 col-4"> <a [routerLink]=""></a></th>
         </tr>
-        <tr class="row" *ngFor="let player of players" [routerLink]="" (click)="editPlayer(player.id)">
-            <td class="col col-lg-8 col-12"><u>{{player.name}}{{(player.id === team?.captainId) ? " (Capitán)" : ""}}</u></td>
-            <td class="col col-lg-4 col-12">{{player.position}}</td>
+        <tr class="row" *ngFor="let player of players" [routerLink]="">
+            <td class="col col-lg-8 col-12" (click)="editPlayer(player.id)"><u>{{player.name}}{{(player.id === team?.captainId) ? " (Capitán)" : ""}}</u></td>
+            <td class="col col-lg-3 col-8" (click)="editPlayer(player.id)">{{player.position}}</td>
+            <td class="col col-lg-1 col-4">
+              <button class="btn btn-outline-danger btn-floating m-1" title="Remover jugador" (click)="removePlayer(player.id)" target="_blank" role="button">
+                <i class="fa fa-remove"></i>
+              </button>
+            </td>
         </tr>
     </table>
     <p></p>
@@ -192,12 +198,18 @@
         <div class="frow">
           <p>Por favor seleccione los jugadores que desea registrar en este equipo:</p>
           <form [formGroup]="addExistingPlayerForm" (ngSubmit)="addExistingPlayerSubmit()" class ="fcol">
+            <div *ngIf="availablePlayers.length > 0">
               <div *ngFor="let option of ordersFormArray.controls; let i = index">
-                  <label formArrayName="selectedOptions" >
-                    <input type="checkbox" [formControlName]="i">
-                    {{ availablePlayers![i].name }}
-                  </label>
-              </div>
+                <label formArrayName="selectedOptions" >
+                  <input type="checkbox" [formControlName]="i">
+                  {{ availablePlayers![i].name }}
+                </label>
+            </div>
+            </div>
+            <div *ngIf="availablePlayers.length === 0">
+              No hay jugadoras disponibles
+            </div>
+              
               <div class="frow">
                 <button class="btn btn-danger" type="submit" [disabled]="!addExistingPlayerForm.valid">Registrar</button>
               </div>
