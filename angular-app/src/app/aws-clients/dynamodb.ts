@@ -162,10 +162,7 @@ export class DynamoDb {
     }
 
     async listByYearQuery(sk: string, cy: string = TOURNAMENT_YEAR): Promise<Record<string, AttributeValue>[]> {
-        let resultItems: Record<string, AttributeValue>[] = [];
-        let results = await this.simpleQuery(sk, cy, IndexId.LIST_GSI);
-        if(results != undefined) resultItems = resultItems.concat(results);
-        return resultItems;
+        return this.listByYearQueryNoDefault(sk, cy);
     }
 
     async listByYearQueryNoDefault(sk: string, cy?: string | undefined): Promise<Record<string, AttributeValue>[]> {
