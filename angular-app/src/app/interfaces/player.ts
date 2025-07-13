@@ -4,7 +4,7 @@ export interface Player {
     team: string,
     age: string,
     category: string,
-
+    imageType?: string | undefined,
     height: string,
     weight: string,
     position: string,
@@ -21,6 +21,7 @@ export enum PlayerKey {
     WEIGHT = 'weight',
     POSITION = 'position',
     BIRTHDAY = 'birthday',
+    IMAGE_TYPE = 'image',
     PREFIX = 'player'
 }
 

@@ -11,6 +11,21 @@ import { TOURNAMENT_YEAR } from '../aws-clients/constants';
     providedIn: 'root'
 })
 export class PlayerBuilder {
+    async updatePlayerImageType(ddb: DynamoDb, playerId: string, type: string) {
+        let key = {
+            [PK_KEY]: {S: `${PlayerKey.PREFIX}.${playerId}`},
+            [SK_KEY]: {S: `${PlayerKey.PREFIX}.data`}
+        };
+        let updateExpression = 'SET #imgattr = :val';
+        let expressionAttributeNames: Record<string, string> = {
+            '#imgattr': `${PlayerKey.IMAGE_TYPE}`,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':val': {S: type},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
+    }
 
     async createPlayer(ddb: DynamoDb, player: Player) {
         let playerRecord: Record<string, AttributeValue> = {}
@@ -23,6 +38,7 @@ export class PlayerBuilder {
         playerRecord[PlayerKey.HEIGHT] = {S: `${player.height}`};
         playerRecord[PlayerKey.WEIGHT] = {S: `${player.weight}`};
         playerRecord[PlayerKey.POSITION] = {S: `${player.position}`};
+        playerRecord[PlayerKey.IMAGE_TYPE] = {S: `${player.imageType}`};
         playerRecord[CY_KEY] = {S: TOURNAMENT_YEAR};
         if(player.birthday) playerRecord[PlayerKey.BIRTHDAY] = {S: `${player.birthday?.toDateString()}`};
         await ddb.putItem(playerRecord);
@@ -90,6 +106,7 @@ export class PlayerBuilder {
             weight: item[PlayerKey.WEIGHT].S ? item[PlayerKey.WEIGHT].S : "",
             position: item[PlayerKey.POSITION].S ? item[PlayerKey.POSITION].S : "",
             birthday: item[PlayerKey.BIRTHDAY].S ? new Date(item[PlayerKey.BIRTHDAY].S) : undefined,
+            imageType: item[PlayerKey.IMAGE_TYPE] ? item[PlayerKey.IMAGE_TYPE].S : undefined,
             year: item[CY_KEY].S ? item[CY_KEY].S : ""
         }
     }

@@ -39,7 +39,7 @@
                         </div>
                         
                         <div class="text-center" *ngIf="evaluarView">
-                            <app-evaluacion [ddb]="ddb"></app-evaluacion>
+                            <app-evaluacion [ddb]="ddb" [s3]="s3"></app-evaluacion>
                         </div>
                         
                         <div *ngIf="resultadosView">
@@ -67,7 +67,7 @@
                         </div>
                         
                         <div *ngIf="listPlayersView">
-                            <app-list-players [ddb]="ddb" [s3]="s3" ></app-list-players>
+                            <app-list-players [ddb]="ddb"></app-list-players>
                         </div>
                         
                         <div *ngIf="listTeamsView">
