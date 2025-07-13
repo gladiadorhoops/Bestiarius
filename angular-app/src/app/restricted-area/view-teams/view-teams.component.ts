@@ -242,7 +242,7 @@ export class ViewTeamsComponent {
 
     this.availablePlayers = []
     teams.forEach(async element => {
-      let teamPlayers = await this.playerBuilder.getPlayersByTeam(this.ddb, element.id)
+      let teamPlayers = (await this.playerBuilder.getPlayersByTeam(this.ddb, element.id)).filter(p => !(element.id === this.team?.id && p.year === TOURNAMENT_YEAR))
       this.availablePlayers.push(...teamPlayers)
     });
   }
@@ -265,7 +265,7 @@ export class ViewTeamsComponent {
     try {
       for (let p of selectedPlayers) {
         console.log("Updating player ", p.name)
-        await this.playerBuilder.updatePlayerYear(this.ddb, p, TOURNAMENT_YEAR, this.team!.id)
+        await this.playerBuilder.updatePlayerYear(this.ddb, p.id, TOURNAMENT_YEAR, this.team!.id, this.team!.category!)
       }
     } catch (err) {
       console.error("Error updating year")
@@ -273,6 +273,11 @@ export class ViewTeamsComponent {
     
     await this.loadTeam(this.team?.id!);
     this.closeAddExistingPlayer();
+  }
+  async removePlayer(playerId: string){
+    await this.playerBuilder.updatePlayerYear(this.ddb, playerId, "removed", this.team!.id, this.team!.category!)
+    
+    await this.loadTeam(this.team?.id!);
   }
 
   async addPlayer(){

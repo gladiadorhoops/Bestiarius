@@ -100,7 +100,7 @@ export class ListTeamsComponent {
       try {
         for (let p of selectedPlayers) {
           console.log("Updating player ", p.name)
-          await this.playerBuilder.updatePlayerYear(this.ddb, p, TOURNAMENT_YEAR, this.selectedRenewalTeam!.id)
+          await this.playerBuilder.updatePlayerYear(this.ddb, p.id, TOURNAMENT_YEAR, this.selectedRenewalTeam!.id, this.selectedRenewalTeam!.category!)
         }
         await this.teamBuilder.updateTeamYear(this.ddb, this.selectedRenewalTeam!, TOURNAMENT_YEAR)
       } catch (err) {

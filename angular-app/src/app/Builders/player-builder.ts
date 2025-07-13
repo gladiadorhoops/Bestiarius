@@ -94,20 +94,22 @@ export class PlayerBuilder {
         }
     }
 
-    async updatePlayerYear(ddb: DynamoDb, player: Player, year: string, teamId: string) {
+    async updatePlayerYear(ddb: DynamoDb, playerId: string, year: string, teamId: string, cat: string) {
 
         let key = {
-            [PK_KEY]: {S: `${PlayerKey.PREFIX}.${player.id}`},
+            [PK_KEY]: {S: `${PlayerKey.PREFIX}.${playerId}`},
             [SK_KEY]: {S: `${PlayerKey.PREFIX}.data`}
         };
-        let updateExpression = 'SET #yearattr = :val, #teamattr = :val2';
+        let updateExpression = 'SET #yearattr = :val, #teamattr = :val2, #catattr = :val3';
         let expressionAttributeNames: Record<string, string> = {
             '#yearattr': `${CY_KEY}`,
             '#teamattr': `${SPK_KEY}`,
+            '#catattr': `${PlayerKey.CATEGORY}`,
         };
         let expressionAttributeValues: Record<string, AttributeValue> = {
             ':val': {S: year},
             ':val2': {S: `${TeamKey.PREFIX}.${teamId}`},
+            ':val3': {S: `${cat}`},
         };
 
         await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
