@@ -7,16 +7,20 @@
     <span class="sr-only">Loading...</span>
 </div>
 <div class="mainpanel" *ngIf="!loading">
+    <div class="scroll-container">
+        <div style="min-width: 600px;">
     <table class="row">
         <tr class="row">
-            <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortPlayersByEquipo()">Equipo</a></th>
-            <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortPlayersByCategory()">Categoria</a></th>
-            <th class="col col-lg-6 col-12"> <a [routerLink]="" (click)="sortPlayersByName()">Jugador</a></th>
+            <th class="col col-5"> <a [routerLink]="" (click)="sortPlayersByName()">Jugador</a></th>
+            <th class="col col-4"> <a [routerLink]="" (click)="sortPlayersByEquipo()">Equipo</a></th>
+            <th class="col col-3"> <a [routerLink]="" (click)="sortPlayersByCategory()">Categoria</a></th>
         </tr>
         <tr class="row" *ngFor="let player of players" [routerLink]="" >
-            <td class="col col-lg-3 col-12">{{uTeams.get(player.team)}}</td>
-            <td class="col col-lg-3 col-12">{{player.category}}</td>
-            <td class="col col-lg-6 col-12">{{player.name}}</td>
+            <td class="col col-5">{{player.name}}</td>
+            <td class="col col-4">{{uTeams.get(player.team)}}</td>
+            <td class="col col-3">{{player.category}}</td>
         </tr>
     </table>
+    </div>
+    </div>
 </div>  
