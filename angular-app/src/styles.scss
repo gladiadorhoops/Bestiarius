@@ -110,3 +110,9 @@ height: 100%;
 td{
     word-wrap: break-word;
 }
+
+.scroll-container {
+    overflow-x: scroll; /* Enables horizontal scrolling when content overflows */
+    -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS devices */
+    white-space: nowrap;
+}
