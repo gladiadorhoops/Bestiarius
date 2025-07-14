@@ -7,6 +7,7 @@ import { UserBuilder } from '../../Builders/user-builder';
 import { Player } from 'src/app/interfaces/player';
 import { PlayerBuilder } from 'src/app/Builders/player-builder';
 import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
+import { S3 } from 'src/app/aws-clients/s3';
 
 @Component({
   selector: 'app-list-players',
@@ -14,6 +15,8 @@ import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
   styleUrls: ['./list-players.component.scss']
 })
 export class ListPlayersComponent {
+    player: Player | undefined;
+    imageUrl: string | ArrayBuffer | null = "assets/no-avatar.png";
   
     constructor(
         private authService: AuthService,
@@ -86,6 +89,38 @@ export class ListPlayersComponent {
   
     sortPlayersByName(){
       this.players = this.players.sort((a, b) => (a.name).localeCompare((b.name)))
+    }
+
+    @Input() s3!: S3;
+    async getS3ImgAsBuffer(playerId: string, imgType: string){
+      let data = await this.s3.downloadFile(playerId)
+      console.log("Downloaded data:", data);
+  
+      if (data) {
+        let blob = new Blob([data], { type: imgType });
+          // display blob as img
+        const reader2 = new FileReader();
+        reader2.readAsDataURL(blob);
+        reader2.onload = () => {
+          this.imageUrl = reader2.result;
+        };
+      } else {
+        console.error("No data returned from downloadFile");
+        this.imageUrl = "assets/no-avatar.png";
+      }
+    }
+
+    displayPlayer = "none"
+    closePlayerPopup(){
+      this.player = undefined
+      this.imageUrl = "assets/no-avatar.png"
+      this.displayPlayer = "none"
+    }
+    async showPlayer(player: Player){
+      console.log("Showing player: ", player.name)
+      this.player = player
+      if(player.imageType) await this.getS3ImgAsBuffer(player.id, player.imageType);
+      this.displayPlayer = "block"
     }
   
   }
