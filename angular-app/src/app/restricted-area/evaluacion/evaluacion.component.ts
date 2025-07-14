@@ -12,6 +12,7 @@ import { Scout } from '../../interfaces/scout';
 import { Role } from '../../enum/Role';
 import { S3 } from 'src/app/aws-clients/s3';
 import { Buffer } from 'buffer';
+import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 
 @Component({
   selector: 'app-evaluacion',
@@ -149,7 +150,7 @@ export class EvaluacionComponent {
         if(team.name == selectedTeam){
           this.teamplayers = await this.playerBuilder.getPlayersByTeam(this.ddb, team.id!).then(
             (players) => {
-              return players
+              return players.filter(p => p.year == TOURNAMENT_YEAR)
             }
           )
         }
