@@ -1,6 +1,7 @@
 import { S3Client, GetObjectCommand, ListObjectsCommand, ListObjectsCommandInput, GetObjectCommandInput, PutObjectCommand, PutObjectCommandInput } from "@aws-sdk/client-s3";
 import { REGION, COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR } from "./constants";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
+import { Cache } from "./cache";
 
 const client = new S3Client({ 
     region: REGION,
@@ -25,9 +26,11 @@ export { client };
 export class S3 {
     
     client: S3Client;
+    cache: Cache;
 
     constructor(client: S3Client){
         this.client = client
+        this.cache = new Cache();
     }
     async listObjects(): Promise<any> {
         console.log("Listing all match files")
@@ -67,9 +70,11 @@ export class S3 {
     async uploadFile(fileName: string, fileContent: string | Uint8Array | Buffer, contentType: string): Promise<boolean> {
         console.log(`Uploading file: ${fileName}`)
         
+        const objectKey = `${IMAGE_PATH}/${fileName}`;
+
         const input: PutObjectCommandInput = {
             Bucket: GLADIADORES_BUCKET_NAME,
-            Key: `${IMAGE_PATH}/${fileName}`,
+            Key: objectKey,
             Body: fileContent,
             ContentType: contentType
         };
@@ -79,6 +84,13 @@ export class S3 {
         try {
             const response = await this.client.send(new PutObjectCommand(input));
             console.log('Successfully uploaded file:', response);
+            
+            // Invalidate cache entry for this file since we just uploaded a new version
+            if (this.cache.has(objectKey)) {
+                this.cache.delete(objectKey);
+                console.log(`Invalidated cache for uploaded file: ${fileName}`);
+            }
+            
             return true;
         } catch (err) {
             console.error('Error uploading file:', err);
@@ -86,12 +98,68 @@ export class S3 {
         }
     }
 
-    async downloadFile(fileName: string): Promise<Uint8Array | undefined> {
-        console.log(`Downloading file: ${fileName}`)
+    /**
+     * Get cache statistics for monitoring
+     */
+    getCacheStats() {
+        return this.cache.getStats();
+    }
+
+    /**
+     * Clear all cached entries
+     */
+    clearCache(): void {
+        this.cache.clear();
+    }
+
+    /**
+     * Remove specific file from cache
+     */
+    invalidateCache(fileName: string, path?: string): boolean {
+        const cacheKey = path ? `${path}/${fileName}` : `${IMAGE_PATH}/${fileName}`;
+        return this.cache.delete(cacheKey);
+    }
+
+    /**
+     * Check if a file is cached
+     */
+    isCached(fileName: string, path?: string): boolean {
+        const cacheKey = path ? `${path}/${fileName}` : `${IMAGE_PATH}/${fileName}`;
+        return this.cache.has(cacheKey);
+    }
+
+    /**
+     * Manually cleanup expired cache entries
+     */
+    cleanupCache(): number {
+        return this.cache.cleanup();
+    }
+
+    /**
+     * Destroy the S3 instance and cleanup cache resources
+     */
+    destroy(): void {
+        this.cache.destroy();
+        console.log('S3 instance destroyed and cache cleaned up');
+    }
+
+    async downloadFile(fileName: string, useCache: boolean = true): Promise<Uint8Array | undefined> {
+        const objectKey = `${IMAGE_PATH}/${fileName}`;
+        console.log(`Downloading file: ${objectKey}`)
+        
+        // Check cache first if caching is enabled
+        if (useCache) {
+            const cachedData = this.cache.get(objectKey);
+            if (cachedData) {
+                console.log(`Cache hit for file: ${objectKey}`);
+                return cachedData;
+            }
+            console.log(`Cache miss for file: ${objectKey}, downloading from S3`);
+        }
         
         const input: GetObjectCommandInput = {
             Bucket: GLADIADORES_BUCKET_NAME,
-            Key: `${IMAGE_PATH}/${fileName}`
+            Key: objectKey
         };
 
         console.log('Download input:', input);
@@ -99,8 +167,20 @@ export class S3 {
         try {
             const response = await this.client.send(new GetObjectCommand(input));
             const fileContent = await response.Body?.transformToByteArray();
-            console.log('Successfully downloaded file:', fileName);
-            return fileContent;
+            
+            if (fileContent) {
+                console.log('Successfully downloaded file:', objectKey);
+                
+                // Cache the downloaded file if caching is enabled
+                if (useCache) {
+                    this.cache.set(objectKey, fileContent);
+                    console.log(`Cached file: ${objectKey}`);
+                }
+                
+                return fileContent;
+            }
+            
+            return undefined;
         } catch (err) {
             console.error('Error downloading file:', err);
             return undefined;
@@ -114,6 +194,4 @@ export class S3 {
         }); 
         return new S3(client)
     }    
-
-
 }
