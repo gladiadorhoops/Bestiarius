@@ -1,0 +1,26 @@
+<form [formGroup]="playerForm" >
+  <div class="row" style="padding: 2px;">
+    <div class="col col-12 col-lg-5" *ngIf="scout_id==='6418c438-b0d1-700f-bd7c-cc6b60764124'" style="position: relative;z-index: 1; height:200px">
+      <img id="image" style="max-height: 200px; max-width:90%;position: absolute; top:0; left:0; ;z-index: 1;" [src]="imageUrl">
+      <label *ngIf="this.player.id" style="position: absolute;top: 0;left: 0;z-index: 2;" for="photoFile"><i class="fa fa-camera" style="font-size: 2em;"></i></label>
+      <input *ngIf="this.player.id" style="display:none;" id="photoFile" type="file" (change)="onFileSelected($event)" accept="image/*" maxFileSize="10000000">
+    </div>
+    <div class="col col-12 col-lg-7">
+      <input name="scout" type="text" formControlName="equipo" value="{{player.team}}" hidden readonly required>
+      <input name="scout" type="text" formControlName="categoria" value="{{player.category}}" hidden readonly required>
+
+      <label class="frow" for="nombre">Nombre:&nbsp;</label>
+      <input class="frow" type="text" id="nombre{{playerId}}" class="form-control" value="{{player.name}}">
+      <label class="frow" for="bday">Fecha de Nacimiento:&nbsp;</label>
+      <input class="frow" id="bday{{playerId}}" type="date" value="{{player.birthday | date:'yyyy-MM-dd'}}">
+
+      <label class="frow" for="position">Posición:&nbsp;</label>
+      <input class="frow" id="position{{playerId}}" type="text" value="{{player.position}}">
+
+      <label class="frow" for="altura">Altura (cm):&nbsp;</label>
+      <input class="frow" id="altura{{playerId}}" type="number" min="1" max="300" value="{{player.height}}">
+      <label class="frow" for="peso">Peso (kg):&nbsp;</label>
+      <input class="frow" id="peso{{playerId}}" type="number" min="1" max="300" value="{{player.weight}}">
+    </div>
+  </div>
+</form>

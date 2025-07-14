@@ -8,13 +8,15 @@ import { PlayerBuilder } from '../../Builders/player-builder';
 import { formatDate } from "@angular/common";
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import {v4 as uuidv4} from 'uuid';
-import { AddPlayerComponent } from '../add-team/add-player/add-player.component';
+import { AddPlayerComponent } from './add-player/add-player.component';
 import { Coach } from '../../interfaces/coach';
 import { UserBuilder } from '../../Builders/user-builder';
 import { FeatureFlag } from 'src/app/interfaces/feature-flag';
 import { FeatureFlagBuilder } from 'src/app/Builders/feature-flag-builder';
 import { Feature } from 'src/app/enum/feature-flag';
 import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
+import { S3 } from 'src/app/aws-clients/s3';
+
 
 @Component({
   selector: 'app-view-teams',
@@ -45,6 +47,7 @@ export class ViewTeamsComponent {
   }
 
   @Input() ddb!: DynamoDb;
+  @Input() s3!: S3;
 
   loading = true;
   team: Team | undefined;
@@ -294,8 +297,8 @@ export class ViewTeamsComponent {
   @ViewChildren(AddPlayerComponent) viewChildren!: QueryList<AddPlayerComponent>;
   async getInputPlayer(){
     let newPlayer: Player = this.playerBuilder.getEmptyPlayer();
-    await this.viewChildren.forEach(element => {
-      element.savePlayer();
+    await this.viewChildren.forEach(async element => {
+      await element.savePlayer();
       console.log("updated player:");
       console.log(element.player);
       newPlayer = element.player;

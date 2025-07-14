@@ -269,7 +269,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <app-add-player [teamplayers]="players" [equipoId]="team?.id!" [categoria]="team?.category!" [playerId]="newplayerid" [ddb]="ddb"></app-add-player>
+        <app-add-player [teamplayers]="players" [equipoId]="team?.id!" [categoria]="team?.category!" [playerId]="newplayerid" [ddb]="ddb" [s3]="s3"></app-add-player>
       </div>
       <div class="modal-footer">
         <button *ngIf="editable" type="button" class="btn btn-danger" 
