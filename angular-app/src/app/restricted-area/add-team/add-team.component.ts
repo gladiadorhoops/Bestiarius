@@ -6,7 +6,6 @@ import { Player } from '../../interfaces/player';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { TeamBuilder } from '../../Builders/team-builder';
 import { PlayerBuilder } from '../../Builders/player-builder';
-import { AddPlayerComponent } from './add-player/add-player.component';
 import {v4 as uuidv4} from 'uuid';
 import { Coach } from '../../interfaces/coach';
 import { UserBuilder } from '../../Builders/user-builder';
@@ -72,8 +71,6 @@ export class AddTeamComponent {
     this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
     
   }
-
-  @ViewChildren(AddPlayerComponent) viewChildren!: QueryList<AddPlayerComponent>;
 
 
   async validateTeam() {

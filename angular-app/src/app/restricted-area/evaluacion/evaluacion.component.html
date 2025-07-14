@@ -247,6 +247,34 @@
 </div>
 </div>
 
+<div class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayPhotoPopup}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header dark-header">
+        <h5 class="modal-title">Remplazar imagem</h5>
+        <button type="button" class="btn-close" (click)="closePhotoPopup()" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Estas seguro que quieres remplazar la imagen del jugador "{{selectedPlayer.name}}". Esta accion es irreversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="confirmReplacePhoto()">
+          Sí
+        </button>
+        <button type="button" class="btn btn-danger" 
+                (click)="closePhotoPopup()">
+          No
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div
   class="modal"
   tabindex="-1"

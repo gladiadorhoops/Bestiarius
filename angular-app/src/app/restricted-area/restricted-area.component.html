@@ -75,7 +75,7 @@
                         </div>
                         
                         <div [hidden]="!viewTeamsView">
-                            <app-view-teams [ddb]="ddb" (callListTeam)="showListTeams()"></app-view-teams>
+                            <app-view-teams [ddb]="ddb" [s3]="s3" (callListTeam)="showListTeams()"></app-view-teams>
                         </div>
                     </div>
                 </div>
