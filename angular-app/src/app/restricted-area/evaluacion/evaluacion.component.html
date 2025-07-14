@@ -244,14 +244,12 @@
         <button type="submit" [disabled]="!evaluationForm.valid">Guardar</button>
     </div>
 </form>
-</div>
-</div>
 
 <div class="modal"
   tabindex="-1"
   role="dialog"
   [ngStyle]="{'display':displayPhotoPopup}">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header dark-header">
         <h5 class="modal-title">Remplazar imagem</h5>
@@ -280,7 +278,7 @@
   tabindex="-1"
   role="dialog"
   [ngStyle]="{'display':displayStyle}">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-body">
         <p>{{submitReportMessage}}</p>
@@ -295,3 +293,7 @@
     </div>
   </div>
 </div>
+
+</div>
+</div>
+
