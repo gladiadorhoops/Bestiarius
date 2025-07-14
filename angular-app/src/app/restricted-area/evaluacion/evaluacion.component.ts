@@ -120,9 +120,9 @@ export class EvaluacionComponent {
 
     try {
       await this.reporteBuilder.submit(this.ddb, this.evaluationForm)
-      this.submitReportMessage = "Evaluacion guardada!"
+      this.submitReportMessage = "Evaluación guardada"
     } catch (err) {
-      this.submitReportMessage = `Error guardaondo evaluacion. Contacta a Paco.\n${err}`
+      this.submitReportMessage = `Error guardando evaluación. Contacta a Paco.\n${err}`
       console.error("Error Submitting report")
     }
     
