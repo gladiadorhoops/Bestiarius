@@ -38,7 +38,7 @@ export class PlayerBuilder {
         playerRecord[PlayerKey.HEIGHT] = {S: `${player.height}`};
         playerRecord[PlayerKey.WEIGHT] = {S: `${player.weight}`};
         playerRecord[PlayerKey.POSITION] = {S: `${player.position}`};
-        playerRecord[PlayerKey.IMAGE_TYPE] = {S: `${player.imageType}`};
+        playerRecord[PlayerKey.IMAGE_TYPE] = {S: `${player.imageType?player.imageType:""}`};
         playerRecord[CY_KEY] = {S: TOURNAMENT_YEAR};
         if(player.birthday) playerRecord[PlayerKey.BIRTHDAY] = {S: `${player.birthday?.toDateString()}`};
         await ddb.putItem(playerRecord);
@@ -106,7 +106,7 @@ export class PlayerBuilder {
             weight: item[PlayerKey.WEIGHT].S ? item[PlayerKey.WEIGHT].S : "",
             position: item[PlayerKey.POSITION].S ? item[PlayerKey.POSITION].S : "",
             birthday: item[PlayerKey.BIRTHDAY].S ? new Date(item[PlayerKey.BIRTHDAY].S) : undefined,
-            imageType: item[PlayerKey.IMAGE_TYPE] ? item[PlayerKey.IMAGE_TYPE].S : undefined,
+            imageType: item[PlayerKey.IMAGE_TYPE] ? item[PlayerKey.IMAGE_TYPE].S : "",
             year: item[CY_KEY].S ? item[CY_KEY].S : ""
         }
     }

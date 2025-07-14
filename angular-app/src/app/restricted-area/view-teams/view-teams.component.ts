@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { TeamBuilder } from '../../Builders/team-builder';
@@ -213,9 +213,7 @@ export class ViewTeamsComponent {
     console.log("View player "+playerId);
     this.selectedPlayer = (this.players.filter((p)=>p.id === playerId))[0];
     this.newplayerid = this.selectedPlayer.id;
-    await this.viewChildren.forEach(element => {
-      element.loadPlayer(this.newplayerid);
-    });
+    await this.viewChild.loadPlayer(this.newplayerid);
     this.addPlayer();
   }
 
@@ -284,9 +282,7 @@ export class ViewTeamsComponent {
   }
 
   async addPlayer(){
-    await this.viewChildren.forEach(element => {
-      element.loadPlayer(this.newplayerid);
-    });
+    await this.viewChild.loadPlayer(this.newplayerid);
     this.displayAddPlayer = "block"
   }
   closeAddPlayerPopup() {
@@ -294,24 +290,21 @@ export class ViewTeamsComponent {
     this.newplayerid = uuidv4();
   }
 
-  @ViewChildren(AddPlayerComponent) viewChildren!: QueryList<AddPlayerComponent>;
+  @ViewChild(AddPlayerComponent) viewChild!: AddPlayerComponent;
   async getInputPlayer(){
     let newPlayer: Player = this.playerBuilder.getEmptyPlayer();
-    await this.viewChildren.forEach(async element => {
-      await element.savePlayer();
-      console.log("updated player:");
-      console.log(element.player);
-      newPlayer = element.player;
-    });
+    await this.viewChild.savePlayer()
+    console.log("updated player:");
+    console.log(this.viewChild.player);
+    newPlayer = this.viewChild.player;
     return newPlayer;
   }
 
   async confirmAddPlayer() {
     let newPlayer = await this.getInputPlayer()
-    this.playerBuilder.createPlayer(this.ddb, newPlayer).then(()=> {
-      console.log("Saved "+newPlayer.name);
-    });
-    this.loadTeam(this.team!.id);
+    await this.playerBuilder.createPlayer(this.ddb, newPlayer)
+    console.log("Saved "+newPlayer.name);
+    await this.loadTeam(this.team!.id);
     this.newplayerid = uuidv4();
     this.displayAddPlayer = "none";
   }

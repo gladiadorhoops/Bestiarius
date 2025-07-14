@@ -98,7 +98,7 @@ export class AddPlayerComponent {
       weight: (<HTMLInputElement>document.getElementById("peso"+this.playerId)).value,
       position: (<HTMLInputElement>document.getElementById("position"+this.playerId)).value,
       birthday: new Date((<HTMLInputElement>document.getElementById("bday"+this.playerId)).value),
-      imageType: this.player.imageType
+      imageType: this.player.imageType? this.player.imageType : ""
     }
     return inputplayer;
   }

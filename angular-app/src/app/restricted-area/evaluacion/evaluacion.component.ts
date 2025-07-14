@@ -174,7 +174,8 @@ export class EvaluacionComponent {
       this.ddb, scout, this.selectedPlayer.id, this.evaluationForm.value.equipo!, this.selectedCategoria,
     )
 
-    if (this.selectedPlayer.imageType){
+    if (this.selectedPlayer.imageType ){
+      console.log("image type is: ", this.selectedPlayer.imageType)
       await this.getS3ImgAsBuffer(this.selectedPlayer.id, this.selectedPlayer.imageType);
     }  else {
       this.imageUrl = "assets/no-avatar.png"
