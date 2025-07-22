@@ -54,6 +54,7 @@ export class AddPlayerComponent {
   emptyTxt : string = "";
 
   async ngOnInit() {
+    this.imgToUpload = undefined
     this.loadPlayer(this.playerId);
   }
 
@@ -144,7 +145,7 @@ export class AddPlayerComponent {
   }
 
   async savePlayer(){
-    if(this.player.imageType){
+    if(this.player.imageType && this.imgToUpload){
       await this.s3.uploadFile(
         this.player.id,
         this.imgToUpload!,
