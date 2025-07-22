@@ -84,7 +84,8 @@ export class ListPlayersComponent {
     }
   
     sortPlayersByEquipo(){
-      this.players = this.players.sort((a, b) => this.uTeams.get(a.team)!.localeCompare(this.uTeams.get(b.team)!))
+
+      this.players = this.players.sort((a, b) => (this.uTeams.get(a.team)?this.uTeams.get(a.team)!:'no-team').localeCompare(this.uTeams.get(b.team)?this.uTeams.get(b.team)!:'no-team'))
     }
   
     sortPlayersByName(){

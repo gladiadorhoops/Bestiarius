@@ -61,6 +61,9 @@ export class ViewUsersComponent {
       }
     });
 
+    this.users = this.users.sort((a, b) => a.name!.localeCompare(b.name!))
+    this.users = this.users.sort((a, b) => a.role!.localeCompare(b.role!))
+
     this.loading = false;
   }
 

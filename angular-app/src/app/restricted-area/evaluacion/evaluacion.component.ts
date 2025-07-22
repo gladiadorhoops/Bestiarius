@@ -141,6 +141,7 @@ export class EvaluacionComponent {
     this.teams = this.teams.concat(teams)
     this.teamplayers = [];
     this.selectedPlayer = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:new Date()};
+    this.imageUrl = "assets/no-avatar.png"
   }
 
   async loadPlayers() {
@@ -156,6 +157,7 @@ export class EvaluacionComponent {
         }
     });
     this.selectedPlayer = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:new Date()};
+    this.imageUrl = "assets/no-avatar.png"
   }
 
   async loadPlayerDetails() {

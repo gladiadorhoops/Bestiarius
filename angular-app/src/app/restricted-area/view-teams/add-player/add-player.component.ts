@@ -151,6 +151,7 @@ export class AddPlayerComponent {
         this.player.imageType!,
       );
       console.log("File uploaded")
+      this.imgToUpload = undefined
     }
 
     if(document.getElementById("nombre"+this.playerId)){
