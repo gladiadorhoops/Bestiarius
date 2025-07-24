@@ -28,7 +28,7 @@ export class ParticipantsComponent implements OnInit {
   
   ddb: DynamoDb =  new DynamoDb(this.ddbClient);
   loading = true;
-  available = false;
+  available = true;
   teams: Team[] = [];
   team: Team | undefined;
   players: Player[] = [];
