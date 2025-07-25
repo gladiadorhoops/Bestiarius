@@ -2,7 +2,7 @@
 
 <img src="assets/banner_13.jpeg" width="100%" alt="13mo Torneo Gladiadores Hoops">
 
-<img src="assets/grupos_2025.jpeg" class="d-lg-block d-none w-100" alt="...">
+<!--img src="assets/grupos_2025.jpeg" class="d-lg-block d-none w-100" alt="...">
 <mdb-carousel class="d-lg-none d-block" [controls]="true">
     <mdb-carousel-item>
       <img
@@ -18,13 +18,27 @@
         alt="..."
       />
     </mdb-carousel-item>
-  </mdb-carousel>
+</mdb-carousel-->
 
 <div class="bg-image lower-corner-img" style="background-image: url('assets/no-background-logo-transparent.png');">
     <div class="container page-content">
         <div class="d-flex justify-content-center align-items-center" >
             
             <div class="text-justify outer">
+
+
+                <div class="row">
+                    <button class="btn col-12 col-md-7" (click)="router.navigate(['/partidos'])">
+                        <img width="100%" src="assets/ResultadosBnt.png" class="rounded" alt="Resultados de Partidos" >
+                    </button>
+                    <button class="btn col-12 col-md-5" (click)="router.navigate(['/participantes'])">
+                        <img width="100%" src="assets/equipos_2025.jpeg" class="rounded" alt="Equipos" >
+                    </button>
+                </div>
+            
+                <br>
+                <br>
+
                 <div class=" text-center row" >
                     <h2>Podio 2024</h2>
                     <div class="maincol col col-lg-6 col-12">
@@ -50,20 +64,9 @@
                         </table>
                     </div>
                 </div>  
+                
 
                 <br><br>
-
-                <!--div class="row">
-                    <button class="btn col-12 col-md-7" (click)="router.navigate(['/partidos'])">
-                        <img width="100%" src="assets/ResultadosBnt.png" class="rounded" alt="Resultados de Partidos" >
-                    </button>
-                    <button class="btn col-12 col-md-5" (click)="router.navigate(['/participantes'])">
-                        <img width="100%" src="assets/equipos_2024.jpeg" class="rounded" alt="Equipos" >
-                    </butto>
-                </div-->
-            
-                <br>
-                <br>
 
             </div>
         </div>
