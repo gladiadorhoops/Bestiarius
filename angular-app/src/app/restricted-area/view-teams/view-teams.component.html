@@ -23,11 +23,11 @@
             <td class="col col-lg-9 col-12"> <a [routerLink]="">{{team?.coachName}}</a></td>
         </tr>
         <tr class="row">
-            <th class="col col-lg-3 col-12"> <a [routerLink]="">Category</a></th>
+            <th class="col col-lg-3 col-12"> <a [routerLink]="">Categoria</a></th>
             <td class="col col-lg-9 col-12"> <a [routerLink]="">{{team?.category}}</a></td>
         </tr>
         <tr class="row">
-            <th class="col col-lg-3 col-12">Location</th>
+            <th class="col col-lg-3 col-12">Localidad</th>
             <td class="col col-lg-9 col-12">{{team?.location}}</td>
         </tr>
     </table>
@@ -38,8 +38,8 @@
       <div style="min-width: 400px;">
         <table class="row">
             <tr class="row">
-                <th class="col col-7"> <a [routerLink]="">Player</a></th>
-                <th class="col col-3"> <a [routerLink]="">Position</a></th>
+                <th class="col col-7"> <a [routerLink]="">Jugador</a></th>
+                <th class="col col-3"> <a [routerLink]="">Posición</a></th>
                 <th class="col col-2"> <a [routerLink]=""></a></th>
             </tr>
             <tr class="row" *ngFor="let player of players" [routerLink]="">
