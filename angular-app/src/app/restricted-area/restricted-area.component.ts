@@ -47,6 +47,7 @@ export class RestrictedAreaComponent {
     registrationYear = false;
     userEntry: User | undefined;
     paramCode: string | undefined;
+    displayYear = TOURNAMENT_YEAR;
 
     ddb!: DynamoDb;
     s3!: S3;

@@ -14,7 +14,7 @@
                     </form>
                 </div>
                 <div *ngIf="!loading && !registrationYear">
-                    <p>renew registration</p>
+                    <p>Renueva tu registro para este torneo {{displayYear}} ingresando el codigo de este año.</p>
                     <label for="code" >Codigo de Renovaccion: </label>
                     <input type="text" #codeInput>
                     <button type="submit" (click)="onRenewRegistration(codeInput.value)">Registrar</button>
