@@ -39,6 +39,7 @@ export class ResultadosEvaluacionComponent {
   players : Player[] = [];
   selectedPlayerTeam!: Team;
   loading = true;
+  imageUrl: string | ArrayBuffer | null | undefined = "assets/no-avatar.png";
 
   awardCategories : string[] = []
   
@@ -118,7 +119,33 @@ export class ResultadosEvaluacionComponent {
     this.selectedPlayer = await this.playerBuilder.getPlayer(this.ddb, playerId)
     this.selectedPlayerReport = this.reporteBuilder.transformToDisplayReport(report)
     this.selectedPlayerTeam = this.equipos.filter(t => t.id == this.selectedPlayer!.team)[0]
+
+    if (this.selectedPlayer!.imageType ){
+      console.log("image type is: ", this.selectedPlayer!.imageType)
+      await this.getS3ImgAsBuffer(this.selectedPlayer!.id, this.selectedPlayer!.imageType);
+    }  else {
+      this.imageUrl = "assets/no-avatar.png"
+    }
+
     this.openPopup();
+  }
+
+  async getS3ImgAsBuffer(playerId: string, imgType: string){
+    let data = await this.s3.downloadFile(playerId)
+    console.log("Downloaded data:", data);
+
+    if (data) {
+      let blob = new Blob([data], { type: imgType });
+        // display blob as img
+      const reader2 = new FileReader();
+      reader2.readAsDataURL(blob);
+      reader2.onload = () => {
+        this.imageUrl = reader2.result;
+      };
+    } else {
+      console.error("No data returned from downloadFile");
+      this.imageUrl = "assets/no-avatar.png";
+    }
   }
 
   async applyFilters(){

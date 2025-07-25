@@ -127,35 +127,41 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-body">
-                <div>
-                    <div>
-                        <b>Nombre</b>
-                    </div>
-                    <div class="playerfield">
-                        {{selectedPlayer!.name}}
+                <div class="row">
+                    <div class="col col-12 col-md-5" style="position: relative;z-index: 1; height:200px">
+                        <img id="image" style="max-height: 200px; max-width:90%;position: absolute; top:0; left:0; ;z-index: 1;" [src]="imageUrl">
                     </div>
 
-                    <div>
-                        <b>Scouts</b>
-                    </div>
-                    <div class="playerfield">
-                        ({{selectedPlayerReport!.scouts.length}}): 
-                        <span *ngFor="let scout of selectedPlayerReport!.scouts">
-                            {{scout.name}},  
-                        </span>
-                    </div>
-
-                    <div>
-                        <b>Equipo</b>
-                    </div>
-                    <div class="playerfield">
-                        {{selectedPlayerTeam.name}}
-                    </div>
-
-                    <div *ngIf="selectedPlayerReport.general">
-                        <b>Evaluacion General</b>
+                    <div class="col col-12 col-md-7">
+                        <div>
+                            <b>Nombre</b>
+                        </div>
                         <div class="playerfield">
-                            {{selectedPlayerReport!.general!.skill[0].avg!}}
+                            {{selectedPlayer!.name}}
+                        </div>
+
+                        <div>
+                            <b>Scouts</b>
+                        </div>
+                        <div class="playerfield">
+                            ({{selectedPlayerReport!.scouts.length}}): 
+                            <span *ngFor="let scout of selectedPlayerReport!.scouts">
+                                {{scout.name}},  
+                            </span>
+                        </div>
+
+                        <div>
+                            <b>Equipo</b>
+                        </div>
+                        <div class="playerfield">
+                            {{selectedPlayerTeam.name}}
+                        </div>
+
+                        <div *ngIf="selectedPlayerReport.general">
+                            <b>Evaluacion General</b>
+                            <div class="playerfield">
+                                {{selectedPlayerReport!.general!.skill[0].avg!}}
+                            </div>
                         </div>
                     </div>
                 </div>
