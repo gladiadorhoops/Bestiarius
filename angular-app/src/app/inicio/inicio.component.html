@@ -28,10 +28,15 @@
 
 
                 <div class="row">
-                    <button class="btn col-12 col-md-7" (click)="router.navigate(['/partidos'])">
+                    <button class="btn btn-outline-danger col-12 col-md-6" (click)="router.navigate(['/partidos'])">
+                        <h4>Resultados de Partidos</h4>
                         <img width="100%" src="assets/ResultadosBnt.png" class="rounded" alt="Resultados de Partidos" >
                     </button>
-                    <button class="btn col-12 col-md-5" (click)="router.navigate(['/participantes'])">
+                    <div class="col-12 col-md-1">
+                        <br>
+                    </div>
+                    <button class="btn btn-outline-danger col-12 col-md-5" (click)="router.navigate(['/participantes'])">
+                        <h4>Equipos Registrados</h4>
                         <img width="100%" src="assets/equipos_2025.jpeg" class="rounded" alt="Equipos" >
                     </button>
                 </div>
