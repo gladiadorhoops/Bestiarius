@@ -68,6 +68,7 @@ export class MarcadorFormComponent implements OnInit {
     this.teams = await this.teamBuilder.getTeams(this.ddb)
     this.filteredMatches = this.allMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!));
     this.filteredTeams = this.teams;
+    this.applyCategoryFilter();
     this.loading = false;
   }
 
@@ -94,6 +95,8 @@ export class MarcadorFormComponent implements OnInit {
     let gym = this.filterForm.value.gym;
     let team = this.filterForm.value.equipo;
     console.log('Applying filters', cat, day, gym, team);
+
+    if (!cat && !day && !gym && !team) return;
 
     let matches: Match[] = this.allMatches;
     if(categoryMatches) matches = categoryMatches;

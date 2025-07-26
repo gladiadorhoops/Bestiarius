@@ -67,6 +67,7 @@ export class MatchEditorComponent implements OnInit {
     this.teams = await this.teamBuilder.getTeams(this.ddb)
     this.filteredMatches = this.allMatches;
     this.filteredTeams = this.teams;
+    this.applyCategoryFilter();
     this.loading = false;
   }
 
@@ -93,6 +94,8 @@ export class MatchEditorComponent implements OnInit {
     let gym = this.filterForm.value.gym;
     let team = this.filterForm.value.equipo;
     console.log('Applying filters', cat, day, gym, team);
+
+    if (!cat && !day && !gym && !team) return;
 
     let matches: Match[] = this.allMatches;
     if(categoryMatches) matches = categoryMatches;
