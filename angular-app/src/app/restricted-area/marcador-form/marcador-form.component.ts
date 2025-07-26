@@ -9,6 +9,7 @@ import { Team } from '../../interfaces/team';
 import { TOURNAMENT_DAYS, TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 import { Gym } from 'src/app/interfaces/gym';
 import { GymBuilder } from 'src/app/Builders/gym-builder';
+import { filterMatches } from 'src/app/utils/utils';
 
 const S3_BUCKET_URL = (day: string) => `https://gladiadores-hoops.s3.amazonaws.com/match-data/tournament-11/category-matches-2023-07-${day}.json`
 
@@ -28,8 +29,9 @@ export class MarcadorFormComponent implements OnInit {
   gyms : Gym[] = []; //['Gimnasio Nuevo', 'Gimnasio Tecnológico', 'Cancha Sindicato', 'Gimnasio Municipal', 'Gimnasio Municipal (afuera)', 'Gimnasio Federal'];
 
 
-  equipos : Team[] = [];
+  teams : Team[] = [];
   filteredMatches: Match[] = [];
+  filteredTeams: Team[] = [];
 
   isEditing: boolean = false;
   loading: boolean = true;
@@ -63,91 +65,43 @@ export class MarcadorFormComponent implements OnInit {
   
   async loadMatches(){
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, TOURNAMENT_YEAR)
-    this.equipos = await this.teamBuilder.getTeams(this.ddb)
-    this.filteredMatches = this.allMatches;
-    this.filteredMatches = this.filteredMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!))
+    this.teams = await this.teamBuilder.getTeams(this.ddb)
+    this.filteredMatches = this.allMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!));
+    this.filteredTeams = this.teams;
     this.loading = false;
   }
 
-  applyFilters() {
-    this.filteredMatches = this.allMatches;
-
-    let cat = "";
-    if(this.filterForm.value.cat != null){
-      console.log(this.filterForm.value.cat)
-      cat = this.filterForm.value.cat;
-      console.log(cat)
-    }
-
-    if(cat != ""){
-      let matches : Match[] = []
-      this.filteredMatches.forEach(
-        async (match) => {
-          if(match.category == cat){
-            matches.push(match);
-          }
-        }
-      );
-      this.filteredMatches = matches;
-    }
-
-    let day = "";
-    if(this.filterForm.value.day != null){
-      day = this.filterForm.value.day;
-    }
-
-    if(day != ""){
-      let matches : Match[] = []
-      this.filteredMatches.forEach(
-        async (match) => {
-          if(match.day == day){
-            matches.push(match);
-          }
-        }
-      );
-      this.filteredMatches = matches;
-    }
-
-    let gym = "";
-    if(this.filterForm.value.gym != null){
-      gym = this.filterForm.value.gym;
-    }
-
-    if(gym != ""){
-      let matches : Match[] = []
-      this.filteredMatches.forEach(
-        async (match) => {
-          if(match.location.id == gym){
-            matches.push(match);
-          }
-        }
-      );
-      this.filteredMatches = matches;
-    }
-
-    let equipo = "";
-    if(this.filterForm.value.equipo != null){
-      equipo = this.filterForm.value.equipo;
-    }
-    
-    if(equipo != ""){
-      let matches : Match[] = []
-      this.filteredMatches.forEach(
-        async (match) => {
-          if(match.homeTeam.name == equipo || match.visitorTeam.name == equipo){
-            matches.push(match);
-          }
-        }
-      );
-      
-      this.filteredMatches = matches;
-    }
-
-    this.filteredMatches = this.filteredMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!))
-    console.log(day);
-    console.log(gym);
-    console.log(equipo);
+  applyCategoryFilter() {
+      this.filteredMatches = this.allMatches;
+      this.filteredTeams = this.teams;
+  
+      let cat = this.filterForm.value.cat
+      console.log(`Applying filter`, cat);
+  
+      if(cat){
+        this.filteredMatches = this.filteredMatches.filter(match => match.category == cat);
+        this.filteredTeams = this.filteredTeams.filter(team => team.category == cat);   
+      }
+      // if category is changed we should clear existing filter on teams becasue teams
+      // only exist for a specific category
+      this.filterForm.get('equipo')?.reset()
+      this.applyFilters(this.filteredMatches);
   }
+
+  applyFilters(categoryMatches: Match[] | null = null) {
+    let cat = this.filterForm.value.cat;
+    let day = this.filterForm.value.day;
+    let gym = this.filterForm.value.gym;
+    let team = this.filterForm.value.equipo;
+    console.log('Applying filters', cat, day, gym, team);
+
+    let matches: Match[] = this.allMatches;
+    if(categoryMatches) matches = categoryMatches;
+    else if(cat) matches = this.allMatches.filter(match => match.category == cat);
+
+    this.filteredMatches = filterMatches(matches, day, gym, team);
+  }
+
   onSubmit(){
     let id = "";
     if(this.editingMatch.id){

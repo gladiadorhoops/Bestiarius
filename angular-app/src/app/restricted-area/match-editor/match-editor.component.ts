@@ -9,6 +9,7 @@ import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { Team } from '../../interfaces/team';
 import { TOURNAMENT_DAYS, TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
+import { filterMatches } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-match-editor',
@@ -26,8 +27,8 @@ export class MatchEditorComponent implements OnInit {
   gyms : Gym[] = [];//['Gimnasio Nuevo', 'Gimnasio Tecnológico', 'Cancha Sindicato', 'Gimnasio Municipal', 'Gimnasio Municipal (afuera)', 'Gimnasio Federal'];
 
 
-  equipos : Team[] = [];
-  filteredequipos: Team[] = [];
+  teams : Team[] = [];
+  filteredTeams: Team[] = [];
 
   filteredMatches: Match[] = [];
 
@@ -63,89 +64,44 @@ export class MatchEditorComponent implements OnInit {
   async loadMatches(){
     this.gyms = await this.gymBuilder.getListOfGyms(this.ddb);
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, TOURNAMENT_YEAR)
-    this.equipos = await this.teamBuilder.getTeams(this.ddb)
+    this.teams = await this.teamBuilder.getTeams(this.ddb)
     this.filteredMatches = this.allMatches;
+    this.filteredTeams = this.teams;
     this.loading = false;
   }
 
-  applyFilters() {
+  applyCategoryFilter() {
     this.filteredMatches = this.allMatches;
+    this.filteredTeams = this.teams;
 
-    let cat = "";
-    if(this.filterForm.value.cat != null){
-      console.log(this.filterForm.value.cat)
-      cat = this.filterForm.value.cat;
-      console.log(cat)
-    }
+    let cat = this.filterForm.value.cat
+    console.log(`Applying filter`, cat);
 
-    if(cat != ""){
-      let matches : Match[] = []
-      this.filteredMatches.forEach(
-        async (match) => {
-          if(match.category == cat){
-            matches.push(match);
-          }
-        }
-      );
-      this.filteredMatches = matches;
+    if(cat){
+      this.filteredMatches = this.filteredMatches.filter(match => match.category == cat);
+      this.filteredTeams = this.filteredTeams.filter(team => team.category == cat);      
     }
-
-    let day = "";
-    if(this.filterForm.value.day != null){
-      day = this.filterForm.value.day;
-    }
-
-    if(day != ""){
-      let matches : Match[] = []
-      this.filteredMatches.forEach(
-        async (match) => {
-          if(match.day == day){
-            matches.push(match);
-          }
-        }
-      );
-      this.filteredMatches = matches;
-    }
-
-    let gym = "";
-    if(this.filterForm.value.gym != null){
-      gym = this.filterForm.value.gym;
-    }
-
-    if(gym != ""){
-      let matches : Match[] = []
-      this.filteredMatches.forEach(
-        async (match) => {
-          if(match.location.id == gym){
-            matches.push(match);
-          }
-        }
-      );
-      this.filteredMatches = matches;
-    }
-
-    let equipo = "";
-    if(this.filterForm.value.equipo != null){
-      equipo = this.filterForm.value.equipo;
-    }
-    
-    if(equipo != ""){
-      let matches : Match[] = []
-      this.filteredMatches.forEach(
-        async (match) => {
-          if(match.homeTeam.name == equipo || match.visitorTeam.name == equipo){
-            matches.push(match);
-          }
-        }
-      );
-      
-      this.filteredMatches = matches;
-    }
-
-    console.log(day);
-    console.log(gym);
-    console.log(equipo);
+    // if category is changed we should clear existing filter on teams becasue teams
+    // only exist for a specific category
+    this.filterForm.get('equipo')?.reset()
+    this.applyFilters(this.filteredMatches);
   }
+
+  applyFilters(categoryMatches: Match[] | null = null) {
+    let cat = this.filterForm.value.cat;
+    let day = this.filterForm.value.day;
+    let gym = this.filterForm.value.gym;
+    let team = this.filterForm.value.equipo;
+    console.log('Applying filters', cat, day, gym, team);
+
+    let matches: Match[] = this.allMatches;
+    if(categoryMatches) matches = categoryMatches;
+    else if(cat) matches = this.allMatches.filter(match => match.category == cat);
+
+    this.filteredMatches = filterMatches(matches, day, gym, team);
+    this.filteredMatches = this.filteredMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!));
+  }
+
   onSubmit(){
     let id = "";
     if(this.editingMatch.id){
@@ -172,7 +128,7 @@ export class MatchEditorComponent implements OnInit {
   edit(match:Match){
     this.isEditing = true;
     this.editingMatch = match;
-    this.filteredequipos = this.equipos.filter(e => e.category == match.category);
+    this.filteredTeams = this.teams.filter(e => e.category == match.category);
     if(match.homeTeam){
       this.marcadorForm.controls.homeTeam.setValue((match.homeTeam.id!));
     }
