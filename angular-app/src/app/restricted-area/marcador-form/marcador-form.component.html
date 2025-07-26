@@ -16,7 +16,7 @@
                         </div>
                         <div class="row">
                             <div class="filterPadding">
-                                <select class="col-12" id="category" formControlName="cat" (change)="applyFilters()" required>
+                                <select class="col-12" id="category" formControlName="cat" (change)="applyCategoryFilter()" required>
                                     <option value={{null}}></option>
                                     <option value="aprendiz">Aprendiz</option>
                                     <option value="elite">Elite</option>
@@ -58,7 +58,7 @@
                             <div class="filterPadding">
                                 <select class="col-12" id="teams" formControlName="equipo" (change)="applyFilters()" require>
                                     <option value={{null}}></option>
-                                    <option *ngFor="let equipo of equipos" value="{{equipo.name}}">{{equipo.name}}</option>
+                                    <option *ngFor="let equipo of filteredTeams" value="{{equipo.name}}">{{equipo.name}}</option>
                                 </select>
                             </div>
                         </div>
