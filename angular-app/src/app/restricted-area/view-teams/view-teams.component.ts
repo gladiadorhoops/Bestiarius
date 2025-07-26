@@ -108,9 +108,10 @@ export class ViewTeamsComponent {
     if(this.userrole != "coach"){
       this.coaches = await this.userBuilder.getCoaches(this.ddb);
     }
-
-    this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
-    this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
+    else{
+      this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
+      this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
+    }
     
     this.reloadLoginStatus();
   }

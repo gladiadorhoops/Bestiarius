@@ -12,7 +12,7 @@
                     <span class="sr-only">Loading...</span>
                 </div>
                 <div class="row" *ngIf="!loading">
-                    <div class="col col-12 col-md-6 padded-col">
+                    <div class="col col-12 col-md-6 padded-col" *ngIf="standingMatches.length>0">
                         <div class="row text-center">
                             <h2>Aprendiz</h2>
                         </div>
@@ -34,7 +34,7 @@
                                 </div>
                         </div>
                     </div>
-                    <div class="col col-12 col-md-6 padded-col">
+                    <div class="col col-12 col-md-6 padded-col" *ngIf="standingMatchesElite.length>0">
                         <div class="row text-center">
                             <h2>Elite</h2>
                         </div>
