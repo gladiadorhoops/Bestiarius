@@ -103,7 +103,7 @@ export class ResultadosEvaluacionComponent {
       
   filterForm = this.fb.group({
     cat: Category.ELITE,
-    awardCat: "Tiro",
+    awardCat: "Nominacion",
     equipo: null,
     player: null,
   });
