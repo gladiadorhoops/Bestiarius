@@ -15,15 +15,15 @@ export class InicioComponent implements OnInit {
   }
 
   resultsAP = [
-    {pos: "#1", team: "ALUTEC"},
-    {pos: "#2", team: "Pioneros de Delicias"},
-    {pos: "#3", team: "Esbal"}
+    {pos: "#1", team: "Tigres"},
+    {pos: "#2", team: "Chihuahua U-15"},
+    {pos: "#3", team: "Jaguares Saltillo"}
   ]
 
   resultsEL = [
-    {pos: "#1", team: "Juarez"},
-    {pos: "#2", team: "SAHQ Academy"},
-    {pos: "#3", team: "Wildcats Torreon"}
+    {pos: "#1", team: "SAHQ Academy"},
+    {pos: "#2", team: "Wildcats Torreon"},
+    {pos: "#3", team: "Dragones"}
   ]
 
 }
