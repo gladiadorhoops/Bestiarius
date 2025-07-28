@@ -75,7 +75,8 @@ export class AddPlayerComponent {
     this.playerForm.controls.categoria.setValue(this.player.category)
     this.playerForm.controls.altura.setValue(this.player.height)
     this.playerForm.controls.peso.setValue(this.player.weight)
-    this.playerForm.controls.bday.setValue(this.player.birthday)
+    let bday = new Date(this.player.birthday)
+    this.playerForm.controls.bday.setValue(this.datepipe.transform(bday, 'yyyy-MM-dd')!)
     this.playerForm.controls.posicion.setValue(this.player.position)
 
     if (this.player.imageType){

@@ -10,7 +10,9 @@ import { AuthService } from './auth.service';
 })
 export class AppComponent {
   
-  constructor(private appService: AppService, public authService: AuthService) {}
+  constructor(private appService: AppService, public authService: AuthService) {
+    console.log(">>>>>> First Access <<<<<<")
+  }
 
   title = 'gladiadores-hoops';
 
