@@ -1,0 +1,32 @@
+@import "colors";
+
+.fcol {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.frow {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 100%;
+    padding-top: 1%;
+}
+
+
+.inlinelabel {
+    flex: 30%;
+    text-align: left;
+}
+
+.inlineinput {
+    flex: 70%
+}
+
+fieldset {
+    margin-top: 10%;
+}
+
+.modal-dialog{
+    color: black;
+}

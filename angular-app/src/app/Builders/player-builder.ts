@@ -40,7 +40,7 @@ export class PlayerBuilder {
         playerRecord[PlayerKey.POSITION] = {S: `${player.position}`};
         playerRecord[PlayerKey.IMAGE_TYPE] = {S: `${player.imageType?player.imageType:""}`};
         playerRecord[CY_KEY] = {S: TOURNAMENT_YEAR};
-        if(player.birthday) playerRecord[PlayerKey.BIRTHDAY] = {S: `${player.birthday?.toDateString()}`};
+        playerRecord[PlayerKey.BIRTHDAY] = {S: `${player.birthday}`};
         await ddb.putItem(playerRecord);
     }
 
@@ -101,11 +101,11 @@ export class PlayerBuilder {
             team: item[SPK_KEY].S!.split('.')[1],
             name: item[PlayerKey.NAME].S!,
             category: item[PlayerKey.CATEGORY].S!,
-            age: item[PlayerKey.AGE].S ? item[PlayerKey.AGE].S : "",
-            height: item[PlayerKey.HEIGHT].S ? item[PlayerKey.HEIGHT].S : "",
-            weight: item[PlayerKey.WEIGHT].S ? item[PlayerKey.WEIGHT].S : "",
-            position: item[PlayerKey.POSITION].S ? item[PlayerKey.POSITION].S : "",
-            birthday: item[PlayerKey.BIRTHDAY].S ? new Date(item[PlayerKey.BIRTHDAY].S) : undefined,
+            age: item[PlayerKey.AGE].S ? item[PlayerKey.AGE].S! : "",
+            height: item[PlayerKey.HEIGHT].S ? item[PlayerKey.HEIGHT].S! : "",
+            weight: item[PlayerKey.WEIGHT].S ? item[PlayerKey.WEIGHT].S! : "",
+            position: item[PlayerKey.POSITION].S ? item[PlayerKey.POSITION].S! : "",
+            birthday: item[PlayerKey.BIRTHDAY].S ? item[PlayerKey.BIRTHDAY].S! : "",
             imageType: item[PlayerKey.IMAGE_TYPE] ? item[PlayerKey.IMAGE_TYPE].S : "",
             year: item[CY_KEY].S ? item[CY_KEY].S : ""
         }
@@ -143,13 +143,11 @@ export class PlayerBuilder {
             height: "",
             weight: "",
             position: "",
-            birthday: new Date("Tue Mar 05 2013")
+            birthday: ""
         }
     }
 
     static defaultForm = {
-        scoutId: ['', Validators.required],
-        scoutname: ['', Validators.required],
         nombre: ['', Validators.required],
         equipo: ['', Validators.required],
         categoria: ['', Validators.required],
@@ -157,5 +155,5 @@ export class PlayerBuilder {
         peso: [''],
         bday: [''],
         posicion: ['']
-      }
+    }
 }

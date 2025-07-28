@@ -1,0 +1,348 @@
+<div class="row justify-content-md-center">
+    
+    <div class="spinner-border text-light" role="status" *ngIf="loading">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <div class="row mainpanel" *ngIf="!loading">
+        <div *ngIf="!isTeamSelected">
+
+            <form [formGroup]="filterForm" *ngIf="!isTeamSelected">
+                <div class="row">
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="days">Day:</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="days" formControlName="day" (change)="applyFilters()" required>
+                                    <option value={{null}}></option>
+                                    <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-md-3 col-12">
+                        <div class="row">
+                            <label for="gyms">Gimnasio</label>
+                        </div>
+                        <div class="row">
+                            <div class="filterPadding">
+                                <select class="col-12" id="gyms" formControlName="gym" (change)="applyFilters()" require>
+                                    <option value={{null}}></option>
+                                    <option *ngFor="let gym of gyms" value="{{gym.id}}">{{gym.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row marcadorItem" *ngFor="let match of filteredMatches" >
+                <div class="col col-12">
+                    <h5>
+                        {{match.juego}} ({{match.category}}) - <a href="https://www.google.com/maps/search/?api=1&query_place_id={{match.location.place_id}}&query={{match.location.address}}">{{match.location.name}}</a>
+                    </h5>
+                    <h6>{{match.time}}</h6>
+                </div>
+                
+
+                <div class="col col-1">
+                    <a class="btn btn-outline-light btn-floating m-1" role="button" (click)="edit(match.homeTeam)">
+                        <i class="fas fa-regular fa-pen"></i>
+                    </a>
+                </div>
+                <div class="col col-4">{{match.homeTeam.name}}</div>
+                <div class="col col-2"> X </div>
+                <div class="col col-4">{{match.visitorTeam.name}}</div>
+                <div class="col col-1" > 
+                    <a class="btn btn-outline-light btn-floating m-1" role="button" (click)="edit(match.visitorTeam)">
+                        <i class="fas fa-regular fa-pen"></i>
+                    </a>
+                </div>
+
+                <div class="col col-1"></div>
+                <div class="col col-4">{{match.homePoints}}</div>
+                <div class="col col-2"></div>
+                <div class="col col-4">{{match.visitorPoints}}</div>
+                <div class="col col-1"></div>
+            </div>
+        </div>
+        <div *ngIf="isTeamSelected">
+            <button class="btn btn-outline-danger btn-floating m-1" title="Volver a Partidos" (click)="closeTeam()" target="_blank" role="button">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="row">
+                <div class="col col-12">
+                    <img max-width="200px" src="assets/logo.png" class="rounded">
+                    <h1>{{this.editingTeam.name}}</h1>
+                    <br>
+                    <button *ngFor="let player of players" class="btn col-6 col-md-2" (click)="evalPlayer(player)">
+                        <img width="100%" [src]="player.imageUrl" class="rounded">
+                        <p>{{player.name}}</p>
+                        <p>Posición: {{player.position}}</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<!--eval player-->
+<div class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayEvalPlayer}" *ngIf="isEvaluatingPlayer">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header dark-header">
+        <h5 class="modal-title">Evaluar Jugador</h5>
+        <button type="button" class="btn-close" (click)="closeEvalPopup()" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" class ="fcol">
+            <input name="scout" type="text" formControlName="scoutId" value="{{scout_id}}" hidden readonly required>
+            <input name="scout" type="text" formControlName="scoutname" value="{{scout_name}}" hidden readonly required>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div id="flush-collapseOne" class="accordion-collapse collapse show" >
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col col-12 col-lg-5" style="position: relative;z-index: 1; height:200px">
+                        <img id="image" style="max-height: 200px; max-width:90%;position: absolute; top:0; left:0; ;z-index: 1;" [src]="selectedPlayer!.imageUrl">
+                        <label *ngIf="this.selectedPlayer!.id" style="position: absolute;top: 0;left: 0;z-index: 2;" for="photoFile"><i class="fa fa-camera" style="font-size: 2em;"></i></label>
+                        <input *ngIf="this.selectedPlayer!.id" style="display:none;" id="photoFile" type="file" (change)="onFileSelected($event)" accept="image/*" maxFileSize="10000000">
+                    </div>
+                    <div class="col col-12 col-lg-7">
+                        <label class="frow" for="categoria">Categoria:&nbsp;</label>
+                        <input class="frow" disabled id="categoria" type="text" value="{{team!.category}}">
+                        <label class="frow" for="equipo">Equipo:&nbsp;</label>
+                        <input class="frow" disabled id="equipo" type="text" value="{{team!.name}}">
+                        <label class="frow" for="nombre">Nombre:&nbsp;</label>
+                        <input class="frow" disabled id="nombre" type="text" value="{{selectedPlayer!.name}}">
+                        <label class="frow" for="position">Posicion Registrada:&nbsp;</label>
+                        <input class="frow" disabled id="position" type="text" value="{{selectedPlayer!.position}}">
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  Posicion(es)
+              </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">
+                  <div class="frow" *ngFor="let pos of positions">
+                      <input type="checkbox" id="{{pos.report}}" name="posicion-{{pos}}" value="{{pos.report}}" formControlName="posicion-{{pos.report}}">
+                      <label class="checkbox-label" for="p{{pos}}">&nbsp;{{pos.localized}}&nbsp;</label>
+                  </div>
+              </div>
+            </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                        Tiro
+                    </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                    <div class="frow" *ngFor="let tiro of tiros">
+                        <label class="frow">{{tiro.localized}}:&nbsp;</label>
+                        <div *ngFor="let idx of [1,2,3,4,5]">
+                            <input type="radio" id="{{tiro.report}}{{idx}}" name="tiro-{{tiro.report}}" value="{{idx}}" formControlName="tiro-{{tiro.report}}">
+                            <label class="radio-label" for="{{tiro.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                        </div>
+                        &nbsp;|&nbsp;
+                        <div>
+                            <input type="radio" id="{{tiro.report}}0" name="tiro-{{tiro.report}}" value="{{null}}" formControlName="tiro-{{tiro.report}}">
+                            <label class="radio-label" for="{{tiro.report}}0">&nbsp;Borrar&nbsp;</label>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                        Pase
+                    </button>
+                </h2>
+                <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                    <div class="frow" *ngFor="let ps of pases">
+                        <label class="frow">{{ps.localized}}:&nbsp;</label>
+                        <div *ngFor="let idx of [1,2,3,4,5]">
+                            <input type="radio" id="{{ps.report}}{{idx}}" name="pase-{{ps.report}}" value="{{idx}}" formControlName="pase-{{ps.report}}">
+                            <label class="radio-label" for="{{ps.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                        </div>
+                        &nbsp;|&nbsp;
+                        <div>
+                            <input type="radio" id="{{ps.report}}0" name="pase-{{ps.report}}" value="{{null}}" formControlName="pase-{{ps.report}}">
+                            <label class="radio-label" for="{{ps.report}}0">&nbsp;Borrar&nbsp;</label>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFive" aria-expanded="false" aria-controls="flush-collapseFive">
+                        Defensa
+                    </button>
+                </h2>
+                <div id="flush-collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                    <div class="frow" *ngFor="let df of defensas">
+                        <label class="frow">{{df.localized}}:&nbsp;</label>
+                        <div *ngFor="let idx of [1,2,3,4,5]">
+                            <input type="radio" id="{{df.report}}{{idx}}" name="defensa-{{df.report}}" value="{{idx}}" formControlName="defensa-{{df.report}}">
+                            <label class="radio-label" for="{{df.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                        </div>
+                        &nbsp;|&nbsp;
+                        <div>
+                            <input type="radio" id="{{df.report}}0" name="defensa-{{df.report}}" value="{{null}}" formControlName="defensa-{{df.report}}">
+                            <label class="radio-label" for="{{df.report}}0">&nbsp;Borrar&nbsp;</label>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSix" aria-expanded="false" aria-controls="flush-collapseSix">
+                        Bote
+                    </button>
+                </h2>
+                <div id="flush-collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                    <div class="frow" *ngFor="let bt of botes">
+                        <label class="frow">{{bt.localized}}:&nbsp;</label>
+                        <div *ngFor="let idx of [1,2,3,4,5]">
+                            <input type="radio" id="{{bt.report}}{{idx}}" name="bote-{{bt.report}}" value="{{idx}}" formControlName="bote-{{bt.report}}">
+                            <label class="radio-label" for="{{bt.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                        </div>
+                        &nbsp;|&nbsp;
+                        <div>
+                            <input type="radio" id="{{bt.report}}0" name="bote-{{bt.report}}" value="{{null}}" formControlName="bote-{{bt.report}}">
+                            <label class="radio-label" for="{{bt.report}}0">&nbsp;Borrar&nbsp;</label>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseSeven" aria-expanded="false" aria-controls="flush-collapseSeven">
+                        Jugador
+                    </button>
+                </h2>
+                <div id="flush-collapseSeven" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                    <div class="frow" *ngFor="let jg of jugadores">
+                        <label class="frow">{{jg.localized}}:&nbsp;</label>
+                        <div *ngFor="let idx of [1,2,3,4,5]">
+                            <input type="radio" id="{{jg.report}}{{idx}}" name="jugador-{{jg.report}}" value="{{idx}}" formControlName="jugador-{{jg.report}}">
+                            <label class="radio-label" for="{{jg.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
+                        </div>
+                        &nbsp;|&nbsp;
+                        <div>
+                            <input type="radio" id="{{jg.report}}0" name="jugador-{{jg.report}}" value="{{null}}" formControlName="jugador-{{jg.report}}">
+                            <label class="radio-label" for="{{jg.report}}0">&nbsp;Borrar&nbsp;</label>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseEight" aria-expanded="false" aria-controls="flush-collapseEight">
+                    Estilo de Juego  
+                    </button>
+                </h2>
+                <div id="flush-collapseEight" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                    <div class="frow" *ngFor="let est of estilos">
+                        <input type="checkbox"  id="{{est.report}}" name="estilo-{{est.report}}" value="{{est}}" formControlName="estilo-{{est.report}}">
+                        <label class="checkbox-label" for="{{est.report}}">&nbsp;{{est.localized}}&nbsp;</label>
+                    </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseNine" aria-expanded="false" aria-controls="flush-collapseNine">
+                    Evaluation General
+                </button>
+                </h2>
+                <div id="flush-collapseNine" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="frow" *ngFor="let ev of evalGens">
+                        <input type="radio" alt="{{ev.value}}{{ev.report}}" id="{{ev.value}}{{ev.report}}" name="general-{{ev.report}}" value="{{ev.value}}" formControlName="general-{{ev.report}}">
+                        <label class="radio-label" for="{{ev.value}}{{ev.report}}">&nbsp;{{ev.value}} - {{ev.localized}}&nbsp;</label>
+                    </div>
+                    <div class="frow"> -- </div>
+                    <div class="frow">
+                        <input type="radio" id="general-0" name="general-general" value="{{null}}" formControlName="general-general">
+                        <label class="radio-label" for="general-general">&nbsp;Borrar&nbsp;</label>
+                    </div>
+                </div>
+                </div>
+            </div>
+    
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTen" aria-expanded="false" aria-controls="flush-collapseTen">
+                    Nominacion a Premios
+                </button>
+                </h2>
+                <div id="flush-collapseTen" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <div class="frow" *ngFor="let nom of nominaciones">
+                        <input type="checkbox"  id="{{nom.report}}" name="nominacion-{{nom.report}}" value="{{nom}}" formControlName="nominacion-{{nom.report}}">
+                        <label class="checkbox-label" for="{{nom.report}}">&nbsp;{{nom.localized}}&nbsp;</label>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="confirm()">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>{{submitReportMessage}}</p>
+  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="closePopup()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

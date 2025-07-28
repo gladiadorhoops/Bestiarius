@@ -38,6 +38,7 @@ export class RestrictedAreaComponent {
     resultadosView: boolean = false;
     matchGenView = false;
     matchEditView = false;
+    evaluarPartidoView = false;
     addTeamView = false;
     addGymView = false;
     viewUsersView = false;
@@ -134,12 +135,13 @@ export class RestrictedAreaComponent {
         this.isCoach = true;
       }
 
-      
+      this.menuItems = []
       if(this.isAdmin){
         this.menuItems = this.menuItems.concat([
           {value: "addGym", text: "Add Gym"},
           {value: "addMatch", text: "Add Match"},
           {value: "editMatch", text: "Edit Match"},
+          {value: "evaluarPartido", text: " Evaluar Partido"},
           {value: "listPlayers", text: "Jugadores Registrados"},
           {value: "viewUsers", text: "Usuarios Registrados"}
         ]);
@@ -190,6 +192,10 @@ export class RestrictedAreaComponent {
            this.showEvaluacion()
            break; 
         } 
+        case 'evaluarPartido':{
+          this.showEvPart()
+          break;
+        }
         case 'marcadores': { 
            this.showMarcadores()
            break; 
@@ -245,6 +251,7 @@ export class RestrictedAreaComponent {
     this.viewTeamsView = false;
     this.listTeamsView = false;
     this.listPlayersView = false;
+    this.evaluarPartidoView = false;
   }
 
   showEvaluacion() {
@@ -254,6 +261,10 @@ export class RestrictedAreaComponent {
   showMarcadores() {
     this.hideAll();
     this.marcadoresView = true;
+  }
+  showEvPart(){
+    this.hideAll();
+    this.evaluarPartidoView = true;
   }
   showResultados() {
     this.hideAll();

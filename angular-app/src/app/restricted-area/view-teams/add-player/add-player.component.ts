@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../../auth.service';
 import { getCategories } from '../../../interfaces/team';
 import { Category, Player } from '../../../interfaces/player';
@@ -8,6 +8,8 @@ import { PlayerBuilder } from '../../../Builders/player-builder';
 import { ReporteBuilder } from '../../../Builders/reporte-builder';
 import { S3 } from 'src/app/aws-clients/s3';
 import { Buffer } from 'buffer';
+import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
+import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-add-player',
@@ -21,6 +23,7 @@ export class AddPlayerComponent {
     private authService: AuthService,
     private playerBuilder: PlayerBuilder,
     private reporteBuilder: ReporteBuilder,
+    private datepipe: DatePipe
   ) {
     this.player = {
       id: this.playerId,
@@ -31,7 +34,7 @@ export class AddPlayerComponent {
       height: "",
       weight: "",
       position: "",
-      birthday: new Date()
+      birthday: ""
     }
   }
 
@@ -43,15 +46,14 @@ export class AddPlayerComponent {
   @Input() s3!: S3;
 
   playerForm =  this.fb.group(PlayerBuilder.defaultForm);
-
   scout_id = this.authService.getUserId();
   scout_name = this.authService.getUserName();
   categories = getCategories();
-
   player: Player;
   displayStyle = "none";
-
   emptyTxt : string = "";
+  imageUrl: string | ArrayBuffer | null | undefined = "assets/no-avatar.png";
+  blob: Blob | undefined
 
   async ngOnInit() {
     this.imgToUpload = undefined
@@ -59,10 +61,46 @@ export class AddPlayerComponent {
   }
 
 
+  async loadPlayer(playerId: string){
+    this.player = this.playerBuilder.getEmptyPlayer()
+    
+    let existingPlayer = this.teamplayers.find(p => p.id === playerId)
+    if (existingPlayer){
+      this.player = existingPlayer;
+      console.log("found:", existingPlayer.name);
+    }
+
+    this.playerForm.controls.nombre.setValue(this.player.name)
+    this.playerForm.controls.equipo.setValue(this.player.team)
+    this.playerForm.controls.categoria.setValue(this.player.category)
+    this.playerForm.controls.altura.setValue(this.player.height)
+    this.playerForm.controls.peso.setValue(this.player.weight)
+    this.playerForm.controls.bday.setValue(this.player.birthday)
+    this.playerForm.controls.posicion.setValue(this.player.position)
+
+    if (this.player.imageType){
+      await this.s3.downloadFile(this.player.id).then((data) => {
+        console.log("Downloaded data:", data);
+        if (data) {
+          this.blob = new Blob([data], { type: this.player.imageType });
+            // display blob as img
+          const reader2 = new FileReader();
+          reader2.readAsDataURL(this.blob);
+          reader2.onload = () => {
+          this.imageUrl = reader2.result;
+        };
+        } else {
+          this.imageUrl = "assets/no-avatar.png";
+          console.error("No data returned from downloadFile");
+        }
+      })
+    }  else {
+      this.imageUrl = "assets/no-avatar.png"
+    }
+
+  }
 
 
-  imageUrl: string | ArrayBuffer | null | undefined = "assets/no-avatar.png";
-  blob: Blob | undefined
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (file) {
@@ -88,60 +126,21 @@ export class AddPlayerComponent {
     }
   }
 
-  getPlayerInput(): Player{
-    let inputplayer = {
-      team: this.equipoId,
-      category: this.categoria,
-      id: this.playerId,
-      age: "",
-      name: (<HTMLInputElement>document.getElementById("nombre"+this.playerId)).value,
-      height: (<HTMLInputElement>document.getElementById("altura"+this.playerId)).value,
-      weight: (<HTMLInputElement>document.getElementById("peso"+this.playerId)).value,
-      position: (<HTMLInputElement>document.getElementById("position"+this.playerId)).value,
-      birthday: new Date((<HTMLInputElement>document.getElementById("bday"+this.playerId)).value),
-      imageType: this.player.imageType? this.player.imageType : ""
-    }
-    return inputplayer;
-  }
-
-  async loadPlayer(playerId: string){
-    this.player = {
-      id: this.playerId,
-      name: "",
-      team: this.equipoId,
-      category: this.categoria,
-      age: "",
-      height: "",
-      weight: "",
-      position: "",
-      birthday: new Date()
-    }
+  getPlayerInput(){
+    this.player.team = this.equipoId
+    this.player.category = this.categoria
+    this.player.id = this.playerId
+    this.player.name = this.playerForm.value.nombre!
+    this.player.height = this.playerForm.value.altura!
+    this.player.weight = this.playerForm.value.peso!
+    this.player.position = this.playerForm.value.posicion!
     
-    let existingPlayer = this.teamplayers.find(p => p.id === playerId)
-    if (existingPlayer){
-      this.player = existingPlayer;
-      console.log("found:", existingPlayer.name);
-    }
+    let localDate = new Date(this.playerForm.value.bday!)
+    let bday = new Date(localDate.getTime() + (localDate.getTimezoneOffset() * 60000))
 
-    if (this.player.imageType){
-      await this.s3.downloadFile(this.player.id).then((data) => {
-        console.log("Downloaded data:", data);
-        if (data) {
-          this.blob = new Blob([data], { type: this.player.imageType });
-            // display blob as img
-          const reader2 = new FileReader();
-          reader2.readAsDataURL(this.blob);
-          reader2.onload = () => {
-          this.imageUrl = reader2.result;
-        };
-        } else {
-          this.imageUrl = "assets/no-avatar.png";
-          console.error("No data returned from downloadFile");
-        }
-      })
-    }  else {
-      this.imageUrl = "assets/no-avatar.png"
-    }
+    console.log("bday: ", bday)
+
+    this.player.birthday = this.datepipe.transform(bday, 'yyyy-MM-dd')!;
   }
 
   async savePlayer(){
@@ -155,11 +154,9 @@ export class AddPlayerComponent {
       this.imgToUpload = undefined
     }
 
-    if(document.getElementById("nombre"+this.playerId)){
-      this.player = this.getPlayerInput();
-      console.log("Saving player: "+this.player.name);
-      console.log(this.player);
-    }
+    this.getPlayerInput();
+    console.log("Saving player: "+this.player.name);
+    console.log(this.player);
   }
 }
 

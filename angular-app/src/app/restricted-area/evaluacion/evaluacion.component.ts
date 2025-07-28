@@ -40,7 +40,7 @@ export class EvaluacionComponent {
   teams: Team[] = [];
   teamplayers: Player[] = [];
   selectedCategoria: string = "";
-  selectedPlayer: Player = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:new Date()};;
+  selectedPlayer: Player = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:''};;
   displayStyle = "none";
   displayPhotoPopup = "none";
   submitReportMessage = "Evaluacion guardada!"
@@ -140,7 +140,7 @@ export class EvaluacionComponent {
     )
     this.teams = this.teams.concat(teams)
     this.teamplayers = [];
-    this.selectedPlayer = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:new Date()};
+    this.selectedPlayer = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:''};
     this.imageUrl = "assets/no-avatar.png"
   }
 
@@ -156,7 +156,7 @@ export class EvaluacionComponent {
           )
         }
     });
-    this.selectedPlayer = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:new Date()};
+    this.selectedPlayer = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',birthday:''};
     this.imageUrl = "assets/no-avatar.png"
   }
 

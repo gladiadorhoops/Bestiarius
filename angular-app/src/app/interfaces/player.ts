@@ -8,8 +8,12 @@ export interface Player {
     height: string,
     weight: string,
     position: string,
-    birthday: Date | undefined
+    birthday: string,
     year?: string
+}
+
+export interface PlayerWithPhoto extends Player {
+    imageUrl: string | ArrayBuffer | null | undefined
 }
 
 export enum PlayerKey {

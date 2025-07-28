@@ -38,6 +38,10 @@
                             <app-marcador-form [ddb]="ddb"></app-marcador-form>
                         </div>
                         
+                        <div class="text-center" *ngIf="evaluarPartidoView">
+                            <app-evaluar-partido [ddb]="ddb" [s3]="s3"></app-evaluar-partido>
+                        </div>
+                        
                         <div class="text-center" *ngIf="evaluarView">
                             <app-evaluacion [ddb]="ddb" [s3]="s3"></app-evaluacion>
                         </div>
