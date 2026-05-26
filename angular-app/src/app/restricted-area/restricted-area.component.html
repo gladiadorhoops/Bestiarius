@@ -75,7 +75,7 @@
                         </div>
                         
                         <div *ngIf="listTeamsView">
-                            <app-list-teams [ddb]="ddb" (callViewTeam)="showViewTeams($event)" (callAddTeam)="showAddTeam()"></app-list-teams>
+                            <app-list-teams [ddb]="ddb" [s3]="s3" (callViewTeam)="showViewTeams($event)" (callAddTeam)="showAddTeam()"></app-list-teams>
                         </div>
                         
                         <div [hidden]="!viewTeamsView">

@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { DynamoDb } from '../../aws-clients/dynamodb';
+import { S3 } from '../../aws-clients/s3';
 import { TeamBuilder } from '../../Builders/team-builder';
-import { Team } from '../../interfaces/team';
+import { Team, PaymentStatus } from '../../interfaces/team';
 import { Coach } from '../../interfaces/coach';
 import { UserBuilder } from '../../Builders/user-builder';
 import { TOURNAMENT_YEAR } from '../../aws-clients/constants';
@@ -47,6 +48,7 @@ export class ListTeamsComponent {
     featureFlags: FeatureFlag | undefined = undefined
   
     @Input() ddb!: DynamoDb;
+    @Input() s3!: S3;
     loading = true;
     teams: Team[] = [];
     pastTeams: Team[] = [];
@@ -175,6 +177,40 @@ export class ListTeamsComponent {
       // TODO: implement
       console.log("Remove team "+teamId);
     }
+    displayPaymentReview = "none";
+    reviewTeam: Team | undefined;
+    reviewReceiptUrl: string | null = null;
+    loadingReviewReceipt = false;
+
+    openPaymentReview(team: Team, event: Event){
+      event.stopPropagation();
+      this.reviewTeam = team;
+      this.reviewReceiptUrl = null;
+      this.loadingReviewReceipt = true;
+      this.displayPaymentReview = "block";
+
+      const fileName = `payment-receipt-${team.name}-${team.id}`;
+      this.s3.downloadFile(fileName).then((data) => {
+        if (data) {
+          const blob = new Blob([data as any]);
+          this.reviewReceiptUrl = URL.createObjectURL(blob);
+        }
+        this.loadingReviewReceipt = false;
+      });
+    }
+
+    closePaymentReview(){
+      this.displayPaymentReview = "none";
+    }
+
+    async approvePayment(){
+      if (this.reviewTeam) {
+        await this.teamBuilder.updatePaymentStatus(this.ddb, this.reviewTeam.id, PaymentStatus.APPROVED);
+        this.reviewTeam.paymentStatus = PaymentStatus.APPROVED;
+        this.closePaymentReview();
+      }
+    }
+
     displayStyle = "none";
     openPopup() {
       this.displayStyle = "block";
