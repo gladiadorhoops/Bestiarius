@@ -1,8 +1,9 @@
+import { Buffer } from 'buffer';
 import { Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { TeamBuilder } from '../../Builders/team-builder';
-import { Team, getCategories, TeamKey } from '../../interfaces/team';
+import { Team, getCategories, TeamKey, PaymentStatus } from '../../interfaces/team';
 import { Player, PlayerKey } from '../../interfaces/player';
 import { PlayerBuilder } from '../../Builders/player-builder';
 import { formatDate } from "@angular/common";
@@ -31,6 +32,7 @@ export class ViewTeamsComponent {
   displayCaptan = "none";
   displayEditTeam = "none";
   displayAddExistingPlayer = "none";
+  displayPaymentReceipt = "none";
   addExistingPlayerForm: FormGroup;
 
   constructor(private fb: FormBuilder,
@@ -69,6 +71,15 @@ export class ViewTeamsComponent {
   newplayerid = uuidv4();
   featureFlags: FeatureFlag | undefined = undefined
   selectedCaptain:string = "";
+
+  receiptFile: Buffer | undefined;
+  receiptContentType: string = "";
+  receiptPreview: string | null = null;
+  receiptIsImage: boolean = false;
+  receiptFileName: string = "";
+  existingReceiptUrl: string | null = null;
+  loadingReceipt: boolean = false;
+  paymentStatus: PaymentStatus = PaymentStatus.PENDING;
 
   editable = true;
 
@@ -122,7 +133,12 @@ export class ViewTeamsComponent {
     this.players = await this.playerBuilder.getPlayersByTeam(this.ddb, teamId);
     this.players = this.players.filter((p: Player) => p.year! === this.team!.year!);
     await this.getAllPlayers();
+    this.checkPaymentStatus();
     this.loading = false;
+  }
+
+  private checkPaymentStatus(){
+    this.paymentStatus = this.team?.paymentStatus ?? PaymentStatus.PENDING;
   }
 
   @Output() callListTeam = new EventEmitter<string>();
@@ -172,6 +188,68 @@ export class ViewTeamsComponent {
 
   closeCaptan(){
     this.displayCaptan = "none";
+  }
+
+  async openPaymentReceipt(){
+    this.receiptFile = undefined;
+    this.receiptContentType = "";
+    this.receiptPreview = null;
+    this.receiptIsImage = false;
+    this.receiptFileName = "";
+    this.existingReceiptUrl = null;
+    this.loadingReceipt = true;
+    this.displayPaymentReceipt = "block";
+
+    if (this.team) {
+      const fileName = `payment-receipt-${this.team.name}-${this.team.id}`;
+      const data = await this.s3.downloadFile(fileName);
+      if (data) {
+        const blob = new Blob([data as any]);
+        this.existingReceiptUrl = URL.createObjectURL(blob);
+      }
+    }
+    this.loadingReceipt = false;
+  }
+
+  closePaymentReceipt(){
+    this.displayPaymentReceipt = "none";
+  }
+
+  receiptError: string = "";
+
+  onReceiptFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        this.receiptError = "El archivo debe ser una imagen.";
+        this.receiptFile = undefined;
+        this.receiptPreview = null;
+        return;
+      }
+
+      this.receiptError = "";
+      this.receiptFileName = file.name;
+      this.receiptContentType = file.type;
+      this.receiptIsImage = true;
+
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onload = () => {
+        this.receiptFile = Buffer.from(reader.result as ArrayBuffer);
+        this.receiptPreview = URL.createObjectURL(file);
+      };
+    }
+  }
+
+  async uploadPaymentReceipt(){
+    if (this.receiptFile && this.team) {
+      const fileName = `payment-receipt-${this.team.name}-${this.team.id}`;
+      await this.s3.uploadFile(fileName, this.receiptFile, this.receiptContentType);
+      await this.teamBuilder.updatePaymentStatus(this.ddb, this.team.id, PaymentStatus.IN_REVIEW);
+      console.log("Payment receipt uploaded for team:", this.team.name);
+      this.paymentStatus = PaymentStatus.IN_REVIEW;
+      this.closePaymentReceipt();
+    }
   }
 
   openEditTeam(){

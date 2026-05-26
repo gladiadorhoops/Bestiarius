@@ -11,16 +11,23 @@
       <div style="min-width: 1000px;">
     <table class="row">
         <tr class="row">
-            <th [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-5': userrole === 'coach'}"> <a [routerLink]="" (click)="sortTeamsByName()">Equipo</a></th>
+            <th [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-4': userrole === 'coach'}"> <a [routerLink]="" (click)="sortTeamsByName()">Equipo</a></th>
             <th class="col col-2"> <a [routerLink]="" (click)="sortTeamsByCategory()">Categoria</a></th>
-            <th [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-5': userrole === 'coach'}"> <a [routerLink]="" (click)="sortTeamsByLocation()">Localidad</a></th>
-            <th *ngIf="userrole != 'coach'" class="col col-4 groupLast"> <a [routerLink]="" (click)="sortTeamsByCoach()">Coach</a></th>
+            <th [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-4': userrole === 'coach'}"> <a [routerLink]="" (click)="sortTeamsByLocation()">Localidad</a></th>
+            <th *ngIf="userrole != 'coach'" class="col col-2"> <a [routerLink]="" (click)="sortTeamsByCoach()">Coach</a></th>
+            <th class="col col-2 groupLast">Pago</th>
         </tr>
         <tr class="row" *ngFor="let team of teams" [routerLink]="" (click)="viewTeam(team.id)">
-            <td [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-5': userrole === 'coach'}"><u>{{team.name}}</u></td>
+            <td [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-4': userrole === 'coach'}"><u>{{team.name}}</u></td>
             <td class="col col-2">{{team.category}}</td>
-            <td [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-5': userrole === 'coach'}">{{team.location}}</td>
-            <td *ngIf="userrole != 'coach'" class="col col-4">{{coaches.get(team.coachId)?.name}}</td>
+            <td [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-4': userrole === 'coach'}">{{team.location}}</td>
+            <td *ngIf="userrole != 'coach'" class="col col-2">{{coaches.get(team.coachId)?.name}}</td>
+            <td class="col col-2"
+                [style.color]="team.paymentStatus === 'aprovado' ? 'green' : team.paymentStatus === 'en_revision' ? 'goldenrod' : 'red'"
+                [style.cursor]="isAdmin ? 'pointer' : 'default'"
+                (click)="isAdmin && openPaymentReview(team, $event)">
+                <span [style.text-decoration]="isAdmin ? 'underline' : 'none'">{{team.paymentStatus === 'aprovado' ? 'Aprovado' : team.paymentStatus === 'en_revision' ? 'En Revisión' : 'Pendiente'}}</span>
+            </td>
         </tr>
     </table>
       </div>
@@ -94,8 +101,49 @@
   
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" 
+        <button type="button" class="btn btn-danger"
                 (click)="closeErrorPopup()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Payment review modal-->
+<div class="modal"
+      tabindex="-1"
+      role="dialog"
+      [ngStyle]="{'display':displayPaymentReview}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header dark-header">
+        <h5 class="modal-title">Comprobante de Pago - {{reviewTeam?.name}}</h5>
+        <button type="button" class="btn-close" (click)="closePaymentReview()" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="loadingReviewReceipt" class="text-center">
+          <div class="spinner-border text-dark" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+
+        <div *ngIf="!loadingReviewReceipt && reviewReceiptUrl">
+          <img [src]="reviewReceiptUrl" alt="Comprobante de Pago" style="max-width: 100%; max-height: 400px;">
+        </div>
+
+        <div *ngIf="!loadingReviewReceipt && !reviewReceiptUrl">
+          <p>No se ha subido comprobante de pago.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="reviewReceiptUrl && reviewTeam?.paymentStatus !== 'aprovado'" type="button" class="btn btn-success"
+          (click)="approvePayment()">
+          Aprobar
+        </button>
+        <button type="button" class="btn btn-secondary"
+          (click)="closePaymentReview()">
           Cerrar
         </button>
       </div>

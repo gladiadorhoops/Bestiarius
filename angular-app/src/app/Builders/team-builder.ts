@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CY_KEY, DynamoDb, IndexId, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
-import { Team, TeamKey } from "../interfaces/team";
+import { PaymentStatus, Team, TeamKey } from "../interfaces/team";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import {v4 as uuidv4} from 'uuid';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -146,7 +146,23 @@ export class TeamBuilder {
         await ddb.deleteItem(record);
     }
 
-    private buildTeam(item: Record<string, AttributeValue>): Team {        
+    async updatePaymentStatus(ddb: DynamoDb, teamId: string, status: PaymentStatus) {
+        let key = {
+            [PK_KEY]: {S: `${TeamKey.PREFIX}.${teamId}`},
+            [SK_KEY]: {S: `${TeamKey.SK}`}
+        };
+        let updateExpression = 'SET #payattr = :val';
+        let expressionAttributeNames: Record<string, string> = {
+            '#payattr': `${TeamKey.PAYMENT_STATUS}`,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':val': {S: status},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
+    }
+
+    private buildTeam(item: Record<string, AttributeValue>): Team {
         return {
             id: item[PK_KEY].S!.split('.')[1],
             name: item[TeamKey.NAME].S!,
@@ -156,6 +172,7 @@ export class TeamBuilder {
             coachName: item[TeamKey.COACH_NAME]?.S,
             location: item[TeamKey.LOACTION]?.S,
             year: item[TeamKey.YEAR].S ? item[TeamKey.YEAR].S : "",
+            paymentStatus: (item[TeamKey.PAYMENT_STATUS]?.S as PaymentStatus) ?? PaymentStatus.PENDING,
         }
     }
 

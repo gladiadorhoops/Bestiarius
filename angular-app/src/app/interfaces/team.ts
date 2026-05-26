@@ -12,6 +12,12 @@ export function getCategories(): string[] {
     ]
 }
 
+export enum PaymentStatus {
+    PENDING = 'pendiente',
+    IN_REVIEW = 'en_revision',
+    APPROVED = 'aprovado',
+}
+
 export enum TeamKey {
     ID = 'id',
     NAME = 'name',
@@ -22,6 +28,7 @@ export enum TeamKey {
     PREFIX = 'team',
     SK = 'team.data',
     CATEGORY = 'category',
+    PAYMENT_STATUS = 'paymentStatus',
 }
 
 export interface Team {
@@ -33,6 +40,7 @@ export interface Team {
     category?: string
     location: string | undefined
     year?: string
+    paymentStatus?: PaymentStatus
 }
 
 export interface MatchTeam {
