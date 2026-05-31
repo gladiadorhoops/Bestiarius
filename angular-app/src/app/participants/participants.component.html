@@ -1,5 +1,5 @@
-<img src="assets/grupos_2025.jpeg" class="d-lg-block d-none w-100" alt="...">
-<mdb-carousel class="d-lg-none d-block" [controls]="true">
+<img  *ngIf="available"  src="assets/grupos_2025.jpeg" class="d-lg-block d-none w-100" alt="...">
+<mdb-carousel  *ngIf="available"  class="d-lg-none d-block" [controls]="true">
     <mdb-carousel-item>
       <img
         src="assets/grupos_aprendiz_2025.jpeg"
