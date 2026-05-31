@@ -7,6 +7,8 @@ import { PlayerBuilder } from '../Builders/player-builder';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { COGNITO_UNAUTHENTICATED_CREDENTIALS, REGION } from '../aws-clients/constants';
 import { Player } from '../interfaces/player';
+import { FeatureFlag } from '../interfaces/feature-flag';
+import { FeatureFlagBuilder } from '../Builders/feature-flag-builder';
 
 @Component({
   selector: 'app-participants',
@@ -22,17 +24,20 @@ export class ParticipantsComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private teamBuilder: TeamBuilder,
-    private playerBuilder: PlayerBuilder
+    private playerBuilder: PlayerBuilder,
+    private featureFlagBuilder: FeatureFlagBuilder
   ){}
   
   
   ddb: DynamoDb =  new DynamoDb(this.ddbClient);
   loading = true;
-  available = true;
+  available = false;
   teams: Team[] = [];
   team: Team | undefined;
   players: Player[] = [];
   displayPlayers = "none;"
+
+  featureFlags: FeatureFlag | undefined = undefined
 
 
   async refreshTeams(){
@@ -42,6 +47,9 @@ export class ParticipantsComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
+    this.available = this.featureFlags ? this.featureFlags.showParticipants : false;
+
     await this.refreshTeams();
     this.loading = false;
   }
