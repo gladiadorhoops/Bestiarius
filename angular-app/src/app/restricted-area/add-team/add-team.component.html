@@ -47,12 +47,20 @@
                         <div class="frow">
                             <input type="text" id="location" formControlName="location" class="form-control">
                         </div>
+                        <label class="frow" for="receipt-file">Comprobante de Pago:&nbsp;<span style="color: red;">*</span></label>
+                        <div class="frow">
+                            <input type="file" id="receipt-file" accept="image/*" (change)="onReceiptFileSelected($event)">
+                        </div>
+                        <p *ngIf="receiptError" style="color: red;">{{receiptError}}</p>
+                        <div *ngIf="receiptPreview" class="mt-2">
+                            <img [src]="receiptPreview" alt="Preview" style="max-width: 100%; max-height: 200px;">
+                        </div>
                     </div>
                   </div>
                 </div>
             </div>
         <div class="frow">
-          <button type="submit"  class="btn btn-danger">Guardar</button>
+          <button type="submit" class="btn btn-danger" [disabled]="!teamForm.valid || (!receiptFile && userrole !== 'admin')">Guardar</button>
         </div>
     </form>
     </div>

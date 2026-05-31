@@ -1,9 +1,11 @@
+import { Buffer } from 'buffer';
 import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../auth.service';
 import { Team, getCategories } from '../../interfaces/team';
 import { Player } from '../../interfaces/player';
 import { DynamoDb } from '../../aws-clients/dynamodb';
+import { S3 } from '../../aws-clients/s3';
 import { TeamBuilder } from '../../Builders/team-builder';
 import { PlayerBuilder } from '../../Builders/player-builder';
 import {v4 as uuidv4} from 'uuid';
@@ -32,6 +34,7 @@ export class AddTeamComponent {
   }
 
   @Input() ddb!: DynamoDb;
+  @Input() s3!: S3;
 
   userId = this.authService.getUserId();
   userName = this.authService.getUserName();
@@ -61,6 +64,31 @@ export class AddTeamComponent {
   editable = true;
 
   saved: boolean = false;
+
+  receiptFile: Buffer | undefined;
+  receiptContentType: string = "";
+  receiptPreview: string | null = null;
+  receiptError: string = "";
+
+  onReceiptFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        this.receiptError = "El archivo debe ser una imagen.";
+        this.receiptFile = undefined;
+        this.receiptPreview = null;
+        return;
+      }
+      this.receiptError = "";
+      this.receiptContentType = file.type;
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onload = () => {
+        this.receiptFile = Buffer.from(reader.result as ArrayBuffer);
+        this.receiptPreview = URL.createObjectURL(file);
+      };
+    }
+  }
 
   async ngOnInit() {
     if(this.userrole != "coach"){
@@ -97,6 +125,11 @@ export class AddTeamComponent {
   }
 
   async onSubmit() {
+    if (!this.receiptFile && this.userrole !== 'admin') {
+      this.receiptError = "El comprobante de pago es requerido.";
+      return;
+    }
+
     let selectedCoachId = this.userId;
     let selectedCoachName = this.userName;
     if(this.userrole != "coach"){
@@ -113,6 +146,7 @@ export class AddTeamComponent {
     if (!await this.validateTeam()){
       this.popUpMsg = "Este equipo ya existe!";
       this.openPopup();
+      return;
     }
 
     let newTeam : Team = {id: this.selectedTeamId,
@@ -125,6 +159,9 @@ export class AddTeamComponent {
     }
 
     await this.teamBuilder.createTeam(this.ddb, newTeam);
+    if (this.receiptFile) {
+      await this.teamBuilder.uploadPaymentReceipt(this.ddb, this.s3, newTeam, this.receiptFile, this.receiptContentType);
+    }
 
     this.saved = true;
     this.popUpMsg = "Equipo guardado!";
