@@ -6,6 +6,7 @@ import {v4 as uuidv4} from 'uuid';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TOURNAMENT_YEAR } from '../aws-clients/constants';
 import { CoachKey } from '../interfaces/coach';
+import { S3 } from '../aws-clients/s3';
 
 @Injectable({
     providedIn: 'root'
@@ -144,6 +145,16 @@ export class TeamBuilder {
         record[SK_KEY] = {S: `${TeamKey.SK}`};
 
         await ddb.deleteItem(record);
+    }
+
+    static getReceiptFileName(teamName: string, teamId: string): string {
+        return `payment-receipt-${teamName}-${teamId}`;
+    }
+
+    async uploadPaymentReceipt(ddb: DynamoDb, s3: S3, team: Team, file: Buffer | Uint8Array, contentType: string): Promise<void> {
+        const fileName = TeamBuilder.getReceiptFileName(team.name, team.id);
+        await s3.uploadFile(fileName, file, contentType);
+        await this.updatePaymentStatus(ddb, team.id, PaymentStatus.IN_REVIEW);
     }
 
     async updatePaymentStatus(ddb: DynamoDb, teamId: string, status: PaymentStatus) {

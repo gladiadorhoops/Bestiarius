@@ -201,7 +201,7 @@ export class ViewTeamsComponent {
     this.displayPaymentReceipt = "block";
 
     if (this.team) {
-      const fileName = `payment-receipt-${this.team.name}-${this.team.id}`;
+      const fileName = TeamBuilder.getReceiptFileName(this.team.name, this.team.id);
       const data = await this.s3.downloadFile(fileName);
       if (data) {
         const blob = new Blob([data as any]);
@@ -243,10 +243,7 @@ export class ViewTeamsComponent {
 
   async uploadPaymentReceipt(){
     if (this.receiptFile && this.team) {
-      const fileName = `payment-receipt-${this.team.name}-${this.team.id}`;
-      await this.s3.uploadFile(fileName, this.receiptFile, this.receiptContentType);
-      await this.teamBuilder.updatePaymentStatus(this.ddb, this.team.id, PaymentStatus.IN_REVIEW);
-      console.log("Payment receipt uploaded for team:", this.team.name);
+      await this.teamBuilder.uploadPaymentReceipt(this.ddb, this.s3, this.team, this.receiptFile, this.receiptContentType);
       this.paymentStatus = PaymentStatus.IN_REVIEW;
       this.closePaymentReceipt();
     }

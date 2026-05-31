@@ -189,7 +189,7 @@ export class ListTeamsComponent {
       this.loadingReviewReceipt = true;
       this.displayPaymentReview = "block";
 
-      const fileName = `payment-receipt-${team.name}-${team.id}`;
+      const fileName = TeamBuilder.getReceiptFileName(team.name, team.id);
       this.s3.downloadFile(fileName).then((data) => {
         if (data) {
           const blob = new Blob([data as any]);
