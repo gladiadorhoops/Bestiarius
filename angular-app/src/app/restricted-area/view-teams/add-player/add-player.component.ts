@@ -62,12 +62,15 @@ export class AddPlayerComponent {
 
 
   async loadPlayer(playerId: string){
-    this.player = this.playerBuilder.getEmptyPlayer()
-    
     let existingPlayer = this.teamplayers.find(p => p.id === playerId)
     if (existingPlayer){
       this.player = existingPlayer;
       console.log("found:", existingPlayer.name);
+      let bday = new Date(this.player.birthday)
+      this.playerForm.controls.bday.setValue(this.datepipe.transform(bday, 'yyyy-MM-dd')!)
+    } else {
+      this.player = this.playerBuilder.getEmptyPlayer()
+      this.player.id = playerId;
     }
 
     this.playerForm.controls.nombre.setValue(this.player.name)
@@ -75,8 +78,6 @@ export class AddPlayerComponent {
     this.playerForm.controls.categoria.setValue(this.player.category)
     this.playerForm.controls.altura.setValue(this.player.height)
     this.playerForm.controls.peso.setValue(this.player.weight)
-    let bday = new Date(this.player.birthday)
-    this.playerForm.controls.bday.setValue(this.datepipe.transform(bday, 'yyyy-MM-dd')!)
     this.playerForm.controls.posicion.setValue(this.player.position)
 
     if (this.player.imageType){
@@ -144,20 +145,17 @@ export class AddPlayerComponent {
     this.player.birthday = this.datepipe.transform(bday, 'yyyy-MM-dd')!;
   }
 
-  async savePlayer(){
+  async savePlayerPhoto(){
+    console.log(`Saving player photo: ${this.player.name} - ${this.player.id}`);
     if(this.player.imageType && this.imgToUpload){
       await this.s3.uploadFile(
         this.player.id,
         this.imgToUpload!,
         this.player.imageType!,
       );
-      console.log("File uploaded")
+      console.log("Player photo uploaded")
       this.imgToUpload = undefined
     }
-
-    this.getPlayerInput();
-    console.log("Saving player: "+this.player.name);
-    console.log(this.player);
   }
 }
 
