@@ -27,11 +27,11 @@ export class GymBuilder {
     async getListOfGyms(ddb: DynamoDb, year?: string|undefined): Promise<Gym[]> {
         console.debug("year:", year)
         var gyms: Gym[] = []
-        if(year === undefined){
+        if(year === TOURNAMENT_YEAR){
             var items = await ddb.listByYearQuery('gym.data', TOURNAMENT_YEAR);
         }
         else{
-            var items = await ddb.listByYearQuery('gym.data', year);
+            var items = await ddb.listQuerySKOnly('gym.data');
         }
         
         console.debug("all gyms:", items)
