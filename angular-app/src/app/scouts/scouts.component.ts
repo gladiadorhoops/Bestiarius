@@ -82,7 +82,6 @@ export class ScoutsComponent {
       }
       if(this.userrole == "scout"){
         this.isScout = true;
-        this.isCoach = true;
       }
       if(this.userrole == "coach"){
         this.isCoach = true;

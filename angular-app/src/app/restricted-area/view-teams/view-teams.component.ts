@@ -108,7 +108,7 @@ export class ViewTeamsComponent {
       this.isCoach = true;
     }
     if(this.userrole == "scout"){
-      this.isAdmin = true;
+      this.isScout = true;
     }
     if(this.userrole == "coach"){
       this.isCoach = true;
@@ -116,15 +116,17 @@ export class ViewTeamsComponent {
   }
 
   async ngOnInit() {
-    if(this.userrole != "coach"){
+    this.reloadLoginStatus();
+
+    if(this.userrole == "admin") {
       this.coaches = await this.userBuilder.getCoaches(this.ddb);
-    }
-    else{
+    } else if(this.userrole == "coach"){
       this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
       this.editable = this.featureFlags ? this.featureFlags.editTeams : false;
     }
-    
-    this.reloadLoginStatus();
+    else {
+      console.warn("User role not allowed to view teams: ", this.userrole)
+    }
   }
   
   async loadTeam(teamId: string){
@@ -289,8 +291,7 @@ export class ViewTeamsComponent {
     console.log("View player "+playerId);
     this.selectedPlayer = (this.players.filter((p)=>p.id === playerId))[0];
     this.newplayerid = this.selectedPlayer.id;
-    await this.viewChild.loadPlayer(this.newplayerid);
-    this.addPlayer();
+    this.addPlayer()
   }
 
   deletePlayer(){
@@ -358,7 +359,7 @@ export class ViewTeamsComponent {
   }
 
   async addPlayer(){
-    await this.viewChild.loadPlayer(this.newplayerid);
+    await this.addPlayerViewChild.loadPlayer(this.newplayerid);
     this.displayAddPlayer = "block"
   }
   closeAddPlayerPopup() {
@@ -366,22 +367,16 @@ export class ViewTeamsComponent {
     this.newplayerid = uuidv4();
   }
 
-  @ViewChild(AddPlayerComponent) viewChild!: AddPlayerComponent;
-  async getInputPlayer(){
-    let newPlayer: Player = this.playerBuilder.getEmptyPlayer();
-    await this.viewChild.savePlayer()
-    console.log("updated player:");
-    console.log(this.viewChild.player);
-    newPlayer = this.viewChild.player;
-    return newPlayer;
-  }
-
+  @ViewChild(AddPlayerComponent) addPlayerViewChild!: AddPlayerComponent;
   async confirmAddPlayer() {
-    let newPlayer = await this.getInputPlayer()
-    await this.playerBuilder.createPlayer(this.ddb, newPlayer)
-    console.log("Saved "+newPlayer.name);
+    // loads the player values from AddPlayerComponent
+    this.addPlayerViewChild.getPlayerInput();
+    let newPlayer = this.addPlayerViewChild.player;
+    console.log("Adding Player:", newPlayer);
+    await this.playerBuilder.createPlayer(this.ddb, newPlayer);
+    await this.addPlayerViewChild.savePlayerPhoto();
+    console.log(`Saved Player: ${newPlayer.name} - ${newPlayer.id}`);
     await this.loadTeam(this.team!.id);
-    this.newplayerid = uuidv4();
-    this.displayAddPlayer = "none";
+    this.closeAddPlayerPopup();
   }
 }
