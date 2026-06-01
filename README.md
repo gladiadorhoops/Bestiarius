@@ -130,13 +130,39 @@ In `angular-app/src/app/aws-clients/constants.ts`:
 - `TOURNAMENT_YEAR` — auto-derives from the current year, no change needed
 - `TOURNAMENT_DAYS` — **must be updated** to the actual tournament dates each year
 
-### 3. Update annual assets
+### 3. Rotate signup codes
+
+Generate new signup codes and update them in DynamoDB (table `Gladiadores`). Each role has an entry:
+
+```json
+{
+  "pk": "renew.code",
+  "sk": "coach",
+  "code": "<new-code>"
+}
+```
+
+```json
+{
+  "pk": "renew.code",
+  "sk": "scout",
+  "code": "<new-code>"
+}
+```
+
+Then distribute the new registration URLs:
+- Coach: `https://www.gladiadoreshoops.com/#/signup?role=coach&code=<new-code>`
+- Scout: `https://www.gladiadoreshoops.com/#/signup?role=scout&code=<new-code>`
+
+Users with existing accounts use the login button on the signup page instead of re-registering.
+
+### 4. Update annual assets
 
 Assets that typically change each year (in `angular-app/src/assets/`):
 - Group draw images (`grupos_*.jpeg`, `grupos_aprendiz_*.jpeg`, `grupos_elite_*.jpeg`)
 - Tournament banners/flyers
 
-### 4. Check for dependency vulnerabilities
+### 5. Check for dependency vulnerabilities
 
 ```bash
 npm audit
@@ -145,7 +171,7 @@ cd angular-app && npm audit
 
 After a year of inactivity, expect security advisories. Run `npm audit fix` for safe patches. Major upgrades (especially Angular) should be evaluated carefully.
 
-### 5. Verify AWS resources are still active
+### 6. Verify AWS resources are still active
 
 The app connects directly to:
 - DynamoDB table `Gladiadores` in `us-east-1`
@@ -154,7 +180,7 @@ The app connects directly to:
 
 Confirm these haven't been deleted or had permissions changed during the off-season.
 
-### 6. Smoke test
+### 7. Smoke test
 
 ```bash
 cd angular-app
@@ -166,6 +192,41 @@ Visit http://localhost:4200 and verify:
 - Public pages (resultados, grupos, brackets) render data
 - Login still works (Cognito)
 - Admin/restricted area functions after login
+
+## DynamoDB Schema
+
+Single table `Gladiadores` in `us-east-1`. All items use `pk` (partition key) and `sk` (sort key).
+
+### Item Types
+
+| Entity | PK | SK | Description |
+|--------|----|----|-------------|
+| Team | `team.{teamId}` | `team.data` | Team info (name, category, coach, location, payment status) |
+| Player | `player.{playerId}` | `player.data` | Player info (name, position, birthday, height, etc.) |
+| User | `{role}.{userId}` | `{role}.data` | User profile (coach, scout, or admin) |
+| Match | `match.{matchId}` | `match.data` | Match info (teams, score, day, gym) |
+| Gym | `gym.{gymId}` | `gym.data` | Gymnasium/venue info |
+| Report | `{role}.{scoutId}` | `report.{year}.player.{playerId}` | Scout evaluation report |
+| Award | `award.{awardId}` | `award.data` | Tournament awards and nominations |
+| Feature Flags | `features` | `data` | Application feature toggles |
+| Signup Code | `renew.code` | `{role}` | Registration codes (coach, scout) |
+
+### Secondary Index Keys
+
+| Key | Name | Usage |
+|-----|------|-------|
+| `spk` | Secondary partition key | Category (teams), `team.{id}` (players), `report` (reports) |
+| `ssk` | Secondary sort key | CoachId (teams), year (reports), gymId (matches) |
+| `cy` | Competition year | Tournament year for all items (e.g., `2025`) |
+
+### Global Secondary Indexes
+
+| Index | Keys | Purpose |
+|-------|------|---------|
+| MAIN_GSI | `spk` + `ssk` | Query by category+coach, team+player |
+| LIST_GSI | `sk` + `cy` | List entities by type and year |
+| SK_SPK | `sk` + `spk` | List by type filtered by secondary partition |
+| SK_SSK | `sk` + `ssk` | List by type filtered by secondary sort |
 
 ## Tech Stack
 

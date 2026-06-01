@@ -36,7 +36,7 @@
     </table>
     <p></p>
     <button *ngIf="editable" type="button" (click)="selectCaptan()" class="btn btn-dark"> Seleccionar Capitán</button>&nbsp;
-    <button *ngIf="editable" type="button" (click)="openPaymentReceipt()" class="btn btn-dark"> Subir Comprobante de Pago</button>
+    <button *ngIf="editable && paymentStatus !== 'aprovado'" type="button" (click)="openPaymentReceipt()" class="btn btn-dark"> Subir Comprobante de Pago</button>
     <p></p>
     <div class="scroll-container">
       <div style="min-width: 400px;">
