@@ -1,6 +1,6 @@
 
 
-<img src="assets/banner_13.jpeg" width="100%" alt="13mo Torneo Gladiadores Hoops">
+<img src="assets/banner_14.jpeg" width="100%" alt="14mo Torneo Gladiadores Hoops">
 
 <!--img src="assets/grupos_2025.jpeg" class="d-lg-block d-none w-100" alt="...">
 <mdb-carousel class="d-lg-none d-block" [controls]="true">
@@ -25,6 +25,129 @@
         <div class="d-flex justify-content-center align-items-center" >
             
             <div class="text-justify outer">
+
+                <div class="row">
+                <div class="maincol col col-lg-4 col-12">
+                    <mdb-carousel class="d-block" [controls]="true">
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car1_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car2_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car3_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car4_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car5_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                    </mdb-carousel>
+                </div>
+                <div class="maincol col col-lg-4 d-none d-lg-block">
+                    <mdb-carousel class="d-block" [controls]="true">
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car3_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car4_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car5_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car1_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car2_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                    </mdb-carousel>
+                </div>
+                <div class="maincol col col-lg-4 d-none d-lg-block">
+                    <mdb-carousel class="d-block" [controls]="true">
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car5_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car1_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car2_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car3_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                        <mdb-carousel-item>
+                          <img
+                            src="assets/car4_14.jpeg"
+                            class="d-block w-100"
+                            alt="..."
+                          />
+                        </mdb-carousel-item>
+                    </mdb-carousel>
+                </div>
+                </div>
+
+
+                <br><br><br>
 
                 <div class=" text-center row" >
                     <h2>Podio 2025</h2>
@@ -55,54 +178,54 @@
 
                 <br><br>
 
-                <div class="row">
-                    <div class="col-12 col-md-6" style="padding:3%">
-                        <button class="btn btn-outline-danger" (click)="router.navigate(['/partidos'])">
-                            <h4>Resultados de Partidos</h4>
-                            <img width="100%" src="assets/ResultadosBnt.png" class="rounded" alt="Resultados de Partidos" >
-                        </button>
+                <div *ngIf="showButtons">
+                    <div class="row">
+                        <div class="col-12 col-md-6" style="padding:3%">
+                            <button class="btn btn-outline-danger" (click)="router.navigate(['/partidos'])">
+                                <h4>Resultados de Partidos</h4>
+                                <img width="100%" src="assets/ResultadosBnt.png" class="rounded" alt="Resultados de Partidos" >
+                            </button>
+                        </div>
+                        <div class="col-12 col-md-6" style="padding:3%">
+                            <button class="btn btn-outline-danger" (click)="router.navigate(['/participantes'])">
+                                <h4>Equipos Registrados</h4>
+                                <img width="100%" src="assets/equipos_2025.jpeg" class="rounded" alt="Equipos" >
+                            </button>
+                        </div>
+                        
                     </div>
-                    <div class="col-12 col-md-6" style="padding:3%">
-                        <button class="btn btn-outline-danger" (click)="router.navigate(['/participantes'])">
-                            <h4>Equipos Registrados</h4>
-                            <img width="100%" src="assets/equipos_2025.jpeg" class="rounded" alt="Equipos" >
-                        </button>
+                
+                    <br><br>
+                    <div class=" text-center row" >
+                        <h2>Transmissiones en Vivo</h2>
                     </div>
-                    
-                </div>
-            
-                <br><br>
-                <div class=" text-center row" >
-                    <h2>Transmissiones en Vivo</h2>
-                </div>
 
-                <a href="https://www.facebook.com/share/16p4UL6iS5/?mibextid=wwXIfr">
-                    <button class="btn col-6 col-md-3" style="padding:3%">
-                        <h4>Auditorio Municipal</h4>
-                        <img width="100%" src="assets/logo_transmission.jpeg" class="rounded" alt="Resultados de Partidos" >
-                    </button>
-                </a>
-                <a href="https://www.facebook.com/share/1BAPodWr3H/?mibextid=wwXIfr">
-                    <button class="btn col-6 col-md-3" style="padding:3%">
-                        <h4>Gym Sindicato</h4>
-                        <img width="100%" src="assets/logo_transmission.jpeg" class="rounded" alt="Resultados de Partidos" >
-                    </button>
-                </a>
-                <a href="https://www.facebook.com/share/16YXFZCAP5/?mibextid=wwXIfr">
-                    <button class="btn col-6 col-md-3" style="padding:3%">
-                        <h4>Gym Parrall</h4>
-                        <img width="100%" src="assets/logo_transmission.jpeg" class="rounded" alt="Resultados de Partidos" >
-                    </button>
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=100063175122921&mibextid=ZbWKwL">
-                    <button class="btn col-6 col-md-3" style="padding:3%">
-                        <h4>Tec Parral</h4>
-                        <img width="100%" src="assets/logo_transmission.jpeg" class="rounded" alt="Resultados de Partidos" >
-                    </button>
-                </a>
-
-                <br>
-                <br>
+                    <a href="https://www.facebook.com/share/16p4UL6iS5/?mibextid=wwXIfr">
+                        <button class="btn col-6 col-md-3" style="padding:3%">
+                            <h4>Auditorio Municipal</h4>
+                            <img width="100%" src="assets/logo_transmission.jpeg" class="rounded" alt="Resultados de Partidos" >
+                        </button>
+                    </a>
+                    <a href="https://www.facebook.com/share/1BAPodWr3H/?mibextid=wwXIfr">
+                        <button class="btn col-6 col-md-3" style="padding:3%">
+                            <h4>Gym Sindicato</h4>
+                            <img width="100%" src="assets/logo_transmission.jpeg" class="rounded" alt="Resultados de Partidos" >
+                        </button>
+                    </a>
+                    <a href="https://www.facebook.com/share/16YXFZCAP5/?mibextid=wwXIfr">
+                        <button class="btn col-6 col-md-3" style="padding:3%">
+                            <h4>Gym Parrall</h4>
+                            <img width="100%" src="assets/logo_transmission.jpeg" class="rounded" alt="Resultados de Partidos" >
+                        </button>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=100063175122921&mibextid=ZbWKwL">
+                        <button class="btn col-6 col-md-3" style="padding:3%">
+                            <h4>Tec Parral</h4>
+                            <img width="100%" src="assets/logo_transmission.jpeg" class="rounded" alt="Resultados de Partidos" >
+                        </button>
+                    </a>
+                    <br> <br>
+                </div>
 
                 
             </div>
@@ -110,6 +233,7 @@
     </div>
     </div> 
 
+<img src="assets/footer_14.jpeg" width="100%" alt="14mo Torneo Gladiadores Hoops">
 
 <!--div class="bg-image lower-corner-img" style="background-image: url('assets/no-background-logo-transparent.png');">
     <img src="assets/g11_inicio.jpeg" class="d-block w-100" alt="...">

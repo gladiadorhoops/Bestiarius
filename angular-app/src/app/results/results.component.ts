@@ -17,7 +17,7 @@ export class ResultsComponent {
 
   TournmentEdition = 0;
 
-  years = ["2024", "2023", "2022"]
+  years = ["2025", "2024", "2023", "2022"]
 
 
   @ViewChildren(BracketsComponent) bracketChild!: QueryList<BracketsComponent>;
