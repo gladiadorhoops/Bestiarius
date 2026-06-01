@@ -108,7 +108,7 @@ export class ViewTeamsComponent {
       this.isCoach = true;
     }
     if(this.userrole == "scout"){
-      this.isAdmin = true;
+      this.isScout = true;
     }
     if(this.userrole == "coach"){
       this.isCoach = true;
