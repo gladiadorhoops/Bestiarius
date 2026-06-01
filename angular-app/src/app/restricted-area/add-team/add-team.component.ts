@@ -93,6 +93,8 @@ export class AddTeamComponent {
   async ngOnInit() {
     if(this.userrole != "coach"){
       this.coaches = await this.userBuilder.getCoaches(this.ddb);
+    } else {
+      this.teamForm.controls['coachId'].setValue(this.authService.getUserId());
     }
 
     this.featureFlags = await this.featureFlagBuilder.getFeatureFlags(this.ddb);
