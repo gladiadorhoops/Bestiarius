@@ -27,6 +27,7 @@ export const SSK_KEY = `s${SK_KEY}`
 export const enum IndexId {
     MAIN_GSI,
     LIST_GSI,
+    SK_GSI,
     SK_SPK,
     SK_SSK,
 }
@@ -41,6 +42,7 @@ export class DynamoDb {
         this.indexes = {
             [IndexId.MAIN_GSI]: new DynamoDbIndex(SPK_KEY, SSK_KEY),
             [IndexId.LIST_GSI]: new DynamoDbIndex(SK_KEY, CY_KEY),
+            [IndexId.SK_GSI]: new DynamoDbIndex(SK_KEY),
             [IndexId.SK_SPK]: new DynamoDbIndex(SK_KEY, SPK_KEY),
             [IndexId.SK_SSK]: new DynamoDbIndex(SK_KEY, SSK_KEY),
         }
@@ -150,6 +152,14 @@ export class DynamoDb {
         let resultItems: Record<string, AttributeValue>[] = [];
         let index = sk ? IndexId.SK_SPK : IndexId.LIST_GSI;
         let results = await this.simpleQuery(pk, sk, index);
+        if(results != undefined) resultItems = resultItems.concat(results);
+        return resultItems;
+    }
+
+    async listQuerySKOnly(sk: string): Promise<Record<string, AttributeValue>[]> {
+        let resultItems: Record<string, AttributeValue>[] = [];
+        let index = IndexId.SK_GSI;
+        let results = await this.simpleQuery(sk, undefined, index);
         if(results != undefined) resultItems = resultItems.concat(results);
         return resultItems;
     }

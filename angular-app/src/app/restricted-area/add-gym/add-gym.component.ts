@@ -37,7 +37,7 @@ export class AddGymComponent implements OnInit {
 
   async loadGyms() {
     this.gyms = []
-    let gyms = await this.gymBuilder.getListOfGyms(this.ddb).then(
+    let gyms = await this.gymBuilder.getListOfGyms(this.ddb, TOURNAMENT_YEAR).then(
       (output) => {
         return output
       }

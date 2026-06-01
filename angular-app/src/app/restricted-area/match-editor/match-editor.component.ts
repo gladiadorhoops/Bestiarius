@@ -62,7 +62,7 @@ export class MatchEditorComponent implements OnInit {
   }  
 
   async loadMatches(){
-    this.gyms = await this.gymBuilder.getListOfGyms(this.ddb);
+    this.gyms = await this.gymBuilder.getListOfGyms(this.ddb, TOURNAMENT_YEAR);
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, TOURNAMENT_YEAR)
     this.teams = await this.teamBuilder.getTeams(this.ddb)
     this.filteredMatches = this.allMatches;

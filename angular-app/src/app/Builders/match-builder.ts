@@ -56,12 +56,13 @@ export class MatchBuilder {
     }
 
     private buildMatch(item: Record<string, AttributeValue>, vteam: MatchTeam, hteam: MatchTeam, gym: Gym): Match {
+        let month = +(item["spk"].S!) > 3 ? "/07" : "/08"
         return {
             id: item[PK_KEY].S!.split('.')[1],
             category: item['category'].S,
             location: gym,
             day: item['spk'].S!,
-            time: item["spk"].S!+"/07 - "+item['time'].S!,
+            time: item["spk"].S!+month + " - "+item['time'].S!,
             juego: item['juego'].S!,
             visitorPoints: item['visitorPoints'].S!,
             homePoints: item['homePoints'].S!,
