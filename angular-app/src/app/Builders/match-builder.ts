@@ -30,7 +30,7 @@ export class MatchBuilder {
         }
         
         var teams = await this.teamBuilder.getTeams(ddb, year);
-        var gyms = await this.gymBuilder.getListOfGyms(ddb);
+        var gyms = await this.gymBuilder.getListOfGyms(ddb, year);
         items.sort((a, b) => (a['ssk'].S!+a['time'].S!).localeCompare(b['ssk'].S!+b['time'].S!))
         for (const item of items) {
             let vteamId = item['visitorTeam'].S!.replace("team.","")

@@ -34,13 +34,19 @@ body {
     text-align: justify;
 }
 
+.navbar .navbar-brand {
+    color: $text-color2;
+}
+
 .navbar .navbar-nav .nav-item .nav-link {
 padding: 0.5em;
+color: $text-color2;
 }
 .navbar .navbar-nav .nav-item:not(:last-child) .nav-link {
 border-right: 2px solid #FFF;
 height: 100%;
 }
+
 .lower-corner-img {
     background-position: bottom right;
     background-repeat: no-repeat;
