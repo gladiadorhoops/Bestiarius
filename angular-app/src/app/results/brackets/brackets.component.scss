@@ -45,7 +45,7 @@
 }
 
 .tournament-bracket__round-title {
-  color: $mid-dark-color;
+  color: $text-color2;
   font-size: 0.95rem;
   font-weight: 400;
   text-align: center;
@@ -133,12 +133,12 @@
       display: block;
       width: 1em;
       height: 45%;
-      border-right: 2px solid $mid-light-color;
+      border-right: 2px solid $bg-color1;
     }
 
     &:nth-child(odd)::after {
       top: 50%;
-      border-top: 2px solid $mid-light-color;
+      border-top: 2px solid $bg-color1;
       transform: translateY(-1px);
       
       .tournament-bracket--rounded & {
@@ -148,7 +148,7 @@
     
     &:nth-child(even)::after {
       bottom: 50%;
-      border-bottom: 2px solid $mid-light-color;
+      border-bottom: 2px solid $bg-color1;
       transform: translateY(1px);
       
       .tournament-bracket--rounded & {
@@ -187,16 +187,16 @@
 .tournament-bracket__match {
   display: flex;
   width: 100%;
-  background-color: $dark-color;
+  background-color: $bg-color1;
   padding: 1em;
-  border: 1px solid $dark-color;
+  border: 1px solid $bg-color1;
   border-radius: 0.5em;
   outline: none; 
   cursor: pointer;
   transition: padding 0.2s ease-in-out, border 0.2s linear;
   
   &:focus {
-    border-color: $mid-dark-color;
+    border-color: $text-color1;
   }
   
   &::before,
@@ -218,12 +218,12 @@
       display: block;
       width: 1em;
       height: 10%;
-      border-left: 2px solid $mid-light-color;
+      border-left: 2px solid $bg-color1;
     }
 
     &::before  {
       bottom: 50%;
-      border-bottom: 2px solid $mid-light-color;
+      border-bottom: 2px solid $bg-color1;
       transform: translate(0, 1px);
       
       .tournament-bracket--rounded & {
@@ -233,7 +233,7 @@
 
     &::after  {
       top: 50%;
-      border-top: 2px solid $mid-light-color;
+      border-top: 2px solid $bg-color1;
       transform: translate(0, -1px);
       
       .tournament-bracket--rounded & {
@@ -358,7 +358,7 @@
 
 .tournament-bracket__caption {
   font-size: 0.8rem;
-  color: $light-color;
+  color: $text-color1;
   font-weight: 300;
   padding-bottom: 0.75em;
   text-align: center;
@@ -400,7 +400,7 @@
 
 .tournament-bracket__code {
   padding: 0 0.5em;
-  color: $light-color;
+  color: $text-color1;
   font-weight: 600;
   text-transform: uppercase;
   border: 0;
@@ -436,12 +436,12 @@
   padding: 0.2em 0.4em 0.2em;
   border-bottom: 0.075em solid transparent;
   font-size: 0.95rem;
-  background-color: $light-color;
+  background-color: $bg-color2;
   border-color: spin(shade(#F5F5F5, 10%), -10);
   
   .tournament-bracket__team--winner & {
-    background-color: $mid-dark-color;
-    border-color: spin(shade($mid-light-color, 2%), -10);
+    background-color: bg-color2;
+    border-color: spin(shade($bg-color1, 2%), -10);
   }
 }
 

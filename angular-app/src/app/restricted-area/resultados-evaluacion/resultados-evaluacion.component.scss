@@ -6,14 +6,14 @@
 
 .mainpanel .sidepanels {
     padding: 2%;
-    background-color: linear-gradient(to bottom left, $mid-dark-color, $dark-color);
+    background-color: linear-gradient(to bottom left, $bg-color1, $bg-color2);
 
     -ms-flex: 1;  /* IE 10 */  
     flex: 1;
 }
 
 .playerfield {
-    background-color: $mid-dark-color;
+    background-color: $bg-color1;
     color: black;
     font-weight: bold;
     padding-left: 5%;
@@ -37,7 +37,7 @@
 }
 table {
     color: black;
-    background-color: $light-color;
+    background-color: $bg-color2;
 }
 
 td, th {
@@ -47,14 +47,14 @@ td, th {
 }
 
 td {
-    background-color: $light-color !important;
-    color: $dark-color;
+    color: $text-color2;
+    background-color: $bg-color2;
 }
 
 th {
-    background-color: $dark-color !important;
-    border-bottom: 2px solid $dark-color;
-    color: $light-color;
+    background-color: $header-color2 !important;
+    border-bottom: 2px solid $header-color2;
+    color: $text-color2;
 }
 
 .col-md-8 {

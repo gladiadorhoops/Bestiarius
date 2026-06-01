@@ -10,18 +10,18 @@ td, th {
 }
 
 td {
-    color: $dark-color;
-    background-color: $light-color;
+    color: $text-color2;
+    background-color: $bg-color2;
     padding: 8px;
 }
 
 tr{
-    border-bottom: 2px solid $dark-color;
+    border-bottom: 2px solid $header-color2;
 }
 
 th {
-    color: $light-color;
-    background-color: $dark-color;
+    color: $text-color2;
+    background-color: $header-color2;
     padding: 8px;
 }
 

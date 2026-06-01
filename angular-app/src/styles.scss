@@ -15,8 +15,8 @@
 }
 
 html {
-    background-color: #666;
-    color: $light-color;
+    background-color: $bg-color1;
+    color: $text-color1;
     /*background-image: url("assets/logo.png");
     background-size: 10% ;
     background-size: cover;*/
@@ -34,13 +34,19 @@ body {
     text-align: justify;
 }
 
+.navbar .navbar-brand {
+    color: $text-color2;
+}
+
 .navbar .navbar-nav .nav-item .nav-link {
 padding: 0.5em;
+color: $text-color2;
 }
 .navbar .navbar-nav .nav-item:not(:last-child) .nav-link {
 border-right: 2px solid #FFF;
 height: 100%;
 }
+
 .lower-corner-img {
     background-position: bottom right;
     background-repeat: no-repeat;
@@ -61,25 +67,25 @@ height: 100%;
 }
 
 .bg-dark {
-    background-color: $dark-color !important;
+    background-color: $header-color1 !important;
     
 }
 
 
 .dark-header{
-    background-color: $dark-color;
-    color: $light-color;
+    background-color: $header-color2;
+    color: $text-color2;
 }
 
 .accordion-button{
-    background-color: $dark-color;
-    color: $light-color;
+    background-color: $header-color2;
+    color: $text-color1;
 }
 
 
 .accordion-button:not(.collapsed){
-    background-color: $dark-color;
-    color: $light-color;
+    background-color: $header-color2;
+    color: $text-color1;
 }
 
 .accordion-button:after {
@@ -88,12 +94,12 @@ height: 100%;
 
 .accordion{
     width: 100%;
-    background-color: $mid-dark-color;
+    background-color: $bg-color2;
 }
 
 .accordion-body{
-    background-color: $light-color;
-    color: $dark-color;
+    background-color: $bg-color2;
+    color: $text-color2;
 }
 
 .mainpanel{
@@ -103,8 +109,8 @@ height: 100%;
 .marcadorItem{
     margin: 3%;
     padding: 3%;
-    background-color: $dark-color;
-    color: $light-color;
+    background-color: $bg-color1;
+    color: $text-color1;
 }
 
 td{

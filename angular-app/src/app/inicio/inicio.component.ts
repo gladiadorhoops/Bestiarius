@@ -10,6 +10,7 @@ import { Router } from '@angular/router'
 })
 export class InicioComponent implements OnInit {
 
+  showButtons = false
   constructor(private httpService: HttpClient, public router: Router) { }
   ngOnInit(): void {
   }
