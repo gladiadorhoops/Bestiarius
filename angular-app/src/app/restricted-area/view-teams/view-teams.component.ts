@@ -198,7 +198,7 @@ export class ViewTeamsComponent {
     if (this.team) {
       for (let i = 0; i < 10; i++) {
         const fileName = TeamBuilder.getReceiptFileName(this.team.name, this.team.id, i);
-        const data = await this.s3.downloadFile(fileName);
+        const data = await this.s3.downloadFile(fileName, false);
         if (data) {
           const blob = new Blob([data as any]);
           this.existingReceiptUrls.push(URL.createObjectURL(blob));
@@ -245,6 +245,36 @@ export class ViewTeamsComponent {
 
   removeReceiptFile(index: number): void {
     this.receiptFiles.splice(index, 1);
+  }
+
+  async deleteExistingReceipt(index: number){
+    if (!this.team) return;
+    if (!confirm('¿Estás seguro que deseas eliminar este comprobante?')) return;
+
+    const totalExisting = this.existingReceiptUrls.length;
+
+    for (let i = index; i < totalExisting - 1; i++) {
+      const nextFileName = TeamBuilder.getReceiptFileName(this.team.name, this.team.id, i + 1);
+      const data = await this.s3.downloadFile(nextFileName, false);
+      if (data) {
+        const currentFileName = TeamBuilder.getReceiptFileName(this.team.name, this.team.id, i);
+        await this.s3.uploadFile(currentFileName, data, 'image/jpeg');
+        this.s3.invalidateCache(currentFileName);
+      }
+    }
+    await this.teamBuilder.deletePaymentReceipt(this.s3, this.team, totalExisting - 1);
+
+    this.existingReceiptUrls = [];
+    for (let i = 0; i < totalExisting - 1; i++) {
+      const fileName = TeamBuilder.getReceiptFileName(this.team.name, this.team.id, i);
+      const data = await this.s3.downloadFile(fileName, false);
+      if (data) {
+        const blob = new Blob([data as any]);
+        this.existingReceiptUrls.push(URL.createObjectURL(blob));
+      } else {
+        break;
+      }
+    }
   }
 
   async uploadPaymentReceipt(){
