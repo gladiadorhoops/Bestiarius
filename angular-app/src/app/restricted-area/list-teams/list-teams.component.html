@@ -129,16 +129,18 @@
           </div>
         </div>
 
-        <div *ngIf="!loadingReviewReceipt && reviewReceiptUrl">
-          <img [src]="reviewReceiptUrl" alt="Comprobante de Pago" style="max-width: 100%; max-height: 400px;">
+        <div *ngIf="!loadingReviewReceipt && reviewReceiptUrls.length > 0">
+          <div *ngFor="let url of reviewReceiptUrls" class="mb-2">
+            <img [src]="url" alt="Comprobante de Pago" style="max-width: 100%; max-height: 300px;">
+          </div>
         </div>
 
-        <div *ngIf="!loadingReviewReceipt && !reviewReceiptUrl">
+        <div *ngIf="!loadingReviewReceipt && reviewReceiptUrls.length === 0">
           <p>No se ha subido comprobante de pago.</p>
         </div>
       </div>
       <div class="modal-footer">
-        <button *ngIf="reviewReceiptUrl && reviewTeam?.paymentStatus !== 'aprovado'" type="button" class="btn btn-success"
+        <button *ngIf="reviewReceiptUrls.length > 0 && reviewTeam?.paymentStatus !== 'aprovado'" type="button" class="btn btn-success"
           (click)="approvePayment()">
           Aprobar
         </button>

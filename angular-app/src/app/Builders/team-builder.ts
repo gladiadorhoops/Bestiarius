@@ -147,13 +147,19 @@ export class TeamBuilder {
         await ddb.deleteItem(record);
     }
 
-    static getReceiptFileName(teamName: string, teamId: string): string {
-        return `payment-receipt-${teamName}-${teamId}`;
+    static getReceiptFileName(teamName: string, teamId: string, index: number): string {
+        return `payment-receipt-${teamName}-${teamId}-${index}`;
     }
 
-    async uploadPaymentReceipt(ddb: DynamoDb, s3: S3, team: Team, file: Buffer | Uint8Array, contentType: string): Promise<void> {
-        const fileName = TeamBuilder.getReceiptFileName(team.name, team.id);
-        await s3.uploadFile(fileName, file, contentType);
+    static getReceiptFilePrefix(teamName: string, teamId: string): string {
+        return `payment-receipt-${teamName}-${teamId}-`;
+    }
+
+    async uploadPaymentReceipts(ddb: DynamoDb, s3: S3, team: Team, files: {data: Buffer | Uint8Array, contentType: string}[], startIndex: number = 0): Promise<void> {
+        for (let i = 0; i < files.length; i++) {
+            const fileName = TeamBuilder.getReceiptFileName(team.name, team.id, startIndex + i);
+            await s3.uploadFile(fileName, files[i].data, files[i].contentType);
+        }
         await this.updatePaymentStatus(ddb, team.id, PaymentStatus.IN_REVIEW);
     }
 

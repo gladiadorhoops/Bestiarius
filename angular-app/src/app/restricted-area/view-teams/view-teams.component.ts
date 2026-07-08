@@ -72,12 +72,8 @@ export class ViewTeamsComponent {
   featureFlags: FeatureFlag | undefined = undefined
   selectedCaptain:string = "";
 
-  receiptFile: Buffer | undefined;
-  receiptContentType: string = "";
-  receiptPreview: string | null = null;
-  receiptIsImage: boolean = false;
-  receiptFileName: string = "";
-  existingReceiptUrl: string | null = null;
+  receiptFiles: {data: Buffer, contentType: string, preview: string}[] = [];
+  existingReceiptUrls: string[] = [];
   loadingReceipt: boolean = false;
   paymentStatus: PaymentStatus = PaymentStatus.PENDING;
 
@@ -193,21 +189,22 @@ export class ViewTeamsComponent {
   }
 
   async openPaymentReceipt(){
-    this.receiptFile = undefined;
-    this.receiptContentType = "";
-    this.receiptPreview = null;
-    this.receiptIsImage = false;
-    this.receiptFileName = "";
-    this.existingReceiptUrl = null;
+    this.receiptFiles = [];
+    this.existingReceiptUrls = [];
+    this.receiptError = "";
     this.loadingReceipt = true;
     this.displayPaymentReceipt = "block";
 
     if (this.team) {
-      const fileName = TeamBuilder.getReceiptFileName(this.team.name, this.team.id);
-      const data = await this.s3.downloadFile(fileName);
-      if (data) {
-        const blob = new Blob([data as any]);
-        this.existingReceiptUrl = URL.createObjectURL(blob);
+      for (let i = 0; i < 10; i++) {
+        const fileName = TeamBuilder.getReceiptFileName(this.team.name, this.team.id, i);
+        const data = await this.s3.downloadFile(fileName);
+        if (data) {
+          const blob = new Blob([data as any]);
+          this.existingReceiptUrls.push(URL.createObjectURL(blob));
+        } else {
+          break;
+        }
       }
     }
     this.loadingReceipt = false;
@@ -219,33 +216,41 @@ export class ViewTeamsComponent {
 
   receiptError: string = "";
 
-  onReceiptFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
+  onReceiptFilesSelected(event: any): void {
+    const files: FileList = event.target.files;
+    if (!files || files.length === 0) return;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
       if (!file.type.startsWith('image/')) {
-        this.receiptError = "El archivo debe ser una imagen.";
-        this.receiptFile = undefined;
-        this.receiptPreview = null;
+        this.receiptError = "Todos los archivos deben ser imágenes.";
         return;
       }
+    }
 
-      this.receiptError = "";
-      this.receiptFileName = file.name;
-      this.receiptContentType = file.type;
-      this.receiptIsImage = true;
-
+    this.receiptError = "";
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
       const reader = new FileReader();
       reader.readAsArrayBuffer(file);
       reader.onload = () => {
-        this.receiptFile = Buffer.from(reader.result as ArrayBuffer);
-        this.receiptPreview = URL.createObjectURL(file);
+        this.receiptFiles.push({
+          data: Buffer.from(reader.result as ArrayBuffer),
+          contentType: file.type,
+          preview: URL.createObjectURL(file)
+        });
       };
     }
   }
 
+  removeReceiptFile(index: number): void {
+    this.receiptFiles.splice(index, 1);
+  }
+
   async uploadPaymentReceipt(){
-    if (this.receiptFile && this.team) {
-      await this.teamBuilder.uploadPaymentReceipt(this.ddb, this.s3, this.team, this.receiptFile, this.receiptContentType);
+    if (this.receiptFiles.length > 0 && this.team) {
+      const startIndex = this.existingReceiptUrls.length;
+      await this.teamBuilder.uploadPaymentReceipts(this.ddb, this.s3, this.team, this.receiptFiles, startIndex);
       this.paymentStatus = PaymentStatus.IN_REVIEW;
       this.closePaymentReceipt();
     }

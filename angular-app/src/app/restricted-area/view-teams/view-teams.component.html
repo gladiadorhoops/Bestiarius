@@ -36,7 +36,7 @@
     </table>
     <p></p>
     <button *ngIf="editable" type="button" (click)="selectCaptan()" class="btn btn-dark"> Seleccionar Capitán</button>&nbsp;
-    <button *ngIf="editable && paymentStatus !== 'aprovado'" type="button" (click)="openPaymentReceipt()" class="btn btn-dark"> Subir Comprobante de Pago</button>
+    <button *ngIf="editable" type="button" (click)="openPaymentReceipt()" class="btn btn-dark"> Subir Comprobante de Pago</button>
     <p></p>
     <div class="scroll-container">
       <div style="min-width: 400px;">
@@ -279,29 +279,34 @@
           </div>
         </div>
 
-        <div *ngIf="!loadingReceipt && existingReceiptUrl && !receiptPreview">
-          <p><strong>Comprobante actual:</strong></p>
-          <img [src]="existingReceiptUrl" alt="Comprobante de Pago" style="max-width: 100%; max-height: 300px;">
+        <div *ngIf="!loadingReceipt && existingReceiptUrls.length > 0">
+          <p><strong>Comprobantes actuales{{paymentStatus === 'aprovado' ? ' (aprovados)' : ''}}:</strong></p>
+          <div *ngFor="let url of existingReceiptUrls" class="mb-2">
+            <img [src]="url" alt="Comprobante de Pago" style="max-width: 100%; max-height: 200px;">
+          </div>
         </div>
 
-        <div *ngIf="!loadingReceipt && !existingReceiptUrl && !receiptPreview">
+        <div *ngIf="!loadingReceipt && existingReceiptUrls.length === 0 && receiptFiles.length === 0">
           <p>No se ha subido comprobante de pago.</p>
         </div>
 
         <hr *ngIf="!loadingReceipt">
 
         <div *ngIf="!loadingReceipt" class="frow">
-          <label for="receipt-file">{{existingReceiptUrl ? 'Actualizar archivo:' : 'Seleccionar archivo:'}}&nbsp;</label>
-          <input type="file" id="receipt-file" accept="image/*" (change)="onReceiptFileSelected($event)">
+          <label for="receipt-file">Agregar archivos:&nbsp;</label>
+          <input type="file" id="receipt-file" accept="image/*" multiple (change)="onReceiptFilesSelected($event)">
         </div>
         <p *ngIf="receiptError" style="color: red;">{{receiptError}}</p>
-        <div *ngIf="receiptPreview" class="mt-3">
-          <img [src]="receiptPreview" alt="Preview" style="max-width: 100%; max-height: 300px;">
+        <div *ngIf="receiptFiles.length > 0" class="mt-3">
+          <div *ngFor="let rf of receiptFiles; let i = index" class="mb-2" style="position: relative; display: inline-block; margin-right: 8px;">
+            <img [src]="rf.preview" alt="Preview" style="max-height: 150px;">
+            <button type="button" class="btn btn-sm btn-outline-danger" style="position: absolute; top: 0; right: 0;" (click)="removeReceiptFile(i)">✗</button>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger"
-          [disabled]="!receiptFile"
+          [disabled]="receiptFiles.length === 0"
           (click)="uploadPaymentReceipt()">
           Subir
         </button>

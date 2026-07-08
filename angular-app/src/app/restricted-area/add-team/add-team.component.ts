@@ -65,29 +65,37 @@ export class AddTeamComponent {
 
   saved: boolean = false;
 
-  receiptFile: Buffer | undefined;
-  receiptContentType: string = "";
-  receiptPreview: string | null = null;
+  receiptFiles: {data: Buffer, contentType: string, preview: string}[] = [];
   receiptError: string = "";
 
-  onReceiptFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      if (!file.type.startsWith('image/')) {
-        this.receiptError = "El archivo debe ser una imagen.";
-        this.receiptFile = undefined;
-        this.receiptPreview = null;
+  onReceiptFilesSelected(event: any): void {
+    const files: FileList = event.target.files;
+    if (!files || files.length === 0) return;
+
+    for (let i = 0; i < files.length; i++) {
+      if (!files[i].type.startsWith('image/')) {
+        this.receiptError = "Todos los archivos deben ser imágenes.";
         return;
       }
-      this.receiptError = "";
-      this.receiptContentType = file.type;
+    }
+
+    this.receiptError = "";
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
       const reader = new FileReader();
       reader.readAsArrayBuffer(file);
       reader.onload = () => {
-        this.receiptFile = Buffer.from(reader.result as ArrayBuffer);
-        this.receiptPreview = URL.createObjectURL(file);
+        this.receiptFiles.push({
+          data: Buffer.from(reader.result as ArrayBuffer),
+          contentType: file.type,
+          preview: URL.createObjectURL(file)
+        });
       };
     }
+  }
+
+  removeReceiptFile(index: number): void {
+    this.receiptFiles.splice(index, 1);
   }
 
   async ngOnInit() {
@@ -127,7 +135,7 @@ export class AddTeamComponent {
   }
 
   async onSubmit() {
-    if (!this.receiptFile && this.userrole !== 'admin') {
+    if (this.receiptFiles.length === 0 && this.userrole !== 'admin') {
       this.receiptError = "El comprobante de pago es requerido.";
       return;
     }
@@ -161,8 +169,8 @@ export class AddTeamComponent {
     }
 
     await this.teamBuilder.createTeam(this.ddb, newTeam);
-    if (this.receiptFile) {
-      await this.teamBuilder.uploadPaymentReceipt(this.ddb, this.s3, newTeam, this.receiptFile, this.receiptContentType);
+    if (this.receiptFiles.length > 0) {
+      await this.teamBuilder.uploadPaymentReceipts(this.ddb, this.s3, newTeam, this.receiptFiles);
     }
 
     this.saved = true;
