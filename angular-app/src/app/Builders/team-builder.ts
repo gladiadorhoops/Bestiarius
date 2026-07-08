@@ -179,6 +179,11 @@ export class TeamBuilder {
         await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
     }
 
+    async deletePaymentReceipt(s3: S3, team: Team, index: number): Promise<void> {
+        const fileName = TeamBuilder.getReceiptFileName(team.name, team.id, index);
+        await s3.deleteFile(fileName);
+    }
+
     private buildTeam(item: Record<string, AttributeValue>): Team {
         return {
             id: item[PK_KEY].S!.split('.')[1],

@@ -36,7 +36,7 @@
     </table>
     <p></p>
     <button *ngIf="editable" type="button" (click)="selectCaptan()" class="btn btn-dark"> Seleccionar Capitán</button>&nbsp;
-    <button *ngIf="editable" type="button" (click)="openPaymentReceipt()" class="btn btn-dark"> Subir Comprobante de Pago</button>
+    <button *ngIf="editable && paymentStatus !== 'aprovado'" type="button" (click)="openPaymentReceipt()" class="btn btn-dark"> Subir Comprobante de Pago</button>
     <p></p>
     <div class="scroll-container">
       <div style="min-width: 400px;">
@@ -280,9 +280,10 @@
         </div>
 
         <div *ngIf="!loadingReceipt && existingReceiptUrls.length > 0">
-          <p><strong>Comprobantes actuales{{paymentStatus === 'aprovado' ? ' (aprovados)' : ''}}:</strong></p>
-          <div *ngFor="let url of existingReceiptUrls" class="mb-2">
+          <p><strong>Comprobantes actuales:</strong></p>
+          <div *ngFor="let url of existingReceiptUrls; let i = index" class="mb-2" style="position: relative; display: inline-block; margin-right: 8px;">
             <img [src]="url" alt="Comprobante de Pago" style="max-width: 100%; max-height: 200px;">
+            <button type="button" class="btn btn-sm btn-outline-danger" style="position: absolute; top: 0; right: 0;" (click)="deleteExistingReceipt(i)">✗</button>
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-import { S3Client, GetObjectCommand, ListObjectsCommand, ListObjectsCommandInput, GetObjectCommandInput, PutObjectCommand, PutObjectCommandInput } from "@aws-sdk/client-s3";
+import { S3Client, GetObjectCommand, ListObjectsCommand, ListObjectsCommandInput, GetObjectCommandInput, PutObjectCommand, PutObjectCommandInput, DeleteObjectCommand, DeleteObjectCommandInput } from "@aws-sdk/client-s3";
 import { REGION, COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR } from "./constants";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
 import { Cache } from "./cache";
@@ -94,6 +94,28 @@ export class S3 {
             return true;
         } catch (err) {
             console.error('Error uploading file:', err);
+            return false;
+        }
+    }
+
+    async deleteFile(fileName: string): Promise<boolean> {
+        const objectKey = `${IMAGE_PATH}/${fileName}`;
+        console.log(`Deleting file: ${objectKey}`);
+
+        const input: DeleteObjectCommandInput = {
+            Bucket: GLADIADORES_BUCKET_NAME,
+            Key: objectKey
+        };
+
+        try {
+            await this.client.send(new DeleteObjectCommand(input));
+            console.log('Successfully deleted file:', objectKey);
+            if (this.cache.has(objectKey)) {
+                this.cache.delete(objectKey);
+            }
+            return true;
+        } catch (err) {
+            console.error('Error deleting file:', err);
             return false;
         }
     }
