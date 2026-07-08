@@ -13,7 +13,7 @@ import { S3 } from '../aws-clients/s3';
 })
 export class TeamBuilder {
 
-    async createTeam(ddb: DynamoDb, team: Team) {   
+    async createTeam(ddb: DynamoDb, team: Team) {
         let record: Record<string, AttributeValue> = {}
         record[PK_KEY] = {S: `${TeamKey.PREFIX}.${team.id}`};
         record[SK_KEY] = {S: `${TeamKey.SK}`};
@@ -25,9 +25,37 @@ export class TeamBuilder {
         record[TeamKey.COACH_NAME] = {S: `${team.coachName}`};
         record[TeamKey.LOACTION] = {S: `${team.location}`};
         record[CY_KEY] = {S: TOURNAMENT_YEAR};
-        console.log('record', record)
-        
+        record[TeamKey.PAYMENT_STATUS] = {S: team.paymentStatus ?? PaymentStatus.PENDING};
+
         await ddb.putItem(record);
+    }
+
+    async updateTeam(ddb: DynamoDb, team: Team) {
+        let key = {
+            [PK_KEY]: {S: `${TeamKey.PREFIX}.${team.id}`},
+            [SK_KEY]: {S: `${TeamKey.SK}`}
+        };
+        let updateExpression = 'SET #name = :name, #cat = :cat, #spk = :spk, #ssk = :ssk, #coach = :coach, #loc = :loc, #cap = :cap';
+        let expressionAttributeNames: Record<string, string> = {
+            '#name': TeamKey.NAME,
+            '#cat': TeamKey.CATEGORY,
+            '#spk': SPK_KEY,
+            '#ssk': SSK_KEY,
+            '#coach': TeamKey.COACH_NAME,
+            '#loc': TeamKey.LOACTION,
+            '#cap': TeamKey.CAPTAIN_ID,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':name': {S: `${team.name}`},
+            ':cat': {S: `${team.category}`},
+            ':spk': {S: `${team.category}`},
+            ':ssk': {S: `${team.coachId}`},
+            ':coach': {S: `${team.coachName}`},
+            ':loc': {S: `${team.location ?? ''}`},
+            ':cap': {S: `${team.captainId ?? ''}`},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
     }
 
     async updateTeamYear(ddb: DynamoDb, team: Team, year: string) {
