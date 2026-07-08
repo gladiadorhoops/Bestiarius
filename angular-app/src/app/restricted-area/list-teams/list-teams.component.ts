@@ -179,24 +179,27 @@ export class ListTeamsComponent {
     }
     displayPaymentReview = "none";
     reviewTeam: Team | undefined;
-    reviewReceiptUrl: string | null = null;
+    reviewReceiptUrls: string[] = [];
     loadingReviewReceipt = false;
 
-    openPaymentReview(team: Team, event: Event){
+    async openPaymentReview(team: Team, event: Event){
       event.stopPropagation();
       this.reviewTeam = team;
-      this.reviewReceiptUrl = null;
+      this.reviewReceiptUrls = [];
       this.loadingReviewReceipt = true;
       this.displayPaymentReview = "block";
 
-      const fileName = TeamBuilder.getReceiptFileName(team.name, team.id);
-      this.s3.downloadFile(fileName).then((data) => {
+      for (let i = 0; i < 10; i++) {
+        const fileName = TeamBuilder.getReceiptFileName(team.name, team.id, i);
+        const data = await this.s3.downloadFile(fileName);
         if (data) {
           const blob = new Blob([data as any]);
-          this.reviewReceiptUrl = URL.createObjectURL(blob);
+          this.reviewReceiptUrls.push(URL.createObjectURL(blob));
+        } else {
+          break;
         }
-        this.loadingReviewReceipt = false;
-      });
+      }
+      this.loadingReviewReceipt = false;
     }
 
     closePaymentReview(){

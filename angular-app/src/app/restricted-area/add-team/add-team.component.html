@@ -49,18 +49,21 @@
                         </div>
                         <label class="frow" for="receipt-file">Comprobante de Pago:&nbsp;<span style="color: red;">*</span></label>
                         <div class="frow">
-                            <input type="file" id="receipt-file" accept="image/*" (change)="onReceiptFileSelected($event)">
+                            <input type="file" id="receipt-file" accept="image/*" multiple (change)="onReceiptFilesSelected($event)">
                         </div>
                         <p *ngIf="receiptError" style="color: red;">{{receiptError}}</p>
-                        <div *ngIf="receiptPreview" class="mt-2">
-                            <img [src]="receiptPreview" alt="Preview" style="max-width: 100%; max-height: 200px;">
+                        <div *ngIf="receiptFiles.length > 0" class="mt-2">
+                            <div *ngFor="let rf of receiptFiles; let i = index" style="display: inline-block; position: relative; margin-right: 8px; margin-bottom: 8px;">
+                                <img [src]="rf.preview" alt="Preview" style="max-height: 150px;">
+                                <button type="button" class="btn btn-sm btn-outline-danger" style="position: absolute; top: 0; right: 0;" (click)="removeReceiptFile(i)">✗</button>
+                            </div>
                         </div>
                     </div>
                   </div>
                 </div>
             </div>
         <div class="frow">
-          <button type="submit" class="btn btn-danger" [disabled]="!teamForm.valid || (!receiptFile && userrole !== 'admin')">Guardar</button>
+          <button type="submit" class="btn btn-danger" [disabled]="!teamForm.valid || (receiptFiles.length === 0 && userrole !== 'admin')">Guardar</button>
         </div>
     </form>
     </div>
