@@ -309,10 +309,11 @@ export class ViewTeamsComponent {
       coachId: val.coachId,
       coachName: this.coaches.filter((c)=>c.id === val.coachId)[0].name,
       category: val.category,
-      location: val.location
+      location: val.location,
+      paymentStatus: this.team?.paymentStatus
     }
 
-    await this.teamBuilder.createTeam(this.ddb, this.team);
+    await this.teamBuilder.updateTeam(this.ddb, this.team);
     await this.loadTeam(this.team?.id);
     this.displayEditTeam = "none";
   }
