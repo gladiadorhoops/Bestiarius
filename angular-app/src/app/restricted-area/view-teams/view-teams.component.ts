@@ -411,6 +411,7 @@ export class ViewTeamsComponent {
     console.log("Adding Player:", newPlayer);
     await this.playerBuilder.createPlayer(this.ddb, newPlayer);
     await this.addPlayerViewChild.savePlayerPhoto();
+    await this.addPlayerViewChild.saveLiabilityWaiver();
     console.log(`Saved Player: ${newPlayer.name} - ${newPlayer.id}`);
     await this.loadTeam(this.team!.id);
     this.closeAddPlayerPopup();

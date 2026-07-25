@@ -6,6 +6,7 @@ import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { Validators } from '@angular/forms';
 import { TeamKey } from '../interfaces/team';
 import { TOURNAMENT_YEAR } from '../aws-clients/constants';
+import { S3, LIABILITY_WAIVER_PATH } from '../aws-clients/s3';
 
 @Injectable({
     providedIn: 'root'
@@ -27,6 +28,32 @@ export class PlayerBuilder {
         await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
     }
 
+    static getLiabilityWaiverFileName(playerId: string): string {
+        return `liability-waiver-${playerId}`;
+    }
+
+    async uploadLiabilityWaiver(ddb: DynamoDb, s3: S3, playerId: string, data: Buffer | Uint8Array, contentType: string): Promise<void> {
+        const fileName = PlayerBuilder.getLiabilityWaiverFileName(playerId);
+        await s3.uploadFile(fileName, data, contentType, LIABILITY_WAIVER_PATH);
+        await this.updateLiabilityWaiver(ddb, playerId, fileName);
+    }
+
+    async updateLiabilityWaiver(ddb: DynamoDb, playerId: string, fileName: string) {
+        let key = {
+            [PK_KEY]: {S: `${PlayerKey.PREFIX}.${playerId}`},
+            [SK_KEY]: {S: `${PlayerKey.PREFIX}.data`}
+        };
+        let updateExpression = 'SET #waiverattr = :val';
+        let expressionAttributeNames: Record<string, string> = {
+            '#waiverattr': `${PlayerKey.LIABILITY_WAIVER}`,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':val': {S: fileName},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
+    }
+
     async createPlayer(ddb: DynamoDb, player: Player) {
         let playerRecord: Record<string, AttributeValue> = {}
         playerRecord[PK_KEY] = {S: `${PlayerKey.PREFIX}.${player.id}`}
@@ -38,6 +65,9 @@ export class PlayerBuilder {
         playerRecord[PlayerKey.HEIGHT] = {S: `${player.height}`};
         playerRecord[PlayerKey.WEIGHT] = {S: `${player.weight}`};
         playerRecord[PlayerKey.POSITION] = {S: `${player.position}`};
+        playerRecord[PlayerKey.NUMBER] = {S: `${player.number}`};
+        playerRecord[PlayerKey.CURP] = {S: `${player.curp}`};
+        playerRecord[PlayerKey.LIABILITY_WAIVER] = {S: `${player.liabilityWaiver ?? ""}`};
         playerRecord[PlayerKey.IMAGE_TYPE] = {S: `${player.imageType?player.imageType:""}`};
         playerRecord[CY_KEY] = {S: TOURNAMENT_YEAR};
         playerRecord[PlayerKey.BIRTHDAY] = {S: `${player.birthday}`};
@@ -105,6 +135,9 @@ export class PlayerBuilder {
             height: item[PlayerKey.HEIGHT].S ? item[PlayerKey.HEIGHT].S! : "",
             weight: item[PlayerKey.WEIGHT].S ? item[PlayerKey.WEIGHT].S! : "",
             position: item[PlayerKey.POSITION].S ? item[PlayerKey.POSITION].S! : "",
+            number: item[PlayerKey.NUMBER]?.S && item[PlayerKey.NUMBER].S !== "null" ? item[PlayerKey.NUMBER].S! : "",
+            curp: item[PlayerKey.CURP]?.S ? item[PlayerKey.CURP].S! : "",
+            liabilityWaiver: item[PlayerKey.LIABILITY_WAIVER]?.S ? item[PlayerKey.LIABILITY_WAIVER].S! : "",
             birthday: item[PlayerKey.BIRTHDAY].S ? item[PlayerKey.BIRTHDAY].S! : "",
             imageType: item[PlayerKey.IMAGE_TYPE] ? item[PlayerKey.IMAGE_TYPE].S : "",
             year: item[CY_KEY].S ? item[CY_KEY].S : ""
@@ -143,9 +176,14 @@ export class PlayerBuilder {
             height: "",
             weight: "",
             position: "",
+            number: "",
+            curp: "",
+            liabilityWaiver: "",
             birthday: ""
         }
     }
+
+    static positions = ['1', '2', '3', '4', '5']
 
     static defaultForm = {
         nombre: ['', Validators.required],
@@ -153,7 +191,8 @@ export class PlayerBuilder {
         categoria: ['', Validators.required],
         altura: [''],
         peso: [''],
-        bday: [''],
-        posicion: ['']
+        numero: [''],
+        curp: [''],
+        bday: ['']
     }
 }

@@ -77,12 +77,14 @@
 
         <table class="row">
             <tr class="row">
-                <th class="col col-lg-8 col-12"> <a [routerLink]="">Player</a></th>
-                <th class="col col-lg-4 col-12"> <a [routerLink]="">Position</a></th>
+                <th class="col col-lg-1 col-2"> <a [routerLink]="">#</a></th>
+                <th class="col col-lg-7 col-6"> <a [routerLink]="">Player</a></th>
+                <th class="col col-lg-4 col-4"> <a [routerLink]="">Position</a></th>
             </tr>
             <tr class="row" *ngFor="let player of players">
-                <td class="col col-lg-8 col-12">{{player.name}}{{(player.id === team?.captainId) ? " (Capitán)" : ""}}</td>
-                <td class="col col-lg-4 col-12">{{player.position}}</td>
+                <td class="col col-lg-1 col-2">{{player.number}}</td>
+                <td class="col col-lg-7 col-6">{{player.name}}{{(player.id === team?.captainId) ? " (Capitán)" : ""}}</td>
+                <td class="col col-lg-4 col-4">{{player.position}}</td>
             </tr>
         </table>
         

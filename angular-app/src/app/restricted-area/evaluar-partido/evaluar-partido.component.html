@@ -80,6 +80,7 @@
                         <img width="100%" [src]="player.imageUrl" class="rounded">
                         <p>{{player.name}}</p>
                         <p>Posición: {{player.position}}</p>
+                        <p>Número: {{player.number}}</p>
                     </button>
                 </div>
             </div>
@@ -121,6 +122,8 @@
                         <input class="frow" disabled id="nombre" type="text" value="{{selectedPlayer!.name}}">
                         <label class="frow" for="position">Posicion Registrada:&nbsp;</label>
                         <input class="frow" disabled id="position" type="text" value="{{selectedPlayer!.position}}">
+                        <label class="frow" for="numero">Número:&nbsp;</label>
+                        <input class="frow" disabled id="numero" type="number" value="{{selectedPlayer!.number}}">
                     </div>
                     </div>
                 </div>
