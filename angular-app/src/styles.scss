@@ -10,8 +10,8 @@
 
 
 @font-face {
-    font-family: "Graduate";
-    src: local("Graduate"), url(./assets/fonts/Graduate/Graduate-Regular.ttf) format("truetype");
+    font-family: "Montserrat";
+    src: local("Montserrat"), url(./assets/fonts/Montserrat/Montserrat-Regular.ttf) format("truetype");
 }
 
 html {
@@ -23,7 +23,7 @@ html {
 }
 
 body {
-    font-family: "Graduate", Arial, Helvetica, sans-serif;
+    font-family: "Montserrat", Arial, Helvetica, sans-serif;
 }
 
 .page-content {
