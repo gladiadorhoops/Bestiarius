@@ -8,6 +8,9 @@ export interface Player {
     height: string,
     weight: string,
     position: string,
+    number: string,
+    curp: string,
+    liabilityWaiver: string,
     birthday: string,
     year?: string
 }
@@ -24,6 +27,9 @@ export enum PlayerKey {
     HEIGHT = 'height',
     WEIGHT = 'weight',
     POSITION = 'position',
+    NUMBER = 'number',
+    CURP = 'curp',
+    LIABILITY_WAIVER = 'liabilityWaiver',
     BIRTHDAY = 'birthday',
     IMAGE_TYPE = 'image',
     PREFIX = 'player'

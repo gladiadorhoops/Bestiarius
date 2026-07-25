@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../../auth.service';
 import { getCategories } from '../../../interfaces/team';
@@ -6,10 +7,9 @@ import { Category, Player } from '../../../interfaces/player';
 import { DynamoDb } from '../../../aws-clients/dynamodb';
 import { PlayerBuilder } from '../../../Builders/player-builder';
 import { ReporteBuilder } from '../../../Builders/reporte-builder';
-import { S3 } from 'src/app/aws-clients/s3';
+import { S3, LIABILITY_WAIVER_PATH } from 'src/app/aws-clients/s3';
 import { Buffer } from 'buffer';
 import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
-import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-add-player',
@@ -23,7 +23,7 @@ export class AddPlayerComponent {
     private authService: AuthService,
     private playerBuilder: PlayerBuilder,
     private reporteBuilder: ReporteBuilder,
-    private datepipe: DatePipe
+    private sanitizer: DomSanitizer
   ) {
     this.player = {
       id: this.playerId,
@@ -34,6 +34,9 @@ export class AddPlayerComponent {
       height: "",
       weight: "",
       position: "",
+      number: "",
+      curp: "",
+      liabilityWaiver: "",
       birthday: ""
     }
   }
@@ -49,11 +52,21 @@ export class AddPlayerComponent {
   scout_id = this.authService.getUserId();
   scout_name = this.authService.getUserName();
   categories = getCategories();
+  positions = PlayerBuilder.positions;
+  selectedPositions: Record<string, boolean> = {};
   player: Player;
   displayStyle = "none";
   emptyTxt : string = "";
   imageUrl: string | ArrayBuffer | null | undefined = "assets/no-avatar.png";
   blob: Blob | undefined
+
+  waiverToUpload: {data: Buffer, contentType: string} | undefined;
+  waiverError: string = "";
+  displayWaiver = "none";
+  loadingWaiver = false;
+  waiverUrl: string | undefined;
+  waiverSafeUrl: SafeResourceUrl | undefined;
+  waiverIsPdf = false;
 
   async ngOnInit() {
     this.imgToUpload = undefined
@@ -66,8 +79,7 @@ export class AddPlayerComponent {
     if (existingPlayer){
       this.player = existingPlayer;
       console.log("found:", existingPlayer.name);
-      let bday = new Date(this.player.birthday)
-      this.playerForm.controls.bday.setValue(this.datepipe.transform(bday, 'yyyy-MM-dd')!)
+      this.playerForm.controls.bday.setValue(this.player.birthday)
     } else {
       this.player = this.playerBuilder.getEmptyPlayer()
       this.player.id = playerId;
@@ -78,7 +90,13 @@ export class AddPlayerComponent {
     this.playerForm.controls.categoria.setValue(this.player.category)
     this.playerForm.controls.altura.setValue(this.player.height)
     this.playerForm.controls.peso.setValue(this.player.weight)
-    this.playerForm.controls.posicion.setValue(this.player.position)
+    this.playerForm.controls.numero.setValue(this.player.number)
+    this.playerForm.controls.curp.setValue(this.player.curp)
+
+    this.selectedPositions = {};
+    this.player.position.split(',').map(p => p.trim()).filter(p => p).forEach(p => {
+      this.selectedPositions[p] = true;
+    });
 
     if (this.player.imageType){
       await this.s3.downloadFile(this.player.id).then((data) => {
@@ -102,6 +120,10 @@ export class AddPlayerComponent {
 
   }
 
+
+  togglePosition(position: string): void {
+    this.selectedPositions[position] = !this.selectedPositions[position];
+  }
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
@@ -135,14 +157,11 @@ export class AddPlayerComponent {
     this.player.name = this.playerForm.value.nombre!
     this.player.height = this.playerForm.value.altura!
     this.player.weight = this.playerForm.value.peso!
-    this.player.position = this.playerForm.value.posicion!
-    
-    let localDate = new Date(this.playerForm.value.bday!)
-    let bday = new Date(localDate.getTime() + (localDate.getTimezoneOffset() * 60000))
+    this.player.number = this.playerForm.value.numero ?? ""
+    this.player.curp = this.playerForm.value.curp!
+    this.player.position = this.positions.filter(p => this.selectedPositions[p]).join(',')
 
-    console.log("bday: ", bday)
-
-    this.player.birthday = this.datepipe.transform(bday, 'yyyy-MM-dd')!;
+    this.player.birthday = this.playerForm.value.bday!;
   }
 
   async savePlayerPhoto(){
@@ -156,6 +175,68 @@ export class AddPlayerComponent {
       console.log("Player photo uploaded")
       this.imgToUpload = undefined
     }
+  }
+
+  onWaiverSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
+      this.waiverError = "El archivo debe ser una imagen o un PDF.";
+      return;
+    }
+
+    this.waiverError = "";
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onload = () => {
+      this.waiverToUpload = {
+        data: Buffer.from(reader.result as ArrayBuffer),
+        contentType: file.type
+      };
+    };
+  }
+
+  async saveLiabilityWaiver(){
+    if (this.waiverToUpload) {
+      await this.playerBuilder.uploadLiabilityWaiver(
+        this.ddb,
+        this.s3,
+        this.player.id,
+        this.waiverToUpload.data,
+        this.waiverToUpload.contentType
+      );
+      this.player.liabilityWaiver = PlayerBuilder.getLiabilityWaiverFileName(this.player.id);
+      this.waiverToUpload = undefined;
+    }
+  }
+
+  async openLiabilityWaiver(){
+    this.waiverUrl = undefined;
+    this.waiverError = "";
+    this.loadingWaiver = true;
+    this.displayWaiver = "block";
+
+    if (this.player.liabilityWaiver) {
+      const result = await this.s3.downloadFileWithType(this.player.liabilityWaiver, LIABILITY_WAIVER_PATH);
+      if (result) {
+        this.waiverIsPdf = result.contentType === 'application/pdf';
+        const blob = new Blob([result.data as any], {type: result.contentType});
+        this.waiverUrl = URL.createObjectURL(blob);
+        this.waiverSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.waiverUrl);
+      } else {
+        this.waiverError = "No se pudo cargar la carta responsiva.";
+      }
+    } else {
+      this.waiverError = "No se ha subido una carta responsiva.";
+    }
+    this.loadingWaiver = false;
+  }
+
+  closeLiabilityWaiver(){
+    this.displayWaiver = "none";
+    this.waiverUrl = undefined;
+    this.waiverSafeUrl = undefined;
   }
 }
 

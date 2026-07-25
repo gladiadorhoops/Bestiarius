@@ -15,6 +15,9 @@ const MATCH_DATA_PATH = `${MATCH_DATA}/${TOURNAMENT_PREFIX}${CURRENT_TOURNAMENT}
 const REPORT_DATA = "reports"
 const REPORT_PATH = `${REPORT_DATA}/${TOURNAMENT_PREFIX}${TOURNAMENT_YEAR}`
 const IMAGE_PATH = "images"
+const LIABILITY_WAIVER_PATH = "liability-waiver"
+
+export { LIABILITY_WAIVER_PATH };
 
 
 export enum ReportType {
@@ -67,10 +70,10 @@ export class S3 {
 
     }
 
-    async uploadFile(fileName: string, fileContent: string | Uint8Array | Buffer, contentType: string): Promise<boolean> {
+    async uploadFile(fileName: string, fileContent: string | Uint8Array | Buffer, contentType: string, path: string = IMAGE_PATH): Promise<boolean> {
         console.log(`Uploading file: ${fileName}`)
-        
-        const objectKey = `${IMAGE_PATH}/${fileName}`;
+
+        const objectKey = `${path}/${fileName}`;
 
         const input: PutObjectCommandInput = {
             Bucket: GLADIADORES_BUCKET_NAME,
@@ -202,6 +205,30 @@ export class S3 {
                 return fileContent;
             }
             
+            return undefined;
+        } catch (err) {
+            console.error('Error downloading file:', err);
+            return undefined;
+        }
+    }
+
+    async downloadFileWithType(fileName: string, path: string = IMAGE_PATH): Promise<{data: Uint8Array, contentType: string} | undefined> {
+        const objectKey = `${path}/${fileName}`;
+        console.log(`Downloading file with type: ${objectKey}`)
+
+        const input: GetObjectCommandInput = {
+            Bucket: GLADIADORES_BUCKET_NAME,
+            Key: objectKey
+        };
+
+        try {
+            const response = await this.client.send(new GetObjectCommand(input));
+            const fileContent = await response.Body?.transformToByteArray();
+
+            if (fileContent) {
+                return {data: fileContent, contentType: response.ContentType ?? 'application/octet-stream'};
+            }
+
             return undefined;
         } catch (err) {
             console.error('Error downloading file:', err);
