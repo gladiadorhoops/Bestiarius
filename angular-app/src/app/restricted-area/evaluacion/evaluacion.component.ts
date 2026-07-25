@@ -39,7 +39,17 @@ export class EvaluacionComponent {
 
   teams: Team[] = [];
   teamplayers: Player[] = [];
+  playerFilter: string = "";
+  showPlayerList: boolean = false;
   selectedCategoria: string = "";
+
+  get filteredPlayers(): Player[] {
+    const filter = this.playerFilter.trim().toLowerCase();
+    if (!filter) return this.teamplayers;
+    return this.teamplayers.filter(p =>
+      p.name.toLowerCase().startsWith(filter) || p.number.startsWith(filter)
+    );
+  }
   selectedPlayer: Player = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',number:'',curp:'',liabilityWaiver:'',birthday:''};;
   displayStyle = "none";
   displayPhotoPopup = "none";
@@ -141,6 +151,8 @@ export class EvaluacionComponent {
     this.teams = this.teams.concat(teams)
     this.teamplayers = [];
     this.selectedPlayer = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',number:'',curp:'',liabilityWaiver:'',birthday:''};
+    this.playerFilter = "";
+    this.showPlayerList = false;
     this.imageUrl = "assets/no-avatar.png"
   }
 
@@ -157,7 +169,27 @@ export class EvaluacionComponent {
         }
     });
     this.selectedPlayer = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',number:'',curp:'',liabilityWaiver:'',birthday:''};
+    this.playerFilter = "";
+    this.showPlayerList = false;
     this.imageUrl = "assets/no-avatar.png"
+  }
+
+  async selectPlayer(player: Player) {
+    this.selectedPlayer = player;
+    this.playerFilter = player.name;
+    this.showPlayerList = false;
+    this.evaluationForm.controls['playerId'].setValue(player.id);
+    await this.loadPlayerDetails();
+  }
+
+  onPlayerFilterChange(value: string) {
+    this.playerFilter = value;
+    this.showPlayerList = true;
+  }
+
+  hidePlayerList() {
+    // Delay so a click on a list item registers before the list hides
+    setTimeout(() => this.showPlayerList = false, 200);
   }
 
   async loadPlayerDetails() {

@@ -37,13 +37,25 @@
                           <option *ngFor="let team of teams" value="{{team.name}}">{{team.name}}</option>
                       </select>
                   </div>
-                  <label class="frow" for="nombre">Nombre:&nbsp;</label>
-                  <div class="frow">
-                      <select id="players" formControlName="playerId" (change)="loadPlayerDetails()" required>
-                          <option value=""></option>
-                          <option *ngFor="let player of teamplayers" value="{{player.id}}">{{player.name}}</option>
-                      </select>
+                  <label class="frow" for="filtroJugador">Jugador:&nbsp;</label>
+                  <div class="frow" style="position: relative;">
+                      <input id="filtroJugador" type="text" class="form-control" autocomplete="off" [value]="playerFilter"
+                             (input)="onPlayerFilterChange($any($event.target).value)"
+                             (focus)="showPlayerList = true"
+                             (blur)="hidePlayerList()"
+                             placeholder="Filtrar por nombre o número">
+                      <ul *ngIf="showPlayerList && filteredPlayers.length > 0"
+                          class="list-group"
+                          style="position: absolute; top: 100%; left: 0; z-index: 10; width: 100%; max-height: 220px; overflow-y: auto;">
+                        <li *ngFor="let player of filteredPlayers"
+                            class="list-group-item list-group-item-action"
+                            style="cursor: pointer;"
+                            (click)="selectPlayer(player)">
+                          {{player.number ? player.number + ' - ' : ''}}{{player.name}}
+                        </li>
+                      </ul>
                   </div>
+                  <input type="hidden" formControlName="playerId">
                   <label class="frow" for="edad">Posicion Registrada:&nbsp;</label>
                   <input class="frow" disabled id="position" type="text" value="{{selectedPlayer.position}}">
                   <label class="frow" for="numero">Número:&nbsp;</label>
