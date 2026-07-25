@@ -49,3 +49,7 @@ export interface MatchTeam {
     category?: string | undefined
     points?: number | undefined
 }
+
+export interface MatchTeamWithPhoto extends MatchTeam {
+    imageUrl: string | ArrayBuffer | null | undefined
+}

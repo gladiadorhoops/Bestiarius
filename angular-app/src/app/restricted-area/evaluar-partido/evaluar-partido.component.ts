@@ -5,7 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatchBuilder } from '../../Builders/match-builder';
 import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
-import { Team, MatchTeam } from '../../interfaces/team';
+import { Team, MatchTeam, MatchTeamWithPhoto } from '../../interfaces/team';
 import { TOURNAMENT_DAYS, TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 import { Gym } from 'src/app/interfaces/gym';
 import { GymBuilder } from 'src/app/Builders/gym-builder';
@@ -43,7 +43,7 @@ export class EvaluarPartidoComponent implements OnInit {
   isTeamSelected: boolean = false;
   isEvaluatingPlayer: boolean = false;
   loading: boolean = true;
-  editingTeam: MatchTeam = {id: "", name: "", category: ""};
+  editingTeam: MatchTeamWithPhoto = {id: "", name: "", category: "", imageUrl: ""};
   displayEvalPlayer = "none";
   selectedPlayer: PlayerWithPhoto | undefined;
   displayPhotoPopup = "none";
@@ -169,7 +169,7 @@ export class EvaluarPartidoComponent implements OnInit {
   
 
   async edit(team:MatchTeam){
-    this.editingTeam = team;
+    this.editingTeam = team as MatchTeamWithPhoto;
 
     await this.loadTeam(this.editingTeam.id)
 
@@ -230,7 +230,7 @@ export class EvaluarPartidoComponent implements OnInit {
     this.displayPhotoPopup = "block";
   }
   async closePhotoPopup(){
-    await this.getS3ImgAsBuffer(this.selectedPlayer!);
+    await this.getPlayerImgAsBuffer(this.selectedPlayer!);
     this.displayPhotoPopup = "none";
   }
   async confirmReplacePhoto(){
@@ -256,13 +256,14 @@ export class EvaluarPartidoComponent implements OnInit {
   async loadTeam(teamId: string){
     this.players = []
     this.team = await this.teamBuilder.getTeam(this.ddb, teamId);
+    await this.getTeamImgAsBuffer(this.editingTeam)
     
     let teamPlayers = await this.playerBuilder.getPlayersByTeam(this.ddb, teamId);
     teamPlayers = teamPlayers.filter((p: Player) => p.year! === this.team!.year!);
     await teamPlayers.forEach(async element => {
       let p = element as PlayerWithPhoto
       if (p.imageType ){
-        await this.getS3ImgAsBuffer(p);
+        await this.getPlayerImgAsBuffer(p);
       }  else {
         p.imageUrl = "assets/no-avatar.png"
       }
@@ -270,7 +271,7 @@ export class EvaluarPartidoComponent implements OnInit {
     });
   }
 
-  async getS3ImgAsBuffer(player: PlayerWithPhoto){
+  async getPlayerImgAsBuffer(player: PlayerWithPhoto){
     let data = await this.s3.downloadFile(player.id)
     console.log("Downloaded data:", data);
 
@@ -285,6 +286,24 @@ export class EvaluarPartidoComponent implements OnInit {
     } else {
       console.error("No data returned from downloadFile");
       player.imageUrl = "assets/no-avatar.png";
+    }
+  }
+
+  async getTeamImgAsBuffer(team: MatchTeamWithPhoto){
+    let data = await this.s3.downloadFile(team.id)
+    console.log("Downloaded data:", data);
+
+    if (data) {
+      let blob = new Blob([data], { type: "image/jpeg" });
+        // display blob as img
+      const reader2 = new FileReader();
+      reader2.readAsDataURL(blob);
+      reader2.onload = () => {
+        team.imageUrl = reader2.result;
+      };
+    } else {
+      console.error("No data returned from downloadFile");
+      team.imageUrl = "assets/logo.png";
     }
   }
 
