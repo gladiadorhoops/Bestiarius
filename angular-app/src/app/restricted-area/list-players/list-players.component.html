@@ -11,12 +11,14 @@
         <div style="min-width: 600px;">
             <table class="row">
                 <tr class="row">
-                    <th class="col col-5"> <a [routerLink]="" (click)="sortPlayersByName()">Jugador</a></th>
+                    <th class="col col-1"> <a [routerLink]="">#</a></th>
+                    <th class="col col-4"> <a [routerLink]="" (click)="sortPlayersByName()">Jugador</a></th>
                     <th class="col col-4"> <a [routerLink]="" (click)="sortPlayersByEquipo()">Equipo</a></th>
                     <th class="col col-3"> <a [routerLink]="" (click)="sortPlayersByCategory()">Categoria</a></th>
                 </tr>
                 <tr class="row" *ngFor="let player of players" [routerLink]="" (click)="showPlayer(player)" >
-                    <td class="col col-5">{{player.name}}</td>
+                    <td class="col col-1">{{player.number}}</td>
+                    <td class="col col-4">{{player.name}}</td>
                     <td class="col col-4">{{uTeams.get(player.team)}}</td>
                     <td class="col col-3">{{player.category}}</td>
                 </tr>
@@ -49,7 +51,10 @@
             
                   <label class="frow" for="position">Posición:&nbsp;</label>
                   <input class="frow" type="text" value="{{player!.position}}">
-            
+
+                  <label class="frow" for="numero">Número:&nbsp;</label>
+                  <input class="frow" type="number" value="{{player!.number}}">
+
                   <label class="frow" for="altura">Altura (cm):&nbsp;</label>
                   <input class="frow" type="number" min="1" max="300" value="{{player!.height}}">
                   <label class="frow" for="peso">Peso (kg):&nbsp;</label>
