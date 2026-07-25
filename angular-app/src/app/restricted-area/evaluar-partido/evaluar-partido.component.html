@@ -46,15 +46,15 @@
                 </div>
                 
 
-                <div class="col col-1">
+                <div class="col col-2 col-md-1">
                     <a class="btn btn-outline-light btn-floating m-1" role="button" (click)="edit(match.homeTeam)">
                         <i class="fas fa-regular fa-pen"></i>
                     </a>
                 </div>
-                <div class="col col-4">{{match.homeTeam.name}}</div>
+                <div class="col col-3 col-md-4">{{match.homeTeam.name}}</div>
                 <div class="col col-2"> X </div>
-                <div class="col col-4">{{match.visitorTeam.name}}</div>
-                <div class="col col-1" > 
+                <div class="col col-3 col-md-4">{{match.visitorTeam.name}}</div>
+                <div class="col col-2 col-md-1" > 
                     <a class="btn btn-outline-light btn-floating m-1" role="button" (click)="edit(match.visitorTeam)">
                         <i class="fas fa-regular fa-pen"></i>
                     </a>
@@ -71,17 +71,20 @@
             <button class="btn btn-outline-danger btn-floating m-1" title="Volver a Partidos" (click)="closeTeam()" target="_blank" role="button">
                 <i class="fas fa-arrow-left"></i>
             </button>
+            <br><br>
             <div class="row">
                 <div class="col col-12">
-                    <img max-width="200px" src="assets/logo.png" class="rounded">
+                    <img [src]="this.editingTeam.imageUrl" class="rounded col-6 col-md-2">
                     <h1>{{this.editingTeam.name}}</h1>
                     <br>
-                    <button *ngFor="let player of players" class="btn col-6 col-md-2" (click)="evalPlayer(player)">
-                        <img width="100%" [src]="player.imageUrl" class="rounded">
-                        <p>{{player.name}}</p>
-                        <p>Posición: {{player.position}}</p>
-                        <p>Número: {{player.number}}</p>
-                    </button>
+                    <div class="col col-12">
+                        <button *ngFor="let player of players" class="player-card btn col-6 col-md-2" (click)="evalPlayer(player)">
+                            <img width="100%" [src]="player.imageUrl" class="rounded">
+                            <p>{{player.name}}</p>
+                            <p>Posición: {{player.position}}</p>
+                            <p>Número: {{player.number}}</p>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
