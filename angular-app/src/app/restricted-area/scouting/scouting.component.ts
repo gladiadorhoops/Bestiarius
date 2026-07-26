@@ -19,11 +19,11 @@ import { filterMatches } from 'src/app/utils/utils';
 
 
 @Component({
-  selector: 'app-evaluar-partido',
-  templateUrl: './evaluar-partido.component.html',
-  styleUrls: ['./evaluar-partido.component.scss']
+  selector: 'app-scouting',
+  templateUrl: './scouting.component.html',
+  styleUrls: ['./scouting.component.scss']
 })
-export class EvaluarPartidoComponent implements OnInit {
+export class ScoutingComponent implements OnInit {
   @Input() ddb!: DynamoDb;
   @Input() s3!: S3;
 

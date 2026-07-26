@@ -31,7 +31,7 @@ export class EvaluacionComponent implements OnChanges {
   ) {}
 
   @Input() ddb!: DynamoDb;
-  // Category and team are driven by the shared filters in the parent (evaluar-partido).
+  // Category and team are driven by the shared filters in the parent (scouting).
   @Input() category: string | null | undefined = null;
   @Input() team: string | null | undefined = null;
 
