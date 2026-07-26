@@ -7,9 +7,13 @@
     <span class="sr-only">Loading...</span>
 </div>
 <div class="mainpanel" *ngIf="!loading">
-    <!-- Register a new team: sits above the list since it's the primary action. -->
-    <div class="d-flex justify-content-end mb-3" *ngIf="editable">
-        <button type="button" (click)="callParentToAddTeam()" class="btn btn-dark btn-floating" title="Registrar Nuevo Equipo" aria-label="Registrar Nuevo Equipo">
+    <!-- Top actions: download the shared liability waiver (same for all teams)
+         and register a new team (primary action). -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <button type="button" (click)="openWaiverTemplate()" class="btn btn-dark btn-sm">
+            <i class="fas fa-file-arrow-down"></i>&nbsp; Descargar Carta Responsiva
+        </button>
+        <button *ngIf="editable" type="button" (click)="callParentToAddTeam()" class="btn btn-dark btn-floating" title="Registrar Nuevo Equipo" aria-label="Registrar Nuevo Equipo">
             <i class="fas fa-plus"></i>
         </button>
     </div>
@@ -107,6 +111,46 @@
                 (click)="closeErrorPopup()">
           Cerrar
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Liability waiver template distribution modal-->
+<div class="modal"
+      tabindex="-1"
+      role="dialog"
+      [ngStyle]="{'display':displayWaiverTemplate}">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header dark-header">
+        <h5 class="modal-title">Carta Responsiva {{year}}</h5>
+        <button type="button" class="btn-close" (click)="closeWaiverTemplate()" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <div *ngIf="loadingWaiverTemplate" class="text-center">
+          <div class="spinner-border text-dark" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+
+        <p *ngIf="waiverTemplateError" style="color: red;">{{waiverTemplateError}}</p>
+
+        <div *ngIf="!loadingWaiverTemplate && waiverTemplateShareUrl">
+          <p class="mb-2">Descarga la carta responsiva o comparte este enlace o código QR con tus jugadores:</p>
+
+          <img *ngIf="waiverTemplateQrUrl" [src]="waiverTemplateQrUrl" alt="Código QR Carta Responsiva" class="mb-2" style="max-width: 240px;">
+
+          <div class="d-flex flex-wrap gap-2 justify-content-center">
+            <button type="button" (click)="downloadWaiverTemplate()" class="btn btn-dark btn-sm">
+              <i class="fa fa-download"></i>&nbsp; Descargar
+            </button>
+            <button type="button" (click)="copyWaiverLink()" class="btn btn-dark btn-sm">
+              <i class="fa fa-link"></i>&nbsp; {{ copiedWaiverLink ? 'Enlace copiado' : 'Copiar enlace' }}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

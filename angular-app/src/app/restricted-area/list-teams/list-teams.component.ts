@@ -12,6 +12,7 @@ import { PlayerBuilder } from 'src/app/Builders/player-builder';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { FeatureFlag } from 'src/app/interfaces/feature-flag';
 import { FeatureFlagBuilder } from 'src/app/Builders/feature-flag-builder';
+import * as QRCode from 'qrcode';
 
 @Component({
   selector: 'app-list-teams',
@@ -64,6 +65,16 @@ export class ListTeamsComponent {
     renewalPlayers: Player[] | undefined
     // Team logo URLs keyed by team id (falls back to the gray default logo).
     teamLogos: Map<string, string | ArrayBuffer | null | undefined> = new Map();
+
+    // Blank liability-waiver template distribution (download + link + QR code).
+    // The waiver is the same for every team, so it lives on the teams list.
+    displayWaiverTemplate = "none";
+    loadingWaiverTemplate = false;
+    waiverTemplateError = "";
+    waiverTemplateShareUrl: string | undefined;
+    waiverTemplateQrUrl: string | undefined;
+    waiverTemplateFile: {data: Uint8Array, contentType: string} | undefined;
+    copiedWaiverLink = false;
 
     reloadLoginStatus() {
       this.userrole = this.authService.getUserRole();
@@ -239,6 +250,71 @@ export class ListTeamsComponent {
         await this.teamBuilder.updatePaymentStatus(this.ddb, this.reviewTeam.id, PaymentStatus.APPROVED);
         this.reviewTeam.paymentStatus = PaymentStatus.APPROVED;
         this.closePaymentReview();
+      }
+    }
+
+    /**
+     * Open the liability-waiver distribution modal: verify this year's blank
+     * template is available and build a shareable public link + QR code. The
+     * file is NOT downloaded automatically — the coach downloads it via the
+     * "Descargar" button. Shows an unavailable message when it's missing.
+     */
+    async openWaiverTemplate(){
+      this.waiverTemplateError = "";
+      this.waiverTemplateShareUrl = undefined;
+      this.waiverTemplateQrUrl = undefined;
+      this.waiverTemplateFile = undefined;
+      this.copiedWaiverLink = false;
+      this.loadingWaiverTemplate = true;
+      this.displayWaiverTemplate = "block";
+
+      const result = await this.s3.downloadLiabilityWaiverTemplate();
+      if (!result) {
+        this.waiverTemplateError = "Carta responsiva no esta disponible todavia intente mas tarde";
+        this.loadingWaiverTemplate = false;
+        return;
+      }
+
+      // Keep the bytes so the download only happens when the coach clicks.
+      this.waiverTemplateFile = result;
+
+      // Public link + QR code so coaches can distribute the template.
+      const shareUrl = this.s3.getLiabilityWaiverTemplateUrl();
+      this.waiverTemplateShareUrl = shareUrl;
+      try {
+        this.waiverTemplateQrUrl = await QRCode.toDataURL(shareUrl, {width: 240, margin: 1});
+      } catch (err) {
+        console.error('Error generating QR code for waiver template:', err);
+      }
+
+      this.loadingWaiverTemplate = false;
+    }
+
+    downloadWaiverTemplate(){
+      if (!this.waiverTemplateFile) return;
+
+      const blob = new Blob([this.waiverTemplateFile.data as any], {type: this.waiverTemplateFile.contentType});
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = `carta-responsiva-${this.year}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectUrl);
+    }
+
+    closeWaiverTemplate(){
+      this.displayWaiverTemplate = "none";
+    }
+
+    async copyWaiverLink(){
+      if (!this.waiverTemplateShareUrl) return;
+      try {
+        await navigator.clipboard.writeText(this.waiverTemplateShareUrl);
+        this.copiedWaiverLink = true;
+      } catch (err) {
+        console.error('Error copying waiver link:', err);
       }
     }
 
