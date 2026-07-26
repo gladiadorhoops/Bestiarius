@@ -18,6 +18,26 @@
     </a>
 </ng-template>
 
+<!-- Team roster (shared): team logo/name + player cards with photos.
+     Used by both the scouting page and the Equipos team-detail view. -->
+<ng-template #teamRoster>
+    <div class="row">
+        <div class="col col-12">
+            <img [src]="this.editingTeam.imageUrl" class="rounded scout-team-logo">
+            <h1>{{this.editingTeam.name}}</h1>
+            <br>
+            <div class="col col-12">
+                <button *ngFor="let player of players" class="player-card btn col-6 col-md-2" (click)="evalPlayer(player)">
+                    <img width="100%" [src]="player.imageUrl" class="rounded">
+                    <p>{{player.name}}</p>
+                    <p>Posición: {{player.position}}</p>
+                    <p>Número: {{player.number}}</p>
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
 <!-- Top tab bar: large screens (laptops/tablets) only. -->
 <nav class="tab-bar top-tab-bar d-none d-md-flex" *ngIf="!loading">
     <ng-container *ngTemplateOutlet="tabLinks"></ng-container>
@@ -32,7 +52,7 @@
 
         <!-- Shared filters (Category + Equipo) — hidden on the statistics tab, which has its own filters -->
         <form class="filter-bar" [formGroup]="filterForm" *ngIf="!isScouting && !isTeamSelected && activeTab !== 'estadisticas'">
-            <div class="row g-2">
+            <div class="row g-2 justify-content-center">
                 <div class="col-6 col-md-2">
                     <select class="form-select" id="category" formControlName="cat" (change)="applyCategoryFilter()" required>
                         <option [ngValue]="null">Categoría</option>
@@ -62,7 +82,7 @@
                 </div>
             </div>
             <div class="row mt-2">
-                <div class="col-12">
+                <div class="col-12 text-center">
                     <button class="btn btn-outline-light btn-sm" type="button" (click)="clearFilters()" title="Limpiar filtros" aria-label="Limpiar filtros">
                         <i class="fas fa-rotate-left"></i>
                     </button>
@@ -113,7 +133,7 @@
 
                 <!-- Toolbar: back to the match list. -->
                 <div class="scout-toolbar">
-                    <button class="btn btn-outline-light btn-floating" title="Volver a Partidos" type="button" (click)="closeScout()">
+                    <button class="btn btn-outline-danger btn-floating" title="Volver a Partidos" type="button" (click)="closeScout()">
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
@@ -156,21 +176,7 @@
 
             </form>
 
-            <div class="row">
-                <div class="col col-12">
-                    <img [src]="this.editingTeam.imageUrl" class="rounded scout-team-logo">
-                    <h1>{{this.editingTeam.name}}</h1>
-                    <br>
-                    <div class="col col-12">
-                        <button *ngFor="let player of players" class="player-card btn col-6 col-md-2" (click)="evalPlayer(player)">
-                            <img width="100%" [src]="player.imageUrl" class="rounded">
-                            <p>{{player.name}}</p>
-                            <p>Posición: {{player.position}}</p>
-                            <p>Número: {{player.number}}</p>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <ng-container *ngTemplateOutlet="teamRoster"></ng-container>
         </div>
         </div>
 
@@ -205,25 +211,12 @@
 
         <!-- Team detail view (shared): team players with photos, no match info -->
         <div *ngIf="isTeamSelected">
-            <button class="btn btn-outline-danger btn-floating m-1" title="Volver a Equipos" (click)="closeTeam()" role="button">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <br><br>
-            <div class="row">
-                <div class="col col-12">
-                    <img [src]="this.editingTeam.imageUrl" class="rounded col-6 col-md-2">
-                    <h1>{{this.editingTeam.name}}</h1>
-                    <br>
-                    <div class="col col-12">
-                        <button *ngFor="let player of players" class="player-card btn col-6 col-md-2" (click)="evalPlayer(player)">
-                            <img width="100%" [src]="player.imageUrl" class="rounded">
-                            <p>{{player.name}}</p>
-                            <p>Posición: {{player.position}}</p>
-                            <p>Número: {{player.number}}</p>
-                        </button>
-                    </div>
-                </div>
+            <div class="scout-toolbar">
+                <button class="btn btn-outline-danger btn-floating" title="Volver a Equipos" (click)="closeTeam()" role="button">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
             </div>
+            <ng-container *ngTemplateOutlet="teamRoster"></ng-container>
         </div>
     </div>
 </div>

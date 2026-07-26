@@ -115,10 +115,13 @@ export class EvaluarPartidoComponent implements OnInit {
 
   selectTab(tab: 'partido' | 'jugador' | 'equipos' | 'estadisticas') {
     this.activeTab = tab;
-    // Leaving the Equipos tab should close any open team detail view.
-    if (tab !== 'equipos') {
-      this.isTeamSelected = false;
-    }
+    // Reset any open "players with images" roster (used by the scouting page
+    // and the Equipos detail view) so it doesn't linger when switching tabs.
+    this.isScouting = false;
+    this.isTeamSelected = false;
+    this.editingTeam = {id: "", name: "", category: "", imageUrl: ""};
+    this.players = [];
+    this.team = undefined;
   }
 
   
