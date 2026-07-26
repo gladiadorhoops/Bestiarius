@@ -176,11 +176,11 @@ export class TeamBuilder {
     }
 
     static getReceiptFileName(teamName: string, teamId: string, index: number): string {
-        return `payment-receipt-${teamName}-${teamId}-${index}`;
+        return `payment-receipts/payment-receipt-${teamId}-${index}`;
     }
 
     static getReceiptFilePrefix(teamName: string, teamId: string): string {
-        return `payment-receipt-${teamName}-${teamId}-`;
+        return `payment-receipts/payment-receipt-${teamId}-`;
     }
 
     async uploadPaymentReceipts(ddb: DynamoDb, s3: S3, team: Team, files: {data: Buffer | Uint8Array, contentType: string}[], startIndex: number = 0): Promise<void> {
@@ -207,10 +207,13 @@ export class TeamBuilder {
         await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
     }
 
-
+    static getLogoFilePath(team: Team): string {
+        return `team-logos/${team.id}`;
+    }
 
     async uploadTeamLogo(ddb: DynamoDb, s3: S3, team: Team, logoFile: Buffer | Uint8Array): Promise<void> {
-        await s3.uploadFile(team.id, logoFile, team.imageType!);
+        let logoPath = TeamBuilder.getLogoFilePath(team);
+        await s3.uploadFile(logoPath, logoFile, team.imageType!);
         await this.updateTeamLogoType(ddb, team.id, team.imageType!);
     }
 
