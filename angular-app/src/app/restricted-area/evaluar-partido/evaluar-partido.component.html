@@ -52,7 +52,7 @@
 
         <!-- Shared filters (Category + Equipo) — hidden on the statistics tab, which has its own filters -->
         <form class="filter-bar" [formGroup]="filterForm" *ngIf="!isScouting && !isTeamSelected && activeTab !== 'estadisticas'">
-            <div class="row g-2">
+            <div class="row g-2 justify-content-center">
                 <div class="col-6 col-md-2">
                     <select class="form-select" id="category" formControlName="cat" (change)="applyCategoryFilter()" required>
                         <option [ngValue]="null">Categoría</option>
@@ -82,7 +82,7 @@
                 </div>
             </div>
             <div class="row mt-2">
-                <div class="col-12">
+                <div class="col-12 text-center">
                     <button class="btn btn-outline-light btn-sm" type="button" (click)="clearFilters()" title="Limpiar filtros" aria-label="Limpiar filtros">
                         <i class="fas fa-rotate-left"></i>
                     </button>
@@ -133,7 +133,7 @@
 
                 <!-- Toolbar: back to the match list. -->
                 <div class="scout-toolbar">
-                    <button class="btn btn-outline-light btn-floating" title="Volver a Partidos" type="button" (click)="closeScout()">
+                    <button class="btn btn-outline-danger btn-floating" title="Volver a Partidos" type="button" (click)="closeScout()">
                         <i class="fas fa-arrow-left"></i>
                     </button>
                 </div>
@@ -211,10 +211,11 @@
 
         <!-- Team detail view (shared): team players with photos, no match info -->
         <div *ngIf="isTeamSelected">
-            <button class="btn btn-outline-danger btn-floating m-1" title="Volver a Equipos" (click)="closeTeam()" role="button">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <br><br>
+            <div class="scout-toolbar">
+                <button class="btn btn-outline-danger btn-floating" title="Volver a Equipos" (click)="closeTeam()" role="button">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
             <ng-container *ngTemplateOutlet="teamRoster"></ng-container>
         </div>
     </div>

@@ -137,12 +137,17 @@ th {
     }
 }
 
-// Scouting toolbar: back to the match list, above the match card.
+// Toolbar holding a top-left back button, above the match card / roster.
 .scout-toolbar{
     display: flex;
     justify-content: flex-start;
     align-items: center;
     margin-bottom: 0.75rem;
+
+    // Space from the top tabs on large screens.
+    @media (min-width: 768px){
+        margin-top: 1.5rem;
+    }
 }
 
 // Modernized match info card shown while scouting.
