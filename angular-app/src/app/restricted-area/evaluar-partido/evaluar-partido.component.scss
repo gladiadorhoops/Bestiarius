@@ -35,3 +35,298 @@ fieldset {
     background-color: $bg-color2;
     border-color: $bg-color1;
 }
+
+// Team list table — matches "Equipos Registrados" (list-teams).
+table {
+    color: black;
+}
+
+td, th {
+    text-align: left;
+    border: 0px solid #dddddd;
+}
+
+td {
+    color: $text-color2;
+    background-color: $bg-color2;
+    padding: 8px;
+}
+
+tr{
+    border-bottom: 2px solid $header-color2;
+}
+
+th {
+    color: $text-color2;
+    background-color: $header-color2;
+    padding: 8px;
+}
+
+.team-list-table .row{
+    --bs-gutter-x: 0%;
+}
+
+.team-list-table tr{
+    cursor: pointer;
+}
+
+.team-toggle{
+    cursor: pointer;
+}
+
+.team-selected{
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+// Shared tab-bar look — same format whether shown on top or bottom.
+// Sticky (not fixed) so the bar hugs the viewport edge while scrolling
+// but settles within the page instead of overlaying the footer.
+.tab-bar{
+    position: sticky;
+    z-index: 1030;
+    background-color: $bg-color1;
+
+    .bottom-tab{
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.15rem;
+        padding: 0.6rem 0.25rem;
+        color: $bg-color2;
+        text-decoration: none;
+        cursor: pointer;
+
+        i{
+            font-size: 1.35rem;
+        }
+
+        span{
+            font-size: 0.8rem;
+        }
+    }
+
+    .bottom-tab.active{
+        color: $header-color1;
+        font-weight: bold;
+    }
+}
+
+// Top bar: large screens (laptops/tablets).
+.top-tab-bar{
+    top: 0;
+    border-bottom: 2px solid $header-color1;
+}
+
+// Bottom bar: phones. Fixed to the viewport bottom.
+.bottom-tab-bar{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 2px solid $header-color1;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+// Reserve space on phones so the fixed bottom bar never covers page content.
+@media (max-width: 767.98px){
+    .tab-content-panel{
+        padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+    }
+}
+
+// Scouting toolbar: back to the match list, above the match card.
+.scout-toolbar{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+// Modernized match info card shown while scouting.
+.match-card{
+    position: relative;
+    background-color: $bg-color15;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+
+    // Save button pinned to the card's top-right corner.
+    .match-card__save{
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        z-index: 1;
+    }
+
+    // Stacked header: primary title line, then the gym on its own line.
+    .match-card__meta{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        color: $bg-color2;
+        // Clear the top-left badge and top-right save button.
+        padding-top: 1.75rem;
+    }
+
+    .match-card__title{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: center;
+        gap: 0.5rem 0.75rem;
+    }
+
+    // Category tag pinned to the card's top-left corner.
+    .match-badge{
+        position: absolute;
+        top: 0.75rem;
+        left: 0.75rem;
+        z-index: 1;
+        background-color: $header-color1;
+        color: $bg-color1;
+        font-weight: 700;
+        text-transform: capitalize;
+        border-radius: 999px;
+        padding: 0.15rem 0.7rem;
+        font-size: 0.8rem;
+    }
+
+    .match-game{
+        font-weight: 600;
+    }
+
+    .match-time{
+        color: $bg-color2;
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    // Gym is a link — make it obviously clickable.
+    .match-location{
+        color: $header-color1;
+        text-decoration: underline;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+
+    .match-location:hover{
+        color: $header-color1;
+        opacity: 0.8;
+    }
+
+    .match-card__scoreboard{
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .match-team{
+        flex: 1 1 0;
+        max-width: 12rem;
+        text-align: center;
+        border: 1px solid transparent;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .match-team--active{
+        border-color: $header-color1;
+        background-color: rgba(254, 215, 56, 0.12);
+    }
+
+    .match-team__name{
+        color: $bg-color2;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 0.5rem;
+    }
+
+    .match-team--active .match-team__name{
+        color: $header-color1;
+    }
+
+    .match-score{
+        width: 100%;
+        text-align: center;
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background-color: rgba(255, 255, 255, 0.95);
+        color: $bg-color1;
+        font-weight: 700;
+        padding: 0.35rem;
+    }
+
+    .match-score:focus{
+        outline: none;
+        border-color: $header-color1;
+        box-shadow: 0 0 0 0.2rem rgba(254, 215, 56, 0.35);
+    }
+
+    // Read-only score on the landing card: noticeable but clearly not editable.
+    .match-score--static{
+        border-color: transparent;
+        background-color: transparent;
+        color: $bg-color2;
+        font-size: 1.75rem;
+        line-height: 1;
+    }
+
+    .match-vs{
+        align-self: center;
+        color: $header-color1;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+}
+
+// Read-only landing card: team names are not selectable.
+.match-card--readonly{
+    .match-team__name{
+        cursor: default;
+    }
+}
+
+// Scouting team logo: 10% larger than the prior col-3 / col-md-1 sizing,
+// with spacing between the match info card and the logo.
+.scout-team-logo{
+    margin-top: 1.5rem;
+    width: 27.5%;      // was col-3 (25%)
+
+    @media (min-width: 768px){
+        width: 9.17%;  // was col-md-1 (~8.33%)
+    }
+}
+
+// Modern filter bar.
+.filter-bar{
+    background-color: $bg-color15;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.75rem;
+    padding: 1rem;
+
+    // Spacing between the top tabs and the filters on large screens.
+    @media (min-width: 768px){
+        margin-top: 1.5rem;
+    }
+
+    // Single-row selects: the filter name lives in the placeholder option and
+    // disappears once a value is chosen.
+    .form-select{
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background-color: rgba(255, 255, 255, 0.95);
+        color: $bg-color1;
+    }
+
+    .form-select:focus{
+        border-color: $header-color1;
+        box-shadow: 0 0 0 0.2rem rgba(254, 215, 56, 0.35);
+    }
+}

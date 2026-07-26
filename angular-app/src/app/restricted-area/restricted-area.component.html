@@ -22,7 +22,7 @@
                 </div>
 
                 <div *ngIf="registrationYear">
-                    <select #feature (change)="changeFeature(feature.value)">
+                    <select #feature [value]="selectedFeature" (change)="changeFeature(feature.value)" *ngIf="menuItems.length > 0">
                         <option *ngFor="let menuItem of menuItems" value="{{menuItem.value}}">{{menuItem.text}}</option>
                     </select>
                     <br>

@@ -1,74 +1,211 @@
+<!-- Tab links, shared between the top (large screens) and bottom (phones) bars. -->
+<ng-template #tabLinks>
+    <a class="bottom-tab" [class.active]="activeTab === 'partido'" role="button" (click)="selectTab('partido')">
+        <i class="fas fa-basketball-ball"></i>
+        <span>Partido</span>
+    </a>
+    <a class="bottom-tab" [class.active]="activeTab === 'jugador'" role="button" (click)="selectTab('jugador')">
+        <i class="fas fa-user"></i>
+        <span>Jugador</span>
+    </a>
+    <a class="bottom-tab" [class.active]="activeTab === 'equipos'" role="button" (click)="selectTab('equipos')">
+        <i class="fas fa-users"></i>
+        <span>Equipos</span>
+    </a>
+    <a class="bottom-tab" [class.active]="activeTab === 'estadisticas'" role="button" (click)="selectTab('estadisticas')">
+        <i class="fas fa-chart-line"></i>
+        <span>Stats</span>
+    </a>
+</ng-template>
+
+<!-- Top tab bar: large screens (laptops/tablets) only. -->
+<nav class="tab-bar top-tab-bar d-none d-md-flex" *ngIf="!loading">
+    <ng-container *ngTemplateOutlet="tabLinks"></ng-container>
+</nav>
+
 <div class="row justify-content-md-center">
-    
+
     <div class="spinner-border text-light" role="status" *ngIf="loading">
         <span class="sr-only">Loading...</span>
     </div>
-    <div class="row mainpanel" *ngIf="!loading">
-        <div *ngIf="!isTeamSelected">
+    <div class="row mainpanel tab-content-panel" *ngIf="!loading">
 
-            <form [formGroup]="filterForm" *ngIf="!isTeamSelected">
-                <div class="row">
-                    <div class="col col-md-3 col-12">
-                        <div class="row">
-                            <label for="days">Day:</label>
-                        </div>
-                        <div class="row">
-                            <div class="filterPadding">
-                                <select class="col-12" id="days" formControlName="day" (change)="applyFilters()" required>
-                                    <option value={{null}}></option>
-                                    <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col col-md-3 col-12">
-                        <div class="row">
-                            <label for="gyms">Gimnasio</label>
-                        </div>
-                        <div class="row">
-                            <div class="filterPadding">
-                                <select class="col-12" id="gyms" formControlName="gym" (change)="applyFilters()" require>
-                                    <option value={{null}}></option>
-                                    <option *ngFor="let gym of gyms" value="{{gym.id}}">{{gym.name}}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Shared filters (Category + Equipo) — hidden on the statistics tab, which has its own filters -->
+        <form class="filter-bar" [formGroup]="filterForm" *ngIf="!isScouting && !isTeamSelected && activeTab !== 'estadisticas'">
+            <div class="row g-2">
+                <div class="col-6 col-md-2">
+                    <select class="form-select" id="category" formControlName="cat" (change)="applyCategoryFilter()" required>
+                        <option [ngValue]="null">Categoría</option>
+                        <option value="aprendiz">Aprendiz</option>
+                        <option value="elite">Elite</option>
+                    </select>
                 </div>
-            </form>
-
-            <div class="row marcadorItem" *ngFor="let match of filteredMatches" >
-                <div class="col col-12">
-                    <h5>
-                        {{match.juego}} ({{match.category}}) - <a href="https://www.google.com/maps/search/?api=1&query_place_id={{match.location.place_id}}&query={{match.location.address}}">{{match.location.name}}</a>
-                    </h5>
-                    <h6>{{match.time}}</h6>
+                <div class="col-6 col-md-2" *ngIf="activeTab !== 'equipos'">
+                    <select class="form-select" id="teams" formControlName="equipo" (change)="applyFilters()">
+                        <option [ngValue]="null">Equipo</option>
+                        <option *ngFor="let equipo of filteredTeams" value="{{equipo.name}}">{{equipo.name}}</option>
+                    </select>
                 </div>
-                
 
-                <div class="col col-2 col-md-1">
-                    <a class="btn btn-outline-light btn-floating m-1" role="button" (click)="edit(match.homeTeam)">
-                        <i class="fas fa-regular fa-pen"></i>
+                <!-- Evaluar Partido specific filters -->
+                <div class="col-6 col-md-2" *ngIf="activeTab === 'partido'">
+                    <select class="form-select" id="days" formControlName="day" (change)="applyFilters()">
+                        <option [ngValue]="null">Día</option>
+                        <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-2" *ngIf="activeTab === 'partido'">
+                    <select class="form-select" id="gyms" formControlName="gym" (change)="applyFilters()">
+                        <option [ngValue]="null">Gimnasio</option>
+                        <option *ngFor="let gym of gyms" value="{{gym.id}}">{{gym.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <button class="btn btn-outline-light btn-sm" type="button" (click)="clearFilters()" title="Limpiar filtros" aria-label="Limpiar filtros">
+                        <i class="fas fa-rotate-left"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div *ngIf="activeTab === 'partido' && !isTeamSelected">
+        <div class="mt-4" *ngIf="!isScouting">
+
+            <!-- Read-only match card: same layout as the scouting card, but not editable. -->
+            <div class="match-card match-card--readonly mb-3" *ngFor="let match of filteredMatches">
+                <!-- Escautear replaces the save button (top right). -->
+                <button class="btn btn-warning btn-floating match-card__save" title="Escautear" role="button" (click)="scout(match)">
+                    <i class="fas fa-binoculars"></i>
+                </button>
+                <!-- Category tag pinned top-left. -->
+                <span class="match-badge">{{match.category}}</span>
+
+                <div class="match-card__meta">
+                    <!-- Primary line: which game + when. -->
+                    <div class="match-card__title">
+                        <span class="match-game">{{match.juego}}</span>
+                        <span class="match-time"><i class="fas fa-clock"></i>&nbsp;{{match.time}}</span>
+                    </div>
+                    <!-- Secondary line: where (gym) — clickable. -->
+                    <a class="match-location" target="_blank" rel="noopener"
+                       href="https://www.google.com/maps/search/?api=1&query_place_id={{match.location.place_id}}&query={{match.location.address}}">
+                        <i class="fas fa-location-dot"></i>&nbsp;{{match.location.name}}
                     </a>
                 </div>
-                <div class="col col-3 col-md-4">{{match.homeTeam.name}}</div>
-                <div class="col col-2"> X </div>
-                <div class="col col-3 col-md-4">{{match.visitorTeam.name}}</div>
-                <div class="col col-2 col-md-1" > 
-                    <a class="btn btn-outline-light btn-floating m-1" role="button" (click)="edit(match.visitorTeam)">
-                        <i class="fas fa-regular fa-pen"></i>
-                    </a>
-                </div>
 
-                <div class="col col-1"></div>
-                <div class="col col-4">{{match.homePoints}}</div>
-                <div class="col col-2"></div>
-                <div class="col col-4">{{match.visitorPoints}}</div>
-                <div class="col col-1"></div>
+                <div class="match-card__scoreboard">
+                    <div class="match-team">
+                        <div class="match-team__name">{{match.homeTeam.name}}</div>
+                        <div class="match-score match-score--static">{{match.homePoints}}</div>
+                    </div>
+                    <span class="match-vs">×</span>
+                    <div class="match-team">
+                        <div class="match-team__name">{{match.visitorTeam.name}}</div>
+                        <div class="match-score match-score--static">{{match.visitorPoints}}</div>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="row" *ngIf="isScouting">
+            <form [formGroup]="marcadorForm" (ngSubmit)="submitScore()">
+
+                <!-- Toolbar: back to the match list. -->
+                <div class="scout-toolbar">
+                    <button class="btn btn-outline-light btn-floating" title="Volver a Partidos" type="button" (click)="closeScout()">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+
+                <!-- Modernized match info card -->
+                <div class="match-card">
+                    <!-- Save lives inside the card (top right) since it persists this match's info. -->
+                    <button class="btn btn-warning btn-floating match-card__save" title="Guardar" type="submit">
+                        <i class="fas fa-floppy-disk"></i>
+                    </button>
+                    <!-- Category tag pinned top-left, mirroring the save button top-right. -->
+                    <span class="match-badge">{{scoutingMatch.category}}</span>
+
+                    <div class="match-card__meta">
+                        <!-- Primary line: which game + when. -->
+                        <div class="match-card__title">
+                            <span class="match-game">{{scoutingMatch.juego}}</span>
+                            <span class="match-time"><i class="fas fa-clock"></i>&nbsp;{{scoutingMatch.time}}</span>
+                        </div>
+                        <!-- Secondary line: where (gym). -->
+                        <a class="match-location" target="_blank" rel="noopener"
+                           href="https://www.google.com/maps/search/?api=1&query_place_id={{scoutingMatch.location.place_id}}&query={{scoutingMatch.location.address}}">
+                            <i class="fas fa-location-dot"></i>&nbsp;{{scoutingMatch.location.name}}
+                        </a>
+                    </div>
+
+                    <div class="match-card__scoreboard">
+                        <div class="match-team" [class.match-team--active]="editingTeam.id == scoutingMatch.homeTeam.id">
+                            <div class="match-team__name" (click)="selectScoutingTeam(scoutingMatch.homeTeam)">{{scoutingMatch.homeTeam.name}}</div>
+                            <input class="match-score" id="homescore" type="number" formControlName="homeScore" value="{{scoutingMatch.homePoints}}">
+                        </div>
+                        <span class="match-vs">×</span>
+                        <div class="match-team" [class.match-team--active]="editingTeam.id == scoutingMatch.visitorTeam.id">
+                            <div class="match-team__name" (click)="selectScoutingTeam(scoutingMatch.visitorTeam)">{{scoutingMatch.visitorTeam.name}}</div>
+                            <input class="match-score" id="visitorscore" type="number" formControlName="visitorScore" value="{{scoutingMatch.visitorPoints}}">
+                        </div>
+                    </div>
+
+                </div>
+
+            </form>
+
+            <div class="row">
+                <div class="col col-12">
+                    <img [src]="this.editingTeam.imageUrl" class="rounded scout-team-logo">
+                    <h1>{{this.editingTeam.name}}</h1>
+                    <br>
+                    <div class="col col-12">
+                        <button *ngFor="let player of players" class="player-card btn col-6 col-md-2" (click)="evalPlayer(player)">
+                            <img width="100%" [src]="player.imageUrl" class="rounded">
+                            <p>{{player.name}}</p>
+                            <p>Posición: {{player.position}}</p>
+                            <p>Número: {{player.number}}</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div *ngIf="activeTab === 'jugador'">
+            <app-evaluacion *ngIf="filterForm.value.equipo"
+                [ddb]="ddb" [s3]="s3" [category]="evaluacionCategory" [team]="filterForm.value.equipo"></app-evaluacion>
+            <p class="text-center text-light mt-4" *ngIf="!filterForm.value.equipo">
+                <i class="fas fa-arrow-up"></i>&nbsp;Selecciona un equipo para evaluar jugadores.
+            </p>
+        </div>
+
+        <div *ngIf="activeTab === 'equipos' && !isTeamSelected">
+            <div class="scroll-container">
+                <div style="min-width: 400px;">
+                    <table class="row team-list-table">
+                        <tr class="row">
+                            <th class="col col-6">Equipo</th>
+                            <th class="col col-6">Categoria</th>
+                        </tr>
+                        <tr class="row" *ngFor="let team of filteredTeams" [routerLink]="" (click)="edit(team)">
+                            <td class="col col-6"><u>{{team.name}}</u></td>
+                            <td class="col col-6">{{team.category}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="activeTab === 'estadisticas' && !isTeamSelected">
+            <app-resultados-evaluacion [ddb]="ddb"></app-resultados-evaluacion>
+        </div>
+
+        <!-- Team detail view (shared): team players with photos, no match info -->
         <div *ngIf="isTeamSelected">
-            <button class="btn btn-outline-danger btn-floating m-1" title="Volver a Partidos" (click)="closeTeam()" target="_blank" role="button">
+            <button class="btn btn-outline-danger btn-floating m-1" title="Volver a Equipos" (click)="closeTeam()" role="button">
                 <i class="fas fa-arrow-left"></i>
             </button>
             <br><br>
@@ -90,7 +227,12 @@
         </div>
     </div>
 </div>
-    
+
+<!-- Bottom tab bar: phones only. -->
+<nav class="tab-bar bottom-tab-bar d-flex d-md-none" *ngIf="!loading">
+    <ng-container *ngTemplateOutlet="tabLinks"></ng-container>
+</nav>
+
 <!--eval player-->
 <div class="modal"
   tabindex="-1"
