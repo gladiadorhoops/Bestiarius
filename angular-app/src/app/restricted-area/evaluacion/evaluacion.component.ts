@@ -154,6 +154,22 @@ export class EvaluacionComponent implements OnChanges {
     this.openPopup();
   }
 
+  async savePlayerNumber(number: string) {
+    if (!this.selectedPlayer.id) return;
+    try {
+      await this.playerBuilder.updatePlayerNumber(this.ddb, this.selectedPlayer.id, number);
+      this.selectedPlayer.number = number;
+      // Keep the in-memory team list in sync so the filter/list reflects it.
+      const p = this.teamplayers.find(tp => tp.id == this.selectedPlayer.id);
+      if (p) p.number = number;
+      this.submitReportMessage = "Número actualizado";
+    } catch (err) {
+      this.submitReportMessage = `Error guardando número. Contacta a Paco.\n${err}`;
+      console.error("Error updating player number", err);
+    }
+    this.openPopup();
+  }
+
   async loadTeams() {
     this.teams = []
     this.selectedCategoria = this.evaluationForm.value.categoria!

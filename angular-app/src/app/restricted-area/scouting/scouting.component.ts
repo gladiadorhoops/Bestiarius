@@ -190,6 +190,22 @@ export class ScoutingComponent implements OnInit {
     this.openPopup();
   }
 
+  async savePlayerNumber(number: string) {
+    if (!this.selectedPlayer?.id) return;
+    try {
+      await this.playerBuilder.updatePlayerNumber(this.ddb, this.selectedPlayer.id, number);
+      this.selectedPlayer.number = number;
+      // Keep the roster list in sync so the card badge reflects the new number.
+      const p = this.players.find(pl => pl.id == this.selectedPlayer!.id);
+      if (p) p.number = number;
+      this.submitReportMessage = "Número actualizado";
+    } catch (err) {
+      this.submitReportMessage = `Error guardando número. Contacta a Paco.\n${err}`;
+      console.error("Error updating player number", err);
+    }
+    this.openPopup();
+  }
+
   openPopup() {
     this.displayStyle = "block";
   }
@@ -383,7 +399,7 @@ export class ScoutingComponent implements OnInit {
       };
     } else {
       console.error("No data returned from downloadFile");
-      team.imageUrl = "assets/logo.png";
+      team.imageUrl = "assets/logo_gray.png";
     }
   }
 

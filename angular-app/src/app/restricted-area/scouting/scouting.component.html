@@ -28,10 +28,15 @@
             <br>
             <div class="col col-12">
                 <button *ngFor="let player of players" class="player-card btn col-6 col-md-2" (click)="evalPlayer(player)">
-                    <img width="100%" [src]="player.imageUrl" class="rounded">
-                    <p>{{player.name}}</p>
-                    <p>Posición: {{player.position}}</p>
-                    <p>Número: {{player.number}}</p>
+                    <img [src]="player.imageUrl" class="rounded player-card__img">
+                    <p class="player-card__name">
+                        <span class="player-card__number">#{{player.number}}</span>
+                        {{player.name | slice:0:15}}{{player.name.length > 15 ? '…' : ''}}
+                    </p>
+                    <p class="player-card__positions">
+                        <i class="fas fa-basketball-ball"></i>
+                        <span class="player-card__pos" *ngFor="let pos of player.position.split(',')">{{pos.trim()}}</span>
+                    </p>
                 </button>
             </div>
         </div>
@@ -210,7 +215,7 @@
         </div>
 
         <!-- Team detail view (shared): team players with photos, no match info -->
-        <div *ngIf="isTeamSelected">
+        <div *ngIf="isTeamSelected" class="team-roster--equipos">
             <div class="scout-toolbar">
                 <button class="btn btn-outline-danger btn-floating" title="Volver a Equipos" (click)="closeTeam()" role="button">
                     <i class="fas fa-arrow-left"></i>
@@ -261,7 +266,12 @@
                         <label class="frow" for="position">Posicion Registrada:&nbsp;</label>
                         <input class="frow" disabled id="position" type="text" value="{{selectedPlayer!.position}}">
                         <label class="frow" for="numero">Número:&nbsp;</label>
-                        <input class="frow" disabled id="numero" type="number" value="{{selectedPlayer!.number}}">
+                        <div class="frow" style="display: flex; gap: 0.5rem; align-items: center;">
+                          <input #numeroInput id="numero" type="number" [value]="selectedPlayer!.number" [disabled]="!selectedPlayer!.id">
+                          <button type="button" class="btn btn-sm btn-warning" [disabled]="!selectedPlayer!.id" (click)="savePlayerNumber(numeroInput.value)" title="Guardar número">
+                            <i class="fas fa-floppy-disk"></i>
+                          </button>
+                        </div>
                     </div>
                     </div>
                 </div>
