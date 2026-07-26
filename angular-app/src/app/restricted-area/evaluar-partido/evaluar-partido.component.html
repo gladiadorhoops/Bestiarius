@@ -18,6 +18,26 @@
     </a>
 </ng-template>
 
+<!-- Team roster (shared): team logo/name + player cards with photos.
+     Used by both the scouting page and the Equipos team-detail view. -->
+<ng-template #teamRoster>
+    <div class="row">
+        <div class="col col-12">
+            <img [src]="this.editingTeam.imageUrl" class="rounded scout-team-logo">
+            <h1>{{this.editingTeam.name}}</h1>
+            <br>
+            <div class="col col-12">
+                <button *ngFor="let player of players" class="player-card btn col-6 col-md-2" (click)="evalPlayer(player)">
+                    <img width="100%" [src]="player.imageUrl" class="rounded">
+                    <p>{{player.name}}</p>
+                    <p>Posición: {{player.position}}</p>
+                    <p>Número: {{player.number}}</p>
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
 <!-- Top tab bar: large screens (laptops/tablets) only. -->
 <nav class="tab-bar top-tab-bar d-none d-md-flex" *ngIf="!loading">
     <ng-container *ngTemplateOutlet="tabLinks"></ng-container>
@@ -156,21 +176,7 @@
 
             </form>
 
-            <div class="row">
-                <div class="col col-12">
-                    <img [src]="this.editingTeam.imageUrl" class="rounded scout-team-logo">
-                    <h1>{{this.editingTeam.name}}</h1>
-                    <br>
-                    <div class="col col-12">
-                        <button *ngFor="let player of players" class="player-card btn col-6 col-md-2" (click)="evalPlayer(player)">
-                            <img width="100%" [src]="player.imageUrl" class="rounded">
-                            <p>{{player.name}}</p>
-                            <p>Posición: {{player.position}}</p>
-                            <p>Número: {{player.number}}</p>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <ng-container *ngTemplateOutlet="teamRoster"></ng-container>
         </div>
         </div>
 
@@ -209,21 +215,7 @@
                 <i class="fas fa-arrow-left"></i>
             </button>
             <br><br>
-            <div class="row">
-                <div class="col col-12">
-                    <img [src]="this.editingTeam.imageUrl" class="rounded col-6 col-md-2">
-                    <h1>{{this.editingTeam.name}}</h1>
-                    <br>
-                    <div class="col col-12">
-                        <button *ngFor="let player of players" class="player-card btn col-6 col-md-2" (click)="evalPlayer(player)">
-                            <img width="100%" [src]="player.imageUrl" class="rounded">
-                            <p>{{player.name}}</p>
-                            <p>Posición: {{player.position}}</p>
-                            <p>Número: {{player.number}}</p>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <ng-container *ngTemplateOutlet="teamRoster"></ng-container>
         </div>
     </div>
 </div>
