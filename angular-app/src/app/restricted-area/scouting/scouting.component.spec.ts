@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EvaluarPartidoComponent } from './evaluar-partido.component';
+import { ScoutingComponent } from './scouting.component';
 
-describe('EvaluarPartidoComponent', () => {
-  let component: EvaluarPartidoComponent;
-  let fixture: ComponentFixture<EvaluarPartidoComponent>;
+describe('ScoutingComponent', () => {
+  let component: ScoutingComponent;
+  let fixture: ComponentFixture<ScoutingComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EvaluarPartidoComponent ]
+      declarations: [ ScoutingComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EvaluarPartidoComponent);
+    fixture = TestBed.createComponent(ScoutingComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

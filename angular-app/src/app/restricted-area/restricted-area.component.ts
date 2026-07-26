@@ -38,7 +38,7 @@ export class RestrictedAreaComponent {
     resultadosView: boolean = false;
     matchGenView = false;
     matchEditView = false;
-    evaluarPartidoView = false;
+    scoutingView = false;
     addTeamView = false;
     addGymView = false;
     viewUsersView = false;
@@ -145,7 +145,7 @@ export class RestrictedAreaComponent {
           {value: "addGym", text: "Add Gym"},
           {value: "addMatch", text: "Add Match"},
           {value: "editMatch", text: "Edit Match"},
-          {value: "evaluarPartido", text: "Scouting"},
+          {value: "scouting", text: "Scouting"},
           {value: "listPlayers", text: "Jugadores Registrados"},
           {value: "viewUsers", text: "Usuarios Registrados"}
         ]);
@@ -174,7 +174,7 @@ export class RestrictedAreaComponent {
       console.log("Reloaded");
 
       // Scouts (including admins) land on Evaluar Partido by default.
-      let landingFeature = this.isScout ? "evaluarPartido" : this.menuItems[0].value;
+      let landingFeature = this.isScout ? "scouting" : this.menuItems[0].value;
       this.changeFeature(landingFeature);
     }
 
@@ -192,8 +192,8 @@ export class RestrictedAreaComponent {
            this.showEvaluacion()
            break; 
         } 
-        case 'evaluarPartido':{
-          this.showEvPart()
+        case 'scouting':{
+          this.showScouting()
           break;
         }
         case 'marcadores': { 
@@ -251,7 +251,7 @@ export class RestrictedAreaComponent {
     this.viewTeamsView = false;
     this.listTeamsView = false;
     this.listPlayersView = false;
-    this.evaluarPartidoView = false;
+    this.scoutingView = false;
   }
 
   showEvaluacion() {
@@ -262,9 +262,9 @@ export class RestrictedAreaComponent {
     this.hideAll();
     this.marcadoresView = true;
   }
-  showEvPart(){
+  showScouting(){
     this.hideAll();
-    this.evaluarPartidoView = true;
+    this.scoutingView = true;
   }
   showResultados() {
     this.hideAll();
