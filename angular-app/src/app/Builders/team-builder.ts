@@ -207,12 +207,12 @@ export class TeamBuilder {
         await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
     }
 
-    static getLogoFilePath(team: Team): string {
-        return `team-logos/${team.id}`;
+    static getLogoFilePath(teamId: string): string {
+        return `team-logos/${teamId}`;
     }
 
     async uploadTeamLogo(ddb: DynamoDb, s3: S3, team: Team, logoFile: Buffer | Uint8Array): Promise<void> {
-        let logoPath = TeamBuilder.getLogoFilePath(team);
+        let logoPath = TeamBuilder.getLogoFilePath(team.id);
         await s3.uploadFile(logoPath, logoFile, team.imageType!);
         await this.updateTeamLogoType(ddb, team.id, team.imageType!);
     }

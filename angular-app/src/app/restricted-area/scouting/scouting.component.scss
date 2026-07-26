@@ -125,6 +125,15 @@ th {
     --bs-gutter-x: 0%;
 }
 
+// Small team logo shown before the team name in the Equipos list.
+.team-list-logo{
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
+
 .team-list-table tr{
     cursor: pointer;
 }

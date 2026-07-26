@@ -1,30 +1,111 @@
 @import "colors";
 
-table {
-    color: black;
-}
-
-td, th {
-    text-align: left;
-    border: 0px solid #dddddd;
-}
-
-td {
-    color: $text-color2;
-    background-color: $bg-color2;
-    padding: 8px;
-}
-
-tr{
-    border-bottom: 2px solid $header-color2;
-}
-
-th {
-    color: $text-color2;
-    background-color: $header-color2;
-    padding: 8px;
-}
-
 .row{
     --bs-gutter-x: 0%;
+}
+
+// Team attributes shown as a clean info card instead of a bordered table.
+.info-card{
+    background-color: $bg-color15;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.75rem;
+    padding: 0.5rem 1.25rem;
+    margin-bottom: 0.5rem;
+
+    .info-item{
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.6rem 0;
+
+        &:not(:last-child){
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    .info-label{
+        flex: 0 0 8rem;
+        color: $bg-color2;
+        opacity: 0.7;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .info-value{
+        color: $bg-color2;
+        font-weight: 600;
+    }
+}
+
+// Small yellow capsule for short values like the category.
+.badge-pill{
+    display: inline-block;
+    background-color: $header-color1;
+    color: $bg-color1;
+    border-radius: 999px;
+    padding: 0.1rem 0.7rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    font-size: 0.85rem;
+}
+
+// Modern roster table: rounded, borderless, hover-highlighted rows.
+.modern-table{
+    color: $bg-color1;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    th{
+        text-align: left;
+        color: $bg-color1;
+        background-color: $header-color1;
+        padding: 0.6rem 0.75rem;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    td{
+        text-align: left;
+        color: $bg-color1;
+        background-color: $bg-color2;
+        padding: 0.6rem 0.75rem;
+        vertical-align: middle;
+    }
+
+    tr{
+        border-bottom: 1px solid rgba(72, 71, 71, 0.12);
+    }
+
+    // Rounded outer corners on the header and last row.
+    tr:first-child th:first-child{ border-top-left-radius: 0.6rem; }
+    tr:first-child th:last-child{ border-top-right-radius: 0.6rem; }
+    tr:last-child td:first-child{ border-bottom-left-radius: 0.6rem; }
+    tr:last-child td:last-child{ border-bottom-right-radius: 0.6rem; }
+
+    .player-row{
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+
+        td{ transition: background-color 0.15s ease; }
+
+        &:hover td{
+            background-color: darken($bg-color2, 6%);
+        }
+    }
+}
+
+// Captain marker as a subtle pill next to the player name.
+.captain-badge{
+    display: inline-block;
+    margin-left: 0.4rem;
+    background-color: $header-color1;
+    color: $bg-color1;
+    border-radius: 999px;
+    padding: 0 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    i{ font-size: 0.7rem; }
 }

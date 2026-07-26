@@ -151,9 +151,10 @@ export class RestrictedAreaComponent {
         ]);
       }
       if(this.isCoach){
+        // "Registrar Equipo" is reached via the "+" button in Equipos
+        // Registrados, so it's no longer a standalone menu entry.
         this.menuItems = this.menuItems.concat([
           {value: "listTeams", text: "Equipos Registrados"},
-          {value: "addTeam", text: "Registrar Equipo"},          
         ]);
       }
 

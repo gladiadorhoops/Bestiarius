@@ -7,6 +7,12 @@
     <span class="sr-only">Loading...</span>
 </div>
 <div class="mainpanel" *ngIf="!loading">
+    <!-- Register a new team: sits above the list since it's the primary action. -->
+    <div class="d-flex justify-content-end mb-3" *ngIf="editable">
+        <button type="button" (click)="callParentToAddTeam()" class="btn btn-dark btn-floating" title="Registrar Nuevo Equipo" aria-label="Registrar Nuevo Equipo">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
     <div class="scroll-container">
       <div style="min-width: 1000px;">
     <table class="row">
@@ -18,7 +24,7 @@
             <th class="col col-2 groupLast">Pago</th>
         </tr>
         <tr class="row" *ngFor="let team of teams" [routerLink]="" (click)="viewTeam(team.id)">
-            <td [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-4': userrole === 'coach'}"><u>{{team.name}}</u></td>
+            <td [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-4': userrole === 'coach'}"><img [src]="teamLogo(team.id)" class="team-list-logo"><u>{{team.name}}</u></td>
             <td class="col col-2">{{team.category}}</td>
             <td [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-4': userrole === 'coach'}">{{team.location}}</td>
             <td *ngIf="userrole != 'coach'" class="col col-2">{{coaches.get(team.coachId)?.name}}</td>
@@ -32,10 +38,6 @@
     </table>
       </div>
       </div>
-    <br>
-    <div class="frow" >
-        <button *ngIf="editable" type="button" (click)="callParentToAddTeam()" class="btn btn-dark">Registrar Nuevo Equipo</button>
-    </div>
     <br>
     <div *ngIf="pastTeams.length>0">
         <h3 class="mb-3">

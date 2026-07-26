@@ -138,7 +138,7 @@ export class ViewTeamsComponent {
     this.loading = false;
 
     if (this.team!.imageType){
-      await this.s3.downloadFile(TeamBuilder.getLogoFilePath(this.team!)).then((data) => {
+      await this.s3.downloadFile(TeamBuilder.getLogoFilePath(this.team!.id)).then((data) => {
         console.log("Downloaded data:", data);
         if (data) {
          let blob = new Blob([data], { type: this.team!.imageType });

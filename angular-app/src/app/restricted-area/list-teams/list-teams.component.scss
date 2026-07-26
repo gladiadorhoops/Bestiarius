@@ -28,3 +28,12 @@ th {
 .row{
     --bs-gutter-x: 0%;
 }
+
+// Small team logo shown before the team name in the list.
+.team-list-logo{
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+}
