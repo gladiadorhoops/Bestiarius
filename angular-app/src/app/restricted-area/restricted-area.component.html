@@ -22,12 +22,15 @@
                 </div>
 
                 <div *ngIf="registrationYear">
-                    <select #feature [value]="selectedFeature" (change)="changeFeature(feature.value)" *ngIf="menuItems.length > 0">
+                    <!-- Only show the navigation dropdown when there's more than
+                         one destination. Coaches have a single view (Equipos
+                         Registrados), so no dropdown is rendered for them. -->
+                    <select #feature [value]="selectedFeature" (change)="changeFeature(feature.value)" *ngIf="menuItems.length > 1">
                         <option *ngFor="let menuItem of menuItems" value="{{menuItem.value}}">{{menuItem.text}}</option>
                     </select>
-                    <br>
-                    <br>
-                    <br>
+                    <br *ngIf="menuItems.length > 1">
+                    <br *ngIf="menuItems.length > 1">
+                    <br *ngIf="menuItems.length > 1">
 
                     <div class="spinner-border text-light" role="status" *ngIf="loading">
                         <span class="sr-only">Loading...</span>

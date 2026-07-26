@@ -202,7 +202,7 @@
                             <th class="col col-6">Categoria</th>
                         </tr>
                         <tr class="row" *ngFor="let team of filteredTeams" [routerLink]="" (click)="edit(team)">
-                            <td class="col col-6"><u>{{team.name}}</u></td>
+                            <td class="col col-6"><img [src]="teamLogo(team.id)" class="team-list-logo"><u>{{team.name}}</u></td>
                             <td class="col col-6">{{team.category}}</td>
                         </tr>
                     </table>

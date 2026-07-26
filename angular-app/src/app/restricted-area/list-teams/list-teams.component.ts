@@ -62,6 +62,8 @@ export class ListTeamsComponent {
     userrole = "";
     selectedRenewalTeam: Team | undefined
     renewalPlayers: Player[] | undefined
+    // Team logo URLs keyed by team id (falls back to the gray default logo).
+    teamLogos: Map<string, string | ArrayBuffer | null | undefined> = new Map();
 
     reloadLoginStatus() {
       this.userrole = this.authService.getUserRole();
@@ -125,10 +127,36 @@ export class ListTeamsComponent {
       this.teams = this.teams.filter(t => t.year === TOURNAMENT_YEAR)
       this.sortTeamsByCategory()
       let coachesList:Coach[] = await this.userBuilder.getCoaches(this.ddb);
-  
+
       coachesList.forEach(coach => {
         this.coaches.set(coach.id, coach);
       });
+
+      this.loadTeamLogos();
+    }
+
+    // Load each current team's logo from S3 into the teamLogos map so the list
+    // can show a small logo before the team name.
+    loadTeamLogos(){
+      this.teams.forEach(team => {
+        if (!this.teamLogos.has(team.id)) {
+          this.teamLogos.set(team.id, "assets/logo_gray.png");
+        }
+        if (team.imageType) {
+          this.s3.downloadFile(TeamBuilder.getLogoFilePath(team.id)).then(data => {
+            if (data) {
+              const blob = new Blob([data], { type: team.imageType });
+              const reader = new FileReader();
+              reader.readAsDataURL(blob);
+              reader.onload = () => this.teamLogos.set(team.id, reader.result);
+            }
+          });
+        }
+      });
+    }
+
+    teamLogo(teamId: string): string | ArrayBuffer | null | undefined {
+      return this.teamLogos.get(teamId) ?? "assets/logo_gray.png";
     }
 
     async ngOnInit() {

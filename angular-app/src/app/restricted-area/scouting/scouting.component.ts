@@ -41,6 +41,8 @@ export class ScoutingComponent implements OnInit {
   equipos : Team[] = [];
   filteredMatches: Match[] = [];
   filteredTeams: Team[] = [];
+  // Team logo URLs keyed by team id (falls back to the gray default logo).
+  teamLogos: Map<string, string | ArrayBuffer | null | undefined> = new Map();
 
   activeTab: 'partido' | 'jugador' | 'equipos' | 'estadisticas' = 'partido';
   isTeamSelected: boolean = false;
@@ -131,7 +133,32 @@ export class ScoutingComponent implements OnInit {
     this.filteredMatches = this.allMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!));
     this.filteredTeams = this.equipos;
     this.applyCategoryFilter();
+    this.loadTeamLogos();
     this.loading = false;
+  }
+
+  // Load each team's logo from S3 into the teamLogos map so the Equipos list
+  // can show a small logo before the team name.
+  loadTeamLogos(){
+    this.equipos.forEach(team => {
+      if (!this.teamLogos.has(team.id)) {
+        this.teamLogos.set(team.id, "assets/logo_gray.png");
+      }
+      if (team.imageType) {
+        this.s3.downloadFile(TeamBuilder.getLogoFilePath(team.id)).then(data => {
+          if (data) {
+            const blob = new Blob([data], { type: team.imageType });
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onload = () => this.teamLogos.set(team.id, reader.result);
+          }
+        });
+      }
+    });
+  }
+
+  teamLogo(teamId: string): string | ArrayBuffer | null | undefined {
+    return this.teamLogos.get(teamId) ?? "assets/logo_gray.png";
   }
 
   applyCategoryFilter() {
@@ -386,11 +413,13 @@ export class ScoutingComponent implements OnInit {
   }
 
   async getTeamImgAsBuffer(team: MatchTeamWithPhoto){
-    let data = await this.s3.downloadFile(team.id)
+    // Team logos live under the team-logos/ prefix (same key as list-teams and
+    // view-teams), not images/{id}. Using the logo path also shares the S3 cache.
+    let data = await this.s3.downloadFile(TeamBuilder.getLogoFilePath(team.id))
     console.log("Downloaded data:", data);
 
     if (data) {
-      let blob = new Blob([data], { type: "image/jpeg" });
+      let blob = new Blob([data], { type: team.imageType ?? "image/jpeg" });
         // display blob as img
       const reader2 = new FileReader();
       reader2.readAsDataURL(blob);
