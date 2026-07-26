@@ -8,83 +8,72 @@
 </div>
 <div class="mainpanel" *ngIf="!loading">
 
-    <!--Filters-->
-    <div class="accordion accordion-flush mb-3" id="filtersAccordion">
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
-            Filtros
-          </button>
-        </h2>
-        <div id="filtersCollapse" class="accordion-collapse collapse" data-bs-parent="#filtersAccordion">
-          <div class="accordion-body">
-            <div class="row">
-              <div class="col col-12 col-md-6 col-lg-4 mb-2">
-                <label class="frow" for="filterName">Nombre:&nbsp;</label>
-                <input id="filterName" type="text" class="form-control" autocomplete="off"
-                       [value]="filterName" (input)="filterName = $any($event.target).value">
-              </div>
-              <div class="col col-12 col-md-6 col-lg-4 mb-2">
-                <label class="frow" for="filterCurp">CURP:&nbsp;</label>
-                <input id="filterCurp" type="text" class="form-control" autocomplete="off"
-                       [value]="filterCurp" (input)="filterCurp = $any($event.target).value">
-              </div>
-              <div class="col col-12 col-md-6 col-lg-4 mb-2">
-                <label class="frow" for="filterTeam">Equipo:&nbsp;</label>
-                <select id="filterTeam" class="form-control"
-                        [value]="filterTeam" (change)="filterTeam = $any($event.target).value">
-                  <option value="">Todos</option>
-                  <option *ngFor="let team of teams" value="{{team.id}}">{{team.name}}</option>
-                </select>
-              </div>
-              <div class="col col-12 mb-2">
-                <label class="frow">Posiciones:&nbsp;</label>
-                <label *ngFor="let pos of positions" style="margin-right: 12px;">
-                  <input type="checkbox" [checked]="filterPositions[pos]" (change)="toggleFilterPosition(pos)">&nbsp;{{pos}}
-                </label>
-              </div>
-              <div class="col col-12 col-md-6 col-lg-4 mb-2">
-                <label class="frow">Altura (cm):&nbsp;</label>
-                <div class="frow">
-                  <input type="number" class="form-control" placeholder="Min" style="max-width: 90px;"
-                         [value]="filterHeightMin" (input)="filterHeightMin = $any($event.target).value">
-                  &nbsp;-&nbsp;
-                  <input type="number" class="form-control" placeholder="Max" style="max-width: 90px;"
-                         [value]="filterHeightMax" (input)="filterHeightMax = $any($event.target).value">
-                </div>
-              </div>
-              <div class="col col-12 col-md-6 col-lg-4 mb-2">
-                <label class="frow">Peso (kg):&nbsp;</label>
-                <div class="frow">
-                  <input type="number" class="form-control" placeholder="Min" style="max-width: 90px;"
-                         [value]="filterWeightMin" (input)="filterWeightMin = $any($event.target).value">
-                  &nbsp;-&nbsp;
-                  <input type="number" class="form-control" placeholder="Max" style="max-width: 90px;"
-                         [value]="filterWeightMax" (input)="filterWeightMax = $any($event.target).value">
-                </div>
-              </div>
-              <div class="col col-12 col-md-6 col-lg-4 mb-2">
-                <label class="frow">Año de Nacimiento:&nbsp;</label>
-                <div class="frow">
-                  <input type="number" class="form-control" placeholder="Min" style="max-width: 90px;"
-                         [value]="filterYearMin" (input)="filterYearMin = $any($event.target).value">
-                  &nbsp;-&nbsp;
-                  <input type="number" class="form-control" placeholder="Max" style="max-width: 90px;"
-                         [value]="filterYearMax" (input)="filterYearMax = $any($event.target).value">
-                </div>
-              </div>
-              <div class="col col-12">
-                <button type="button" class="btn btn-outline-dark btn-sm" (click)="clearFilters()">Limpiar Filtros</button>
-              </div>
-            </div>
+    <!-- Filters: compact placeholder style, matching the Scouting filter bar. -->
+    <form class="filter-bar mb-3">
+      <div class="row g-2 justify-content-center">
+        <div class="col-6 col-md-3 col-lg-2">
+          <input id="filterName" type="text" class="form-control" placeholder="Nombre" autocomplete="off"
+                 [value]="filterName" (input)="filterName = $any($event.target).value">
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <input id="filterCurp" type="text" class="form-control" placeholder="CURP" autocomplete="off"
+                 [value]="filterCurp" (input)="filterCurp = $any($event.target).value">
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <select id="filterTeam" class="form-select"
+                  [value]="filterTeam" (change)="filterTeam = $any($event.target).value">
+            <option value="">Equipo</option>
+            <option *ngFor="let team of teams" value="{{team.id}}">{{team.name}}</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="d-flex align-items-center">
+            <input type="number" class="form-control" placeholder="Alt. min"
+                   [value]="filterHeightMin" (input)="filterHeightMin = $any($event.target).value">
+            <span class="mx-1 text-light">-</span>
+            <input type="number" class="form-control" placeholder="Alt. max"
+                   [value]="filterHeightMax" (input)="filterHeightMax = $any($event.target).value">
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="d-flex align-items-center">
+            <input type="number" class="form-control" placeholder="Peso min"
+                   [value]="filterWeightMin" (input)="filterWeightMin = $any($event.target).value">
+            <span class="mx-1 text-light">-</span>
+            <input type="number" class="form-control" placeholder="Peso max"
+                   [value]="filterWeightMax" (input)="filterWeightMax = $any($event.target).value">
+          </div>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="d-flex align-items-center">
+            <input type="number" class="form-control" placeholder="Año min"
+                   [value]="filterYearMin" (input)="filterYearMin = $any($event.target).value">
+            <span class="mx-1 text-light">-</span>
+            <input type="number" class="form-control" placeholder="Año max"
+                   [value]="filterYearMax" (input)="filterYearMax = $any($event.target).value">
           </div>
         </div>
       </div>
-    </div>
+      <div class="row g-2 mt-1 justify-content-center">
+        <div class="col-12 col-lg-auto text-center text-light">
+          <span class="me-2">Posiciones:</span>
+          <label *ngFor="let pos of positions" class="me-2">
+            <input type="checkbox" [checked]="filterPositions[pos]" (change)="toggleFilterPosition(pos)">&nbsp;{{pos}}
+          </label>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-12 text-center">
+          <button class="btn btn-outline-light btn-sm" type="button" (click)="clearFilters()" title="Limpiar filtros" aria-label="Limpiar filtros">
+            <i class="fas fa-rotate-left"></i>
+          </button>
+        </div>
+      </div>
+    </form>
 
     <div class="scroll-container">
         <div style="min-width: 600px;">
-            <table class="row">
+            <table class="row modern-table">
                 <tr class="row">
                     <th class="col col-1">#</th>
                     <th class="col col-3"> <a [routerLink]="" (click)="sortBy('name')">Jugador{{sortIndicator('name')}}</a></th>
@@ -93,7 +82,7 @@
                     <th class="col col-2"> <a [routerLink]="" (click)="sortBy('height')">Altura{{sortIndicator('height')}}</a></th>
                     <th class="col col-2"> <a [routerLink]="" (click)="sortBy('weight')">Peso{{sortIndicator('weight')}}</a></th>
                 </tr>
-                <tr class="row" *ngFor="let player of filteredPlayers" [routerLink]="" (click)="showPlayer(player)" >
+                <tr class="row player-row" *ngFor="let player of filteredPlayers" [routerLink]="" (click)="showPlayer(player)" >
                     <td class="col col-1">{{player.number}}</td>
                     <td class="col col-3">{{player.name}}</td>
                     <td class="col col-2">{{uTeams.get(player.team)}}</td>

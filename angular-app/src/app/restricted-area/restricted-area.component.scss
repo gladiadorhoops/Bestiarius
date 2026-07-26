@@ -1,0 +1,21 @@
+@import "colors";
+
+// Navigation dropdown styled like the modern filter selects: rounded, subtle
+// border, light background, and a yellow focus glow. Constrained width so it
+// doesn't stretch the full page like a form field.
+.modern-select{
+    display: inline-block;
+    width: auto;
+    min-width: 16rem;
+    max-width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background-color: rgba(255, 255, 255, 0.95);
+    color: $bg-color1;
+    font-weight: 600;
+
+    &:focus{
+        border-color: $header-color1;
+        box-shadow: 0 0 0 0.2rem rgba(254, 215, 56, 0.35);
+    }
+}

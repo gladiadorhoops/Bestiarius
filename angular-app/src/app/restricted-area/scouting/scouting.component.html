@@ -196,12 +196,12 @@
         <div *ngIf="activeTab === 'equipos' && !isTeamSelected">
             <div class="scroll-container">
                 <div style="min-width: 400px;">
-                    <table class="row team-list-table">
+                    <table class="row team-list-table modern-table">
                         <tr class="row">
                             <th class="col col-6">Equipo</th>
                             <th class="col col-6">Categoria</th>
                         </tr>
-                        <tr class="row" *ngFor="let team of filteredTeams" [routerLink]="" (click)="edit(team)">
+                        <tr class="row player-row" *ngFor="let team of filteredTeams" [routerLink]="" (click)="edit(team)">
                             <td class="col col-6"><img [src]="teamLogo(team.id)" class="team-list-logo"><u>{{team.name}}</u></td>
                             <td class="col col-6">{{team.category}}</td>
                         </tr>

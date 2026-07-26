@@ -6,128 +6,117 @@
         <span class="sr-only">Loading...</span>
     </div>
     <div class="row mainpanel" *ngIf="!loading">
-        <div *ngIf="!isEditing">
+        <div *ngIf="!isEditing" class="w-100">
 
-            <form [formGroup]="filterForm">
-                <div class="row">
-                    <div class="col col-md-3 col-12">
-                        <div class="row">
-                            <label for="category">Category:</label>
-                        </div>
-                        <div class="row">
-                            <div class="filterPadding">
-                                <select class="col-12" id="category" formControlName="cat" (change)="applyCategoryFilter()" required>
-                                    <option value={{null}}></option>
-                                    <option value="aprendiz">Aprendiz</option>
-                                    <option value="elite">Elite</option>
-                                </select>
-                            </div>
-                        </div>
+            <!-- Filters: compact placeholder style, matching the Scouting filter bar. -->
+            <form class="filter-bar mb-3" [formGroup]="filterForm">
+                <div class="row g-2 justify-content-center">
+                    <div class="col-6 col-md-2">
+                        <select class="form-select" id="category" formControlName="cat" (change)="applyCategoryFilter()" required>
+                            <option [ngValue]="null">Categoría</option>
+                            <option value="aprendiz">Aprendiz</option>
+                            <option value="elite">Elite</option>
+                        </select>
                     </div>
-                    <div class="col col-md-3 col-12">
-                        <div class="row">
-                            <label for="days">Day:</label>
-                        </div>
-                        <div class="row">
-                            <div class="filterPadding">
-                                <select class="col-12" id="days" formControlName="day" (change)="applyFilters()" required>
-                                    <option value={{null}}></option>
-                                    <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="col-6 col-md-2">
+                        <select class="form-select" id="days" formControlName="day" (change)="applyFilters()" required>
+                            <option [ngValue]="null">Día</option>
+                            <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
+                        </select>
                     </div>
-                    <div class="col col-md-3 col-12">
-                        <div class="row">
-                            <label for="gyms">Gimnasio</label>
-                        </div>
-                        <div class="row">
-                            <div class="filterPadding">
-                                <select class="col-12" id="gyms" formControlName="gym" (change)="applyFilters()" require>
-                                    <option value={{null}}></option>
-                                    <option *ngFor="let gym of gyms" value="{{gym.id}}">{{gym.name}}</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="col-6 col-md-2">
+                        <select class="form-select" id="gyms" formControlName="gym" (change)="applyFilters()">
+                            <option [ngValue]="null">Gimnasio</option>
+                            <option *ngFor="let gym of gyms" value="{{gym.id}}">{{gym.name}}</option>
+                        </select>
                     </div>
-                    <div class="col col-md-3 col-12">
-                        <div class="row">
-                            <label for="teams">Equipo</label>
-                        </div>
-                        <div class="row">
-                            <div class="filterPadding">
-                                <select class="col-12" id="teams" formControlName="equipo" (change)="applyFilters()" require>
-                                    <option value={{null}}></option>
-                                    <option *ngFor="let equipo of filteredTeams" value="{{equipo.name}}">{{equipo.name}}</option>
-                                </select>
-                            </div>
-                        </div>
+                    <div class="col-6 col-md-2">
+                        <select class="form-select" id="teams" formControlName="equipo" (change)="applyFilters()">
+                            <option [ngValue]="null">Equipo</option>
+                            <option *ngFor="let equipo of filteredTeams" value="{{equipo.name}}">{{equipo.name}}</option>
+                        </select>
                     </div>
                 </div>
             </form>
 
-            <div  style="text-align: center" class="row marcadorItem" *ngFor="let match of filteredMatches" >
-                <div class="col col-12">
-                    <h5>
-                        {{match.juego}} - <a href="https://www.google.com/maps/search/?api=1&query_place_id={{match.location.place_id}}&query={{match.location.address}}">{{match.location.name}}</a>
-                    </h5>
-                    <h6>{{match.time}}</h6>
-                </div>
-                
+            <!-- Read-only match cards: same layout as the scouting landing card,
+                 with an edit button (top-right) instead of the scout action. -->
+            <div class="match-card match-card--readonly mb-3" *ngFor="let match of filteredMatches">
+                <button class="btn btn-warning btn-floating match-card__save" title="Editar Partido" role="button" (click)="edit(match)">
+                    <i class="fas fa-pen"></i>
+                </button>
+                <span class="match-badge">{{match.category}}</span>
 
-                <div class="col col-1"></div>
-                <div class="col col-4">{{match.homeTeam.name}}</div>
-                <div class="col col-2"> X </div>
-                <div class="col col-4">{{match.visitorTeam.name}}</div>
-                <div class="col col-1" > 
-                    <a class="btn btn-outline-light btn-floating m-1" role="button" (click)="edit(match)">
-                        <i class="fas fa-regular fa-pen"></i>
+                <div class="match-card__meta">
+                    <div class="match-card__title">
+                        <span class="match-game">{{match.juego}}</span>
+                        <span class="match-time"><i class="fas fa-clock"></i>&nbsp;{{match.time}}</span>
+                    </div>
+                    <a class="match-location" target="_blank" rel="noopener"
+                       href="https://www.google.com/maps/search/?api=1&query_place_id={{match.location.place_id}}&query={{match.location.address}}">
+                        <i class="fas fa-location-dot"></i>&nbsp;{{match.location.name}}
                     </a>
                 </div>
 
-                <div class="col col-1"></div>
-                <div class="col col-4">{{match.homePoints}}</div>
-                <div class="col col-2"></div>
-                <div class="col col-4">{{match.visitorPoints}}</div>
-                <div class="col col-1"></div>
+                <div class="match-card__scoreboard">
+                    <div class="match-team">
+                        <div class="match-team__name">{{match.homeTeam.name}}</div>
+                        <div class="match-score match-score--static">{{match.homePoints}}</div>
+                    </div>
+                    <span class="match-vs">×</span>
+                    <div class="match-team">
+                        <div class="match-team__name">{{match.visitorTeam.name}}</div>
+                        <div class="match-score match-score--static">{{match.visitorPoints}}</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row" *ngIf="isEditing">
+
+        <div class="w-100" *ngIf="isEditing">
             <form [formGroup]="marcadorForm" (ngSubmit)="onSubmit()">
 
-                <div class="row marcadorItem text-center" >
-                    <div class="col col-12">
-                        <h5>
-                            {{editingMatch.juego}} - <a href="https://www.google.com/maps/search/?api=1&query_place_id={{editingMatch.location.place_id}}&query={{editingMatch.location.address}}">{{editingMatch.location.name}}</a>
-                        </h5>
-                        <h6>{{editingMatch.time}}</h6>
-                    </div>
-                    
-    
-                    <div class="col col-1"></div>
-                    <div class="col col-4">
-                        <select class="col-12" id="homeTeam" formControlName="homeTeam" require>
-                            <option value={{null}}></option>
-                            <option *ngFor="let equipo of filteredTeams" value="{{equipo.id}}">{{equipo.name}}</option>
-                        </select>
-                    </div>
-                    <div class="col col-2"> X </div>
-                    <div class="col col-4">
-                        <select class="col-12" id="visitorTeam" formControlName="visitorTeam" require>
-                            <option value={{null}}></option>
-                            <option *ngFor="let equipo of filteredTeams" value="{{equipo.id}}">{{equipo.name}}</option>
-                        </select>
-                    </div>
-                    <div class="col col-1"></div>
-
-
+                <!-- Toolbar: back to the match list. -->
+                <div class="scout-toolbar">
+                    <button class="btn btn-outline-danger btn-floating" title="Volver" type="button" (click)="goBack()">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
                 </div>
 
-                <div class="col col-12">
-                    <button class="marginBtn" type="submit">Guardar</button>
-                    <button class="marginBtn" type="button" (click)="goBack()">Volver</button>
+                <!-- Modernized match info card with editable team selects. -->
+                <div class="match-card">
+                    <button class="btn btn-warning btn-floating match-card__save" title="Guardar" type="submit">
+                        <i class="fas fa-floppy-disk"></i>
+                    </button>
+                    <span class="match-badge">{{editingMatch.category}}</span>
+
+                    <div class="match-card__meta">
+                        <div class="match-card__title">
+                            <span class="match-game">{{editingMatch.juego}}</span>
+                            <span class="match-time"><i class="fas fa-clock"></i>&nbsp;{{editingMatch.time}}</span>
+                        </div>
+                        <a class="match-location" target="_blank" rel="noopener"
+                           href="https://www.google.com/maps/search/?api=1&query_place_id={{editingMatch.location.place_id}}&query={{editingMatch.location.address}}">
+                            <i class="fas fa-location-dot"></i>&nbsp;{{editingMatch.location.name}}
+                        </a>
+                    </div>
+
+                    <div class="match-card__scoreboard">
+                        <div class="match-team">
+                            <select class="match-select" id="homeTeam" formControlName="homeTeam" require>
+                                <option value={{null}}></option>
+                                <option *ngFor="let equipo of filteredTeams" value="{{equipo.id}}">{{equipo.name}}</option>
+                            </select>
+                        </div>
+                        <span class="match-vs">×</span>
+                        <div class="match-team">
+                            <select class="match-select" id="visitorTeam" formControlName="visitorTeam" require>
+                                <option value={{null}}></option>
+                                <option *ngFor="let equipo of filteredTeams" value="{{equipo.id}}">{{equipo.name}}</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-        
+
             </form>
         </div>
     </div>
