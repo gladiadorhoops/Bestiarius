@@ -15,6 +15,7 @@ import { S3 } from 'src/app/aws-clients/s3';
 import { Skill, Skills } from 'src/app/interfaces/reporte';
 import { ReporteBuilder } from 'src/app/Builders/reporte-builder';
 import { AuthService } from 'src/app/auth.service';
+import { filterMatches } from 'src/app/utils/utils';
 
 
 @Component({
@@ -39,9 +40,13 @@ export class EvaluarPartidoComponent implements OnInit {
 
   equipos : Team[] = [];
   filteredMatches: Match[] = [];
+  filteredTeams: Team[] = [];
 
+  activeTab: 'partido' | 'jugador' | 'equipos' | 'estadisticas' = 'partido';
   isTeamSelected: boolean = false;
   isEvaluatingPlayer: boolean = false;
+  isScouting: boolean = false;
+  scoutingMatch: Match = {location: {id: "", name: ""}, time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   loading: boolean = true;
   editingTeam: MatchTeamWithPhoto = {id: "", name: "", category: "", imageUrl: ""};
   displayEvalPlayer = "none";
@@ -89,60 +94,82 @@ export class EvaluarPartidoComponent implements OnInit {
     visitorScore : [0]
   });
 
+  // Category for the Jugador tab: use the selected filter, or derive it from
+  // the selected team so a player can be evaluated without picking a category.
+  get evaluacionCategory(): string | null {
+    if (this.filterForm.value.cat) {
+      return this.filterForm.value.cat;
+    }
+    const teamName = this.filterForm.value.equipo;
+    if (teamName) {
+      const team = this.equipos.find(t => t.name == teamName);
+      return team?.category ?? null;
+    }
+    return null;
+  }
+
   async ngOnInit() {
     this.gyms = await this.gymBuilder.getListOfGyms(this.ddb, TOURNAMENT_YEAR);
     await this.loadMatches();
-  }  
+  }
+
+  selectTab(tab: 'partido' | 'jugador' | 'equipos' | 'estadisticas') {
+    this.activeTab = tab;
+    // Leaving the Equipos tab should close any open team detail view.
+    if (tab !== 'equipos') {
+      this.isTeamSelected = false;
+    }
+  }
+
   
   async loadMatches(){
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, TOURNAMENT_YEAR)
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
-    this.filteredMatches = this.allMatches;
-    this.filteredMatches = this.filteredMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!))
+    this.filteredMatches = this.allMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!));
+    this.filteredTeams = this.equipos;
+    this.applyCategoryFilter();
     this.loading = false;
   }
 
-  applyFilters() {
+  applyCategoryFilter() {
     this.filteredMatches = this.allMatches;
+    this.filteredTeams = this.equipos;
 
+    let cat = this.filterForm.value.cat
+    console.log(`Applying filter`, cat);
 
-    let day = "";
-    if(this.filterForm.value.day != null){
-      day = this.filterForm.value.day;
+    if(cat){
+      this.filteredMatches = this.filteredMatches.filter(match => match.category == cat);
+      this.filteredTeams = this.filteredTeams.filter(team => team.category == cat);
+    }
+    // if category is changed we should clear existing filter on teams because teams
+    // only exist for a specific category
+    this.filterForm.get('equipo')?.reset()
+    this.applyFilters(this.filteredMatches);
+  }
+
+  clearFilters() {
+    this.filterForm.reset();
+    this.applyCategoryFilter();
+  }
+
+  applyFilters(categoryMatches: Match[] | null = null) {
+    let cat = this.filterForm.value.cat;
+    let day = this.filterForm.value.day;
+    let gym = this.filterForm.value.gym;
+    let team = this.filterForm.value.equipo;
+    console.log('Applying filters', cat, day, gym, team);
+
+    if (!cat && !day && !gym && !team) {
+      this.filteredMatches = this.allMatches;
+      return;
     }
 
-    if(day != ""){
-      let matches : Match[] = []
-      this.filteredMatches.forEach(
-        async (match) => {
-          if(match.day == day){
-            matches.push(match);
-          }
-        }
-      );
-      this.filteredMatches = matches;
-    }
+    let matches: Match[] = this.allMatches;
+    if(categoryMatches) matches = categoryMatches;
+    else if(cat) matches = this.allMatches.filter(match => match.category == cat);
 
-    let gym = "";
-    if(this.filterForm.value.gym != null){
-      gym = this.filterForm.value.gym;
-    }
-
-    if(gym != ""){
-      let matches : Match[] = []
-      this.filteredMatches.forEach(
-        async (match) => {
-          if(match.location.id == gym){
-            matches.push(match);
-          }
-        }
-      );
-      this.filteredMatches = matches;
-    }
-
-    this.filteredMatches = this.filteredMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!))
-    console.log(day);
-    console.log(gym);
+    this.filteredMatches = filterMatches(matches, day, gym, team);
   }
 
   async onSubmit() {
@@ -167,6 +194,56 @@ export class EvaluarPartidoComponent implements OnInit {
     this.displayStyle = "none";
   }
   
+
+  async scout(match:Match){
+    this.scoutingMatch = match;
+    if(match.homePoints){
+      this.marcadorForm.controls.homeScore.setValue(Number(match.homePoints));
+    }
+    if(match.visitorPoints){
+      this.marcadorForm.controls.visitorScore.setValue(Number(match.visitorPoints));
+    }
+    this.isScouting = true;
+    // Load the left (home) team by default so its players show under the match info.
+    await this.selectScoutingTeam(match.homeTeam);
+  }
+
+  async selectScoutingTeam(team:MatchTeam){
+    this.editingTeam = team as MatchTeamWithPhoto;
+    await this.loadTeam(this.editingTeam.id);
+  }
+
+  submitScore(){
+    let id = "";
+    if(this.scoutingMatch.id){
+      id = this.scoutingMatch.id;
+    }
+    let hs = "";
+    if(this.marcadorForm.value.homeScore){
+      hs = this.marcadorForm.value.homeScore.toString();
+    }
+    let vs = "";
+    if(this.marcadorForm.value.visitorScore){
+      vs = this.marcadorForm.value.visitorScore.toString();
+    }
+    this.matchBuilder.submit(this.ddb, id, hs, vs).then(
+      (rs) => {
+        this.loadMatches();
+      }
+    );
+    // Keep the scores on the scouting page after saving (don't close the view).
+    this.scoutingMatch.homePoints = hs;
+    this.scoutingMatch.visitorPoints = vs;
+  }
+
+  closeScout(){
+    this.isScouting = false;
+    this.scoutingMatch = {location: {id: "", name: ""}, time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
+    this.marcadorForm.reset();
+    this.editingTeam = {id: "", name: "", category: "", imageUrl: ""};
+    this.players = [];
+    this.team = undefined;
+  }
 
   async edit(team:MatchTeam){
     this.editingTeam = team as MatchTeamWithPhoto;

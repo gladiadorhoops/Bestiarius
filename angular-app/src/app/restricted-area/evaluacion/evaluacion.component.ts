@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { AuthService } from '../../auth.service';
 import { Team, getCategories } from '../../interfaces/team';
@@ -19,7 +19,7 @@ import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
   templateUrl: './evaluacion.component.html',
   styleUrls: ['./evaluacion.component.scss']
 })
-export class EvaluacionComponent {
+export class EvaluacionComponent implements OnChanges {
   imgBuffer: ArrayBuffer|undefined;
   imgType: string|undefined;
 
@@ -31,6 +31,9 @@ export class EvaluacionComponent {
   ) {}
 
   @Input() ddb!: DynamoDb;
+  // Category and team are driven by the shared filters in the parent (evaluar-partido).
+  @Input() category: string | null | undefined = null;
+  @Input() team: string | null | undefined = null;
 
   scout_id = this.authService.getUserId();
   scout_name = this.authService.getUserName();
@@ -123,6 +126,17 @@ export class EvaluacionComponent {
   }
   
   async ngOnInit() {
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    if (changes['category']) {
+      this.evaluationForm.controls['categoria'].setValue(this.category ?? '');
+      await this.loadTeams();
+    }
+    if (changes['team']) {
+      this.evaluationForm.controls['equipo'].setValue(this.team ?? '');
+      await this.loadPlayers();
+    }
   }
 
   async onSubmit() {

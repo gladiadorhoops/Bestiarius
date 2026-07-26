@@ -55,6 +55,7 @@ export class RestrictedAreaComponent {
     loading = true;
 
     menuItems: MenuItem[] = [];
+    selectedFeature: string = "";
     validationMsg: string = "";
 
     constructor(private fb:FormBuilder, 
@@ -137,20 +138,16 @@ export class RestrictedAreaComponent {
 
       this.menuItems = []
       if(this.isAdmin){
+        // Scout features (Marcadores, Estadisticas de Evaluacion) now live as
+        // tabs inside Evaluar Partido, so only admins keep a dropdown — and it
+        // includes "Evaluar Partido" so they can navigate back to it.
         this.menuItems = this.menuItems.concat([
           {value: "addGym", text: "Add Gym"},
           {value: "addMatch", text: "Add Match"},
           {value: "editMatch", text: "Edit Match"},
-          {value: "evaluarPartido", text: " Evaluar Partido"},
+          {value: "evaluarPartido", text: "Scouting"},
           {value: "listPlayers", text: "Jugadores Registrados"},
           {value: "viewUsers", text: "Usuarios Registrados"}
-        ]);
-      }
-      if(this.isScout){
-        this.menuItems = this.menuItems.concat([
-          {value: "evaluar", text: " Evaluar Jugador"},
-          {value: "resultados", text: "Estadisticas de Evaluacion"},
-          {value: "marcadores", text: "Marcadores"}
         ]);
       }
       if(this.isCoach){
@@ -176,7 +173,9 @@ export class RestrictedAreaComponent {
 
       console.log("Reloaded");
 
-      this.changeFeature(this.menuItems[0].value);
+      // Scouts (including admins) land on Evaluar Partido by default.
+      let landingFeature = this.isScout ? "evaluarPartido" : this.menuItems[0].value;
+      this.changeFeature(landingFeature);
     }
 
     async onRenewRegistration(code: string){
@@ -187,7 +186,8 @@ export class RestrictedAreaComponent {
     }
 
     changeFeature(feature: string){
-      switch(feature) { 
+      this.selectedFeature = feature;
+      switch(feature) {
         case 'evaluar': { 
            this.showEvaluacion()
            break; 
