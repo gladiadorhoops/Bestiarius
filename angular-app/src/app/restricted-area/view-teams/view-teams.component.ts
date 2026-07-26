@@ -150,7 +150,7 @@ export class ViewTeamsComponent {
         };
         } else {
           this.teamLogoUrl = "assets/logo_gray.png";
-          console.error("No data returned from downloadFile");
+          console.log("No data returned from downloadFile");
         }
       })
     }  else {
@@ -213,7 +213,7 @@ export class ViewTeamsComponent {
           console.log("Player photo uploaded")
 
         } catch (e) {
-          console.log("error", e);
+          console.error("error", e);
         } finally {
           this.teamLogoUrl = newURL;
           this.loadingImage = false;
