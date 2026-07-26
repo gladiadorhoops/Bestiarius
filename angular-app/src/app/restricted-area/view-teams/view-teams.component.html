@@ -2,12 +2,25 @@
 <div class="spinner-border text-light" role="status" *ngIf="loading">
     <span class="sr-only">Loading...</span>
 </div>
+
 <div class="mainpanel" *ngIf="!loading">
   <button class="btn btn-outline-danger btn-floating m-1" title="Volver a Equipos Registrados" (click)="callParentToListTeams()" target="_blank" role="button">
     <i class="fas fa-arrow-left"></i>
   </button>
   
     <h2 class="text-center mb-3">
+      <div class="row">
+        <div class="col col-12 col-lg-5" style="position: relative; z-index: 1; display: block; width: 200px; margin-left: auto; margin-right: auto; height: 200px;">
+          <div *ngIf="loadingImage" class="text-center" style="position: absolute;top: 0;left: 1%;z-index: 2;">
+            <div class="spinner-border text-dark" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <img id="image" style="max-height: 200px; max-width:90%;position: absolute; top:0; left:0; ;z-index: 1;" [src]="teamLogoUrl">
+          <label *ngIf="!loadingImage" style="position: absolute;top: 0;left: 1%;z-index: 2;" for="photoFile"><i class="fa fa-camera" style="font-size: 1em;"></i></label>
+          <input *ngIf="!loadingImage" style="display:none;" id="photoFile" type="file" (change)="onLogoSelected($event)" accept="image/*" maxFileSize="10000000">
+        </div>
+      </div>
       {{team?.name}} &nbsp;
       <button class="btn btn-outline-danger btn-sm" *ngIf="editable" title="Editar Equipo" (click)="openEditTeam()" target="_blank" role="button">
         <i class="fa fa-pencil"></i>

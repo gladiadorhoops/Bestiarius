@@ -71,10 +71,13 @@ export class ViewTeamsComponent {
   newplayerid = uuidv4();
   featureFlags: FeatureFlag | undefined = undefined
   selectedCaptain:string = "";
+  teamLogoUrl: string | ArrayBuffer | null | undefined = "assets/logo_gray.png";
+
 
   receiptFiles: {data: Buffer, contentType: string, preview: string}[] = [];
   existingReceiptUrls: string[] = [];
   loadingReceipt: boolean = false;
+  loadingImage: boolean = false;
   paymentStatus: PaymentStatus = PaymentStatus.PENDING;
 
   editable = true;
@@ -133,6 +136,26 @@ export class ViewTeamsComponent {
     await this.getAllPlayers();
     this.checkPaymentStatus();
     this.loading = false;
+
+    if (this.team!.imageType){
+      await this.s3.downloadFile(this.team!.id).then((data) => {
+        console.log("Downloaded data:", data);
+        if (data) {
+         let blob = new Blob([data], { type: this.team!.imageType });
+            // display blob as img
+          const reader2 = new FileReader();
+          reader2.readAsDataURL(blob);
+          reader2.onload = () => {
+          this.teamLogoUrl = reader2.result;
+        };
+        } else {
+          this.teamLogoUrl = "assets/logo_gray.png";
+          console.error("No data returned from downloadFile");
+        }
+      })
+    }  else {
+      this.teamLogoUrl = "assets/logo_gray.png"
+    }
   }
 
   private checkPaymentStatus(){
@@ -164,6 +187,41 @@ export class ViewTeamsComponent {
     }
     else{
       this.errorMsg = "Nombre del equipo no coincide!";
+    }
+  }
+
+  onLogoSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onload = async () => {
+        let newURL = this.teamLogoUrl;
+        try {
+          this.loadingImage = true;
+          let imgToUpload = Buffer.from(reader.result as ArrayBuffer);
+          // set image preview locally
+          newURL = URL.createObjectURL(file);
+
+          // update team entry with image type
+          if(this.team!.imageType != file.type){
+            this.team!.imageType = file.type
+          }
+
+          console.log(`Saving team photo: ${this.team!.name} - ${this.team!.id}`);
+          await this.teamBuilder.uploadTeamLogo(this.ddb, this.s3, this.team!, imgToUpload)
+          console.log("Player photo uploaded")
+
+        } catch (e) {
+          console.log("error", e);
+        } finally {
+          this.teamLogoUrl = newURL;
+          this.loadingImage = false;
+        }
+
+      };
+    } else {
+      console.log("No file selected.");
     }
   }
 

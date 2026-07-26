@@ -207,6 +207,29 @@ export class TeamBuilder {
         await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
     }
 
+
+
+    async uploadTeamLogo(ddb: DynamoDb, s3: S3, team: Team, logoFile: Buffer | Uint8Array): Promise<void> {
+        await s3.uploadFile(team.id, logoFile, team.imageType!);
+        await this.updateTeamLogoType(ddb, team.id, team.imageType!);
+    }
+
+    async updateTeamLogoType(ddb: DynamoDb, teamId: string, contentType: string) {
+        let key = {
+            [PK_KEY]: {S: `${TeamKey.PREFIX}.${teamId}`},
+            [SK_KEY]: {S: `${TeamKey.SK}`}
+        };
+        let updateExpression = 'SET #logoattr = :val';
+        let expressionAttributeNames: Record<string, string> = {
+            '#logoattr': `${TeamKey.IMAGE_TYPE}`,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':val': {S: contentType},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
+    }
+
     async deletePaymentReceipt(s3: S3, team: Team, index: number): Promise<void> {
         const fileName = TeamBuilder.getReceiptFileName(team.name, team.id, index);
         await s3.deleteFile(fileName);
@@ -223,6 +246,7 @@ export class TeamBuilder {
             location: item[TeamKey.LOACTION]?.S,
             year: item[TeamKey.YEAR].S ? item[TeamKey.YEAR].S : "",
             paymentStatus: (item[TeamKey.PAYMENT_STATUS]?.S as PaymentStatus) ?? PaymentStatus.PENDING,
+            imageType: item[TeamKey.IMAGE_TYPE] ? item[TeamKey.IMAGE_TYPE].S : "",
         }
     }
 
