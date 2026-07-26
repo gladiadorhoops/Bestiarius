@@ -42,14 +42,14 @@
                 <h2>Próximamente, estad atentos.</h2>
             </div>
             <div class="mainpanel" *ngIf="!loading&&available">
-                <table class="row">
+                <table class="row modern-table">
                     <tr class="row">
                         <th [ngClass]="{'col': true, 'col-12': true, 'col-lg-4': true}"> <a [routerLink]="" (click)="sortTeamsByName()">Equipo</a></th>
                         <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortTeamsByCategory()">Categoria</a></th>
                         <th class="col col-lg-3 col-12"> <a [routerLink]="" (click)="sortTeamsByLocation()">Localidad</a></th>
                         <th class="col col-lg-2 col-12 groupLast"> <a [routerLink]="" (click)="sortTeamsByCoach()">Coach</a></th>
                     </tr>
-                    <tr class="row" *ngFor="let team of teams" [routerLink]="" (click)="viewPlayers(team.id)">
+                    <tr class="row player-row" *ngFor="let team of teams" [routerLink]="" (click)="viewPlayers(team.id)">
                         <td [ngClass]="{'col': true, 'col-12': true, 'col-lg-4': true}"><u>{{team.name}}</u></td>
                         <td class="col col-lg-3 col-12">{{team.category}}</td>
                         <td class="col col-lg-3 col-12">{{team.location}}</td>
@@ -75,7 +75,7 @@
       </div>
       <div class="modal-body">
 
-        <table class="row">
+        <table class="row modern-table">
             <tr class="row">
                 <th class="col col-lg-1 col-2"> <a [routerLink]="">#</a></th>
                 <th class="col col-lg-7 col-6"> <a [routerLink]="">Player</a></th>

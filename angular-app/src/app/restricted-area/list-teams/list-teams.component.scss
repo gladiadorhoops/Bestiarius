@@ -1,30 +1,5 @@
 @import "colors";
 
-table {
-    color: black;
-}
-
-td, th {
-    text-align: left;
-    border: 0px solid #dddddd;
-}
-
-td {
-    color: $text-color2;
-    background-color: $bg-color2;
-    padding: 8px;
-}
-
-tr{
-    border-bottom: 2px solid $header-color2;
-}
-
-th {
-    color: $text-color2;
-    background-color: $header-color2;
-    padding: 8px;
-}
-
 .row{
     --bs-gutter-x: 0%;
 }

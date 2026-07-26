@@ -117,6 +117,252 @@ td{
     word-wrap: break-word;
 }
 
+// Modern filter card used across the app (Scouting, Jugadores Registrados):
+// translucent rounded card holding rounded inputs/selects with a yellow focus
+// glow so every filter panel looks the same.
+.filter-bar{
+    background-color: $bg-color15;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.75rem;
+    padding: 1rem;
+
+    .form-select,
+    .form-control{
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background-color: rgba(255, 255, 255, 0.95);
+        color: $bg-color1;
+    }
+
+    .form-select:focus,
+    .form-control:focus{
+        border-color: $header-color1;
+        box-shadow: 0 0 0 0.2rem rgba(254, 215, 56, 0.35);
+    }
+}
+
+// Toolbar holding a top-left back button, above a match card / roster.
+// Shared by Scouting and Edit Match.
+.scout-toolbar{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+// Modernized match info card. Shared by Scouting and Edit Match: a translucent
+// rounded card with a top-left category badge, a top-right action button, a
+// stacked title/gym header, and a centered scoreboard of two teams.
+.match-card{
+    position: relative;
+    background-color: $bg-color15;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+
+    // Action button pinned to the card's top-right corner.
+    .match-card__save{
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        z-index: 1;
+    }
+
+    // Stacked header: primary title line, then the gym on its own line.
+    .match-card__meta{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        color: $bg-color2;
+        // Clear the top-left badge and top-right action button.
+        padding-top: 1.75rem;
+    }
+
+    .match-card__title{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: center;
+        gap: 0.5rem 0.75rem;
+    }
+
+    // Category tag pinned to the card's top-left corner.
+    .match-badge{
+        position: absolute;
+        top: 0.75rem;
+        left: 0.75rem;
+        z-index: 1;
+        background-color: $header-color1;
+        color: $bg-color1;
+        font-weight: 700;
+        text-transform: capitalize;
+        border-radius: 999px;
+        padding: 0.15rem 0.7rem;
+        font-size: 0.8rem;
+    }
+
+    .match-game{
+        font-weight: 600;
+    }
+
+    .match-time{
+        color: $bg-color2;
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    // Gym is a link — make it obviously clickable.
+    .match-location{
+        color: $header-color1;
+        text-decoration: underline;
+        font-size: 0.9rem;
+        cursor: pointer;
+    }
+
+    .match-location:hover{
+        color: $header-color1;
+        opacity: 0.8;
+    }
+
+    .match-card__scoreboard{
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .match-team{
+        flex: 1 1 0;
+        max-width: 12rem;
+        text-align: center;
+        border: 1px solid transparent;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .match-team--active{
+        border-color: $header-color1;
+        background-color: rgba(254, 215, 56, 0.12);
+    }
+
+    .match-team__name{
+        color: $bg-color2;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 0.5rem;
+    }
+
+    .match-team--active .match-team__name{
+        color: $header-color1;
+    }
+
+    // Editable score / team select inside the scoreboard.
+    .match-score,
+    .match-select{
+        width: 100%;
+        text-align: center;
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background-color: rgba(255, 255, 255, 0.95);
+        color: $bg-color1;
+        font-weight: 700;
+        padding: 0.35rem;
+    }
+
+    .match-score:focus,
+    .match-select:focus{
+        outline: none;
+        border-color: $header-color1;
+        box-shadow: 0 0 0 0.2rem rgba(254, 215, 56, 0.35);
+    }
+
+    // Read-only score on the landing card: noticeable but clearly not editable.
+    .match-score--static{
+        border-color: transparent;
+        background-color: transparent;
+        color: $bg-color2;
+        font-size: 1.75rem;
+        line-height: 1;
+    }
+
+    .match-vs{
+        align-self: center;
+        color: $header-color1;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+}
+
+// Read-only landing card: team names are not selectable.
+.match-card--readonly{
+    .match-team__name{
+        cursor: default;
+    }
+}
+
+// Modern data table used across the app: rounded, borderless, yellow header,
+// hover-highlighted rows. Scoped to `.modern-table` so it never touches the
+// custom bracket table or third-party (ng-bootstrap) tables.
+.modern-table{
+    color: $bg-color1;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    // These tables use Bootstrap `.row`/`.col` on the table, rows and cells;
+    // drop the row gutter so cells sit flush like a real table.
+    &.row, .row{ --bs-gutter-x: 0%; }
+
+    th{
+        text-align: left;
+        color: $bg-color1;
+        background-color: $header-color1;
+        padding: 0.6rem 0.75rem;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+
+        // Sort links in headers inherit the header color instead of the
+        // default link blue.
+        a{
+            color: $bg-color1;
+            text-decoration: none;
+        }
+    }
+
+    td{
+        text-align: left;
+        color: $bg-color1;
+        background-color: $bg-color2;
+        padding: 0.6rem 0.75rem;
+        vertical-align: middle;
+    }
+
+    tr{
+        border-bottom: 1px solid rgba(72, 71, 71, 0.12);
+    }
+
+    // Rounded outer corners on the header and last row.
+    tr:first-child th:first-child{ border-top-left-radius: 0.6rem; }
+    tr:first-child th:last-child{ border-top-right-radius: 0.6rem; }
+    tr:last-child td:first-child{ border-bottom-left-radius: 0.6rem; }
+    tr:last-child td:last-child{ border-bottom-right-radius: 0.6rem; }
+
+    // Clickable rows highlight on hover.
+    .player-row{
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+
+        td{ transition: background-color 0.15s ease; }
+
+        &:hover td{
+            background-color: darken($bg-color2, 6%);
+        }
+    }
+}
+
 .scroll-container {
     overflow-x: scroll; /* Enables horizontal scrolling when content overflows */
     -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS devices */
