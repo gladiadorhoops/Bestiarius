@@ -28,6 +28,22 @@ export class PlayerBuilder {
         await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
     }
 
+    async updatePlayerNumber(ddb: DynamoDb, playerId: string, number: string) {
+        let key = {
+            [PK_KEY]: {S: `${PlayerKey.PREFIX}.${playerId}`},
+            [SK_KEY]: {S: `${PlayerKey.PREFIX}.data`}
+        };
+        let updateExpression = 'SET #numattr = :val';
+        let expressionAttributeNames: Record<string, string> = {
+            '#numattr': `${PlayerKey.NUMBER}`,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':val': {S: number},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
+    }
+
     static getLiabilityWaiverFileName(playerId: string): string {
         return `liability-waiver-${playerId}`;
     }

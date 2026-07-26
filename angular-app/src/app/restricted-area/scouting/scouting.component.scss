@@ -34,6 +34,65 @@ fieldset {
 .player-card{
     background-color: $bg-color2;
     border-color: $bg-color1;
+    // Every card is the same height regardless of name/position content.
+    display: inline-flex;
+    flex-direction: column;
+    vertical-align: top;
+
+    // Uniform square image regardless of the source photo's aspect ratio.
+    .player-card__img{
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+    }
+
+    // Single line so a long name never wraps and grows the card.
+    .player-card__name{
+        margin: 0.4rem 0 0.2rem;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    // Jersey number badge that leads the name.
+    .player-card__number{
+        display: inline-block;
+        background-color: $bg-color1;
+        color: $bg-color2;
+        border-radius: 0.35rem;
+        padding: 0 0.35rem;
+        margin-right: 0.25rem;
+        font-weight: 700;
+        font-size: 0.85rem;
+    }
+
+    // Positions as compact pills (values are just 1–5). Single line so the
+    // card height stays constant.
+    .player-card__positions{
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        margin: 0;
+        overflow: hidden;
+
+        i{
+            color: $bg-color1;
+            font-size: 0.85rem;
+            margin-right: 0.1rem;
+        }
+    }
+
+    .player-card__pos{
+        background-color: $header-color1;
+        color: $bg-color1;
+        border-radius: 999px;
+        padding: 0 0.45rem;
+        font-weight: 700;
+        font-size: 0.8rem;
+    }
 }
 
 // Team list table — matches "Equipos Registrados" (list-teams).
@@ -302,11 +361,21 @@ th {
 // with spacing between the match info card and the logo.
 .scout-team-logo{
     margin-top: 1.5rem;
-    width: 27.5%;      // was col-3 (25%)
+    width: 30.25%;     // 10% larger than 27.5%
+    // Uniform square footprint for every team regardless of the source
+    // image's aspect ratio; `contain` keeps the whole logo visible (no crop).
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
 
     @media (min-width: 768px){
-        width: 9.17%;  // was col-md-1 (~8.33%)
+        width: 10.09%; // 10% larger than 9.17%
     }
+}
+
+// In the Equipos tab the logo only has the back button above it (no match
+// card), so drop the extra top margin to bring it closer to the button.
+.team-roster--equipos .scout-team-logo{
+    margin-top: 0;
 }
 
 // Modern filter bar.
