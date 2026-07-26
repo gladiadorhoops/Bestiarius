@@ -176,11 +176,11 @@ export class TeamBuilder {
     }
 
     static getReceiptFileName(teamName: string, teamId: string, index: number): string {
-        return `payment-receipt-${teamName}-${teamId}-${index}`;
+        return `payment-receipts/payment-receipt-${teamId}-${index}`;
     }
 
     static getReceiptFilePrefix(teamName: string, teamId: string): string {
-        return `payment-receipt-${teamName}-${teamId}-`;
+        return `payment-receipts/payment-receipt-${teamId}-`;
     }
 
     async uploadPaymentReceipts(ddb: DynamoDb, s3: S3, team: Team, files: {data: Buffer | Uint8Array, contentType: string}[], startIndex: number = 0): Promise<void> {
@@ -207,6 +207,32 @@ export class TeamBuilder {
         await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
     }
 
+    static getLogoFilePath(team: Team): string {
+        return `team-logos/${team.id}`;
+    }
+
+    async uploadTeamLogo(ddb: DynamoDb, s3: S3, team: Team, logoFile: Buffer | Uint8Array): Promise<void> {
+        let logoPath = TeamBuilder.getLogoFilePath(team);
+        await s3.uploadFile(logoPath, logoFile, team.imageType!);
+        await this.updateTeamLogoType(ddb, team.id, team.imageType!);
+    }
+
+    async updateTeamLogoType(ddb: DynamoDb, teamId: string, contentType: string) {
+        let key = {
+            [PK_KEY]: {S: `${TeamKey.PREFIX}.${teamId}`},
+            [SK_KEY]: {S: `${TeamKey.SK}`}
+        };
+        let updateExpression = 'SET #logoattr = :val';
+        let expressionAttributeNames: Record<string, string> = {
+            '#logoattr': `${TeamKey.IMAGE_TYPE}`,
+        };
+        let expressionAttributeValues: Record<string, AttributeValue> = {
+            ':val': {S: contentType},
+        };
+
+        await ddb.updateItem(key, updateExpression, expressionAttributeNames, expressionAttributeValues);
+    }
+
     async deletePaymentReceipt(s3: S3, team: Team, index: number): Promise<void> {
         const fileName = TeamBuilder.getReceiptFileName(team.name, team.id, index);
         await s3.deleteFile(fileName);
@@ -223,6 +249,7 @@ export class TeamBuilder {
             location: item[TeamKey.LOACTION]?.S,
             year: item[TeamKey.YEAR].S ? item[TeamKey.YEAR].S : "",
             paymentStatus: (item[TeamKey.PAYMENT_STATUS]?.S as PaymentStatus) ?? PaymentStatus.PENDING,
+            imageType: item[TeamKey.IMAGE_TYPE] ? item[TeamKey.IMAGE_TYPE].S : "",
         }
     }
 

@@ -29,6 +29,7 @@ export enum TeamKey {
     SK = 'team.data',
     CATEGORY = 'category',
     PAYMENT_STATUS = 'paymentStatus',
+    IMAGE_TYPE = 'image',
 }
 
 export interface Team {
@@ -41,6 +42,7 @@ export interface Team {
     location: string | undefined
     year?: string
     paymentStatus?: PaymentStatus
+    imageType?: string
 }
 
 export interface MatchTeam {
@@ -48,6 +50,7 @@ export interface MatchTeam {
     name: string
     category?: string | undefined
     points?: number | undefined
+    imageType?: string | undefined
 }
 
 export interface MatchTeamWithPhoto extends MatchTeam {
