@@ -29,11 +29,11 @@
           </div>
         </div>
         <img class="team-logo-upload__img" [src]="teamLogoUrl" alt="Logo del equipo">
-        <label *ngIf="!loadingImage && editable" class="team-logo-upload__camera" for="photoFile"
+        <label *ngIf="!loadingImage && editable" class="team-logo-upload__camera" for="teamLogoFile"
                title="Subir logo del equipo" aria-label="Subir logo del equipo">
           <i class="fa fa-camera"></i>
         </label>
-        <input *ngIf="!loadingImage" style="display:none;" id="photoFile" type="file" (change)="onLogoSelected($event)" accept="image/*" maxFileSize="10000000">
+        <input *ngIf="!loadingImage" style="display:none;" id="teamLogoFile" type="file" (change)="onLogoSelected($event)" accept="image/*" maxFileSize="10000000">
       </div>
       <span *ngIf="hasLogo" class="team-logo-upload__label">Logo del Equipo</span>
       <span *ngIf="editable && !hasLogo" class="team-logo-upload__hint">Sube el logo o escudo de tu equipo.</span>
