@@ -8,48 +8,66 @@
 </div>
 <div class="mainpanel" *ngIf="!loading">
 
-    <!-- Filters: compact placeholder style, matching the Scouting filter bar. -->
+    <!-- Filters: compact placeholder style, matching the Scouting filter bar.
+         Collapsible — a toggle header shows/hides the fields, with a badge
+         indicating how many filters are currently active. -->
     <form class="filter-bar mb-3">
+      <button type="button" class="btn btn-link text-light text-decoration-none d-flex align-items-center gap-2 p-0"
+              (click)="toggleFilters()" [attr.aria-expanded]="filtersExpanded">
+        <i class="fas" [ngClass]="filtersExpanded ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+        <span>Filtros</span>
+        <span *ngIf="activeFilterCount > 0" class="badge bg-warning text-dark">{{activeFilterCount}}</span>
+      </button>
+
+      <div [hidden]="!filtersExpanded" class="mt-2">
       <div class="row g-2 justify-content-center">
-        <div class="col-6 col-md-3 col-lg-2">
+        <div class="col-6">
           <input id="filterName" type="text" class="form-control" placeholder="Nombre" autocomplete="off"
                  [value]="filterName" (input)="filterName = $any($event.target).value">
         </div>
-        <div class="col-6 col-md-3 col-lg-2">
-          <input id="filterCurp" type="text" class="form-control" placeholder="CURP" autocomplete="off"
-                 [value]="filterCurp" (input)="filterCurp = $any($event.target).value">
-        </div>
-        <div class="col-6 col-md-3 col-lg-2">
+        <div class="col-6">
           <select id="filterTeam" class="form-select"
                   [value]="filterTeam" (change)="filterTeam = $any($event.target).value">
             <option value="">Equipo</option>
             <option *ngFor="let team of teams" value="{{team.id}}">{{team.name}}</option>
           </select>
         </div>
-        <div class="col-6 col-md-3 col-lg-2">
+      </div>
+      <!-- CURP on its own row since the values are long. -->
+      <div class="row g-2 mt-1 justify-content-center">
+        <div class="col-12">
+          <input id="filterCurp" type="text" class="form-control" placeholder="CURP" autocomplete="off"
+                 [value]="filterCurp" (input)="filterCurp = $any($event.target).value">
+        </div>
+      </div>
+      <div class="row g-2 mt-1 justify-content-center">
+        <div class="col-12 col-sm-6 col-lg-4">
+          <label class="form-label text-light small mb-1">Altura</label>
           <div class="d-flex align-items-center">
-            <input type="number" class="form-control" placeholder="Alt. min"
+            <input type="number" class="form-control" placeholder="min"
                    [value]="filterHeightMin" (input)="filterHeightMin = $any($event.target).value">
-            <span class="mx-1 text-light">-</span>
-            <input type="number" class="form-control" placeholder="Alt. max"
+            <span class="mx-2 text-light">-</span>
+            <input type="number" class="form-control" placeholder="max"
                    [value]="filterHeightMax" (input)="filterHeightMax = $any($event.target).value">
           </div>
         </div>
-        <div class="col-6 col-md-3 col-lg-2">
+        <div class="col-12 col-sm-6 col-lg-4">
+          <label class="form-label text-light small mb-1">Peso</label>
           <div class="d-flex align-items-center">
-            <input type="number" class="form-control" placeholder="Peso min"
+            <input type="number" class="form-control" placeholder="min"
                    [value]="filterWeightMin" (input)="filterWeightMin = $any($event.target).value">
-            <span class="mx-1 text-light">-</span>
-            <input type="number" class="form-control" placeholder="Peso max"
+            <span class="mx-2 text-light">-</span>
+            <input type="number" class="form-control" placeholder="max"
                    [value]="filterWeightMax" (input)="filterWeightMax = $any($event.target).value">
           </div>
         </div>
-        <div class="col-6 col-md-3 col-lg-2">
+        <div class="col-12 col-sm-6 col-lg-4">
+          <label class="form-label text-light small mb-1">Año</label>
           <div class="d-flex align-items-center">
-            <input type="number" class="form-control" placeholder="Año min"
+            <input type="number" class="form-control" placeholder="min"
                    [value]="filterYearMin" (input)="filterYearMin = $any($event.target).value">
-            <span class="mx-1 text-light">-</span>
-            <input type="number" class="form-control" placeholder="Año max"
+            <span class="mx-2 text-light">-</span>
+            <input type="number" class="form-control" placeholder="max"
                    [value]="filterYearMax" (input)="filterYearMax = $any($event.target).value">
           </div>
         </div>
@@ -69,6 +87,7 @@
           </button>
         </div>
       </div>
+      </div>
     </form>
 
     <div class="scroll-container">
@@ -82,7 +101,7 @@
                     <th class="col col-2"> <a [routerLink]="" (click)="sortBy('height')">Altura{{sortIndicator('height')}}</a></th>
                     <th class="col col-2"> <a [routerLink]="" (click)="sortBy('weight')">Peso{{sortIndicator('weight')}}</a></th>
                 </tr>
-                <tr class="row player-row" *ngFor="let player of filteredPlayers" [routerLink]="" (click)="showPlayer(player)" >
+                <tr class="row clickable-row" *ngFor="let player of filteredPlayers" [routerLink]="" (click)="showPlayer(player)" >
                     <td class="col col-1">{{player.number}}</td>
                     <td class="col col-3">{{player.name}}</td>
                     <td class="col col-2">{{uTeams.get(player.team)}}</td>

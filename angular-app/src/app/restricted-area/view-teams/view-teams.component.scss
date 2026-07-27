@@ -75,7 +75,7 @@
     }
 
     tr{
-        border-bottom: 1px solid rgba(72, 71, 71, 0.12);
+        border-bottom: 1px solid $divider-color;
     }
 
     // Rounded outer corners on the header and last row.
@@ -84,7 +84,7 @@
     tr:last-child td:first-child{ border-bottom-left-radius: 0.6rem; }
     tr:last-child td:last-child{ border-bottom-right-radius: 0.6rem; }
 
-    .player-row{
+    .clickable-row{
         cursor: pointer;
         transition: background-color 0.15s ease;
 

@@ -137,7 +137,7 @@ td{
     .form-select:focus,
     .form-control:focus{
         border-color: $header-color1;
-        box-shadow: 0 0 0 0.2rem rgba(254, 215, 56, 0.35);
+        box-shadow: 0 0 0 0.2rem $focus-ring-color;
     }
 }
 
@@ -245,7 +245,7 @@ td{
 
     .match-team--active{
         border-color: $header-color1;
-        background-color: rgba(254, 215, 56, 0.12);
+        background-color: $active-tint-color;
     }
 
     .match-team__name{
@@ -276,7 +276,7 @@ td{
     .match-select:focus{
         outline: none;
         border-color: $header-color1;
-        box-shadow: 0 0 0 0.2rem rgba(254, 215, 56, 0.35);
+        box-shadow: 0 0 0 0.2rem $focus-ring-color;
     }
 
     // Read-only score on the landing card: noticeable but clearly not editable.
@@ -341,7 +341,7 @@ td{
     }
 
     tr{
-        border-bottom: 1px solid rgba(72, 71, 71, 0.12);
+        border-bottom: 1px solid $divider-color;
     }
 
     // Rounded outer corners on the header and last row.
@@ -351,7 +351,7 @@ td{
     tr:last-child td:last-child{ border-bottom-right-radius: 0.6rem; }
 
     // Clickable rows highlight on hover.
-    .player-row{
+    .clickable-row{
         cursor: pointer;
         transition: background-color 0.15s ease;
 

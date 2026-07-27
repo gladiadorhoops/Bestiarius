@@ -1,71 +1,51 @@
-<form [formGroup]="gymForm" (ngSubmit)="onSubmit()" >
-    <div class="row mainpanel">
-        <div class="col col-md-3 col-12">
-            <div class="row">
-                <label for="id">ID:</label>
+<div class="mainpanel">
+    <!-- New gym form: fields grouped in a filter-bar block, two per row,
+         with the yellow floppy-disk save button used elsewhere in the app. -->
+    <form class="filter-bar mb-3" [formGroup]="gymForm" (ngSubmit)="onSubmit()">
+        <div class="row g-2 justify-content-center">
+            <div class="col-12 col-md-6">
+                <label for="id" class="form-label text-light small mb-1">ID</label>
+                <input type="text" class="form-control" id="id" name="id" formControlName="id">
             </div>
-            <div class="row">
-                <div class="filterPadding">
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id">
-                </div>
-            </div>
-        </div>
-        <div class="col col-md-3 col-12">
-            <div class="row">
-                <label for="name">Name:</label>
-            </div>
-            <div class="row">
-                <div class="filterPadding">
-                    <input type="text" class="form-control" id="name" name="name" formControlName="name">
-                </div>
+            <div class="col-12 col-md-6">
+                <label for="name" class="form-label text-light small mb-1">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" formControlName="name">
             </div>
         </div>
-        <div class="col col-md-3 col-12">
-            <div class="row">
-                <label for="address">Address:</label>
+        <div class="row g-2 mt-1 justify-content-center">
+            <div class="col-12 col-md-6">
+                <label for="address" class="form-label text-light small mb-1">Dirección</label>
+                <input type="text" class="form-control" id="address" name="address" formControlName="address">
             </div>
-            <div class="row">
-                <div class="filterPadding">
-                    <input type="text" class="form-control" id="address" name="address" formControlName="address">
-                </div>
-            </div>
-        </div>
-        <div class="col col-md-3 col-12">
-            <div class="row">
-                <label for="place_id">Place ID:</label>
-            </div>
-            <div class="row">
-                <div class="filterPadding">
-                    <input type="text" class="form-control" id="place_id" name="place_id" formControlName="place_id">
-                </div>
+            <div class="col-12 col-md-6">
+                <label for="place_id" class="form-label text-light small mb-1">Place ID</label>
+                <input type="text" class="form-control" id="place_id" name="place_id" formControlName="place_id">
             </div>
         </div>
+        <div class="row mt-2">
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-warning btn-floating" title="Guardar" [disabled]="!gymForm.valid">
+                    <i class="fas fa-floppy-disk"></i>
+                </button>
+            </div>
+        </div>
+    </form>
 
-
-        <div class="frow">
-            <button type="submit" class="btn btn-dark" [disabled]="!gymForm.valid">Guardar</button>
-        </div>
-
-        <br>
-        <br>
-        <div class="scroll-container col-12">
-            <div style="min-width: 600px;">
-                <table *ngIf="!isLoading" class="row modern-table">
-                    <tr class="row">
-                        <th class="col col-2"> <a [routerLink]="">ID</a></th>
-                        <th class="col col-3"> <a [routerLink]="">Name</a></th>
-                        <th class="col col-7"> <a [routerLink]="">Address</a></th>
-                    </tr>
-                    <tr class="row" *ngFor="let gym of gyms">
-                        <td class="col col-2">{{gym.id}}</td>
-                        <td class="col col-3">{{gym.name}}</td>
-                        <td class="col col-7"><a href="https://www.google.com/maps/search/?api=1&query_place_id={{gym.place_id}}&query={{gym.address}}">{{gym.address}}</a></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+    <div class="scroll-container">
+        <table *ngIf="!isLoading" class="modern-table" style="min-width: 100%;">
+            <tr>
+                <th> <a [routerLink]="">ID</a></th>
+                <th> <a [routerLink]="">Nombre</a></th>
+                <th> <a [routerLink]="">Dirección</a></th>
+            </tr>
+            <tr *ngFor="let gym of gyms">
+                <td>{{gym.id}}</td>
+                <td>{{gym.name}}</td>
+                <td><a href="https://www.google.com/maps/search/?api=1&query_place_id={{gym.place_id}}&query={{gym.address}}">{{gym.address}}</a></td>
+            </tr>
+        </table>
     </div>
-</form>
+</div>
 
 
 

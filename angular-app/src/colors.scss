@@ -7,6 +7,17 @@ $header-color2: #fed738;
 $text-color1: #9bb6a3;
 $text-color2: #d6726c;
 
+// Translucent variants of the brand yellow ($header-color1), used for
+// focus/active states. Two opacities on purpose:
+//  - focus ring sits outside the element as a halo, so it's more saturated.
+//  - active tint sits behind content, so it stays light for readability.
+$focus-ring-color: rgba($header-color1, 0.35);
+$active-tint-color: rgba($header-color1, 0.12);
+
+// Faint divider line derived from the dark base ($bg-color1), used for
+// subtle row separators in tables.
+$divider-color: rgba($bg-color1, 0.12);
+
 /*
 $dark-color: #0000dd;
 $light-color: #0015ff;
