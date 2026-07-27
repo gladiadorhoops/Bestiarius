@@ -1,29 +1,42 @@
 <div class="row justify-content-md-center padded-page">
-    <form class="row" style="display: flex; flex-direction: row; text-align: center; vertical-align: middle;">
-        <div class="col" style="display: flex; flex-direction: row-reverse; text-align: right;">
-            <div class="frow">
-                <select [formControl]="year" (change)="loadResults()" >
-                    <option *ngFor="let yr of years" value="{{yr}}">{{yr}}</option>
-                </select>
-            </div>
-            <label class="frow" for="year">Año:&nbsp;</label>
+    <div class="col col-12">
+        <h1 class="text-center">
+            {{TournmentEdition}}º Torneo Gladiadores Hoops
+        </h1>
+        <h1 class="text-center">
+            Resultados
+        </h1>
+    </div>
+
+    <div class="col col-12 results-filters" *ngIf="selectedYear!=='2022'">
+        <div class="year-select">
+            <select id="yearSelect" class="year-select__control" [formControl]="year" (change)="loadResults()">
+                <option *ngFor="let yr of years" value="{{yr}}">{{yr}}</option>
+            </select>
         </div>
-        <div class="col col-12" style="vertical-align: middle;">
-            <h1 class="text-center">
-                {{TournmentEdition}}º Torneo Gladiadores Hoops
-            </h1>
-            <h1 class="text-center">
-                Resultados
-            </h1>
+
+        <!-- Shared category filter: drives brackets, standings and groups. -->
+        <div class="year-select">
+            <select id="categorySelect" class="year-select__control" [formControl]="category" (change)="selectCategory()">
+                <option *ngFor="let cat of categories" [value]="cat">{{cat | titlecase}}</option>
+            </select>
         </div>
-    </form>
+    </div>
+
+    <div class="col col-12 year-filter" *ngIf="selectedYear==='2022'">
+        <div class="year-select">
+            <select id="yearSelect" class="year-select__control" [formControl]="year" (change)="loadResults()">
+                <option *ngFor="let yr of years" value="{{yr}}">{{yr}}</option>
+            </select>
+        </div>
+    </div>
 
     <!--app-resultados *ngIf="selectedYear==='2022'"></app-resultados-->
     <app-marcadores *ngIf="selectedYear==='2022'"></app-marcadores>
     <app-awards [hidden]="selectedYear==='2022'"></app-awards>
-    <app-brackets [hidden]="selectedYear==='2022'"></app-brackets>
-    <app-standing-matches [hidden]="selectedYear==='2022'"></app-standing-matches>
-    <app-groups [hidden]="selectedYear==='2022'"></app-groups>
+    <app-brackets [hidden]="selectedYear==='2022'" [category]="selectedCategory"></app-brackets>
+    <app-standing-matches [hidden]="selectedYear==='2022'" [category]="selectedCategory"></app-standing-matches>
+    <app-groups [hidden]="selectedYear==='2022'" [category]="selectedCategory"></app-groups>
 </div>
     
 

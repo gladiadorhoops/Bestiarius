@@ -1,11 +1,27 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Match } from '../../interfaces/match';
+import { MatchTeam } from '../../interfaces/team';
+import { Gym } from '../../interfaces/gym';
 import { FormBuilder } from '@angular/forms';
 import { MatchBuilder } from '../../Builders/match-builder';
+import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
+import { S3 } from '../../aws-clients/s3';
 import { COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR, REGION } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { S3Client } from '@aws-sdk/client-s3';
+
+// A bracket round and the braketPlace keys that belong to it. The same layout
+// is shared by both the Aprendiz and Elite brackets, so the template just loops
+// over this config instead of hardcoding every match.
+interface BracketRound {
+  title: string;
+  cssClass: string;
+  places: string[];
+}
+
+const LOGO_PLACEHOLDER = 'assets/logo_gray.png';
 
 @Component({
   selector: 'app-brackets',
@@ -13,25 +29,40 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
   styleUrls: ['./brackets.component.scss']
 })
 export class BracketsComponent implements OnInit {
-  ddbClient = new DynamoDBClient({ 
+  ddbClient = new DynamoDBClient({
     region: REGION,
     credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
-  }); 
+  });
   ddb: DynamoDb =  new DynamoDb(this.ddbClient);
-  
+  s3: S3 = new S3(new S3Client({ region: REGION, credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS }));
+
   allMatches: Match[] = [];
   loading = true;
 
-  isEditing: boolean = false;
-  editingMatch: Match = {location: {id: "", name: ""}, time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   phases = ["Octavos", "Cuartos", "Semi-Finaless", "Finales"]
+
+  rounds: BracketRound[] = [
+    { title: 'Cuartos',     cssClass: 'quarterfinals', places: ['q9', 'q10', 'q11', 'q12'] },
+    { title: 'Semifinales', cssClass: 'semifinals',    places: ['s13', 's14'] },
+    { title: 'Tercer',      cssClass: 'bronze',        places: ['f22'] },
+    { title: 'Final',       cssClass: 'gold',          places: ['f15'] },
+  ];
 
   phaseMatches: {[place: string]: Match} = {}
   phaseMatchesElite: {[place: string]: Match} = {}
   showAprendiz: boolean = false;
   showElite: boolean = false;
 
-  constructor(private fb: FormBuilder, 
+  // Category to show, controlled by the shared toggle in the parent results
+  // page. Only one category's bracket is shown at a time.
+  @Input() category: 'elite' | 'aprendiz' = 'elite';
+
+  // Object URLs for downloaded team logos, keyed by team id.
+  teamLogos: {[teamId: string]: string} = {};
+  // Id of the match whose gym/date/time detail is currently expanded.
+  expandedMatchId: string | null = null;
+
+  constructor(private fb: FormBuilder,
     private matchBuilder: MatchBuilder,
     private httpService: HttpClient
     ) {
@@ -42,7 +73,7 @@ export class BracketsComponent implements OnInit {
   async ngOnInit() {
     console.log("init brackets");
     await this.loadMatches(TOURNAMENT_YEAR);
-  }  
+  }
 
   async loadMatches(year: string){
 
@@ -53,7 +84,7 @@ export class BracketsComponent implements OnInit {
 
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, year)
     console.log("matches: ", this.allMatches)
-    
+
     this.allMatches.forEach(element => {
       if(this.phases.includes(element.juego) && element.braketPlace != undefined){
         if(element.category == 'aprendiz'){
@@ -73,6 +104,55 @@ export class BracketsComponent implements OnInit {
 
     console.log("loaded bracket")
 
+    await this.loadTeamLogos();
   }
 
-}  
+  // Downloads each participating team's logo once and stores a displayable
+  // object URL. Mirrors the download-then-blob approach used in view-teams so
+  // it works with the public (unauthenticated) Cognito credentials.
+  private async loadTeamLogos() {
+    const teams = new Map<string, MatchTeam>();
+    const matches = [...Object.values(this.phaseMatches), ...Object.values(this.phaseMatchesElite)];
+    for (const match of matches) {
+      for (const team of [match.homeTeam, match.visitorTeam]) {
+        if (team?.id && team.imageType && !teams.has(team.id)) {
+          teams.set(team.id, team);
+        }
+      }
+    }
+
+    for (const [id, team] of teams) {
+      const data = await this.s3.downloadFile(TeamBuilder.getLogoFilePath(id));
+      if (data) {
+        this.teamLogos[id] = URL.createObjectURL(new Blob([data as BlobPart], { type: team.imageType }));
+      }
+    }
+  }
+
+  teamLogoUrl(team: MatchTeam | undefined): string {
+    return (team?.id && this.teamLogos[team.id]) || LOGO_PLACEHOLDER;
+  }
+
+  onLogoError(event: Event) {
+    (event.target as HTMLImageElement).src = LOGO_PLACEHOLDER;
+  }
+
+  // First three letters of the team name, used as the compact bracket label.
+  abbr(name: string | undefined): string {
+    return (name ?? '').substring(0, 3);
+  }
+
+  mapsUrl(location: Gym | undefined): string {
+    if (!location) { return ''; }
+    return `https://www.google.com/maps/search/?api=1&query_place_id=${location.place_id}&query=${location.address}`;
+  }
+
+  toggleMatch(match: Match | undefined) {
+    if (!match?.id) { return; }
+    this.expandedMatchId = this.expandedMatchId === match.id ? null : match.id;
+  }
+
+  isExpanded(match: Match | undefined): boolean {
+    return !!match?.id && this.expandedMatchId === match.id;
+  }
+}

@@ -18,6 +18,7 @@
     padding-bottom: 3%;
 }
 
+
 //
 // TOURNAMENT BRACKET
 // ---------------------------
@@ -186,16 +187,22 @@
 
 .tournament-bracket__match {
   display: flex;
+  flex-direction: column;
   width: 100%;
   background-color: $bg-color1;
-  padding: 1em;
+  padding: 0.5em 0.75em;
   border: 1px solid $bg-color1;
   border-radius: 0.5em;
-  outline: none; 
+  outline: none;
   cursor: pointer;
   transition: padding 0.2s ease-in-out, border 0.2s linear;
-  
-  &:focus {
+
+  &:focus,
+  &:hover {
+    border-color: $text-color1;
+  }
+
+  &--expanded {
     border-color: $text-color1;
   }
   
@@ -280,169 +287,81 @@
   }
 }
 
-.tournament-bracket__content {
-  display: flex;
-  
-  &::after {
-    content: ':';
-    width: 1em;
-    text-align: center;
-    padding: 0.2em 0.1em;
-    
-    //@media (min-width: 38em) {
-       order: 1;
-    //}
-  }
-  
-  & .tournament-bracket__team:first-child {
-    width: 50%;
-    order: 0;
-    text-align: right;
-    
-    //@media (min-width: 38em) and (max-width: 52em) {
-    //  align-items: flex-end;
-    //}
-    
-    & .tournament-bracket__country {
-      order: 2;
-      justify-content: flex-end;
-      
-      //@media (min-width: 24em) {
-        order: 0;
-      //} 
-      
-      //@media (min-width: 38em) and (max-width: 52em) {
-      //  flex-direction: column-reverse;
-      //  align-items: flex-end;
-      //}
-    }
-    
-    & .tournament-bracket__score {
-      order: 0;
-      
-      //@media (min-width: 24em) {
-         order: 2;
-      //}
-    }
-  }
-  
-  & .tournament-bracket__team:last-child {
-    width: 50%;
-    order: 2;
-    text-align: left;
-    
-    //@media (min-width: 38em) and (max-width: 52em) {
-    //  align-items: flex-start;
-    //}
-    
-    & .tournament-bracket__country {
-      //@media (min-width: 38em) {
-        justify-content: flex-start;
-      //}
-      
-      //@media (min-width: 38em) and (max-width: 52em) {
-      //  align-items: flex-start;
-      //}
-    }
-    
-    .tournament-bracket__code {
-      order: 1;
-    }
-  }
-}
-
-
-.tournament-bracket__table {
-  width: 100%;
-}
-
-.tournament-bracket__caption {
-  font-size: 0.8rem;
-  color: $text-color1;
-  font-weight: 300;
-  padding-bottom: 0.75em;
-  text-align: center;
-}
-
+// Each match card stacks two team rows: logo + abbreviation + score.
 .tournament-bracket__team {
   display: flex;
-  //flex-direction: row-reverse;
-  justify-content: space-between;
-  
-  //@media (min-width: 24em) {
-    flex-direction: column-reverse;
-  //}
-  //
-  //@media (min-width: 38em) {
-  //  flex-direction: column-reverse;
-  //}
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.25em 0;
+
+  & + & {
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+  }
 }
 
-.tournament-bracket__country {
-  font-size: 0.95rem;
-  display: flex;
-  margin-top: 0.5em;
-  align-items: center;
-  
-  //@media (max-width: 24em) {
-  //  margin-top: 0;
-  //}
-  
-  //@media (min-width: 38em) and (max-width: 52em) {
-  //  display: flex;
-  //  flex-direction: column;
-  //  
-  //  .tournament-bracket__code {
-  //    margin-top: 0.2em;
-  //  }
-  //}
+.tournament-bracket__team--winner {
+  font-weight: 700;
+
+  .tournament-bracket__number {
+    background-color: rgba(255, 255, 255, 0.22);
+  }
+}
+
+.tournament-bracket__logo {
+  width: 1.75em;
+  height: 1.75em;
+  object-fit: contain;
+  border-radius: 50%;
+  background-color: $bg-color2;
+  flex: 0 0 auto;
 }
 
 .tournament-bracket__code {
-  padding: 0 0.5em;
+  flex: 1 1 auto;
+  text-align: left;
   color: $text-color1;
   font-weight: 600;
   text-transform: uppercase;
   border: 0;
   text-decoration: none;
-  cursor: help;
-  transition: padding 0.2s ease-in-out;
-  
-  //@media (max-width: 24em) {
-  //  padding: 0 0.25em;
-  //}
-  //
-  //@media (min-width: 38em) and (max-width: 52em) {
-  //  padding: 0;
-  //}
-}
-
-.tournament-bracket__score {
-  display: flex;
-  align-items: center;
-  
-  .tournament-bracket__team:first-child & {
-    flex-direction: row-reverse;
-    padding-left: 0.75em;
-  }
-  
-  .tournament-bracket__team:last-child & {
-    padding-right: 0.75em;
-  }
+  cursor: pointer;
 }
 
 .tournament-bracket__number {
+  flex: 0 0 auto;
   display: inline-block;
-  padding: 0.2em 0.4em 0.2em;
-  border-bottom: 0.075em solid transparent;
+  min-width: 1.6em;
+  padding: 0.1em 0.4em;
+  text-align: center;
   font-size: 0.95rem;
-  background-color: $bg-color2;
-  border-color: spin(shade(#F5F5F5, 10%), -10);
-  
-  .tournament-bracket__team--winner & {
-    background-color: bg-color2;
-    border-color: spin(shade($bg-color1, 2%), -10);
-  }
+  font-weight: 700;
+  // Subtle, flat badge so the score reads as a value, not an editable input.
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 1em;
+}
+
+// Gym / date / time, revealed when a match card is expanded.
+.tournament-bracket__details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.8rem;
+  color: $text-color1;
+  font-weight: 300;
+  white-space: normal;
+}
+
+.tournament-bracket__matchup {
+  color: $text-color1;
+  font-weight: 600;
+}
+
+.tournament-bracket__time {
+  color: $text-color1;
 }
 
 

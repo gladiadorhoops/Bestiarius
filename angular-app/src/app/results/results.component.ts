@@ -19,6 +19,11 @@ export class ResultsComponent {
 
   years = ["2025", "2024", "2023", "2022"]
 
+  // Shared category filter for all results sections (brackets, standings,
+  // groups). Only one category is shown at a time; defaults to elite.
+  categories = ["elite", "aprendiz"]
+  selectedCategory: 'elite' | 'aprendiz' = 'elite';
+
 
   @ViewChildren(BracketsComponent) bracketChild!: QueryList<BracketsComponent>;
   @ViewChildren(StandingMatchesComponent) standingsChild!: QueryList<StandingMatchesComponent>;
@@ -26,13 +31,14 @@ export class ResultsComponent {
   @ViewChildren(AwardsComponent) awardsChild!: QueryList<AwardsComponent>;
 
   year = new FormControl((new Date().getFullYear()-1).toString());
-  
+  category = new FormControl<'elite' | 'aprendiz'>('elite');
+
 
   async ngOnInit() {
     console.log("init results");
     await this.loadResults();
-  } 
-  
+  }
+
   async loadResults(){
     this.selectedYear = this.year.value!;
     this.TournmentEdition = Number(this.selectedYear) - 2012;
@@ -40,6 +46,10 @@ export class ResultsComponent {
     if(this.selectedYear != "2022"){
       await this.showViews();
     }
+  }
+
+  selectCategory(){
+    this.selectedCategory = this.category.value!;
   }
 
   async showViews(){

@@ -102,6 +102,65 @@ height: 100%;
     color: $text-color2;
 }
 
+// Modernized collapsible sections (Brackets, Standings, Fase de Grupos):
+// rounded floating card, dark header bar with the brand-yellow title, subtle
+// shadow and a smooth hover/expand feel. Scoped so restricted-area accordions
+// are untouched.
+.modern-accordion{
+    background-color: transparent;
+    margin: 1rem 0;
+
+    .accordion-item{
+        background-color: transparent;
+        border: 0;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.25);
+    }
+
+    .accordion-header{
+        margin: 0;
+    }
+
+    .accordion-button{
+        background-color: $bg-color1;
+        color: $header-color1;
+        font-weight: 700;
+        font-size: 1.15rem;
+        letter-spacing: 0.02em;
+        padding: 1rem 1.5rem;
+        border: 0;
+        box-shadow: none;
+        transition: background-color 0.2s ease-in-out;
+
+        &:hover{
+            background-color: lighten($bg-color1, 6%);
+        }
+
+        &:not(.collapsed){
+            background-color: $bg-color1;
+            color: $header-color1;
+            box-shadow: inset 0 -3px 0 $header-color1;
+        }
+
+        &:focus{
+            outline: none;
+            box-shadow: 0 0 0 0.2rem $focus-ring-color;
+        }
+
+        // Brand-yellow chevron that rotates on expand.
+        &::after{
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fed738'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+            transition: transform 0.2s ease-in-out;
+        }
+    }
+
+    .accordion-body{
+        background-color: $bg-color2;
+        padding: 1.5rem;
+    }
+}
+
 .mainpanel{
     padding-bottom: 20%;
 }

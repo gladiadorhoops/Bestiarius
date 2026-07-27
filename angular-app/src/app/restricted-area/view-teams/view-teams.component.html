@@ -123,32 +123,32 @@
             <input name="coachId" type="text" formControlName="coachId" value="{{userId}}" hidden readonly required>
           </div>
           <div class="frow" *ngIf="userrole!='coach'">
-            <label class="frow" for="categoria">Coach:&nbsp;</label>
+            <label class="frow" for="editCoachId">Coach:&nbsp;</label>
             <div class="frow">
-              <select id="coachId" formControlName="coachId" required>
+              <select id="editCoachId" formControlName="coachId" required>
                   <option value=""></option>
                   <option *ngFor="let coach of coaches" value="{{coach.id}}">{{coach.name}}</option>
               </select>
             </div>
           </div>
 
-          <label class="frow" for="categoria">Categoria:&nbsp;</label>
+          <label class="frow" for="editCategorias">Categoria:&nbsp;</label>
           <div class="frow">
-              <select id="categorias" formControlName="category" required>
+              <select id="editCategorias" formControlName="category" required>
                   <option *ngFor="let cat of categories" value="{{cat}}">{{cat}}</option>
               </select>
           </div>
-          <label class="frow" for="equipo">Equipo:&nbsp;</label>
+          <label class="frow" for="editEquipo">Equipo:&nbsp;</label>
           <div class="frow">
-              <input type="text" id="equipo" formControlName="teamName" class="form-control" required>
+              <input type="text" id="editEquipo" formControlName="teamName" class="form-control" required>
           </div>
-          <label class="frow" for="location">Ciudad, Estado y País:&nbsp;</label>
+          <label class="frow" for="editLocation">Ciudad, Estado y País:&nbsp;</label>
           <div class="frow">
-              <input type="text" id="location" formControlName="location" class="form-control">
+              <input type="text" id="editLocation" formControlName="location" class="form-control">
           </div>
-          <label class="frow" for="captan">Capitán:&nbsp;</label>
+          <label class="frow" for="editCaptain">Capitán:&nbsp;</label>
           <div class="frow">
-            <select id="captan" formControlName="captainId">
+            <select id="editCaptain" formControlName="captainId">
               <option value=""></option>
               <option *ngFor="let player of players" value="{{player.id}}">{{player.name}}</option>
             </select>
@@ -330,8 +330,8 @@
         <hr *ngIf="!loadingReceipt">
 
         <div *ngIf="!loadingReceipt" class="frow">
-          <label for="receipt-file">Agregar archivos:&nbsp;</label>
-          <input type="file" id="receipt-file" accept="image/*" multiple (change)="onReceiptFilesSelected($event)">
+          <label for="teamReceiptFile">Agregar archivos:&nbsp;</label>
+          <input type="file" id="teamReceiptFile" accept="image/*" multiple (change)="onReceiptFilesSelected($event)">
         </div>
         <p *ngIf="receiptError" style="color: red;">{{receiptError}}</p>
         <div *ngIf="receiptFiles.length > 0" class="mt-3">

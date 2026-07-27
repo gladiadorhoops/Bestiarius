@@ -51,7 +51,7 @@
                             <th class="groupLast"> <a [routerLink]="" (click)="sortTeamsByCoach()">Coach</a></th>
                         </tr>
                         <tr class="clickable-row" *ngFor="let team of teams" [routerLink]="" (click)="viewPlayers(team.id)">
-                            <td><u>{{team.name}}</u></td>
+                            <td><img [src]="teamLogo(team.id)" class="team-list-logo" alt=""><u>{{team.name}}</u></td>
                             <td>{{team.category}}</td>
                             <td>{{team.location}}</td>
                             <td>{{team.coachName}}</td>
