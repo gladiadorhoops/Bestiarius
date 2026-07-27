@@ -36,6 +36,14 @@
 }
 
 
+// Tournament edition shown to the right of the year/category selectors.
+.edition-label {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $bg-color2;
+    margin-left: auto;
+}
+
 // Modern pill-style dropdown with a custom caret.
 .year-select {
     position: relative;

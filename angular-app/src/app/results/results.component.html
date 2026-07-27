@@ -1,9 +1,6 @@
 <div class="row justify-content-md-center padded-page">
     <div class="col col-12">
         <h1 class="text-center">
-            {{TournmentEdition}}º Torneo Gladiadores Hoops
-        </h1>
-        <h1 class="text-center">
             Resultados
         </h1>
     </div>
@@ -21,6 +18,8 @@
                 <option *ngFor="let cat of categories" [value]="cat">{{cat | titlecase}}</option>
             </select>
         </div>
+
+        <span class="edition-label">{{TournmentEdition}}º Torneo</span>
     </div>
 
     <div class="col col-12 year-filter" *ngIf="selectedYear==='2022'">
@@ -29,6 +28,8 @@
                 <option *ngFor="let yr of years" value="{{yr}}">{{yr}}</option>
             </select>
         </div>
+
+        <span class="edition-label">{{TournmentEdition}}º Torneo</span>
     </div>
 
     <!--app-resultados *ngIf="selectedYear==='2022'"></app-resultados-->
