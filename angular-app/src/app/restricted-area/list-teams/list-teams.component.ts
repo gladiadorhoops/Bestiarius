@@ -270,7 +270,7 @@ export class ListTeamsComponent {
 
       const result = await this.s3.downloadLiabilityWaiverTemplate();
       if (!result) {
-        this.waiverTemplateError = "Carta responsiva no esta disponible todavia intente mas tarde";
+        this.waiverTemplateError = "Carta responsiva no esta disponible todavia. Intente mas tarde";
         this.loadingWaiverTemplate = false;
         return;
       }
