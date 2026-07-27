@@ -41,6 +41,7 @@ export class ListPlayersComponent {
     players: Player[] = [];
 
     // Filters
+    filtersExpanded = false;
     positions = PlayerBuilder.positions;
     filterName = "";
     filterCurp = "";
@@ -186,6 +187,23 @@ export class ListPlayersComponent {
       if (!birthday) return "";
       const year = birthday.slice(0, 4);
       return /^\d{4}$/.test(year) ? year : "";
+    }
+
+    toggleFilters(): void {
+      this.filtersExpanded = !this.filtersExpanded;
+    }
+
+    // Number of active filters, shown as a badge on the collapsed toggle.
+    get activeFilterCount(): number {
+      let count = 0;
+      if (this.filterName.trim()) count++;
+      if (this.filterCurp.trim()) count++;
+      if (this.filterTeam) count++;
+      if (this.positions.some(pos => this.filterPositions[pos])) count++;
+      if (this.filterHeightMin.trim() || this.filterHeightMax.trim()) count++;
+      if (this.filterWeightMin.trim() || this.filterWeightMax.trim()) count++;
+      if (this.filterYearMin.trim() || this.filterYearMax.trim()) count++;
+      return count;
     }
 
     toggleFilterPosition(position: string): void {

@@ -23,7 +23,7 @@
             <th *ngIf="userrole != 'coach'" class="col col-2"> <a [routerLink]="" (click)="sortTeamsByCoach()">Coach</a></th>
             <th class="col col-2 groupLast">Pago</th>
         </tr>
-        <tr class="row player-row" *ngFor="let team of teams" [routerLink]="" (click)="viewTeam(team.id)">
+        <tr class="row clickable-row" *ngFor="let team of teams" [routerLink]="" (click)="viewTeam(team.id)">
             <td [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-4': userrole === 'coach'}"><img [src]="teamLogo(team.id)" class="team-list-logo"><u>{{team.name}}</u></td>
             <td class="col col-2">{{team.category}}</td>
             <td [ngClass]="{'col': true, 'col-3': userrole != 'coach', 'col-4': userrole === 'coach'}">{{team.location}}</td>

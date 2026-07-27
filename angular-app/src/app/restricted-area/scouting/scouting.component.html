@@ -201,7 +201,7 @@
                             <th class="col col-6">Equipo</th>
                             <th class="col col-6">Categoria</th>
                         </tr>
-                        <tr class="row player-row" *ngFor="let team of filteredTeams" [routerLink]="" (click)="edit(team)">
+                        <tr class="row clickable-row" *ngFor="let team of filteredTeams" [routerLink]="" (click)="edit(team)">
                             <td class="col col-6"><img [src]="teamLogo(team.id)" class="team-list-logo"><u>{{team.name}}</u></td>
                             <td class="col col-6">{{team.category}}</td>
                         </tr>

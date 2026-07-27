@@ -16,6 +16,6 @@
 
     &:focus{
         border-color: $header-color1;
-        box-shadow: 0 0 0 0.2rem rgba(254, 215, 56, 0.35);
+        box-shadow: 0 0 0 0.2rem $focus-ring-color;
     }
 }
