@@ -34,6 +34,9 @@ export class EvaluacionComponent implements OnChanges {
   // Category and team are driven by the shared filters in the parent (scouting).
   @Input() category: string | null | undefined = null;
   @Input() team: string | null | undefined = null;
+  // Optional pre-selected player (e.g. clicked from the scouting roster). When
+  // set, the component auto-selects it and loads its existing report.
+  @Input() player: Player | null | undefined = null;
 
   scout_id = this.authService.getUserId();
   scout_name = this.authService.getUserName();
@@ -137,6 +140,11 @@ export class EvaluacionComponent implements OnChanges {
       this.evaluationForm.controls['equipo'].setValue(this.team ?? '');
       await this.loadPlayers();
     }
+    // A pre-selected player (e.g. clicked from the scouting roster) auto-selects
+    // once its team's players are loaded, so the report opens ready to fill in.
+    if (changes['player'] && this.player) {
+      await this.selectPlayer(this.player);
+    }
   }
 
   async onSubmit() {
@@ -170,6 +178,17 @@ export class EvaluacionComponent implements OnChanges {
     this.openPopup();
   }
 
+  // Rebuild the form from defaults so no previous player's skills linger, while
+  // re-seeding the identity fields (scout, category, team). Called whenever the
+  // team/category context changes and no report is loaded yet.
+  private resetReportForm() {
+    this.evaluationForm = this.fb.group(ReporteBuilder.defaultForm);
+    this.evaluationForm.controls['scoutId'].setValue(this.scout_id);
+    this.evaluationForm.controls['scoutname'].setValue(this.scout_name);
+    this.evaluationForm.controls['categoria'].setValue(this.category ?? '');
+    this.evaluationForm.controls['equipo'].setValue(this.team ?? '');
+  }
+
   async loadTeams() {
     this.teams = []
     this.selectedCategoria = this.evaluationForm.value.categoria!
@@ -184,24 +203,25 @@ export class EvaluacionComponent implements OnChanges {
     this.playerFilter = "";
     this.showPlayerList = false;
     this.imageUrl = "assets/no-avatar.png"
+    this.resetReportForm();
   }
 
   async loadPlayers() {
     var selectedTeam = this.evaluationForm.value.equipo;
-    this.teams.forEach(
-      async (team) => {
-        if(team.name == selectedTeam){
-          this.teamplayers = await this.playerBuilder.getPlayersByTeam(this.ddb, team.id!).then(
-            (players) => {
-              return players.filter(p => p.year == TOURNAMENT_YEAR)
-            }
-          )
-        }
-    });
+    // Await the fetch (not a fire-and-forget forEach) so teamplayers is
+    // populated before any pre-selected player is resolved.
+    const team = this.teams.find(t => t.name == selectedTeam);
+    if (team) {
+      const players = await this.playerBuilder.getPlayersByTeam(this.ddb, team.id!);
+      this.teamplayers = players.filter(p => p.year == TOURNAMENT_YEAR);
+    } else {
+      this.teamplayers = [];
+    }
     this.selectedPlayer = {id: '', team: '', name:'',age:"",category:'', height:'',weight:'',position:'',number:'',curp:'',liabilityWaiver:'',birthday:''};
     this.playerFilter = "";
     this.showPlayerList = false;
     this.imageUrl = "assets/no-avatar.png"
+    this.resetReportForm();
   }
 
   async selectPlayer(player: Player) {

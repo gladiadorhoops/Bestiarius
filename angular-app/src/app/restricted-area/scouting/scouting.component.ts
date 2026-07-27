@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
 import { Match } from '../../interfaces/match';
 import { FormBuilder } from '@angular/forms';
 import { MatchBuilder } from '../../Builders/match-builder';
@@ -12,9 +11,6 @@ import { GymBuilder } from 'src/app/Builders/gym-builder';
 import { PlayerBuilder } from 'src/app/Builders/player-builder';
 import { Player, PlayerWithPhoto } from 'src/app/interfaces/player';
 import { S3 } from 'src/app/aws-clients/s3';
-import { Skill, Skills } from 'src/app/interfaces/reporte';
-import { ReporteBuilder } from 'src/app/Builders/reporte-builder';
-import { AuthService } from 'src/app/auth.service';
 import { filterMatches } from 'src/app/utils/utils';
 
 
@@ -26,9 +22,6 @@ import { filterMatches } from 'src/app/utils/utils';
 export class ScoutingComponent implements OnInit {
   @Input() ddb!: DynamoDb;
   @Input() s3!: S3;
-
-  scout_id = this.authService.getUserId();
-  scout_name = this.authService.getUserName();
 
   days: number[] = TOURNAMENT_DAYS;
   allMatches: Match[] = [];
@@ -52,35 +45,14 @@ export class ScoutingComponent implements OnInit {
   loading: boolean = true;
   editingTeam: MatchTeamWithPhoto = {id: "", name: "", category: "", imageUrl: ""};
   displayEvalPlayer = "none";
+  // Player clicked from the roster; passed to the shared <app-evaluacion>.
   selectedPlayer: PlayerWithPhoto | undefined;
-  displayPhotoPopup = "none";
-  displayStyle = "none";
 
-
-  positions: Skill[] = Skills.getPosiciones()
-  tiros: Skill[] = Skills.getTiros()
-  pases: Skill[] = Skills.getPases()
-  defensas: Skill[] = Skills.getDefensas()
-  botes: Skill[] = Skills.getBotes()
-  jugadores: Skill [] = Skills.getJugadores()
-  estilos: Skill[] = Skills.getEstilos()
-  evalGens: Skill[] = Skills.getEvaluaciones()
-  nominaciones: Skill[] = Skills.getNominaciones()
-  evaluationForm =  this.fb.group(ReporteBuilder.defaultForm);
-  submitReportMessage = "Evaluacion guardada!"
-
-  
-  imgBuffer: ArrayBuffer|undefined;
-  imgType: string|undefined;
-
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
     private matchBuilder: MatchBuilder,
     private teamBuilder: TeamBuilder,
     private gymBuilder: GymBuilder,
     private playerBuilder: PlayerBuilder,
-    private reporteBuilder: ReporteBuilder,
-    private authService: AuthService,
-    private httpService: HttpClient
     ) {
   }
 
@@ -202,45 +174,6 @@ export class ScoutingComponent implements OnInit {
     this.filteredMatches = filterMatches(matches, day, gym, team);
   }
 
-  async onSubmit() {
-    // TODO: Use EventEmitter with form value
-    console.log(this.evaluationForm.value);
-
-    try {
-      await this.reporteBuilder.submit(this.ddb, this.evaluationForm)
-      this.submitReportMessage = "Evaluación guardada"
-    } catch (err) {
-      this.submitReportMessage = `Error guardando evaluación. Contacta a Paco.\n${err}`
-      console.error("Error Submitting report")
-    }
-    
-    this.openPopup();
-  }
-
-  async savePlayerNumber(number: string) {
-    if (!this.selectedPlayer?.id) return;
-    try {
-      await this.playerBuilder.updatePlayerNumber(this.ddb, this.selectedPlayer.id, number);
-      this.selectedPlayer.number = number;
-      // Keep the roster list in sync so the card badge reflects the new number.
-      const p = this.players.find(pl => pl.id == this.selectedPlayer!.id);
-      if (p) p.number = number;
-      this.submitReportMessage = "Número actualizado";
-    } catch (err) {
-      this.submitReportMessage = `Error guardando número. Contacta a Paco.\n${err}`;
-      console.error("Error updating player number", err);
-    }
-    this.openPopup();
-  }
-
-  openPopup() {
-    this.displayStyle = "block";
-  }
-  closePopup() {
-    this.displayStyle = "none";
-  }
-  
-
   async scout(match:Match){
     this.scoutingMatch = match;
     if(match.homePoints){
@@ -314,64 +247,6 @@ export class ScoutingComponent implements OnInit {
     this.displayEvalPlayer = "none"
     this.isEvaluatingPlayer = false
     this.selectedPlayer = undefined
-  }
-
-  confirm(){
-    this.closeEvalPopup()
-  }
-
-  onFileSelected(event: any): void {
-    console.log("Selected File Changed")
-    const file: File = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file);
-      reader.onload = async () => {
-        try {
-          this.imgBuffer = reader.result as ArrayBuffer
-          this.imgType = file.type
-          // set image preview locally
-          this.selectedPlayer!.imageUrl = URL.createObjectURL(file);
-          if(this.selectedPlayer!.imageType){
-            this.openPhotoPopup()
-          }
-          else {
-            await this.confirmReplacePhoto()
-          }
-          
-        } catch (e) {
-          console.log("error", e);
-        }
-
-      };
-    } else {
-      console.log("No file selected.");
-    }
-  }
-
-  openPhotoPopup() {
-    this.displayPhotoPopup = "block";
-  }
-  async closePhotoPopup(){
-    await this.getPlayerImgAsBuffer(this.selectedPlayer!);
-    this.displayPhotoPopup = "none";
-  }
-  async confirmReplacePhoto(){
-    try{
-      await this.s3.uploadFile(
-        this.selectedPlayer!.id,
-        Buffer.from(this.imgBuffer!),
-        this.imgType!,
-      );
-      // update player entry with image
-      if(this.selectedPlayer!.imageType != this.imgType!){
-        this.selectedPlayer!.imageType = this.imgType!
-        await this.playerBuilder.updatePlayerImageType(this.ddb, this.selectedPlayer!.id, this.imgType!)
-      }
-    } catch (e) {
-      console.log("error", e);
-    }
-    this.displayPhotoPopup = "none";
   }
 
   team: Team | undefined;
