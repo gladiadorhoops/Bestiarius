@@ -17,7 +17,17 @@ const REPORT_PATH = `${REPORT_DATA}/${TOURNAMENT_PREFIX}${TOURNAMENT_YEAR}`
 const IMAGE_PATH = "images"
 const LIABILITY_WAIVER_PATH = "liability-waiver"
 
-export { LIABILITY_WAIVER_PATH };
+// Blank liability-waiver template coaches hand out to players. Stored under
+// the liability-waiver path as `liability-waiver-<year>.pdf`, alongside the
+// per-player signed waivers.
+const LIABILITY_WAIVER_TEMPLATE_KEY = `${LIABILITY_WAIVER_PATH}/liability-waiver-${TOURNAMENT_YEAR}.pdf`
+
+// Public CloudFront distribution that exposes the blank waiver template at the
+// root, keyed only by year (e.g. `liability-waiver-2026.pdf`).
+const LIABILITY_WAIVER_CDN_DOMAIN = "https://d21i3xrq1b6i2p.cloudfront.net"
+const LIABILITY_WAIVER_TEMPLATE_CDN_URL = `${LIABILITY_WAIVER_CDN_DOMAIN}/liability-waiver-${TOURNAMENT_YEAR}.pdf`
+
+export { LIABILITY_WAIVER_PATH, LIABILITY_WAIVER_TEMPLATE_KEY };
 
 
 export enum ReportType {
@@ -234,6 +244,40 @@ export class S3 {
             console.error('Error downloading file:', err);
             return undefined;
         }
+    }
+
+    /**
+     * Download the blank liability-waiver template (bucket root, keyed by year).
+     * Returns the file bytes + content type, or undefined when the template
+     * for the current tournament year has not been uploaded yet.
+     */
+    async downloadLiabilityWaiverTemplate(): Promise<{data: Uint8Array, contentType: string} | undefined> {
+        const input: GetObjectCommandInput = {
+            Bucket: GLADIADORES_BUCKET_NAME,
+            Key: LIABILITY_WAIVER_TEMPLATE_KEY
+        };
+
+        try {
+            const response = await this.client.send(new GetObjectCommand(input));
+            const fileContent = await response.Body?.transformToByteArray();
+
+            if (fileContent) {
+                return {data: fileContent, contentType: response.ContentType ?? 'application/pdf'};
+            }
+
+            return undefined;
+        } catch (err) {
+            console.error('Error downloading liability waiver template:', err);
+            return undefined;
+        }
+    }
+
+    /**
+     * Public CloudFront URL for the blank liability-waiver template so a coach
+     * can share a permanent download link (keyed by year).
+     */
+    getLiabilityWaiverTemplateUrl(): string {
+        return LIABILITY_WAIVER_TEMPLATE_CDN_URL;
     }
 
     static async build(credentials: AwsCredentialIdentity | Provider<AwsCredentialIdentity>): Promise<S3> {
