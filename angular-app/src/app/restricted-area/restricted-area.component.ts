@@ -36,7 +36,6 @@ export class RestrictedAreaComponent {
     marcadoresView: boolean = false;
     evaluarView: boolean = false;
     resultadosView: boolean = false;
-    matchGenView = false;
     matchEditView = false;
     scoutingView = false;
     addTeamView = false;
@@ -143,8 +142,7 @@ export class RestrictedAreaComponent {
         // includes "Evaluar Partido" so they can navigate back to it.
         this.menuItems = this.menuItems.concat([
           {value: "addGym", text: "Add Gym"},
-          {value: "addMatch", text: "Add Match"},
-          {value: "editMatch", text: "Edit Match"},
+          {value: "editMatch", text: "Partidos"},
           {value: "scouting", text: "Scouting"},
           {value: "listPlayers", text: "Jugadores Registrados"},
           {value: "viewUsers", text: "Usuarios Registrados"}
@@ -208,11 +206,7 @@ export class RestrictedAreaComponent {
         case 'addTeam': { 
            this.showAddTeam()
            break; 
-        } 
-        case 'addMatch': { 
-           this.showMatchGen()
-           break; 
-        } 
+        }
         case 'editMatch': { 
            this.showMatchEdit()
            break; 
@@ -244,7 +238,6 @@ export class RestrictedAreaComponent {
     this.marcadoresView = false;
     this.evaluarView = false;
     this.resultadosView = false;
-    this.matchGenView = false;
     this.matchEditView = false;
     this.addTeamView = false;
     this.addGymView = false;
@@ -278,10 +271,6 @@ export class RestrictedAreaComponent {
   showAddGym(){
     this.hideAll();
     this.addGymView = true;
-  }
-  showMatchGen(){
-    this.hideAll();
-    this.matchGenView = true;
   }
   showMatchEdit(){
     this.hideAll();

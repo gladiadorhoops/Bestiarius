@@ -18,6 +18,7 @@ import { filterMatches } from 'src/app/utils/utils';
 })
 export class MatchEditorComponent implements OnInit {
   @Input() ddb!: DynamoDb;
+
   
   days: number[] = TOURNAMENT_DAYS;
   allMatches: Match[] = [];
@@ -59,7 +60,7 @@ export class MatchEditorComponent implements OnInit {
 
   async ngOnInit() {
     await this.loadMatches()
-  }  
+  }
 
   async loadMatches(){
     this.gyms = await this.gymBuilder.getListOfGyms(this.ddb, TOURNAMENT_YEAR);
@@ -68,6 +69,7 @@ export class MatchEditorComponent implements OnInit {
     this.filteredMatches = this.allMatches;
     this.filteredTeams = this.teams;
     this.applyCategoryFilter();
+    this.filterTeamsNewMatch()
     this.loading = false;
   }
 
@@ -145,5 +147,77 @@ export class MatchEditorComponent implements OnInit {
     this.isEditing = false;
     this.marcadorForm.reset();
   }
+
+
+  matchForm = this.fb.group({
+    categoria: 'aprendiz',
+    hometeam: null,
+    visitorteam: null,
+    gym: null,
+    day: null,
+    time: null,
+    juego: null,
+    bracket: null
+  });
+
+newMatchTeams: Team[] = [];
+selectedCategoria = "";
+phases = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4", "Octavos", "Cuartos", "Semi-Finaless", "Finales", "Standing"]
+brackets = ["grupos", "o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "q9", "q10", "q11", "q12", "s13", "s14", "f15", "p16", "p17", "p18", "p19", "p20", "p21", "f22" ]
+displayStyle = "none";
+popUpMsg = "";
+newMatchExpanded = false;
+
+async loadTeams() {
+}
+
+async filterTeamsNewMatch(){
+  this.newMatchTeams= this.teams;
+
+  let cat = "";
+  if(this.matchForm.value.categoria != null){
+    cat = this.matchForm.value.categoria;
+  }
+  if(cat != ""){
+    let teams : Team[] = []
+    this.newMatchTeams.forEach(
+      async (team) => {
+        if(team.category == cat){
+          teams.push(team);
+        }
+      }
+    );
+    this.newMatchTeams = teams;
+  }
+}
+
+async onSubmitNewTeam(){
+  try {
+    await this.matchBuilder.addEpmtyMatch(this.ddb, this.matchForm.value.categoria!, this.matchForm.value.juego!, this.matchForm.value.bracket!, this.matchForm.value.hometeam!, this.matchForm.value.visitorteam!, this.matchForm.value.day!, this.matchForm.value.time!, this.matchForm.value.gym!)
+    console.warn ('Saved sucessfully!')
+    this.popUpMsg = "Partido Registrado!";
+    this.openPopup();
+    this.matchForm.reset();
+
+  } catch (err) {
+    console.error("Error Submitting report")
+    this.popUpMsg = "Error! Partido no registrado. Intenta otra vez.";
+    this.openPopup();
+  }
+}
+
+
+
+toggleFilters(): void {
+  this.newMatchExpanded = !this.newMatchExpanded;
+}
+
+openPopup() {
+  this.displayStyle = "block";
+}
+closePopup() {
+  this.displayStyle = "none";
+}
+
 
 }  
