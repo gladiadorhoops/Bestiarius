@@ -73,6 +73,11 @@ export class ViewTeamsComponent {
   selectedCaptain:string = "";
   teamLogoUrl: string | ArrayBuffer | null | undefined = "assets/logo_gray.png";
 
+  // True once a real logo has been uploaded (i.e. not the gray placeholder).
+  get hasLogo(): boolean {
+    return !!this.teamLogoUrl && this.teamLogoUrl !== "assets/logo_gray.png";
+  }
+
 
   receiptFiles: {data: Buffer, contentType: string, preview: string}[] = [];
   existingReceiptUrls: string[] = [];

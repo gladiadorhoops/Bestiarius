@@ -4,6 +4,82 @@
     --bs-gutter-x: 0%;
 }
 
+// Team logo upload slot: a shield/crest-shaped frame with a label and helper
+// text, so coaches see clearly that this is the team logo (not a personal photo).
+.team-logo-upload{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0 auto 1rem;
+    max-width: 260px;
+
+    &__label{
+        color: $bg-color2;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    &__frame{
+        position: relative;
+        width: 200px;
+        height: 200px;
+        border-radius: 0.75rem;
+        background-color: $bg-color15;
+        border: 2px dashed rgba(255, 255, 255, 0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // Once a real logo is uploaded, drop the empty-slot styling.
+        &--filled{
+            background-color: transparent;
+            border: none;
+        }
+    }
+
+    &__img{
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+    }
+
+    &__spinner{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+    }
+
+    &__camera{
+        position: absolute;
+        bottom: 0.4rem;
+        right: 0.4rem;
+        z-index: 2;
+        background-color: $header-color1;
+        color: $bg-color1;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    &__hint{
+        color: $bg-color2;
+        opacity: 0.75;
+        font-size: 0.75rem;
+        text-align: center;
+        max-width: 240px;
+    }
+}
+
 // Team attributes shown as a clean info card instead of a bordered table.
 .info-card{
     background-color: $bg-color15;
