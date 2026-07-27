@@ -26,6 +26,9 @@ export class StandingMatchesComponent implements OnInit {
   standingMatches: Match[] = []
   standingMatchesElite: Match[] = []
 
+  // Category to show, controlled by the shared toggle in the parent results page.
+  @Input() category: 'elite' | 'aprendiz' = 'elite';
+
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
     private httpService: HttpClient

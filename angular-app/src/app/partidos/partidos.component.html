@@ -17,10 +17,19 @@
             Próximamente, estad atentos.
         </h2>
     </div>
-    
+
+    <!-- Shared category filter: drives brackets, standings and groups. -->
+    <div class="col col-12 results-filters" *ngIf="showBrackets||showStandings||showGroups">
+        <div class="year-select">
+            <select id="categorySelect" class="year-select__control" [formControl]="category" (change)="selectCategory()">
+                <option *ngFor="let cat of categories" [value]="cat">{{cat | titlecase}}</option>
+            </select>
+        </div>
+    </div>
+
     <app-awards *ngIf="showAwards"></app-awards>
-    <app-brackets *ngIf="showBrackets"></app-brackets>
-    <app-standing-matches *ngIf="showStandings"></app-standing-matches>
-    <app-groups *ngIf="showGroups"></app-groups>
+    <app-brackets *ngIf="showBrackets" [category]="selectedCategory"></app-brackets>
+    <app-standing-matches *ngIf="showStandings" [category]="selectedCategory"></app-standing-matches>
+    <app-groups *ngIf="showGroups" [category]="selectedCategory"></app-groups>
 </div>
 </div>

@@ -1,5 +1,13 @@
 @import 'colors.scss';
 
+// The accordion body is light, so the shared .match-card (translucent light
+// background + light text) would be invisible. Give it the same solid dark
+// background the brackets use so the content reads clearly.
+:host ::ng-deep .match-card{
+    background-color: $bg-color1;
+    border-color: $bg-color1;
+}
+
 .filterPadding{
     padding: 2%;
 }

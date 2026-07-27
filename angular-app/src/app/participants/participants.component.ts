@@ -5,7 +5,9 @@ import { TeamBuilder } from '../Builders/team-builder';
 import { Team } from '../interfaces/team';
 import { PlayerBuilder } from '../Builders/player-builder';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { S3Client } from '@aws-sdk/client-s3';
 import { COGNITO_UNAUTHENTICATED_CREDENTIALS, REGION } from '../aws-clients/constants';
+import { S3 } from '../aws-clients/s3';
 import { Player } from '../interfaces/player';
 import { FeatureFlag } from '../interfaces/feature-flag';
 import { FeatureFlagBuilder } from '../Builders/feature-flag-builder';
@@ -30,6 +32,7 @@ export class ParticipantsComponent implements OnInit {
   
   
   ddb: DynamoDb =  new DynamoDb(this.ddbClient);
+  s3: S3 = new S3(new S3Client({ region: REGION, credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS }));
   loading = true;
   available = false;
   teams: Team[] = [];
@@ -37,13 +40,42 @@ export class ParticipantsComponent implements OnInit {
   players: Player[] = [];
   displayPlayers = "none;"
 
+  // Team logos loaded from S3, keyed by team id, so the list can show a small
+  // logo before each team name (same as the registered-teams table).
+  teamLogos: Map<string, string | ArrayBuffer | null | undefined> = new Map();
+
   featureFlags: FeatureFlag | undefined = undefined
 
 
   async refreshTeams(){
-    
+
     this.teams = await this.teamBuilder.getTeams(this.ddb);
     this.sortTeamsByCategory()
+    this.loadTeamLogos();
+  }
+
+  // Fetch each team's logo from S3 into the teamLogos map. Falls back to the
+  // gray placeholder while loading or when a team has no logo.
+  loadTeamLogos(){
+    this.teams.forEach(team => {
+      if (!this.teamLogos.has(team.id)) {
+        this.teamLogos.set(team.id, "assets/logo_gray.png");
+      }
+      if (team.imageType) {
+        this.s3.downloadFile(TeamBuilder.getLogoFilePath(team.id)).then(data => {
+          if (data) {
+            const blob = new Blob([data as BlobPart], { type: team.imageType });
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onload = () => this.teamLogos.set(team.id, reader.result);
+          }
+        });
+      }
+    });
+  }
+
+  teamLogo(teamId: string): string | ArrayBuffer | null | undefined {
+    return this.teamLogos.get(teamId) ?? "assets/logo_gray.png";
   }
 
   async ngOnInit() {

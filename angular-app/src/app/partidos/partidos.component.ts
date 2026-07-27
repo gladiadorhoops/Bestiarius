@@ -1,4 +1,5 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { BracketsComponent } from '../results/brackets/brackets.component';
 import { StandingMatchesComponent } from '../results/standing-matches/standing-matches.component';
 import { GroupsComponent } from '../results/groups/groups.component';
@@ -37,6 +38,12 @@ export class PartidosComponent {
   showGroups = false;
   showAwards = false;
 
+  // Shared category filter for brackets, standings and groups. Only one
+  // category is shown at a time; defaults to elite.
+  categories = ["elite", "aprendiz"]
+  selectedCategory: 'elite' | 'aprendiz' = 'elite';
+  category = new FormControl<'elite' | 'aprendiz'>('elite');
+
   @ViewChildren(BracketsComponent) bracketChild!: QueryList<BracketsComponent>;
   @ViewChildren(StandingMatchesComponent) standingsChild!: QueryList<StandingMatchesComponent>;
   @ViewChildren(GroupsComponent) groupsChild!: QueryList<GroupsComponent>;
@@ -52,6 +59,10 @@ export class PartidosComponent {
   async loadResults(){
     this.loading = false;
     await this.showViews();
+  }
+
+  selectCategory(){
+    this.selectedCategory = this.category.value!;
   }
 
   async showViews(){

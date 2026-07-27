@@ -1,5 +1,5 @@
 <div class="row justify-content-md-center">
-    <div class="accordion accordion-flush" id="accordionFlushExample">
+    <div class="accordion accordion-flush modern-accordion" id="accordionFlushExample">
         <div class="accordion-item">
             <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseGps" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -11,56 +11,60 @@
                 <div class="spinner-border text-light" role="status" *ngIf="loading">
                     <span class="sr-only">Loading...</span>
                 </div>
-                <div class="row" *ngIf="!loading">
-                    <div class="col col-12">
-                        <div class="row text-center">
-                            <h2>Aprendiz</h2>
+
+                <!-- Reusable read-only match card, same format as scouting/standings. -->
+                <ng-template #matchCard let-match>
+                    <div class="match-card match-card--readonly mb-3">
+                        <!-- Category tag pinned top-left. -->
+                        <span class="match-badge">{{match.category}}</span>
+
+                        <div class="match-card__meta">
+                            <!-- Primary line: which group + when. -->
+                            <div class="match-card__title">
+                                <span class="match-game">{{match.juego}}</span>
+                                <span class="match-time"><i class="fas fa-clock"></i>&nbsp;{{match.time}}</span>
+                            </div>
+                            <!-- Secondary line: where (gym) — clickable. -->
+                            <a class="match-location" target="_blank" rel="noopener"
+                               href="https://www.google.com/maps/search/?api=1&query_place_id={{match.location.place_id}}&query={{match.location.address}}">
+                                <i class="fas fa-location-dot"></i>&nbsp;{{match.location.name}}
+                            </a>
                         </div>
-                        <div class="row">
-                            <div class="col col-12 col-md-6" *ngFor="let group of groups">
-                                <h3 class="text-center"  *ngIf="groupMatches[group].length > 0">{{group}}</h3>
-                                <div class="row marcadorItem" *ngFor="let match of groupMatches[group]; let idx=index" >
-                                    
-                                    <div class="col col-12 text-center">{{match.category}}</div> 
-                                    <div class="col col-2"></div> <!--#{{idx+1}}</div-->
-                                    <div class="col col-8" > 
-                                        <div class="row">{{match.homeTeam.name}}</div>
-                                        <div class="row">{{match.visitorTeam.name}}</div>
-                                    </div>
-                                    <div class="col col-2">
-                                        <div class="row">{{match.homePoints}}</div>
-                                        <div class="row">{{match.visitorPoints}}</div>
-                                    </div>
-                                    <div class="col col-12 text-center">
-                                        <a href="https://www.google.com/maps/search/?api=1&query_place_id={{match.location.place_id}}&query={{match.location.address}}">{{match.location.name}}</a> - {{match.time}}
-                                    </div>
-                                </div>
+
+                        <div class="match-card__scoreboard">
+                            <div class="match-team">
+                                <div class="match-team__name">{{match.homeTeam.name}}</div>
+                                <div class="match-score match-score--static">{{match.homePoints}}</div>
+                            </div>
+                            <span class="match-vs">×</span>
+                            <div class="match-team">
+                                <div class="match-team__name">{{match.visitorTeam.name}}</div>
+                                <div class="match-score match-score--static">{{match.visitorPoints}}</div>
                             </div>
                         </div>
                     </div>
-                    <div class="col col-12">
-                        <div class="row text-center">
-                            <h2>Elite</h2>
+                </ng-template>
+
+                <div class="row" *ngIf="!loading">
+                    <div class="col col-12" *ngIf="category === 'aprendiz'">
+                        <div class="row">
+                            <div class="col col-12 col-md-6" *ngFor="let group of groups">
+                                <h3 class="text-center"  *ngIf="groupMatches[group].length > 0">{{group}}</h3>
+                                <ng-container *ngFor="let match of groupMatches[group]"
+                                    [ngTemplateOutlet]="matchCard"
+                                    [ngTemplateOutletContext]="{ $implicit: match }">
+                                </ng-container>
+                            </div>
                         </div>
+                    </div>
+                    <div class="col col-12" *ngIf="category === 'elite'">
                         <div class="row">
                             <div class="col col-12 col-md-6" *ngFor="let group of groups" >
                                 <h3 class="text-center" *ngIf="groupMatchesElite[group].length > 0">{{group}}</h3>
-                                <div class="row marcadorItem" *ngFor="let match of groupMatchesElite[group]; let idx=index" >
-                                    
-                                    <div class="col col-12 text-center">{{match.category}}</div>
-                                    <div class="col col-2"></div>
-                                    <div class="col col-8" > 
-                                        <div class="row">{{match.homeTeam.name}}</div>
-                                        <div class="row">{{match.visitorTeam.name}}</div>
-                                    </div>
-                                    <div class="col col-2">
-                                        <div class="row">{{match.homePoints}}</div>
-                                        <div class="row">{{match.visitorPoints}}</div>
-                                    </div>
-                                    <div class="col col-12 text-center">
-                                        <a href="https://www.google.com/maps/search/?api=1&query_place_id={{match.location.place_id}}&query={{match.location.address}}">{{match.location.name}}</a> - {{match.time}}
-                                    </div>
-                                </div>
+                                <ng-container *ngFor="let match of groupMatchesElite[group]"
+                                    [ngTemplateOutlet]="matchCard"
+                                    [ngTemplateOutletContext]="{ $implicit: match }">
+                                </ng-container>
                             </div>
                         </div>
                     </div>

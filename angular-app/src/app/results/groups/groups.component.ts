@@ -28,6 +28,9 @@ export class GroupsComponent implements OnInit {
   groupMatches: {[group: string]: Match[]} = {}
   groupMatchesElite: {[group: string]: Match[]} = {}
 
+  // Category to show, controlled by the shared toggle in the parent results page.
+  @Input() category: 'elite' | 'aprendiz' = 'elite';
+
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
     private httpService: HttpClient
