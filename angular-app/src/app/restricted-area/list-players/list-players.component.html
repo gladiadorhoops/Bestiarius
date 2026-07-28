@@ -91,27 +91,27 @@
     </form>
 
     <div class="scroll-container">
-        <div style="min-width: 600px;">
+        <div style="min-width: 750px;">
             <table class="row modern-table">
                 <tr class="row">
                     <th class="col col-1">#</th>
                     <th class="col col-3"> <a [routerLink]="" (click)="sortBy('name')">Jugador{{sortIndicator('name')}}</a></th>
                     <th class="col col-2"> <a [routerLink]="" (click)="sortBy('team')">Equipo{{sortIndicator('team')}}</a></th>
                     <th class="col col-2"> <a [routerLink]="" (click)="sortBy('category')">Categoria{{sortIndicator('category')}}</a></th>
-                    <th class="col col-1"> <a [routerLink]="" (click)="sortBy('height')">Altura{{sortIndicator('height')}}</a></th>
+                    <th class="col col-2"> <a [routerLink]="" (click)="sortBy('height')">Altura{{sortIndicator('height')}}</a></th>
                     <th class="col col-1"> <a [routerLink]="" (click)="sortBy('weight')">Peso{{sortIndicator('weight')}}</a></th>
-                    <th class="col col-2"> <a [routerLink]="" (click)="sortBy('waiver')">Carta{{sortIndicator('waiver')}}</a></th>
+                    <th class="col col-1"> <a [routerLink]="" (click)="sortBy('waiver')">Carta{{sortIndicator('waiver')}}</a></th>
                 </tr>
                 <tr class="row clickable-row" *ngFor="let player of filteredPlayers" [routerLink]="" (click)="showPlayer(player)" >
                     <td class="col col-1">{{player.number}}</td>
                     <td class="col col-3">{{player.name}}</td>
                     <td class="col col-2">{{uTeams.get(player.team)}}</td>
                     <td class="col col-2">{{player.category}}</td>
-                    <td class="col col-1">{{player.height}}</td>
+                    <td class="col col-2">{{player.height}}</td>
                     <td class="col col-1">{{player.weight}}</td>
                     <!-- Waiver availability; click the icon to view it. Nothing is
                          shown when no waiver has been uploaded. -->
-                    <td class="col col-2">
+                    <td class="col col-1">
                         <a *ngIf="player.liabilityWaiver" class="waiver-link" [routerLink]="" title="Ver carta responsiva"
                            (click)="viewWaiver(player, $event)">
                             <i class="fas fa-file-lines"></i>

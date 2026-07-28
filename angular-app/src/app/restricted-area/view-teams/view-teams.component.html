@@ -79,31 +79,31 @@
       </div>
     </div>
     <div class="scroll-container">
-      <div style="min-width: 400px;">
+      <div style="min-width: 750px;">
         <table class="row modern-table">
             <tr class="row">
                 <th class="col col-1">#</th>
-                <th class="col col-4">Jugador</th>
+                <th class="col col-6">Jugador</th>
                 <th class="col col-3">Posición</th>
-                <th class="col col-2">Carta</th>
-                <th class="col col-2"></th>
+                <th class="col col-1">Carta</th>
+                <th class="col col-1"></th>
             </tr>
             <tr class="row clickable-row" *ngFor="let player of players">
                 <td class="col col-1" (click)="editPlayer(player.id)">{{player.number}}</td>
-                <td class="col col-4" (click)="editPlayer(player.id)">
+                <td class="col col-6" (click)="editPlayer(player.id)">
                     {{player.name}}
                     <span *ngIf="player.id === team?.captainId" class="captain-badge"><i class="fa fa-star"></i> Capitán</span>
                 </td>
                 <td class="col col-3" (click)="editPlayer(player.id)">{{player.position}}</td>
                 <!-- Waiver availability; click the icon to view it. Nothing is
                      shown when no waiver has been uploaded. -->
-                <td class="col col-2">
+                <td class="col col-1">
                     <a *ngIf="player.liabilityWaiver" class="waiver-link" [routerLink]="" title="Ver carta responsiva"
                        (click)="viewWaiver(player, $event)">
                         <i class="fas fa-file-lines"></i>
                     </a>
                 </td>
-                <td class="col col-2 text-end">
+                <td class="col col-1 text-end">
                   <button class="btn btn-outline-danger btn-sm btn-floating" title="Remover jugador" (click)="removePlayer(player.id)" role="button">
                     <i class="fa fa-remove"></i>
                   </button>
