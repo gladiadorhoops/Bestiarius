@@ -184,6 +184,9 @@
                 <button class="btn btn-warning btn-floating match-card__save" title="Editar Partido" role="button" (click)="edit(match)">
                     <i class="fas fa-pen"></i>
                 </button>
+                <button class="btn btn-warning btn-floating match-card__save2" title="Remover Partido" (click)="removeMatch(match.id!)" role="button">
+                    <i class="fa fa-trash"></i>
+                </button>
                 <span class="match-badge">{{match.category}}</span>
 
                 <div class="match-card__meta">
@@ -259,5 +262,31 @@
             </form>
         </div>
     </div>
+</div>
+
+<!--Delete match modal-->
+<div class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayConfirmDeleteMatch}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header dark-header">
+        <h5 class="modal-title">Eliminar Partido</h5>
+        <button type="button" class="btn-close" (click)="closeDeleteMatchPopup()" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Estas seguro que quieres eliminar el Partido {{selectedMatch.homeTeam.name}} x {{selectedMatch.visitorTeam.name}} on {{selectedMatch.time}}. Esta accion es irreversible.</p>
+        <span style="background-color: red">{{errorMsg}}</span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="confirmDeleteMatch()">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
     

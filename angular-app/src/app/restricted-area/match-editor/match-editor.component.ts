@@ -35,6 +35,9 @@ export class MatchEditorComponent implements OnInit {
 
   isEditing: boolean = false;
   loading: boolean = true;
+  displayConfirmDeleteMatch = "none";
+  errorMsg = "";
+  selectedMatch: Match;
   editingMatch: Match = {location: {id: "", name: ""}, time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   
 
@@ -44,6 +47,7 @@ export class MatchEditorComponent implements OnInit {
     private teamBuilder: TeamBuilder,
     private httpService: HttpClient
     ) {
+      this.selectedMatch=this.matchBuilder.getEmptyMatch();
   }
 
   filterForm = this.fb.group({
@@ -217,6 +221,26 @@ openPopup() {
 }
 closePopup() {
   this.displayStyle = "none";
+}
+
+async removeMatch(matchId: string){
+  console.log(matchId)
+  this.selectedMatch = this.allMatches.filter(m => m.id == matchId)[0];
+  if (this.selectedMatch == null) {
+    this.errorMsg = "Match not found"
+  }
+  this.displayConfirmDeleteMatch = "block"
+}
+closeDeleteMatchPopup() {
+  this.displayConfirmDeleteMatch = "none";
+  this.errorMsg = "";
+}
+async confirmDeleteMatch() {
+  await this.matchBuilder.deleteMatch(this.ddb, this.selectedMatch!.id!);
+  this.displayConfirmDeleteMatch = "none";
+  this.errorMsg = "";
+  this.allMatches = this.allMatches.filter(m => m.id != this.selectedMatch!.id);
+  this.filteredMatches = this.filteredMatches.filter(m => m.id != this.selectedMatch!.id);
 }
 
 
