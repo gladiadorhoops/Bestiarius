@@ -422,6 +422,18 @@ td{
     }
 }
 
+// Waiver ("Carta Responsiva") download icon in the player tables. Only rendered
+// when a waiver exists, so the empty cell itself means "not uploaded".
+.waiver-link{
+    color: $bg-color1;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover{
+        color: darken($bg-color1, 15%);
+    }
+}
+
 .scroll-container {
     overflow-x: scroll; /* Enables horizontal scrolling when content overflows */
     -webkit-overflow-scrolling: touch; /* Improves scrolling on iOS devices */

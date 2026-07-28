@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../../auth.service';
@@ -68,13 +68,21 @@ export class AddPlayerComponent {
   waiverSafeUrl: SafeResourceUrl | undefined;
   waiverIsPdf = false;
 
+  // The parent only hides this component's modal (it is never destroyed), so
+  // the file inputs must be cleared by hand when switching players.
+  @ViewChild('photoInput') photoInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('waiverInput') waiverInput?: ElementRef<HTMLInputElement>;
+
   async ngOnInit() {
-    this.imgToUpload = undefined
     this.loadPlayer(this.playerId);
   }
 
 
   async loadPlayer(playerId: string){
+    // Drop any file picked for the previously opened player, otherwise it would
+    // be uploaded under this player's id on "Confirmar".
+    this.clearPendingUploads();
+
     let existingPlayer = this.teamplayers.find(p => p.id === playerId)
     if (existingPlayer){
       this.player = existingPlayer;
@@ -120,6 +128,22 @@ export class AddPlayerComponent {
 
   }
 
+
+  // Reset every piece of pending upload state (buffers, errors, previews and the
+  // native file inputs) so nothing leaks from one player to the next.
+  clearPendingUploads(){
+    this.imgToUpload = undefined;
+    this.waiverToUpload = undefined;
+    this.waiverError = "";
+    this.blob = undefined;
+    this.closeLiabilityWaiver();
+    if (this.photoInput) {
+      this.photoInput.nativeElement.value = "";
+    }
+    if (this.waiverInput) {
+      this.waiverInput.nativeElement.value = "";
+    }
+  }
 
   togglePosition(position: string): void {
     this.selectedPositions[position] = !this.selectedPositions[position];

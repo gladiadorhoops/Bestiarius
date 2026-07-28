@@ -1,5 +1,6 @@
 import { Buffer } from 'buffer';
 import { Component, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../../auth.service';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { TeamBuilder } from '../../Builders/team-builder';
@@ -35,12 +36,22 @@ export class ViewTeamsComponent {
   displayPaymentReceipt = "none";
   addExistingPlayerForm: FormGroup;
 
+  // Waiver viewer shown from the roster's "Carta" column.
+  displayWaiver = "none";
+  loadingWaiver = false;
+  waiverUrl: string | undefined;
+  waiverSafeUrl: SafeResourceUrl | undefined;
+  waiverIsPdf = false;
+  waiverError = "";
+  waiverPlayerName = "";
+
   constructor(private fb: FormBuilder,
     private authService: AuthService,
     private teamBuilder: TeamBuilder,
     private userBuilder: UserBuilder,
     private playerBuilder: PlayerBuilder,
-    private featureFlagBuilder: FeatureFlagBuilder
+    private featureFlagBuilder: FeatureFlagBuilder,
+    private sanitizer: DomSanitizer
   ){
     this.selectedPlayer=this.playerBuilder.getEmptyPlayer();
     this.addExistingPlayerForm = this.fb.group({
@@ -453,8 +464,37 @@ export class ViewTeamsComponent {
   }
   async removePlayer(playerId: string){
     await this.playerBuilder.updatePlayerYear(this.ddb, playerId, "removed", this.team!.id, this.team!.category!)
-    
+
     await this.loadTeam(this.team?.id!);
+  }
+
+  // Show a player's signed waiver in a modal. Stops the click from also opening
+  // the player editor, since the whole row is clickable.
+  async viewWaiver(player: Player, event: Event){
+    event.stopPropagation();
+
+    this.waiverUrl = undefined;
+    this.waiverSafeUrl = undefined;
+    this.waiverError = "";
+    this.waiverPlayerName = player.name;
+    this.loadingWaiver = true;
+    this.displayWaiver = "block";
+
+    const result = await this.playerBuilder.loadLiabilityWaiver(this.s3, player);
+    if (result) {
+      this.waiverIsPdf = result.isPdf;
+      this.waiverUrl = result.url;
+      this.waiverSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(result.url);
+    } else {
+      this.waiverError = "No se pudo cargar la carta responsiva.";
+    }
+    this.loadingWaiver = false;
+  }
+
+  closeWaiver(){
+    this.displayWaiver = "none";
+    this.waiverUrl = undefined;
+    this.waiverSafeUrl = undefined;
   }
 
   async addPlayer(){
