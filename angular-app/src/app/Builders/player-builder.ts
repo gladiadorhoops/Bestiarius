@@ -48,6 +48,26 @@ export class PlayerBuilder {
         return `liability-waiver-${playerId}`;
     }
 
+    // Fetch a player's signed waiver from S3 as an object URL so it can be shown
+    // in a viewer. Shared by the player tables so both behave identically.
+    // Returns undefined when there is no waiver or it cannot be fetched.
+    async loadLiabilityWaiver(s3: S3, player: Player): Promise<{url: string, isPdf: boolean} | undefined> {
+        if (!player.liabilityWaiver) {
+            return undefined;
+        }
+
+        const result = await s3.downloadFileWithType(player.liabilityWaiver, LIABILITY_WAIVER_PATH);
+        if (!result) {
+            return undefined;
+        }
+
+        const blob = new Blob([result.data as BlobPart], {type: result.contentType});
+        return {
+            url: URL.createObjectURL(blob),
+            isPdf: result.contentType === 'application/pdf'
+        };
+    }
+
     async uploadLiabilityWaiver(ddb: DynamoDb, s3: S3, playerId: string, data: Buffer | Uint8Array, contentType: string): Promise<void> {
         const fileName = PlayerBuilder.getLiabilityWaiverFileName(playerId);
         await s3.uploadFile(fileName, data, contentType, LIABILITY_WAIVER_PATH);

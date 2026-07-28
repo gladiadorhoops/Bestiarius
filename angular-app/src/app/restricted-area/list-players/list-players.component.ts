@@ -1,4 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../../auth.service';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { TeamBuilder } from '../../Builders/team-builder';
@@ -22,7 +23,8 @@ export class ListPlayersComponent {
         private authService: AuthService,
         private teamBuilder: TeamBuilder,
         private userBuilder: UserBuilder,
-        private playerBuilder: PlayerBuilder
+        private playerBuilder: PlayerBuilder,
+        private sanitizer: DomSanitizer
       ){}
 
 
@@ -133,6 +135,12 @@ export class ListPlayersComponent {
           if (bEmpty) return this.sortAsc ? -1 : 1;
           return va - vb;
         }
+        case 'waiver': {
+          // Players with a waiver first when ascending.
+          const wa = a.liabilityWaiver ? 0 : 1;
+          const wb = b.liabilityWaiver ? 0 : 1;
+          return wa - wb;
+        }
         default:
           return 0;
       }
@@ -238,6 +246,44 @@ export class ListPlayersComponent {
       // whose ngOnInit loads this player's details from its bound inputs.
       this.player = player
       this.displayPlayer = "block"
+    }
+
+    // Waiver viewer shown from the table's "Carta" column.
+    displayWaiver = "none";
+    loadingWaiver = false;
+    waiverUrl: string | undefined;
+    waiverSafeUrl: SafeResourceUrl | undefined;
+    waiverIsPdf = false;
+    waiverError = "";
+    waiverPlayerName = "";
+
+    // Show a player's signed waiver in a modal. Stops the click from also
+    // opening the player editor, since the whole row is clickable.
+    async viewWaiver(player: Player, event: Event){
+      event.stopPropagation();
+
+      this.waiverUrl = undefined;
+      this.waiverSafeUrl = undefined;
+      this.waiverError = "";
+      this.waiverPlayerName = player.name;
+      this.loadingWaiver = true;
+      this.displayWaiver = "block";
+
+      const result = await this.playerBuilder.loadLiabilityWaiver(this.s3, player);
+      if (result) {
+        this.waiverIsPdf = result.isPdf;
+        this.waiverUrl = result.url;
+        this.waiverSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(result.url);
+      } else {
+        this.waiverError = "No se pudo cargar la carta responsiva.";
+      }
+      this.loadingWaiver = false;
+    }
+
+    closeWaiver(){
+      this.displayWaiver = "none";
+      this.waiverUrl = undefined;
+      this.waiverSafeUrl = undefined;
     }
 
     async confirmEditPlayer(){
