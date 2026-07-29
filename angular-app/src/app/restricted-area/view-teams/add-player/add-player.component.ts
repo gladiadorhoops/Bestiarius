@@ -145,6 +145,17 @@ export class AddPlayerComponent {
     }
   }
 
+  // Jersey numbers are at most 3 digits. `maxlength` alone does not cover
+  // pasted text or non-digit characters, so strip anything else as it is typed.
+  onJerseyInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const digits = input.value.replace(/\D/g, '').slice(0, 3);
+    if (digits !== input.value) {
+      input.value = digits;
+    }
+    this.playerForm.controls.numero.setValue(digits);
+  }
+
   togglePosition(position: string): void {
     this.selectedPositions[position] = !this.selectedPositions[position];
   }

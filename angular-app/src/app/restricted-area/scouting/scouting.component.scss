@@ -31,6 +31,19 @@ fieldset {
     color: black;
 }
 
+// The evaluation form is also shown full-page on the Jugador tab, where it sits
+// in a `col-md-6` inside Bootstrap's `.container`. Match those widths — half the
+// container per breakpoint, plus the modal body's 1rem side padding — so the
+// form renders at the same size in both places.
+// Below 768px the form is full-width on the tab too, so Bootstrap's default
+// sizing already matches and is left alone.
+.eval-modal{
+    @media (min-width: 768px){ max-width: none; width: 392px; }  // container 720 / 2 + 32
+    @media (min-width: 992px){ width: 512px; }                   // container 960 / 2 + 32
+    @media (min-width: 1200px){ width: 602px; }                  // container 1140 / 2 + 32
+    @media (min-width: 1400px){ width: 692px; }                  // container 1320 / 2 + 32
+}
+
 .player-card{
     background-color: $bg-color2;
     border-color: $bg-color1;
