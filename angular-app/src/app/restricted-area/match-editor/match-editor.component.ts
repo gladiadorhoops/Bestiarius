@@ -38,7 +38,7 @@ export class MatchEditorComponent implements OnInit {
   displayConfirmDeleteMatch = "none";
   errorMsg = "";
   selectedMatch: Match;
-  editingMatch: Match = {location: {id: "", name: ""}, time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
+  editingMatch: Match = {location: {id: "", name: ""}, time: "", datetime: new Date(), juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   
 
   constructor(private fb: FormBuilder, 
@@ -158,8 +158,7 @@ export class MatchEditorComponent implements OnInit {
     hometeam: null,
     visitorteam: null,
     gym: null,
-    day: null,
-    time: null,
+    time: new Date(),
     juego: null,
     bracket: null
   });
@@ -171,6 +170,11 @@ brackets = ["grupos", "o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "q9", "q10
 displayStyle = "none";
 popUpMsg = "";
 newMatchExpanded = false;
+
+// Format must strictly be YYYY-MM-DDTHH:mm
+minDateTime = '2026-07-31T00:00';
+maxDateTime = '2026-08-02T23:59';
+selectedDateTime = '';
 
 async loadTeams() {
 }
@@ -197,7 +201,9 @@ async filterTeamsNewMatch(){
 
 async onSubmitNewTeam(){
   try {
-    await this.matchBuilder.addEpmtyMatch(this.ddb, this.matchForm.value.categoria!, this.matchForm.value.juego!, this.matchForm.value.bracket!, this.matchForm.value.hometeam!, this.matchForm.value.visitorteam!, this.matchForm.value.day!, this.matchForm.value.time!, this.matchForm.value.gym!)
+    let matchTime = new Date(this.matchForm.value.time!);
+    let day = matchTime.getDate()
+    await this.matchBuilder.addMatch(this.ddb, this.matchForm.value.categoria!, this.matchForm.value.juego!, this.matchForm.value.bracket!, this.matchForm.value.hometeam!, this.matchForm.value.visitorteam!, day.toString(), this.matchForm.value.time!, this.matchForm.value.gym!)
     console.warn ('Saved sucessfully!')
     this.popUpMsg = "Partido Registrado!";
     this.openPopup();

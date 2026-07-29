@@ -41,7 +41,7 @@ export class ScoutingComponent implements OnInit {
   isTeamSelected: boolean = false;
   isEvaluatingPlayer: boolean = false;
   isScouting: boolean = false;
-  scoutingMatch: Match = {location: {id: "", name: ""}, time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
+  scoutingMatch: Match = {location: {id: "", name: ""}, time: "", datetime: new Date(), juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   loading: boolean = true;
   editingTeam: MatchTeamWithPhoto = {id: "", name: "", category: "", imageUrl: ""};
   displayEvalPlayer = "none";
@@ -101,8 +101,11 @@ export class ScoutingComponent implements OnInit {
   
   async loadMatches(){
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, TOURNAMENT_YEAR)
+    // TODO: update filter
+    const THREE_HOURS_IN_MS: number = 3 * 60 * 60 * 1000;
+    this.allMatches = this.allMatches.filter(m => m.datetime?.getTime()! > Date.now()-THREE_HOURS_IN_MS)
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
-    this.filteredMatches = this.allMatches.sort((a, b) => (a.day! + a.time!).localeCompare(b.day! + b.time!));
+    this.filteredMatches = this.allMatches.sort((a, b) => (a.datetime!.toISOString().localeCompare(b.datetime!.toISOString())));
     this.filteredTeams = this.equipos;
     this.applyCategoryFilter();
     this.loadTeamLogos();
@@ -217,7 +220,7 @@ export class ScoutingComponent implements OnInit {
 
   closeScout(){
     this.isScouting = false;
-    this.scoutingMatch = {location: {id: "", name: ""}, time: "", juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
+    this.scoutingMatch = {location: {id: "", name: ""}, time: "", datetime: new Date(), juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
     this.marcadorForm.reset();
     this.editingTeam = {id: "", name: "", category: "", imageUrl: ""};
     this.players = [];
