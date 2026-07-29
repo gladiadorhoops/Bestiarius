@@ -226,6 +226,12 @@ td{
         right: 0.75rem;
         z-index: 1;
     }
+    .match-card__save2{
+        position: absolute;
+        top: 0.75rem;
+        right: 3.75rem;
+        z-index: 1;
+    }
 
     // Stacked header: primary title line, then the gym on its own line.
     .match-card__meta{

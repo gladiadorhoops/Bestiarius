@@ -73,6 +73,31 @@ export class MatchBuilder {
         }
     }
 
+    getEmptyMatch(): Match {
+        return {
+            id: "",
+            category: "",
+            location: this.gymBuilder.getEmptyGym(),
+            day: "",
+            time: "",
+            juego: "",
+            visitorPoints: "",
+            homePoints: "",
+            braketPlace: "",
+            visitorTeam: this.teamBuilder.getEmptyTeam(),
+            homeTeam: this.teamBuilder.getEmptyTeam(),
+            singleTeam: false
+        }
+    }
+
+    async deleteMatch(ddb: DynamoDb, matchId: string) {
+        let record = {
+            [PK_KEY]: {S: `match.${matchId}`},
+            [SK_KEY]: {S: `match.data`}
+        }
+        await ddb.deleteItem(record);
+    }
+
     async submit(ddb: DynamoDb, id: string, homePoints: string, visitorPoints: string) {   
 
         let record: Record<string, AttributeValue> = {}
