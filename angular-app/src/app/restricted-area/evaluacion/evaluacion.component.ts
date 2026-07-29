@@ -37,6 +37,9 @@ export class EvaluacionComponent implements OnChanges {
   // Optional pre-selected player (e.g. clicked from the scouting roster). When
   // set, the component auto-selects it and loads its existing report.
   @Input() player: Player | null | undefined = null;
+  // Set when hosted inside a modal, which already limits the width. The
+  // half-width column is only meant for the standalone page.
+  @Input() fullWidth = false;
 
   scout_id = this.authService.getUserId();
   scout_name = this.authService.getUserName();

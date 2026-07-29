@@ -237,7 +237,7 @@
   tabindex="-1"
   role="dialog"
   [ngStyle]="{'display':displayEvalPlayer}" *ngIf="isEvaluatingPlayer">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog eval-modal modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header dark-header">
         <h5 class="modal-title">Evaluar Jugador</h5>
@@ -249,7 +249,8 @@
           [ddb]="ddb" [s3]="s3"
           [category]="editingTeam.category"
           [team]="editingTeam.name"
-          [player]="selectedPlayer"></app-evaluacion>
+          [player]="selectedPlayer"
+          [fullWidth]="true"></app-evaluacion>
       </div>
     </div>
   </div>
