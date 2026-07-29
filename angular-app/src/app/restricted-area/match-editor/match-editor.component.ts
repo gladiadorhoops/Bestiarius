@@ -224,7 +224,7 @@ closePopup() {
 }
 
 async removeMatch(matchId: string){
-  console.log(matchId)
+  console.log("Deleting match", matchId)
   this.selectedMatch = this.allMatches.filter(m => m.id == matchId)[0];
   if (this.selectedMatch == null) {
     this.errorMsg = "Match not found"
