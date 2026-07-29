@@ -62,7 +62,8 @@ export class MatchBuilder {
             category: item['category'].S,
             location: gym,
             day: item['spk'].S!,
-            time: item["spk"].S!+month + " - "+item['time'].S!,
+            time: item['datetime'] ? (new Date(item['datetime'].S!)).toLocaleString("en-US",{dateStyle: 'short', timeStyle: 'short'}) : item['time'].S!,
+            datetime: item['datetime'] ? new Date(item['datetime'].S!) : undefined,
             juego: item['juego'].S!,
             visitorPoints: item['visitorPoints'].S!,
             homePoints: item['homePoints'].S!,
@@ -80,6 +81,7 @@ export class MatchBuilder {
             location: this.gymBuilder.getEmptyGym(),
             day: "",
             time: "",
+            datetime: new Date(),
             juego: "",
             visitorPoints: "",
             homePoints: "",
@@ -160,7 +162,7 @@ export class MatchBuilder {
         )
     }
 
-    async addEpmtyMatch(ddb: DynamoDb, category: string, juego: string, bracket: string, homeTeam?: string, visitorTeam?: string, day?: string, time?: string, gym?: string) {   
+    async addMatch(ddb: DynamoDb, category: string, juego: string, bracket: string, homeTeam?: string, visitorTeam?: string, day?: string, time?: Date, gym?: string) {   
     
         let record: Record<string, AttributeValue> = {}
         let matchGuid = uuidv4();
@@ -174,7 +176,8 @@ export class MatchBuilder {
         record['visitorTeam'] = {S: `${visitorTeam}`};
         record['homePoints'] = {S: `0`};
         record['visitorPoints'] = {S: `0`};
-        record['time'] = {S: `${time}`};
+        record['time'] = {S:`${new Date(time!).toLocaleTimeString([],{timeStyle: 'short'})}`};
+        record['datetime'] = {S: `${time}`};
         record['juego'] = {S: `${juego}`};
         record['braketPlace'] = {S: `${bracket}`};
         record[CY_KEY] = {S: TOURNAMENT_YEAR};

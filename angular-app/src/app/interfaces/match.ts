@@ -6,7 +6,8 @@ export interface Match {
     category?: string | undefined
     location: Gym
     day?: string | undefined
-    time: string
+    time: string | undefined
+    datetime: Date | undefined
     juego: string
     visitorTeam: MatchTeam
     visitorPoints?: string | undefined

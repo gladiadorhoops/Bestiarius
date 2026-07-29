@@ -94,7 +94,7 @@ export class MatchGeneratorComponent  implements OnInit {
 
   async onSubmit(){
     try {
-      await this.matchBuilder.addEpmtyMatch(this.ddb, this.matchForm.value.categoria!, this.matchForm.value.juego!, this.matchForm.value.bracket!, this.matchForm.value.hometeam!, this.matchForm.value.visitorteam!, this.matchForm.value.day!, this.matchForm.value.time!, this.matchForm.value.gym!)
+      await this.matchBuilder.addMatch(this.ddb, this.matchForm.value.categoria!, this.matchForm.value.juego!, this.matchForm.value.bracket!, this.matchForm.value.hometeam!, this.matchForm.value.visitorteam!, this.matchForm.value.day!, this.matchForm.value.time!, this.matchForm.value.gym!)
       console.warn ('Saved sucessfully!')
       this.popUpMsg = "Partido Registrado!";
       this.openPopup();
