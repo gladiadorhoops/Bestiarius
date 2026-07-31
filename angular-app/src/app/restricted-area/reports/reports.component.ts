@@ -70,7 +70,7 @@ export class ReportsComponent {
     this.reports.forEach(report => {
       console.log("report scout "+ report.scoutId + " reviewed "+report.playerId)
       let player = this.playersMap.get(report.playerId);
-      report.playerName = player?.name!
+      report.playerName = "(" + (player?.number ? player?.number : "#") + ") " + player?.name!
       report.scoutName = this.scoutsMap.get(report.scoutId)!
       report.teamName = this.teamsMap.get(player?.team!)!
     });
