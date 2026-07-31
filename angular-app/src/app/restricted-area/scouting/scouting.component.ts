@@ -101,9 +101,6 @@ export class ScoutingComponent implements OnInit {
   
   async loadMatches(){
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, TOURNAMENT_YEAR)
-    // TODO: update filter
-    const THREE_HOURS_IN_MS: number = 3 * 60 * 60 * 1000;
-    this.allMatches = this.allMatches.filter(m => m.datetime?.getTime()! > Date.now()-THREE_HOURS_IN_MS)
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
     this.filteredMatches = this.allMatches.sort((a, b) => (a.datetime!.toISOString().localeCompare(b.datetime!.toISOString())));
     this.filteredTeams = this.equipos;
