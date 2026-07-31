@@ -1,0 +1,30 @@
+
+<h2 class="text-center mb-3">
+    Reportes de Scouts
+</h2>
+
+<div class="spinner-border text-light" role="status" *ngIf="loading">
+    <span class="sr-only">Loading...</span>
+</div>
+<div class="mainpanel" *ngIf="!loading">
+    <div class="scroll-container">
+        <div style="min-width: 600px;">
+    <table class="row modern-table">
+        <tr class="row">
+            <th class="col col-1">#</th>
+            <th class="col col-3">Scout</th>
+            <th class="col col-3">(#) Jugador</th>
+            <th class="col col-3">Equipo</th>
+            <th class="col col-2">Categoria</th>
+        </tr>
+        <tr class="row" *ngFor="let report of reports; let i = index" >
+            <td class="col col-1">{{i+1}}</td>
+            <td class="col col-3">{{report.scoutName}}</td>
+            <td class="col col-3">{{report.playerName}}</td>
+            <td class="col col-3">{{report.teamName}}</td>
+            <td class="col col-2">{{report.category}}</td>
+        </tr>
+    </table>
+        </div>
+    </div>
+</div>  

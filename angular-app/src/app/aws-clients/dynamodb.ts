@@ -156,6 +156,13 @@ export class DynamoDb {
         return resultItems;
     }
 
+    async listBySPKQuery(pk: string, sk?: string | undefined): Promise<Record<string, AttributeValue>[]> {
+        let resultItems: Record<string, AttributeValue>[] = [];
+        let results = await this.simpleQuery(pk, sk, IndexId.MAIN_GSI);
+        if(results != undefined) resultItems = resultItems.concat(results);
+        return resultItems;
+    }
+
     async listQuerySKOnly(sk: string): Promise<Record<string, AttributeValue>[]> {
         let resultItems: Record<string, AttributeValue>[] = [];
         let index = IndexId.SK_GSI;

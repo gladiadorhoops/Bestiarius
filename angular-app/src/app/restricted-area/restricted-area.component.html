@@ -70,6 +70,10 @@
                             <app-list-players [ddb]="ddb" [s3]="s3"></app-list-players>
                         </div>
                         
+                        <div *ngIf="listReportsView">
+                            <app-reports [ddb]="ddb"></app-reports>
+                        </div>
+                        
                         <div *ngIf="listTeamsView">
                             <app-list-teams [ddb]="ddb" [s3]="s3" (callViewTeam)="showViewTeams($event)" (callAddTeam)="showAddTeam()"></app-list-teams>
                         </div>
