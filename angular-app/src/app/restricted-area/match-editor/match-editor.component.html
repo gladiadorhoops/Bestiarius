@@ -49,9 +49,11 @@
                 <div class="row">
                     <div class="filterPadding">
                         <!--input type="text" class="form-control" id="time" name="time" formControlName="time"-->
+                        <!-- step=600s: minutes are picked in 10-minute increments. -->
                         <input class="form-control" id="time" name="time" formControlName="time"
-                            type="datetime-local" 
-                            [min]="minDateTime" 
+                            type="datetime-local"
+                            step="600"
+                            [min]="minDateTime"
                             [max]="maxDateTime">
                     </div>
                 </div>
