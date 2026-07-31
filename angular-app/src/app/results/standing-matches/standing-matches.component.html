@@ -33,11 +33,13 @@
 
                         <div class="match-card__scoreboard">
                             <div class="match-team">
+                                <img class="tournament-match__logo" [src]="teamLogoUrl(match.homeTeam)" (error)="onLogoError($event)" alt="" />
                                 <div class="match-team__name">{{match.homeTeam.name}}</div>
                                 <div class="match-score match-score--static">{{match.homePoints}}</div>
                             </div>
                             <span class="match-vs">×</span>
                             <div class="match-team">
+                                <img class="tournament-match__logo" [src]="teamLogoUrl(match.visitorTeam)" (error)="onLogoError($event)" alt="" />
                                 <div class="match-team__name">{{match.visitorTeam.name}}</div>
                                 <div class="match-score match-score--static">{{match.visitorPoints}}</div>
                             </div>

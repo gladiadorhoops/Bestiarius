@@ -6,6 +6,12 @@ import { MatchBuilder } from '../../Builders/match-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR, REGION } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { MatchTeam } from 'src/app/interfaces/team';
+import { TeamBuilder } from 'src/app/Builders/team-builder';
+import { S3 } from '../../aws-clients/s3';
+import { S3Client } from '@aws-sdk/client-s3';
+
+const LOGO_PLACEHOLDER = 'assets/logo_gray.png';
 
 @Component({
   selector: 'app-standing-matches',
@@ -18,13 +24,15 @@ export class StandingMatchesComponent implements OnInit {
     credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
   }); 
   ddb: DynamoDb =  new DynamoDb(this.ddbClient);
-  
+  s3: S3 = new S3(new S3Client({ region: REGION, credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS }));
+
   allMatches: Match[] = [];
   loading = true;
 
 
   standingMatches: Match[] = []
   standingMatchesElite: Match[] = []
+  teamLogos: {[teamId: string]: string} = {};
 
   // Category to show, controlled by the shared toggle in the parent results page.
   @Input() category: 'elite' | 'aprendiz' = 'elite';
@@ -60,6 +68,39 @@ export class StandingMatchesComponent implements OnInit {
       }
     });
     this.loading = false;
+    await this.loadTeamLogos();
 
   }
+
+
+  // Downloads each participating team's logo once and stores a displayable
+  // object URL. Mirrors the download-then-blob approach used in view-teams so
+  // it works with the public (unauthenticated) Cognito credentials.
+  private async loadTeamLogos() {
+    const teams = new Map<string, MatchTeam>();
+    const matches = [...Object.values(this.standingMatches), ...Object.values(this.standingMatchesElite)];
+    for (const match of matches) {
+      for (const team of [match.homeTeam, match.visitorTeam]) {
+        if (team?.id && team.imageType && !teams.has(team.id)) {
+          teams.set(team.id, team);
+        }
+      }
+    }
+
+    for (const [id, team] of teams) {
+      const data = await this.s3.downloadFile(TeamBuilder.getLogoFilePath(id));
+      if (data) {
+        this.teamLogos[id] = URL.createObjectURL(new Blob([data as BlobPart], { type: team.imageType }));
+      }
+    }
+  }
+
+  teamLogoUrl(team: MatchTeam | undefined): string {
+    return (team?.id && this.teamLogos[team.id]) || LOGO_PLACEHOLDER;
+  }
+
+  onLogoError(event: Event) {
+    (event.target as HTMLImageElement).src = LOGO_PLACEHOLDER;
+  }
+
 }  
