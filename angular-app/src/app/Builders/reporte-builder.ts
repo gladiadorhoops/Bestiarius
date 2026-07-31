@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CY_KEY, DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
-import { DisplayReport, Reporte, ReportIndex, Section, Skill, Skills, TopReporte } from "../interfaces/reporte";
+import { DisplayReport, Reporte, ReportBasic, Section, Skill, Skills, TopReporte } from "../interfaces/reporte";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Scout } from '../interfaces/scout';
@@ -162,11 +162,11 @@ export class ReporteBuilder {
     }
 
 
-    async getAllReportsScoutPlayerMap(ddb: DynamoDb): Promise<ReportIndex[]> {
-        let reports: ReportIndex[] = []
+    async getAllReportsScoutPlayerMap(ddb: DynamoDb): Promise<ReportBasic[]> {
+        let reports: ReportBasic[] = []
         reports = await ddb.listBySPKQuery(`report`, TOURNAMENT_YEAR).then(
             (items) => {
-                return items.map((item) => {return {scoutId: item['pk'].S!.substring(6), playerId: item['sk'].S!.split('player.')[1], playerName:"", scoutName: ""}})
+                return items.map((item) => {return {scoutId: item['pk'].S!.substring(6), playerId: item['sk'].S!.split('player.')[1], category: item['categoria'].S!, teamName: "", playerName:"", scoutName: ""}})
             }
         )
         return reports
