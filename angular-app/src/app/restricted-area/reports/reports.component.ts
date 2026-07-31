@@ -40,29 +40,39 @@ export class ReportsComponent {
 
   @Input() ddb!: DynamoDb;
   loading = true;
-  scouts: Scout[] = []
   reports: ReportBasic[] = []
-  players: Player[] = []
-  teams: Team[] = [];
+  teamsMap: Map<string,string> = new Map<string, string>();
+  playersMap: Map<string,Player> = new Map<string, Player>();
+  scoutsMap: Map<string,string> = new Map<string, string>();
+
 
 
   async ngOnInit() {
 
-    this.scouts = await this.userBuilder.getAllScouts(this.ddb);
-    this.scouts = this.scouts.filter(s => s.year === TOURNAMENT_YEAR)
+    let scouts = await this.userBuilder.getAllScouts(this.ddb);
+    scouts = scouts.filter(s => s.year === TOURNAMENT_YEAR);
+    scouts.forEach(scout => {
+      this.scoutsMap.set(scout.id, scout.name);
+    });
 
     this.reports = await this.reportBuilder.getAllReportsScoutPlayerMap(this.ddb)
 
-    this.players = await this.playerBuilder.getAllPlayers(this.ddb)
+    let players = await this.playerBuilder.getAllPlayers(this.ddb)
+    players.forEach(player => {
+      this.playersMap.set(player.id, player);
+    });
 
-    this.teams = await this.teamBuilder.getTeams(this.ddb, TOURNAMENT_YEAR);
+    let teams = await this.teamBuilder.getTeams(this.ddb, TOURNAMENT_YEAR);
+    teams.forEach(team => {
+      this.teamsMap.set(team.id, team.name);
+    });
 
     this.reports.forEach(report => {
       console.log("report scout "+ report.scoutId + " reviewed "+report.playerId)
-      let player = this.players.filter(p => p.id == report.playerId)[0]
-      report.playerName = player.name
-      report.scoutName = this.scouts.filter(s => s.id == report.scoutId)[0].name
-      report.teamName = this.teams.filter(s => s.id == player.team)[0].name
+      let player = this.playersMap.get(report.playerId);
+      report.playerName = player?.name!
+      report.scoutName = this.scoutsMap.get(report.scoutId)!
+      report.teamName = this.teamsMap.get(player?.team!)!
     });
 
     this.reports.sort((a, b) => a.scoutName.localeCompare(b.scoutName))
