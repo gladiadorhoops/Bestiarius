@@ -23,7 +23,7 @@ export class GroupsComponent implements OnInit {
   loading = true;
 
   isEditing: boolean = false;
-  groups = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4"]
+  groups = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4", "Grupo A", "Grupo B", "Grupo C"]
 
   groupMatches: {[group: string]: Match[]} = {}
   groupMatchesElite: {[group: string]: Match[]} = {}
