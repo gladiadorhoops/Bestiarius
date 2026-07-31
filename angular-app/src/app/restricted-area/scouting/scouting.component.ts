@@ -163,7 +163,7 @@ export class ScoutingComponent implements OnInit {
     console.log('Applying filters', cat, day, gym, team);
 
     if (!cat && !day && !gym && !team) {
-      this.filteredMatches = this.allMatches;
+      this.filteredMatches = this.allMatches.sort((a, b) => (a.datetime!.toISOString().localeCompare(b.datetime!.toISOString())));
       return;
     }
 
@@ -171,7 +171,7 @@ export class ScoutingComponent implements OnInit {
     if(categoryMatches) matches = categoryMatches;
     else if(cat) matches = this.allMatches.filter(match => match.category == cat);
 
-    this.filteredMatches = filterMatches(matches, day, gym, team);
+    this.filteredMatches = filterMatches(matches, day, gym, team).sort((a, b) => (a.datetime!.toISOString().localeCompare(b.datetime!.toISOString())));
   }
 
   async scout(match:Match){
