@@ -8,6 +8,7 @@ import {v4 as uuidv4} from 'uuid';
 import { TOURNAMENT_YEAR } from '../aws-clients/constants';
 import { GymBuilder } from './gym-builder';
 import { Gym } from '../interfaces/gym';
+import { toLocalDateTimeString } from '../utils/utils';
 
 @Injectable({
     providedIn: 'root'
@@ -177,7 +178,8 @@ export class MatchBuilder {
         record['homePoints'] = {S: `0`};
         record['visitorPoints'] = {S: `0`};
         record['time'] = {S:`${new Date(time!).toLocaleTimeString([],{timeStyle: 'short'})}`};
-        record['datetime'] = {S: `${time}`};
+        // Stored zone-less so the match keeps the wall-clock time it was entered with.
+        record['datetime'] = {S: toLocalDateTimeString(new Date(time!))};
         record['juego'] = {S: `${juego}`};
         record['braketPlace'] = {S: `${bracket}`};
         record[CY_KEY] = {S: TOURNAMENT_YEAR};

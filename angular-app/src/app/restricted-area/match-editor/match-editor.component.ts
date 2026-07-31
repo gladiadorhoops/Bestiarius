@@ -9,7 +9,7 @@ import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { Team } from '../../interfaces/team';
 import { TOURNAMENT_DAYS, TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
-import { filterMatches } from 'src/app/utils/utils';
+import { filterMatches, toLocalDateTimeString } from 'src/app/utils/utils';
 
 // Match times are picked in 10-minute increments (see the input's `step`), so
 // round to the nearest one.
@@ -20,17 +20,10 @@ function roundToTenMinutes(date: Date): Date {
   return rounded;
 }
 
-// `datetime-local` inputs only accept `YYYY-MM-DDTHH:mm`, and it must be built
-// from the local parts: an ISO string is UTC and would shift the value.
-function toDateTimeLocal(date: Date): string {
-  const pad = (value: number) => `${value}`.padStart(2, '0');
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
-    + `T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
-
-// The default shown when the form opens or is reset after a submit.
+// The default shown when the form opens or is reset after a submit. The
+// zone-less format is also what the `datetime-local` input expects.
 function defaultMatchTime(): string {
-  return toDateTimeLocal(roundToTenMinutes(new Date()));
+  return toLocalDateTimeString(roundToTenMinutes(new Date()));
 }
 
 @Component({
