@@ -63,7 +63,7 @@ export class MatchBuilder {
             category: item['category'].S,
             location: gym,
             day: item['spk'].S!,
-            time: item['datetime'] ? (new Date(item['datetime'].S!)).toLocaleString("en-US",{dateStyle: 'short', timeStyle: 'short'}) : item['time'].S!,
+            time: item['datetime'] ? (new Date(item['datetime'].S!)).toLocaleString("es-MX",{dateStyle: 'short', timeStyle: 'short'}) : item['time'].S!,
             datetime: item['datetime'] ? new Date(item['datetime'].S!) : undefined,
             juego: item['juego'].S!,
             visitorPoints: item['visitorPoints'].S!,
