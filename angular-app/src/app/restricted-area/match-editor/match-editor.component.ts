@@ -9,7 +9,22 @@ import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { Team } from '../../interfaces/team';
 import { TOURNAMENT_DAYS, TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
-import { filterMatches } from 'src/app/utils/utils';
+import { filterMatches, toLocalDateTimeString } from 'src/app/utils/utils';
+
+// Match times are picked in 10-minute increments (see the input's `step`), so
+// round to the nearest one.
+function roundToTenMinutes(date: Date): Date {
+  const rounded = new Date(date);
+  rounded.setSeconds(0, 0);
+  rounded.setMinutes(Math.round(rounded.getMinutes() / 10) * 10);
+  return rounded;
+}
+
+// The default shown when the form opens or is reset after a submit. The
+// zone-less format is also what the `datetime-local` input expects.
+function defaultMatchTime(): string {
+  return toLocalDateTimeString(roundToTenMinutes(new Date()));
+}
 
 @Component({
   selector: 'app-match-editor',
@@ -158,14 +173,14 @@ export class MatchEditorComponent implements OnInit {
     hometeam: null,
     visitorteam: null,
     gym: null,
-    time: new Date(),
+    time: defaultMatchTime(),
     juego: null,
     bracket: null
   });
 
 newMatchTeams: Team[] = [];
 selectedCategoria = "";
-phases = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4", "Octavos", "Cuartos", "Semi-Finaless", "Finales", "Standing"]
+phases = ["Grupo A", "Grupo B", "Grupo C", "Octavos", "Cuartos", "Semi-Finaless", "Finales", "Standing"]
 brackets = ["grupos", "o1", "o2", "o3", "o4", "o5", "o6", "o7", "o8", "q9", "q10", "q11", "q12", "s13", "s14", "f15", "p16", "p17", "p18", "p19", "p20", "p21", "f22" ]
 displayStyle = "none";
 popUpMsg = "";
@@ -203,11 +218,12 @@ async onSubmitNewTeam(){
   try {
     let matchTime = new Date(this.matchForm.value.time!);
     let day = matchTime.getDate()
-    await this.matchBuilder.addMatch(this.ddb, this.matchForm.value.categoria!, this.matchForm.value.juego!, this.matchForm.value.bracket!, this.matchForm.value.hometeam!, this.matchForm.value.visitorteam!, day.toString(), this.matchForm.value.time!, this.matchForm.value.gym!)
+    await this.matchBuilder.addMatch(this.ddb, this.matchForm.value.categoria!, this.matchForm.value.juego!, this.matchForm.value.bracket!, this.matchForm.value.hometeam!, this.matchForm.value.visitorteam!, day.toString(), matchTime, this.matchForm.value.gym!)
     console.warn ('Saved sucessfully!')
     this.popUpMsg = "Partido Registrado!";
     this.openPopup();
-    this.matchForm.reset();
+    // Reset back to the current date and time rather than an empty field.
+    this.matchForm.reset({categoria: 'aprendiz', time: defaultMatchTime()});
 
   } catch (err) {
     console.error("Error Submitting report")

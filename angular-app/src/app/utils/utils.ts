@@ -5,6 +5,17 @@ export function generateId(): string {
     return uuid()
 }
 
+// Match times are wall-clock times at the venue, so they are stored without a
+// zone: `YYYY-MM-DDTHH:mm`. `Date.toString()` would embed the writer's offset
+// and `toISOString()` would convert to UTC — either way the saved hour shifts
+// depending on where it was entered. Reading it back with `new Date(...)` parses
+// it as local time, giving the same clock time it was saved with.
+export function toLocalDateTimeString(date: Date): string {
+    const pad = (value: number) => `${value}`.padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+        + `T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
 export function filterMatches(
     matches: Match[], 
      day: string | null = null,
