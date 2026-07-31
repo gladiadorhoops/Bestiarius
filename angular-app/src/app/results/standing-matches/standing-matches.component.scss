@@ -44,3 +44,10 @@ a:link {
   a:visited {
     color: white;
   }
+
+.tournament-match__logo {
+    width: 3em;
+    height: 3em;
+    object-fit: contain;
+    flex: 0 0 auto;
+  }
