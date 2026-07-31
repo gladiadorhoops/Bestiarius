@@ -60,7 +60,8 @@ export class ScoutingComponent implements OnInit {
     cat: null,
     day: null,
     gym: null,
-    equipo: null
+    equipo: null,
+    past: "hide"
   });
 
   marcadorForm = this.fb.group({
@@ -101,9 +102,6 @@ export class ScoutingComponent implements OnInit {
   
   async loadMatches(){
     this.allMatches = await this.matchBuilder.getListOfMatch(this.ddb, TOURNAMENT_YEAR)
-    // TODO: update filter
-    const THREE_HOURS_IN_MS: number = 3 * 60 * 60 * 1000;
-    this.allMatches = this.allMatches.filter(m => m.datetime?.getTime()! > Date.now()-THREE_HOURS_IN_MS)
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
     this.filteredMatches = this.allMatches.sort((a, b) => (a.datetime!.toISOString().localeCompare(b.datetime!.toISOString())));
     this.filteredTeams = this.equipos;
@@ -155,6 +153,7 @@ export class ScoutingComponent implements OnInit {
 
   clearFilters() {
     this.filterForm.reset();
+    this.filterForm.controls.past.setValue("show")
     this.applyCategoryFilter();
   }
 
@@ -163,18 +162,24 @@ export class ScoutingComponent implements OnInit {
     let day = this.filterForm.value.day;
     let gym = this.filterForm.value.gym;
     let team = this.filterForm.value.equipo;
+    let past = this.filterForm.value.past;
     console.log('Applying filters', cat, day, gym, team);
 
     if (!cat && !day && !gym && !team) {
       this.filteredMatches = this.allMatches;
-      return;
+    } else {
+      let matches: Match[] = this.allMatches;
+      if(categoryMatches) matches = categoryMatches;
+      else if(cat) matches = this.allMatches.filter(match => match.category == cat);
+
+      this.filteredMatches = filterMatches(matches, day, gym, team);
     }
+    if (past == "hide") {
+      const THREE_HOURS_IN_MS: number = 3 * 60 * 60 * 1000;
+      this.filteredMatches = this.filteredMatches.filter(m => m.datetime?.getTime()! > Date.now()-THREE_HOURS_IN_MS)
+    }
+    this.filteredMatches = this.filteredMatches.sort((a, b) => (a.datetime!.toISOString().localeCompare(b.datetime!.toISOString())));
 
-    let matches: Match[] = this.allMatches;
-    if(categoryMatches) matches = categoryMatches;
-    else if(cat) matches = this.allMatches.filter(match => match.category == cat);
-
-    this.filteredMatches = filterMatches(matches, day, gym, team);
   }
 
   async scout(match:Match){
