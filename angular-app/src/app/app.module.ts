@@ -55,7 +55,8 @@ import { PartidosComponent } from './partidos/partidos.component';
 import { AddGymComponent } from './restricted-area/add-gym/add-gym.component';
 import { ListPlayersComponent } from './restricted-area/list-players/list-players.component';
 import { ScoutingComponent } from './restricted-area/scouting/scouting.component';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
+import { ReportsComponent } from './restricted-area/reports/reports.component'
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { DatePipe } from '@angular/common'
     PartidosComponent,
     AddGymComponent,
     ListPlayersComponent,
-    ScoutingComponent
+    ScoutingComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,

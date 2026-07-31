@@ -1,5 +1,12 @@
 import { Scout } from "./scout"
 
+export interface ReportIndex {
+    scoutId: string,
+    scoutName: string,
+    playerId: string,
+    playerName: string,
+}
+
 export interface Reporte {
     playerId: string,
     categoria: string,

@@ -44,6 +44,7 @@ export class RestrictedAreaComponent {
     viewTeamsView = false;
     listTeamsView = false;
     listPlayersView = false;
+    listReportsView = false;
     registrationYear = false;
     userEntry: User | undefined;
     paramCode: string | undefined;
@@ -145,7 +146,8 @@ export class RestrictedAreaComponent {
           {value: "editMatch", text: "Partidos"},
           {value: "scouting", text: "Scouting"},
           {value: "listPlayers", text: "Jugadores Registrados"},
-          {value: "viewUsers", text: "Usuarios Registrados"}
+          {value: "viewUsers", text: "Usuarios Registrados"},
+          {value: "listReports", text: "Evaluaciones Enviadas"}
         ]);
       }
       if(this.isCoach){
@@ -222,7 +224,11 @@ export class RestrictedAreaComponent {
         case 'listPlayers': { 
            this.showListPlayers()
            break; 
-        } 
+        }
+        case 'listReports': {
+          this.showReportsView()
+          break;
+        }
         case 'addGym': { 
            this.showAddGym()
            break; 
@@ -244,6 +250,7 @@ export class RestrictedAreaComponent {
     this.viewUsersView = false;
     this.viewTeamsView = false;
     this.listTeamsView = false;
+    this.listReportsView = false;
     this.listPlayersView = false;
     this.scoutingView = false;
   }
@@ -288,6 +295,10 @@ export class RestrictedAreaComponent {
   showListTeams(){
     this.hideAll();
     this.listTeamsView = true;
+  }
+  showReportsView(){
+    this.hideAll();
+    this.listReportsView = true;
   }
   showListPlayers(){
     this.hideAll();
