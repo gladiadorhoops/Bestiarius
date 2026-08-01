@@ -6,7 +6,7 @@ import { ReporteBuilder } from '../../Builders/reporte-builder';
 import { Role } from 'src/app/enum/Role';
 import { TOURNAMENT_YEAR } from 'src/app/aws-clients/constants';
 import { Scout } from 'src/app/interfaces/scout';
-import { ReportBasic, ReportSectionView, ScoutReports } from 'src/app/interfaces/reporte';
+import { PlayerReports, ReportBasic, ReportSectionView, ScoutReports } from 'src/app/interfaces/reporte';
 import { S3 } from 'src/app/aws-clients/s3';
 import { PlayerBuilder } from 'src/app/Builders/player-builder';
 import { Player } from 'src/app/interfaces/player';
@@ -45,14 +45,27 @@ export class ReportsComponent {
   reports: ReportBasic[] = []
   // One row per scout with the reports that scout submitted.
   scoutReports: ScoutReports[] = []
+  // The same reports grouped the other way: one row per scouted player.
+  playerReports: PlayerReports[] = []
   teamsMap: Map<string,string> = new Map<string, string>();
   playersMap: Map<string,Player> = new Map<string, Player>();
   // Keyed by scout id; holds the full record so the list can show contact info.
   scoutsMap: Map<string,Scout> = new Map<string, Scout>();
 
-  // Drill-down state: pick a scout to see its players, then a player to open the
-  // report that scout submitted for them in a modal.
+  // Which of the two lists is showing. Scouts first — it's the view that answers
+  // "who still owes reports", which is what the page is mostly used for.
+  view: 'scouts' | 'players' = 'scouts';
+
+  // Name search over whichever list is showing: scout names under Por Scout,
+  // player names under Por Jugador. One box rather than two, since only one list
+  // is ever visible.
+  filterName = "";
+
+  // Drill-down state. Either list drills into the same report modal: pick a scout
+  // to see the players they reported on, or a player to see the scouts who
+  // reported on them, then pick the other side to open the report itself.
   selectedScout: ScoutReports | undefined;
+  selectedPlayer: PlayerReports | undefined;
   selectedReport: ReportBasic | undefined;
   reportSections: ReportSectionView[] = [];
   reportGeneral = "";
@@ -90,6 +103,7 @@ export class ReportsComponent {
     });
 
     this.groupReportsByScout()
+    this.groupReportsByPlayer()
 
     this.loading = false;
   }
@@ -123,8 +137,70 @@ export class ReportsComponent {
       b.reports.length - a.reports.length || a.scoutName.localeCompare(b.scoutName))
   }
 
+  // Same collapse as groupReportsByScout(), pivoted to the player. Driven off the
+  // reports rather than the player roster, so only scouted players get a row —
+  // every report has a player, so nothing is lost.
+  groupReportsByPlayer() {
+    let grouped: Map<string, PlayerReports> = new Map<string, PlayerReports>();
+
+    this.reports.forEach(report => {
+      let entry = grouped.get(report.playerId)
+      if (entry == undefined) {
+        entry = {
+          playerId: report.playerId,
+          playerName: report.playerName,
+          playerNumber: report.playerNumber,
+          teamName: report.teamName,
+          category: report.category,
+          reports: []
+        }
+        grouped.set(report.playerId, entry)
+      }
+      entry.reports.push(report)
+    });
+
+    this.playerReports = Array.from(grouped.values())
+    this.playerReports.forEach(player => {
+      player.reports.sort((a, b) => a.scoutName.localeCompare(b.scoutName))
+    })
+    // Most-reported players first; ties fall back to name so the order is stable.
+    this.playerReports.sort((a, b) =>
+      b.reports.length - a.reports.length || a.playerName.localeCompare(b.playerName))
+  }
+
+  // Rows of the visible list that match the name search. Same getter-based
+  // filtering as Jugadores Registrados, so the box takes effect as it's typed.
+  get filteredScoutReports(): ScoutReports[] {
+    let name = this.filterName.trim().toLowerCase();
+    if (!name) return this.scoutReports;
+    return this.scoutReports.filter(scout => scout.scoutName.toLowerCase().includes(name));
+  }
+
+  get filteredPlayerReports(): PlayerReports[] {
+    let name = this.filterName.trim().toLowerCase();
+    if (!name) return this.playerReports;
+    return this.playerReports.filter(player => player.playerName.toLowerCase().includes(name));
+  }
+
+  // Reports counted across the rows actually listed, so the total agrees with the
+  // column above it once the search narrows the list. Unfiltered, either list
+  // covers every report, so this is the tournament-wide count.
   get totalReports(): number {
-    return this.reports.length;
+    let counts = this.view == 'players'
+      ? this.filteredPlayerReports.map(player => player.reports.length)
+      : this.filteredScoutReports.map(scout => scout.reports.length);
+    return counts.reduce((sum, count) => sum + count, 0);
+  }
+
+  // Switching lists drops any drill-down, so the other list always opens at its
+  // top level rather than mid-navigation. The search goes with it: the two lists
+  // search different names, so carrying a scout name over to the player list
+  // would open it apparently empty.
+  showView(view: 'scouts' | 'players') {
+    if (this.view == view) return;
+    this.view = view;
+    this.filterName = "";
+    this.backToList();
   }
 
   selectScout(scout: ScoutReports) {
@@ -133,8 +209,16 @@ export class ReportsComponent {
     this.closeReport();
   }
 
-  backToScouts() {
+  selectPlayer(player: PlayerReports) {
+    if (player.reports.length == 0) return;
+    this.selectedPlayer = player;
+    this.closeReport();
+  }
+
+  // Back out of whichever drill-down is open, to that list's top level.
+  backToList() {
     this.selectedScout = undefined;
+    this.selectedPlayer = undefined;
     this.closeReport();
   }
 

@@ -1,6 +1,79 @@
 @import "colors";
 @import "evaluation-modal";
 
+// View toggle and name search share one row above the list, wrapping onto two on
+// a narrow screen.
+.list-controls{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+}
+
+// Takes the leftover width so the box is comfortable to type in, but stops well
+// short of the full row on a wide screen — it only ever holds a name.
+.list-controls__search{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1 1 12rem;
+    max-width: 22rem;
+
+    // Same rounded field with a yellow focus glow as the .filter-bar inputs
+    // elsewhere; that class isn't reused here because its card background would
+    // sit behind the toggle too.
+    .form-control{
+        border-radius: 0.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background-color: rgba(255, 255, 255, 0.95);
+        color: $bg-color1;
+
+        &:focus{
+            border-color: $header-color1;
+            box-shadow: 0 0 0 0.2rem $focus-ring-color;
+        }
+    }
+}
+
+// Segmented control switching between the by-scout and by-player lists. Pill
+// pair rather than a dropdown: there are only ever two, and both stay visible so
+// it's obvious the other view exists.
+.view-toggle{
+    display: inline-flex;
+    padding: 0.25rem;
+    background-color: $bg-color15;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+}
+
+.view-toggle__btn{
+    padding: 0.4rem 1.25rem;
+    border: 0;
+    border-radius: 999px;
+    background-color: transparent;
+    color: $bg-color2;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover:not(.view-toggle__btn--active){
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &:focus-visible{
+        outline: none;
+        box-shadow: 0 0 0 0.2rem $focus-ring-color;
+    }
+
+    // Brand yellow on the selected side, matching the accordion headers.
+    &--active{
+        background-color: $header-color1;
+        color: $bg-color1;
+        cursor: default;
+    }
+}
+
 // Summary row at the bottom of the scouts table: same cells as a data row but
 // tinted and bold, so it reads as a total rather than a clickable entry.
 .total-row td{

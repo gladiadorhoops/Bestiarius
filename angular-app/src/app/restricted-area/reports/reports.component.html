@@ -8,10 +8,38 @@
 </div>
 <div class="mainpanel" *ngIf="!loading">
 
-    <!-- Level 1: one row per registered scout with how many reports they
+    <!-- The same reports read from either end: by the scout who submitted them or
+         by the player they're about. Hidden while drilled down, since the toggle
+         and search would otherwise look like they apply to the sub-list. -->
+    <div class="list-controls" *ngIf="!selectedScout && !selectedPlayer">
+        <div class="view-toggle">
+            <button type="button" class="view-toggle__btn" [class.view-toggle__btn--active]="view === 'scouts'"
+                    (click)="showView('scouts')">
+                Por Scout
+            </button>
+            <button type="button" class="view-toggle__btn" [class.view-toggle__btn--active]="view === 'players'"
+                    (click)="showView('players')">
+                Por Jugador
+            </button>
+        </div>
+
+        <!-- Searches whichever name column the visible list is keyed by. -->
+        <div class="list-controls__search">
+            <input id="filterName" type="text" class="form-control" autocomplete="off"
+                   [placeholder]="view === 'players' ? 'Buscar jugador' : 'Buscar scout'"
+                   [attr.aria-label]="view === 'players' ? 'Buscar jugador' : 'Buscar scout'"
+                   [value]="filterName" (input)="filterName = $any($event.target).value">
+            <button type="button" class="btn btn-outline-light btn-sm" *ngIf="filterName"
+                    (click)="filterName = ''" title="Limpiar busqueda" aria-label="Limpiar busqueda">
+                <i class="fas fa-rotate-left"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Level 1, scouts: one row per registered scout with how many reports they
          submitted. Scouts with no reports are listed too, showing 0, and their
          row isn't clickable since there's nothing to drill into. -->
-    <div *ngIf="!selectedScout">
+    <div *ngIf="view === 'scouts' && !selectedScout">
         <div class="scroll-container">
             <div style="min-width: 900px;">
                 <table class="row modern-table">
@@ -22,7 +50,7 @@
                         <th class="col col-4">Email</th>
                         <th class="col col-2">Cel</th>
                     </tr>
-                    <tr class="row" *ngFor="let scout of scoutReports; let i = index"
+                    <tr class="row" *ngFor="let scout of filteredScoutReports; let i = index"
                         [class.clickable-row]="scout.reports.length > 0"
                         (click)="selectScout(scout)">
                         <td class="col col-1">{{i+1}}</td>
@@ -31,8 +59,9 @@
                         <td class="col col-4">{{scout.email}}</td>
                         <td class="col col-2">{{scout.phone}}</td>
                     </tr>
-                    <!-- Tournament-wide report count across every scout. -->
-                    <tr class="row total-row" *ngIf="scoutReports.length > 0">
+                    <!-- Report count across the scouts listed — tournament-wide
+                         until the search narrows it. -->
+                    <tr class="row total-row" *ngIf="filteredScoutReports.length > 0">
                         <td class="col col-1"></td>
                         <td class="col col-3">Total</td>
                         <td class="col col-2">{{totalReports}}</td>
@@ -42,14 +71,53 @@
                 </table>
             </div>
         </div>
-        <p class="text-light mt-2" *ngIf="scoutReports.length == 0">No hay scouts registrados.</p>
+        <p class="text-light mt-2" *ngIf="filteredScoutReports.length == 0">
+            {{filterName ? 'Ningun scout coincide con la busqueda.' : 'No hay scouts registrados.'}}
+        </p>
     </div>
 
-    <!-- Level 2: the players evaluated by the selected scout. Clicking a player
-         opens the report detail modal on top of this list. -->
+    <!-- Level 1, players: one row per scouted player with how many reports were
+         submitted about them. Only players somebody reported on are listed. -->
+    <div *ngIf="view === 'players' && !selectedPlayer">
+        <div class="scroll-container">
+            <div style="min-width: 700px;">
+                <table class="row modern-table">
+                    <tr class="row">
+                        <th class="col col-2">#</th>
+                        <th class="col col-4">Jugador</th>
+                        <th class="col col-2">Reportes</th>
+                        <th class="col col-3">Equipo</th>
+                        <th class="col col-1">Cat</th>
+                    </tr>
+                    <tr class="row clickable-row" *ngFor="let player of filteredPlayerReports" (click)="selectPlayer(player)">
+                        <td class="col col-2">{{player.playerNumber}}</td>
+                        <td class="col col-4">{{player.playerName}}</td>
+                        <td class="col col-2">{{player.reports.length}}</td>
+                        <td class="col col-3">{{player.teamName}}</td>
+                        <td class="col col-1">{{player.category}}</td>
+                    </tr>
+                    <!-- Report count across the players listed. Unfiltered it's the
+                         same total the scouts list reaches from the other side. -->
+                    <tr class="row total-row" *ngIf="filteredPlayerReports.length > 0">
+                        <td class="col col-2"></td>
+                        <td class="col col-4">Total</td>
+                        <td class="col col-2">{{totalReports}}</td>
+                        <td class="col col-3"></td>
+                        <td class="col col-1"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <p class="text-light mt-2" *ngIf="filteredPlayerReports.length == 0">
+            {{filterName ? 'Ningun jugador coincide con la busqueda.' : 'No hay reportes registrados.'}}
+        </p>
+    </div>
+
+    <!-- Level 2, scouts: the players evaluated by the selected scout. Clicking a
+         player opens the report detail modal on top of this list. -->
     <div *ngIf="selectedScout">
         <div class="d-flex align-items-center gap-2 mb-3">
-            <button type="button" class="btn btn-outline-light btn-sm" (click)="backToScouts()" title="Regresar" aria-label="Regresar">
+            <button type="button" class="btn btn-outline-light btn-sm" (click)="backToList()" title="Regresar" aria-label="Regresar">
                 <i class="fas fa-arrow-left"></i>
             </button>
             <h3 class="text-light mb-0">{{selectedScout.scoutName}}</h3>
@@ -68,6 +136,32 @@
                         <td class="col col-5">{{report.playerName}}</td>
                         <td class="col col-3">{{report.teamName}}</td>
                         <td class="col col-2">{{report.category}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level 2, players: the scouts who reported on the selected player. Clicking
+         a scout opens that scout's report in the same modal. -->
+    <div *ngIf="selectedPlayer">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <button type="button" class="btn btn-outline-light btn-sm" (click)="backToList()" title="Regresar" aria-label="Regresar">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h3 class="text-light mb-0">({{selectedPlayer.playerNumber}}) {{selectedPlayer.playerName}}</h3>
+        </div>
+        <p class="text-light">{{selectedPlayer.teamName}} ({{selectedPlayer.category}})</p>
+        <div class="scroll-container">
+            <div style="min-width: 400px;">
+                <table class="row modern-table">
+                    <tr class="row">
+                        <th class="col col-2">#</th>
+                        <th class="col col-10">Scout</th>
+                    </tr>
+                    <tr class="row clickable-row" *ngFor="let report of selectedPlayer.reports; let i = index" (click)="selectReport(report)">
+                        <td class="col col-2">{{i+1}}</td>
+                        <td class="col col-10">{{report.scoutName}}</td>
                     </tr>
                 </table>
             </div>
