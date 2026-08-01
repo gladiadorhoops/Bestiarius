@@ -5,12 +5,9 @@ import { MatchTeam } from '../../interfaces/team';
 import { Gym } from '../../interfaces/gym';
 import { FormBuilder } from '@angular/forms';
 import { MatchBuilder } from '../../Builders/match-builder';
-import { TeamBuilder } from '../../Builders/team-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
-import { S3 } from '../../aws-clients/s3';
 import { COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR, REGION } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { S3Client } from '@aws-sdk/client-s3';
 
 // A bracket round and the braketPlace keys that belong to it. The same layout
 // is shared by both the Aprendiz and Elite brackets, so the template just loops
@@ -34,7 +31,6 @@ export class BracketsComponent implements OnInit {
     credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
   });
   ddb: DynamoDb =  new DynamoDb(this.ddbClient);
-  s3: S3 = new S3(new S3Client({ region: REGION, credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS }));
 
   allMatches: Match[] = [];
   loading = true;
@@ -57,8 +53,8 @@ export class BracketsComponent implements OnInit {
   // page. Only one category's bracket is shown at a time.
   @Input() category: 'elite' | 'aprendiz' = 'elite';
 
-  // Object URLs for downloaded team logos, keyed by team id.
-  teamLogos: {[teamId: string]: string} = {};
+  // Shared object URL map populated once by the parent results page.
+  @Input() teamLogos: {[teamId: string]: string} = {};
   // Id of the match whose gym/date/time detail is currently expanded.
   expandedMatchId: string | null = null;
 
@@ -103,30 +99,6 @@ export class BracketsComponent implements OnInit {
     this.loading = false;
 
     console.log("loaded bracket")
-
-    await this.loadTeamLogos();
-  }
-
-  // Downloads each participating team's logo once and stores a displayable
-  // object URL. Mirrors the download-then-blob approach used in view-teams so
-  // it works with the public (unauthenticated) Cognito credentials.
-  private async loadTeamLogos() {
-    const teams = new Map<string, MatchTeam>();
-    const matches = [...Object.values(this.phaseMatches), ...Object.values(this.phaseMatchesElite)];
-    for (const match of matches) {
-      for (const team of [match.homeTeam, match.visitorTeam]) {
-        if (team?.id && team.imageType && !teams.has(team.id)) {
-          teams.set(team.id, team);
-        }
-      }
-    }
-
-    for (const [id, team] of teams) {
-      const data = await this.s3.downloadFile(TeamBuilder.getLogoFilePath(id));
-      if (data) {
-        this.teamLogos[id] = URL.createObjectURL(new Blob([data as BlobPart], { type: team.imageType }));
-      }
-    }
   }
 
   teamLogoUrl(team: MatchTeam | undefined): string {

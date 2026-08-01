@@ -28,8 +28,8 @@
     </div>
 
     <app-awards *ngIf="showAwards"></app-awards>
-    <app-brackets *ngIf="showBrackets" [category]="selectedCategory"></app-brackets>
-    <app-standing-matches *ngIf="showStandings" [category]="selectedCategory"></app-standing-matches>
-    <app-groups *ngIf="showGroups" [category]="selectedCategory"></app-groups>
+    <app-brackets *ngIf="showBrackets" [category]="selectedCategory" [teamLogos]="teamLogos"></app-brackets>
+    <app-standing-matches *ngIf="showStandings" [category]="selectedCategory" [teamLogos]="teamLogos"></app-standing-matches>
+    <app-groups *ngIf="showGroups" [category]="selectedCategory" [teamLogos]="teamLogos"></app-groups>
 </div>
 </div>

@@ -6,6 +6,9 @@ import { MatchBuilder } from '../../Builders/match-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR, REGION } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { MatchTeam } from 'src/app/interfaces/team';
+
+const LOGO_PLACEHOLDER = 'assets/logo_gray.png';
 
 @Component({
   selector: 'app-standing-matches',
@@ -18,7 +21,7 @@ export class StandingMatchesComponent implements OnInit {
     credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
   }); 
   ddb: DynamoDb =  new DynamoDb(this.ddbClient);
-  
+
   allMatches: Match[] = [];
   loading = true;
 
@@ -28,6 +31,7 @@ export class StandingMatchesComponent implements OnInit {
 
   // Category to show, controlled by the shared toggle in the parent results page.
   @Input() category: 'elite' | 'aprendiz' = 'elite';
+  @Input() teamLogos: {[teamId: string]: string} = {};
 
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
@@ -60,6 +64,14 @@ export class StandingMatchesComponent implements OnInit {
       }
     });
     this.loading = false;
-
   }
+
+  teamLogoUrl(team: MatchTeam | undefined): string {
+    return (team?.id && this.teamLogos[team.id]) || LOGO_PLACEHOLDER;
+  }
+
+  onLogoError(event: Event) {
+    (event.target as HTMLImageElement).src = LOGO_PLACEHOLDER;
+  }
+
 }  
