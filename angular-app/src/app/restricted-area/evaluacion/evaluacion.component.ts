@@ -181,6 +181,10 @@ export class EvaluacionComponent implements OnChanges {
     this.openPopup();
   }
 
+  clearControl(controlName: string): void {
+    this.evaluationForm.get(controlName)?.setValue(null);
+  }
+
   // Rebuild the form from defaults so no previous player's skills linger, while
   // re-seeding the identity fields (scout, category, team). Called whenever the
   // team/category context changes and no report is loaded yet.
