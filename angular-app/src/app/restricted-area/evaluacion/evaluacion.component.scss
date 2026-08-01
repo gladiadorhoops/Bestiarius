@@ -27,6 +27,143 @@ fieldset {
     margin-top: 10%;
 }
 
+.modern-evaluation-form {
+    background: linear-gradient(180deg, rgba($bg-color2, 0.92), rgba($bg-color2, 0.95));
+    border: 1px solid $modal-surface-border;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.18);
+}
+
+.evaluation-photo-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    background: $modal-surface-muted;
+    border: 1px solid $modal-surface-border;
+    border-radius: 0.9rem;
+    padding: 1rem;
+}
+
+.evaluation-photo-card__image {
+    max-height: 200px;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 0.75rem;
+}
+
+.evaluation-photo-card__upload {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 2;
+    font-size: 1.75rem;
+    color: $header-color1;
+    background: rgba($bg-color1, 0.72);
+    border-radius: 999px;
+    padding: 0.35rem 0.45rem;
+    cursor: pointer;
+}
+
+.evaluation-photo-card__input {
+    display: none;
+}
+
+.modern-player-modal {
+    border: 1px solid $modal-surface-strong-border;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: $bg-color2;
+    color: $bg-color1;
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.28);
+}
+
+.modern-player-modal .modal-header.dark-header {
+    background: $bg-color1;
+    color: $header-color1;
+    border-bottom: 0;
+}
+
+.modern-player-modal__body {
+    background: linear-gradient(180deg, $modal-surface-gradient-start, $modal-surface-gradient-end);
+    padding: 1.25rem;
+}
+
+.modern-player-modal__text {
+    margin: 0;
+    color: $bg-color1;
+    font-weight: 600;
+}
+
+.modern-player-modal__footer {
+    background: $bg-color2;
+    border-top: 1px solid $modal-surface-border;
+}
+
+.modern-accordion {
+    .accordion-item {
+        background: transparent;
+        border: 0;
+        margin-bottom: 0.75rem;
+        border-radius: 0.9rem;
+        overflow: hidden;
+        box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.14);
+    }
+
+    .accordion-body {
+        background: linear-gradient(180deg, rgba($modal-surface-color, 0.96), rgba($bg-color2, 0.98));
+        color: $bg-color1;
+        padding: 1rem;
+        border-top: 1px solid rgba($bg-color1, 0.12);
+
+        .frow {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.7rem 0.85rem;
+            margin: 0 0 0.5rem;
+            background: rgba($modal-surface-color, 0.92);
+            border: 1px solid $modal-surface-border;
+            border-radius: 0.75rem;
+            color: $bg-color1;
+            box-shadow: inset 0 1px 0 rgba($modal-surface-color, 0.7);
+        }
+
+        .radio-label,
+        .checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            background: rgba($header-color1, 0.16);
+            color: $bg-color1;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .reset-button {
+            border: 0;
+            cursor: pointer;
+            min-width: 2.25rem;
+        }
+
+        input[type="radio"],
+        input[type="checkbox"] {
+            accent-color: $header-color1;
+            margin: 0;
+        }
+
+        label:first-child {
+            font-weight: 700;
+            color: $bg-color1;
+        }
+    }
+}
+
 .modal-dialog{
     color: black;
 }

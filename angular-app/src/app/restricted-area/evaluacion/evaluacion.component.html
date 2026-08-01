@@ -3,11 +3,11 @@
   <h2 class="text-center mb-3">
     Evaluacion de Jugadores
 </h2>
-<form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" class ="fcol">
+<form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" class="fcol modern-evaluation-form">
         <input name="scout" type="text" formControlName="scoutId" value="{{scout_id}}" hidden readonly required>
         <input name="scout" type="text" formControlName="scoutname" value="{{scout_name}}" hidden readonly required>
 
-    <div class="accordion accordion-flush" id="accordionFlushExample">
+    <div class="accordion accordion-flush modern-accordion" id="accordionFlushExample">
         <div class="accordion-item">
           <h2 class="accordion-header">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -16,12 +16,14 @@
           </h2>
           <div id="flush-collapseOne" class="accordion-collapse collapse show" >
               <div class="accordion-body">
-                <div class="row">
-                  <div class="col col-12 col-lg-5" style="position: relative;z-index: 1; height:200px">
-                  <img id="image" style="max-height: 200px; max-width:90%;position: absolute; top:0; left:0; ;z-index: 1;" [src]="imageUrl">
-                  <label *ngIf="this.selectedPlayer.id" style="position: absolute;top: 0;left: 0;z-index: 2;" for="photoFile"><i class="fa fa-camera" style="font-size: 2em;"></i></label>
-                  <input *ngIf="this.selectedPlayer.id" style="display:none;" id="photoFile" type="file" (change)="onFileSelected($event)" accept="image/*" maxFileSize="10000000">
-                </div>
+                <div class="row g-3 align-items-stretch">
+                  <div class="col col-12 col-lg-5">
+                    <div class="evaluation-photo-card">
+                      <img id="image" class="evaluation-photo-card__image" [src]="imageUrl">
+                      <label *ngIf="this.selectedPlayer.id" class="evaluation-photo-card__upload" for="photoFile"><i class="fa fa-camera"></i></label>
+                      <input *ngIf="this.selectedPlayer.id" class="evaluation-photo-card__input" id="photoFile" type="file" (change)="onFileSelected($event)" accept="image/*" maxFileSize="10000000">
+                    </div>
+                  </div>
                 <div class="col col-12 col-lg-7">
                   <label class="frow" for="filtroJugador">Jugador:&nbsp;</label>
                   <div class="frow" style="position: relative;">
@@ -86,10 +88,9 @@
                       <label class="radio-label" for="{{tiro.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
                     &nbsp;|&nbsp;
-                    <div>
-                      <input type="radio" id="{{tiro.report}}0" name="tiro-{{tiro.report}}" value="{{null}}" formControlName="tiro-{{tiro.report}}">
-                      <label class="radio-label" for="{{tiro.report}}0">&nbsp;Borrar&nbsp;</label>
-                    </div>
+                    <button type="button" class="radio-label reset-button" (click)="clearControl('tiro-' + tiro.report)" title="Limpiar">
+                      <i class="fas fa-rotate-left"></i>
+                    </button>
                 </div>
               </div>
             </div>
@@ -110,10 +111,9 @@
                         <label class="radio-label" for="{{ps.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
                     &nbsp;|&nbsp;
-                    <div>
-                      <input type="radio" id="{{ps.report}}0" name="pase-{{ps.report}}" value="{{null}}" formControlName="pase-{{ps.report}}">
-                      <label class="radio-label" for="{{ps.report}}0">&nbsp;Borrar&nbsp;</label>
-                    </div>
+                    <button type="button" class="radio-label reset-button" (click)="clearControl('pase-' + ps.report)" title="Limpiar">
+                      <i class="fas fa-rotate-left"></i>
+                    </button>
                 </div>
               </div>
             </div>
@@ -134,10 +134,9 @@
                         <label class="radio-label" for="{{df.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
                     &nbsp;|&nbsp;
-                    <div>
-                      <input type="radio" id="{{df.report}}0" name="defensa-{{df.report}}" value="{{null}}" formControlName="defensa-{{df.report}}">
-                      <label class="radio-label" for="{{df.report}}0">&nbsp;Borrar&nbsp;</label>
-                    </div>
+                    <button type="button" class="radio-label reset-button" (click)="clearControl('defensa-' + df.report)" title="Limpiar">
+                      <i class="fas fa-rotate-left"></i>
+                    </button>
                 </div>
               </div>
             </div>
@@ -158,10 +157,9 @@
                         <label class="radio-label" for="{{bt.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
                     &nbsp;|&nbsp;
-                    <div>
-                      <input type="radio" id="{{bt.report}}0" name="bote-{{bt.report}}" value="{{null}}" formControlName="bote-{{bt.report}}">
-                      <label class="radio-label" for="{{bt.report}}0">&nbsp;Borrar&nbsp;</label>
-                    </div>
+                    <button type="button" class="radio-label reset-button" (click)="clearControl('bote-' + bt.report)" title="Limpiar">
+                      <i class="fas fa-rotate-left"></i>
+                    </button>
                 </div>
               </div>
             </div>
@@ -182,10 +180,9 @@
                         <label class="radio-label" for="{{jg.report}}{{idx}}">&nbsp;{{idx}}&nbsp;</label>
                     </div>
                     &nbsp;|&nbsp;
-                    <div>
-                      <input type="radio" id="{{jg.report}}0" name="jugador-{{jg.report}}" value="{{null}}" formControlName="jugador-{{jg.report}}">
-                      <label class="radio-label" for="{{jg.report}}0">&nbsp;Borrar&nbsp;</label>
-                    </div>
+                    <button type="button" class="radio-label reset-button" (click)="clearControl('jugador-' + jg.report)" title="Limpiar">
+                      <i class="fas fa-rotate-left"></i>
+                    </button>
                 </div>
               </div>
             </div>
@@ -219,10 +216,10 @@
                     <input type="radio" alt="{{ev.value}}{{ev.report}}" id="{{ev.value}}{{ev.report}}" name="general-{{ev.report}}" value="{{ev.value}}" formControlName="general-{{ev.report}}">
                     <label class="radio-label" for="{{ev.value}}{{ev.report}}">&nbsp;{{ev.value}} - {{ev.localized}}&nbsp;</label>
                 </div>
-                <div class="frow"> -- </div>
                 <div class="frow">
-                  <input type="radio" id="general-0" name="general-general" value="{{null}}" formControlName="general-general">
-                  <label class="radio-label" for="general-general">&nbsp;Borrar&nbsp;</label>
+                  <button type="button" class="radio-label reset-button" (click)="clearControl('general-general')" title="Limpiar">
+                    <i class="fas fa-rotate-left"></i>
+                  </button>
                 </div>
             </div>
           </div>
@@ -246,7 +243,7 @@
 
     </div>
     <div class="frow">
-        <button type="submit" [disabled]="!evaluationForm.valid">Guardar</button>
+        <button type="submit" class="btn btn-warning" [disabled]="!evaluationForm.valid">Guardar</button>
     </div>
 </form>
 
@@ -254,22 +251,22 @@
   tabindex="-1"
   role="dialog"
   [ngStyle]="{'display':displayPhotoPopup}">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content modern-player-modal">
       <div class="modal-header dark-header">
-        <h5 class="modal-title">Remplazar imagem</h5>
+        <h5 class="modal-title">Remplazar imagen</h5>
         <button type="button" class="btn-close" (click)="closePhotoPopup()" aria-label="Close">
         </button>
       </div>
-      <div class="modal-body">
-        <p>Estas seguro que quieres remplazar la imagen del jugador "{{selectedPlayer.name}}". Esta accion es irreversible.</p>
+      <div class="modal-body modern-player-modal__body">
+        <p class="modern-player-modal__text">Estas seguro que quieres remplazar la imagen del jugador "{{selectedPlayer.name}}". Esta accion es irreversible.</p>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" 
+      <div class="modal-footer modern-player-modal__footer">
+        <button type="button" class="btn btn-outline-dark" 
                 (click)="confirmReplacePhoto()">
           Sí
         </button>
-        <button type="button" class="btn btn-danger" 
+        <button type="button" class="btn btn-outline-dark" 
                 (click)="closePhotoPopup()">
           No
         </button>
@@ -284,13 +281,13 @@
   role="dialog"
   [ngStyle]="{'display':displayStyle}">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <p>{{submitReportMessage}}</p>
+    <div class="modal-content modern-player-modal">
+      <div class="modal-body modern-player-modal__body">
+        <p class="modern-player-modal__text">{{submitReportMessage}}</p>
   
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" 
+      <div class="modal-footer modern-player-modal__footer">
+        <button type="button" class="btn btn-outline-dark" 
                 (click)="closePopup()">
           Cerrar
         </button>
