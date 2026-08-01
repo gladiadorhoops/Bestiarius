@@ -56,44 +56,68 @@
     <div class="row mainpanel tab-content-panel" *ngIf="!loading">
 
         <!-- Shared filters (Category + Equipo) — hidden on the statistics tab, which has its own filters -->
-        <form class="filter-bar" [formGroup]="filterForm" *ngIf="!isScouting && !isTeamSelected && activeTab !== 'estadisticas'">
-            <div class="row g-2 justify-content-center">
-                <div class="col-6 col-md-2">
-                    <select class="form-select" id="category" formControlName="cat" (change)="applyCategoryFilter()" required>
-                        <option [ngValue]="null">Categoría</option>
-                        <option value="aprendiz">Aprendiz</option>
-                        <option value="elite">Elite</option>
-                    </select>
-                </div>
-                <div class="col-6 col-md-2" *ngIf="activeTab !== 'equipos'">
-                    <select class="form-select" id="teams" formControlName="equipo" (change)="applyFilters()">
-                        <option [ngValue]="null">Equipo</option>
-                        <option *ngFor="let equipo of filteredTeams" value="{{equipo.name}}">{{equipo.name}}</option>
-                    </select>
-                </div>
+        <div class="scouting-filters-wrapper" *ngIf="!isScouting && !isTeamSelected && activeTab !== 'estadisticas'">
+            <div class="filter-bar">
+                <div class="d-flex justify-content-between align-items-center mb-2 gap-2">
+                    <button class="btn btn-warning btn-sm" type="button"
+                            (click)="toggleFilters()"
+                            [attr.aria-expanded]="!filtersCollapsed"
+                            aria-controls="scoutingFilters">
+                        <i class="fas" [class.fa-chevron-down]="filtersCollapsed" [class.fa-chevron-up]="!filtersCollapsed"></i>
+                        <span class="ms-2">{{ filtersCollapsed ? 'Mostrar filtros' : 'Ocultar filtros' }}</span>
+                    </button>
 
-                <!-- Evaluar Partido specific filters -->
-                <div class="col-6 col-md-2" *ngIf="activeTab === 'partido'">
-                    <select class="form-select" id="days" formControlName="day" (change)="applyFilters()">
-                        <option [ngValue]="null">Día</option>
-                        <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
-                    </select>
-                </div>
-                <div class="col-6 col-md-2" *ngIf="activeTab === 'partido'">
-                    <select class="form-select" id="gyms" formControlName="gym" (change)="applyFilters()">
-                        <option [ngValue]="null">Gimnasio</option>
-                        <option *ngFor="let gym of gyms" value="{{gym.id}}">{{gym.name}}</option>
-                    </select>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-12 text-center">
-                    <button class="btn btn-outline-light btn-sm" type="button" (click)="clearFilters()" title="Limpiar filtros" aria-label="Limpiar filtros">
-                        <i class="fas fa-rotate-left"></i>
+                    <button  *ngIf="activeTab === 'partido'" class="btn btn-warning btn-sm" type="button"
+                            (click)="scrollToFirstRelevantMatch()"
+                            title="Ir al siguiente partido relevante"
+                            aria-label="Ir al siguiente partido relevante">
+                        <i class="fas fa-arrow-down"></i>
+                        <span class="ms-2 d-inline">Partido Actual</span>
                     </button>
                 </div>
+
+                <div id="scoutingFilters" class="collapse" [class.show]="!filtersCollapsed">
+                    <form [formGroup]="filterForm">
+                        <div class="row g-2 justify-content-center">
+                            <div class="col-6 col-md-2">
+                                <select class="form-select" id="category" formControlName="cat" (change)="applyCategoryFilter()" required>
+                                    <option [ngValue]="null">Categoría</option>
+                                    <option value="aprendiz">Aprendiz</option>
+                                    <option value="elite">Elite</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-2" *ngIf="activeTab !== 'equipos'">
+                                <select class="form-select" id="teams" formControlName="equipo" (change)="applyFilters()">
+                                    <option [ngValue]="null">Equipo</option>
+                                    <option *ngFor="let equipo of filteredTeams" value="{{equipo.name}}">{{equipo.name}}</option>
+                                </select>
+                            </div>
+
+                            <!-- Evaluar Partido specific filters -->
+                            <div class="col-6 col-md-2" *ngIf="activeTab === 'partido'">
+                                <select class="form-select" id="days" formControlName="day" (change)="applyFilters()">
+                                    <option [ngValue]="null">Día</option>
+                                    <option *ngFor="let day of days" value="{{day}}">{{day}}</option>
+                                </select>
+                            </div>
+                            <div class="col-6 col-md-2" *ngIf="activeTab === 'partido'">
+                                <select class="form-select" id="gyms" formControlName="gym" (change)="applyFilters()">
+                                    <option [ngValue]="null">Gimnasio</option>
+                                    <option *ngFor="let gym of gyms" value="{{gym.id}}">{{gym.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12 text-center">
+                                <button class="btn btn-outline-light btn-sm" type="button" (click)="clearFilters()" title="Limpiar filtros" aria-label="Limpiar filtros">
+                                    <i class="fas fa-rotate-left"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
+        </div>
 
         <div *ngIf="activeTab === 'partido' && !isTeamSelected">
         <div class="mt-4" *ngIf="!isScouting">
