@@ -48,7 +48,7 @@
                         <!-- One cross table per group: columns and rows are the same team
                              list, so the diagonal is the team against itself and is
                              blacked out. -->
-                        <div class="standings-group" *ngFor="let groupStandings of standings">
+                        <div class="standings-group standings-group--results" *ngFor="let groupStandings of standings">
                             <div class="scroll-container">
                                 <table class="standings-table">
                                     <!-- Every cell's content is wrapped in .standings-cell, a
@@ -108,7 +108,7 @@
                 </h2>
                 <div id="flush-collapsePositions" class="accordion-collapse collapse show">
                     <div class="accordion-body">
-                        <div class="standings-group" *ngFor="let group of groupStandings">
+                        <div class="standings-group standings-group--positions" *ngFor="let group of groupStandings">
                             <h3 class="text-center standings-positions__group">{{group.group}}</h3>
                             <div class="scroll-container">
                                 <table class="positions-table">

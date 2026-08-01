@@ -66,6 +66,22 @@
     }
 }
 
+.standings-group--results {
+    display: flex;
+    justify-content: center;
+
+    .scroll-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        overflow-x: auto;
+    }
+}
+
+.standings-group--positions {
+    display: block;
+}
+
 // Fixed column widths. The first column is sized so team names wrap into at most
 // two lines: at this width two lines hold ~44 characters, comfortably more than
 // any current team name.
@@ -92,6 +108,8 @@ $table-radius: 0.75rem;
     // viewport and lets the table overflow into .scroll-container instead.
     table-layout: auto;
     width: auto;
+    margin-left: auto;
+    margin-right: auto;
     border-collapse: separate;
     border-spacing: 0;
     color: $bg-color1;
@@ -367,4 +385,44 @@ $table-radius: 0.75rem;
 
     &--positive { color: darken($text-color1, 32%); }
     &--negative { color: darken($text-color2, 20%); }
+}
+
+@media (max-width: 767.98px) {
+    .standings-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .standings-group--results {
+        .scroll-container {
+            justify-content: flex-start;
+        }
+
+        .standings-table {
+            width: max-content;
+            margin-left: 0;
+            margin-right: 0;
+
+            th, td {
+                min-width: 7.25rem;
+                max-width: 7.25rem;
+                padding: 0.35rem 0.4rem;
+            }
+
+            .standings-cell {
+                height: 2.5rem;
+            }
+
+            .standings-cell__text,
+            .standings-result {
+                font-size: 0.72rem;
+            }
+
+            .standings-table__corner,
+            .standings-table__row-header {
+                position: sticky !important;
+                left: 0 !important;
+                z-index: 3 !important;
+            }
+        }
+    }
 }
