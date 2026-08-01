@@ -58,12 +58,22 @@ export class MatchBuilder {
 
     private buildMatch(item: Record<string, AttributeValue>, vteam: MatchTeam, hteam: MatchTeam, gym: Gym): Match {
         let month = +(item["spk"].S!) > 3 ? "/07" : "/08"
+        const displayTime = item['datetime']
+            ? new Intl.DateTimeFormat('es-MX', {
+                day: '2-digit',
+                month: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+            }).format(new Date(item['datetime'].S!))
+            : item['time'].S!
+
         return {
             id: item[PK_KEY].S!.split('.')[1],
             category: item['category'].S,
             location: gym,
             day: item['spk'].S!,
-            time: item['datetime'] ? (new Date(item['datetime'].S!)).toLocaleString("es-MX",{dateStyle: 'short', timeStyle: 'short'}) : item['time'].S!,
+            time: displayTime,
             datetime: item['datetime'] ? new Date(item['datetime'].S!) : undefined,
             juego: item['juego'].S!,
             visitorPoints: item['visitorPoints'].S!,

@@ -27,46 +27,37 @@
     margin-bottom: 1.25rem;
 }
 
-// Modern pill-style dropdown with a custom caret (matches the Resultados page).
-.year-select {
-    position: relative;
-    display: inline-block;
-
-    &::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        right: 1rem;
-        width: 0.5em;
-        height: 0.5em;
-        border-right: 2px solid $bg-color1;
-        border-bottom: 2px solid $bg-color1;
-        transform: translateY(-70%) rotate(45deg);
-        pointer-events: none;
-    }
+// Segmented category toggle matching the reports page view-switcher.
+.view-toggle {
+    display: inline-flex;
+    padding: 0.25rem;
+    background-color: $bg-color15;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
 }
 
-.year-select__control {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 0.5rem 2.5rem 0.5rem 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: $bg-color1;
-    background-color: $bg-color2;
-    border: 1px solid transparent;
+.view-toggle__btn {
+    padding: 0.4rem 1.25rem;
+    border: 0;
     border-radius: 999px;
+    background-color: transparent;
+    color: $bg-color2;
+    font-weight: 600;
     cursor: pointer;
-    outline: none;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition: background-color 0.15s ease, color 0.15s ease;
 
-    &:hover {
-        border-color: $header-color1;
+    &:hover:not(.view-toggle__btn--active) {
+        background-color: rgba(255, 255, 255, 0.1);
     }
 
-    &:focus {
-        border-color: $header-color1;
+    &:focus-visible {
+        outline: none;
         box-shadow: 0 0 0 0.2rem $focus-ring-color;
+    }
+
+    &--active {
+        background-color: $header-color1;
+        color: $bg-color1;
+        cursor: default;
     }
 }

@@ -114,6 +114,10 @@ export class BracketsComponent implements OnInit {
     return (name ?? '').substring(0, 3);
   }
 
+  visibleRounds(matches: Record<string, Match | undefined>): BracketRound[] {
+    return this.rounds.filter(round => round.places.some(place => !!matches[place]));
+  }
+
   mapsUrl(location: Gym | undefined): string {
     if (!location) { return ''; }
     return `https://www.google.com/maps/search/?api=1&query_place_id=${location.place_id}&query=${location.address}`;
