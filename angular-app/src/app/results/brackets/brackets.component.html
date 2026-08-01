@@ -51,7 +51,7 @@
                         <div class="container text-center">
                             <div class="tournament-bracket tournament-bracket--rounded">
                                 <div class="tournament-bracket__round tournament-bracket__round--{{ round.cssClass }}"
-                                     *ngFor="let round of rounds">
+                                     *ngFor="let round of visibleRounds(matches)">
                                     <h3 class="tournament-bracket__round-title">{{ round.title }}</h3>
                                     <ul class="tournament-bracket__list">
                                         <li class="tournament-bracket__item" *ngFor="let place of round.places">

@@ -31,8 +31,9 @@
   //}
 
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   white-space: nowrap;
+  padding-bottom: 1rem;
 }
 
 .tournament-bracket__round {
@@ -43,6 +44,7 @@
   overflow-x: visible;
   overflow-y: visible;
   white-space: normal;
+  padding-bottom: 0.25rem;
 }
 
 .tournament-bracket__round-title {
@@ -59,7 +61,7 @@
   flex-direction: column;
   flex-flow: row wrap;
   justify-content: center;
-  height: 100%;
+  height: auto;
   min-height: 100%;
   //border-bottom: 1px dashed #e5e5e5;
   //padding-bottom: 2em;
