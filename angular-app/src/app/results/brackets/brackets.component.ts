@@ -114,7 +114,7 @@ export class BracketsComponent implements OnInit {
     return (name ?? '').substring(0, 3);
   }
 
-  visibleRounds(matches: {[place: string]: Match}): BracketRound[] {
+  visibleRounds(matches: Record<string, Match | undefined>): BracketRound[] {
     return this.rounds.filter(round => round.places.some(place => !!matches[place]));
   }
 
