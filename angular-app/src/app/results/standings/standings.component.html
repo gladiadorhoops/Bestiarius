@@ -1,0 +1,78 @@
+<div class="row justify-content-md-center padded-page">
+    <div class="col col-12">
+        <h1 class="text-center">
+            Tabla de Resultados
+        </h1>
+        <br>
+    </div>
+
+    <div class="spinner-border text-light mx-auto" role="status" *ngIf="loading">
+        <span class="sr-only">Loading...</span>
+    </div>
+
+    <div [hidden]="loading">
+        <!-- Category filter (same control the partidos page uses) plus a team
+             filter that narrows the tables down to a single team's row. -->
+        <div class="col col-12 results-filters">
+            <div class="year-select">
+                <select id="categorySelect" class="year-select__control" [formControl]="category" (change)="selectCategory()">
+                    <option *ngFor="let cat of categories" [value]="cat">{{cat | titlecase}}</option>
+                </select>
+            </div>
+
+            <div class="year-select" *ngIf="teams.length > 0">
+                <select id="teamSelect" class="year-select__control" [formControl]="team" (change)="selectTeam()">
+                    <option value="">Todos los equipos</option>
+                    <option *ngFor="let filterTeam of teams" [value]="filterTeam.id">{{filterTeam.name}}</option>
+                </select>
+            </div>
+        </div>
+
+        <h2 *ngIf="!loading && standings.length === 0" class="text-center">
+            Próximamente, estad atentos.
+        </h2>
+
+        <!-- One cross table per group: columns and rows are the same team list,
+             so the diagonal is the team against itself and is blacked out. -->
+        <div class="col col-12 standings-group" *ngFor="let groupStandings of standings">
+            <div class="scroll-container">
+                <table class="standings-table">
+                    <!-- Every cell's content is wrapped in .standings-cell, a fixed
+                         two-line box, so all rows end up exactly the same height. -->
+                    <thead>
+                        <tr>
+                            <th class="standings-table__corner">
+                                <div class="standings-cell"><span class="standings-cell__text">{{groupStandings.group}}</span></div>
+                            </th>
+                            <th *ngFor="let team of groupStandings.teams">
+                                <div class="standings-cell"><span class="standings-cell__text">{{team.name}}</span></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let rowTeam of groupStandings.rowTeams">
+                            <th class="standings-table__row-header">
+                                <div class="standings-cell"><span class="standings-cell__text">{{rowTeam.name}}</span></div>
+                            </th>
+                            <ng-container *ngFor="let columnTeam of groupStandings.teams">
+                                <td *ngIf="rowTeam.id === columnTeam.id" class="standings-table__self">
+                                    <div class="standings-cell"></div>
+                                </td>
+                                <td *ngIf="rowTeam.id !== columnTeam.id">
+                                    <div class="standings-cell">
+                                        <span class="standings-cell__text standings-result"
+                                              *ngIf="groupStandings.results[rowTeam.id][columnTeam.id] as cell"
+                                              [class.standings-result--win]="cell.outcome === 'G'"
+                                              [class.standings-result--loss]="cell.outcome === 'P'">
+                                            {{cell.outcome}} {{cell.teamPoints}} - {{cell.opponentPoints}}
+                                        </span>
+                                    </div>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

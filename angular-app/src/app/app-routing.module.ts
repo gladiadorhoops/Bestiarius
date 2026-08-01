@@ -14,6 +14,7 @@ import { EvaluacionComponent } from './restricted-area/evaluacion/evaluacion.com
 import { GroupsComponent } from './results/groups/groups.component';
 import { BracketsComponent } from './results/brackets/brackets.component';
 import { StandingMatchesComponent } from './results/standing-matches/standing-matches.component';
+import { StandingsComponent } from './results/standings/standings.component';
 import { SignupComponent } from './signup/signup.component';
 import { LoginComponent } from './login/login.component';
 import { RestrictedAreaComponent } from './restricted-area/restricted-area.component';
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'grupos', component: GroupsComponent },
   { path: 'brackets', component: BracketsComponent },
   { path: 'standings', component: StandingMatchesComponent },
+  { path: 'tabla', component: StandingsComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'partidos', component: PartidosComponent },
   { path: '**', component: InicioComponent, data: { 
