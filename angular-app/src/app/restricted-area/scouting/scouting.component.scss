@@ -221,6 +221,18 @@ fieldset {
     margin-top: 0;
 }
 
+// Keep the filter card pinned beneath the top tab bar while the match list scrolls.
+.scouting-filters-wrapper{
+    position: sticky;
+    top: 1.75rem;
+    z-index: 1020;
+    margin-bottom: 1rem;
+
+    .filter-bar{
+        background-color: rgba($bg-color2, 0.8);
+    }
+}
+
 // The filter card look is global (.filter-bar in styles.scss); here we only
 // add spacing between the top tabs and the filters on large screens.
 .filter-bar{

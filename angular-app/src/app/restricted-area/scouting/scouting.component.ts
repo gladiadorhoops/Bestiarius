@@ -41,6 +41,7 @@ export class ScoutingComponent implements OnInit {
   isTeamSelected: boolean = false;
   isEvaluatingPlayer: boolean = false;
   isScouting: boolean = false;
+  filtersCollapsed = true;
   scoutingMatch: Match = {location: {id: "", name: ""}, time: "", datetime: new Date(), juego: "", visitorTeam: {id: "", name: "", category: ""}, visitorPoints: "0", homeTeam: {id: "", name: "", category: ""}, homePoints:"0"};
   loading: boolean = true;
   editingTeam: MatchTeamWithPhoto = {id: "", name: "", category: "", imageUrl: ""};
@@ -87,6 +88,10 @@ export class ScoutingComponent implements OnInit {
     await this.loadMatches();
   }
 
+  toggleFilters() {
+    this.filtersCollapsed = !this.filtersCollapsed;
+  }
+
   selectTab(tab: 'partido' | 'jugador' | 'equipos' | 'estadisticas') {
     this.activeTab = tab;
     // Reset any open "players with images" roster (used by the scouting page
@@ -96,6 +101,14 @@ export class ScoutingComponent implements OnInit {
     this.editingTeam = {id: "", name: "", category: "", imageUrl: ""};
     this.players = [];
     this.team = undefined;
+
+    if (tab != 'partido') {
+      this.filtersCollapsed = false;
+      this.scrollToTop();
+    } else {
+      this.filtersCollapsed = true;
+      setTimeout(() => this.scrollToFirstRelevantMatch(), 0);
+    }
   }
 
   
@@ -107,6 +120,35 @@ export class ScoutingComponent implements OnInit {
     this.applyCategoryFilter();
     this.loadTeamLogos();
     this.loading = false;
+
+    if (this.activeTab === 'partido') {
+      setTimeout(() => this.scrollToFirstRelevantMatch(), 0);
+    }
+  }
+
+  private scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  scrollToFirstRelevantMatch() {
+    if (this.activeTab !== 'partido' || this.filteredMatches.length === 0) {
+      return;
+    }
+
+    // leaving the code to scroll based on time in case we want to use it again in the future
+    //const THREE_HOURS_IN_MS: number = 3 * 60 * 60 * 1000;
+    const targetIndex = this.filteredMatches.findIndex(match => {
+      //if (!match.datetime) {
+      //  return false;
+      //}
+
+      //return match.datetime.getTime() >= Date.now()-THREE_HOURS_IN_MS;
+      return match.homePoints === "0" && match.visitorPoints === "0";
+    })-1;
+
+    const element = document.querySelectorAll('.match-card--readonly')[targetIndex >= 0 ? targetIndex : 0] as HTMLElement | undefined;
+    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
   }
 
   // Load each team's logo from S3 into the teamLogos map so the Equipos list
@@ -183,6 +225,7 @@ export class ScoutingComponent implements OnInit {
       this.marcadorForm.controls.visitorScore.setValue(Number(match.visitorPoints));
     }
     this.isScouting = true;
+    this.scrollToTop();
     // Load the left (home) team by default so its players show under the match info.
     await this.selectScoutingTeam(match.homeTeam);
   }
@@ -222,6 +265,7 @@ export class ScoutingComponent implements OnInit {
     this.editingTeam = {id: "", name: "", category: "", imageUrl: ""};
     this.players = [];
     this.team = undefined;
+    setTimeout(() => this.scrollToFirstRelevantMatch(), 0);
   }
 
   async edit(team:MatchTeam){
