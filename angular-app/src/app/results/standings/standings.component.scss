@@ -1,0 +1,177 @@
+@import "colors";
+
+.padded-page{
+    padding: 5%;
+}
+
+// Category filter, aligned to the top-left above the tables (same control as
+// the partidos page).
+.results-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.year-select {
+    position: relative;
+    display: inline-block;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        width: 0.5em;
+        height: 0.5em;
+        border-right: 2px solid $bg-color1;
+        border-bottom: 2px solid $bg-color1;
+        transform: translateY(-70%) rotate(45deg);
+        pointer-events: none;
+    }
+}
+
+.year-select__control {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $bg-color1;
+    background-color: $bg-color2;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &:hover {
+        border-color: $header-color1;
+    }
+
+    &:focus {
+        border-color: $header-color1;
+        box-shadow: 0 0 0 0.2rem $focus-ring-color;
+    }
+}
+
+.standings-group {
+    margin-bottom: 2.5rem;
+}
+
+// Fixed column widths. The first column is sized so team names wrap into at most
+// two lines: at this width two lines hold ~44 characters, comfortably more than
+// any current team name.
+$row-header-width: 14rem;
+$result-column-width: 10.5rem;
+
+// Every cell is exactly two lines tall so all rows line up, whether the team
+// name wraps or not.
+$cell-line-height: 1.3rem;
+$cell-lines: 2;
+
+// Cross table: the top-left corner cell carries the group name, the first row
+// and first column are the team headers, and the diagonal (team vs itself) is
+// blacked out.
+.standings-table {
+    // `table-layout: auto` with matching min/max widths per cell, rather than
+    // `fixed` + `width`: under `fixed` the table sizes to its container first and
+    // then divides that width among the columns, so every column shrinks on a
+    // narrow screen. Clamping min and max pins each column at one width at any
+    // viewport and lets the table overflow into .scroll-container instead.
+    table-layout: auto;
+    width: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: $bg-color1;
+
+    th, td {
+        min-width: $result-column-width;
+        max-width: $result-column-width;
+        padding: 0.4rem 0.5rem;
+        border: 1px solid $bg-color1;
+        vertical-align: middle;
+    }
+
+    // Column headers: the opponents. The corner is excluded so its own, darker
+    // treatment below wins — view-encapsulation attributes would otherwise make
+    // this two-element selector the more specific one.
+    thead th:not(.standings-table__corner) {
+        background-color: $header-color1;
+        color: $bg-color1;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    // Row headers: the team the results are read from. Wider than the result
+    // columns, since these hold the team names.
+    .standings-table__row-header {
+        min-width: $row-header-width;
+        max-width: $row-header-width;
+        background-color: $header-color1;
+        color: $bg-color1;
+        font-weight: 700;
+
+        .standings-cell {
+            justify-content: flex-end;
+        }
+
+        .standings-cell__text {
+            text-align: right;
+        }
+    }
+
+    // Group name sits in the empty corner above the row headers. Dark panel with
+    // the brand yellow on top so it reads as the table's title, not as a team.
+    th.standings-table__corner {
+        min-width: $row-header-width;
+        max-width: $row-header-width;
+        background-color: $bg-color1;
+        color: $header-color1;
+        font-weight: 800;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        text-align: center;
+    }
+
+    td {
+        background-color: $bg-color2;
+        text-align: center;
+    }
+
+    // A team never plays itself, so the diagonal is filled in solid.
+    .standings-table__self {
+        background-color: $bg-color1;
+    }
+
+    // Every cell's content lives in this box, fixed at two lines tall so all rows
+    // are the same height, with the text centered inside it.
+    .standings-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: $cell-line-height * $cell-lines;
+    }
+
+    // Team names wrap onto a second line rather than widening the column. No
+    // clamp or max-height here: the two lines the cell provides are enough for
+    // every name at this column width, and leaving the text unclamped means an
+    // unexpectedly long one stays readable instead of being silently cut off.
+    .standings-cell__text {
+        line-height: $cell-line-height;
+        text-align: center;
+        // Set explicitly because .scroll-container sets nowrap on its subtree.
+        white-space: normal;
+        overflow-wrap: break-word;
+    }
+}
+
+.standings-result {
+    font-weight: 600;
+
+    &--win { color: darken($text-color1, 20%); }
+    &--loss { color: $text-color2; }
+}

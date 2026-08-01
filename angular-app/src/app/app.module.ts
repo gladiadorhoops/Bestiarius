@@ -40,6 +40,7 @@ import { GroupsComponent } from './results/groups/groups.component';
 import { MatchGeneratorComponent } from './restricted-area/match-generator/match-generator.component';
 import { MatchEditorComponent } from './restricted-area/match-editor/match-editor.component';
 import { StandingMatchesComponent } from './results/standing-matches/standing-matches.component';
+import { StandingsComponent } from './results/standings/standings.component';
 import { AddPlayerComponent } from './restricted-area/view-teams/add-player/add-player.component';
 import { AddTeamComponent } from './restricted-area/add-team/add-team.component';
 import { SignupComponent } from './signup/signup.component';
@@ -79,6 +80,7 @@ import { ReportsComponent } from './restricted-area/reports/reports.component'
     MatchGeneratorComponent,
     MatchEditorComponent,
     StandingMatchesComponent,
+    StandingsComponent,
     AddPlayerComponent,
     AddTeamComponent,
     SignupComponent,
