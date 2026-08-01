@@ -5,8 +5,46 @@ export interface ReportBasic {
     scoutName: string,
     playerId: string,
     playerName: string,
+    playerNumber: string,
     category: string,
     teamName: string,
+}
+
+// One scout and every report that scout submitted, so the reports list can show
+// a single row per scout with a report count. Email/phone are blank for scouts
+// that only appear via a report (i.e. not registered for the current year).
+export interface ScoutReports {
+    scoutId: string,
+    scoutName: string,
+    email: string,
+    phone: string,
+    reports: ReportBasic[],
+}
+
+// A single scout's report for a player, flattened for display: one entry per
+// section, each with its localized skill labels and values. `fullWidth` sections
+// span the whole grid instead of sitting two-up. `valueOnly` sections are
+// checkbox pickers, so only the names of the picked options are listed — there's
+// no label/value pair to show.
+export interface ReportSectionView {
+    section: string,
+    title: string,
+    fullWidth: boolean,
+    valueOnly: boolean,
+    skills: ReportSkillView[],
+}
+
+export interface ReportSkillView {
+    label: string,
+    value: string,
+}
+
+// A whole report as rendered by the reports detail modal. `general` is pulled out
+// of the sections so it can sit in the summary header, matching the layout of the
+// evaluation results modal.
+export interface ScoutPlayerReportView {
+    general: string,
+    sections: ReportSectionView[],
 }
 
 export interface Reporte {

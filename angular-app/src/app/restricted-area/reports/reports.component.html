@@ -7,24 +7,151 @@
     <span class="sr-only">Loading...</span>
 </div>
 <div class="mainpanel" *ngIf="!loading">
-    <div class="scroll-container">
-        <div style="min-width: 600px;">
-    <table class="row modern-table">
-        <tr class="row">
-            <th class="col col-1">#</th>
-            <th class="col col-3">Scout</th>
-            <th class="col col-3">(#) Jugador</th>
-            <th class="col col-3">Equipo</th>
-            <th class="col col-2">Categoria</th>
-        </tr>
-        <tr class="row" *ngFor="let report of reports; let i = index" >
-            <td class="col col-1">{{i+1}}</td>
-            <td class="col col-3">{{report.scoutName}}</td>
-            <td class="col col-3">{{report.playerName}}</td>
-            <td class="col col-3">{{report.teamName}}</td>
-            <td class="col col-2">{{report.category}}</td>
-        </tr>
-    </table>
+
+    <!-- Level 1: one row per registered scout with how many reports they
+         submitted. Scouts with no reports are listed too, showing 0, and their
+         row isn't clickable since there's nothing to drill into. -->
+    <div *ngIf="!selectedScout">
+        <div class="scroll-container">
+            <div style="min-width: 900px;">
+                <table class="row modern-table">
+                    <tr class="row">
+                        <th class="col col-1">#</th>
+                        <th class="col col-3">Scout</th>
+                        <th class="col col-2">Reportes</th>
+                        <th class="col col-4">Email</th>
+                        <th class="col col-2">Cel</th>
+                    </tr>
+                    <tr class="row" *ngFor="let scout of scoutReports; let i = index"
+                        [class.clickable-row]="scout.reports.length > 0"
+                        (click)="selectScout(scout)">
+                        <td class="col col-1">{{i+1}}</td>
+                        <td class="col col-3">{{scout.scoutName}}</td>
+                        <td class="col col-2">{{scout.reports.length}}</td>
+                        <td class="col col-4">{{scout.email}}</td>
+                        <td class="col col-2">{{scout.phone}}</td>
+                    </tr>
+                    <!-- Tournament-wide report count across every scout. -->
+                    <tr class="row total-row" *ngIf="scoutReports.length > 0">
+                        <td class="col col-1"></td>
+                        <td class="col col-3">Total</td>
+                        <td class="col col-2">{{totalReports}}</td>
+                        <td class="col col-4"></td>
+                        <td class="col col-2"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <p class="text-light mt-2" *ngIf="scoutReports.length == 0">No hay scouts registrados.</p>
+    </div>
+
+    <!-- Level 2: the players evaluated by the selected scout. Clicking a player
+         opens the report detail modal on top of this list. -->
+    <div *ngIf="selectedScout">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <button type="button" class="btn btn-outline-light btn-sm" (click)="backToScouts()" title="Regresar" aria-label="Regresar">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h3 class="text-light mb-0">{{selectedScout.scoutName}}</h3>
+        </div>
+        <div class="scroll-container">
+            <div style="min-width: 600px;">
+                <table class="row modern-table">
+                    <tr class="row">
+                        <th class="col col-2">#</th>
+                        <th class="col col-5">Jugador</th>
+                        <th class="col col-3">Equipo</th>
+                        <th class="col col-2">Categoria</th>
+                    </tr>
+                    <tr class="row clickable-row" *ngFor="let report of selectedScout.reports" (click)="selectReport(report)">
+                        <td class="col col-2">{{report.playerNumber}}</td>
+                        <td class="col col-5">{{report.playerName}}</td>
+                        <td class="col col-3">{{report.teamName}}</td>
+                        <td class="col col-2">{{report.category}}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
-</div>  
+
+</div>
+
+<!-- Level 3: the report this scout submitted for the selected player, laid out
+     like the evaluation detail modal in Estadisticas de Evaluacion. -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" *ngIf="selectedReport">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+        <div class="modal-content modern-player-modal">
+            <div class="modal-header dark-header">
+                <h5 class="modal-title">Detalle del Reporte</h5>
+                <button type="button" class="btn-close" (click)="closeReport()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body modern-player-modal__body">
+                <div class="row g-3 align-items-stretch">
+                    <div class="col col-12 col-md-4">
+                        <div class="modern-player-modal__image-card">
+                            <img class="modern-player-modal__image" [src]="imageUrl" alt="Foto del jugador">
+                        </div>
+                    </div>
+
+                    <div class="col col-12 col-md-8">
+                        <div class="modern-player-modal__summary">
+                            <div class="detail-row">
+                                <div class="detail-label">Nombre</div>
+                                <div class="playerfield">({{selectedReport.playerNumber}}) {{selectedReport.playerName}}</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">Scout</div>
+                                <div class="playerfield">{{selectedReport.scoutName}}</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">Equipo</div>
+                                <div class="playerfield">{{selectedReport.teamName}} ({{selectedReport.category}})</div>
+                            </div>
+
+                            <div class="detail-row" *ngIf="reportGeneral">
+                                <div class="detail-label">Evaluacion General</div>
+                                <div class="playerfield">{{reportGeneral}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="spinner-border" role="status" *ngIf="loadingReport">
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+                <p *ngIf="!loadingReport && reportSections.length == 0">
+                    Este reporte no tiene datos registrados.
+                </p>
+
+                <div class="row g-3">
+                    <div *ngFor="let section of reportSections" class="col-12 score-block"
+                         [class.col-md-6]="!section.fullWidth">
+                        <div class="row">
+                            <div class="col-12"><b>{{section.title}}:</b></div>
+                        </div>
+                        <!-- Checkbox sections list only what the scout picked, so
+                             the option name is the value and fills the row. -->
+                        <div class="row myrow" *ngFor="let skill of section.skills">
+                            <ng-container *ngIf="section.valueOnly">
+                                <div class="col-12 playerfield">{{skill.value}}</div>
+                            </ng-container>
+                            <ng-container *ngIf="!section.valueOnly">
+                                <div class="col-10" [class.col-md-11]="section.fullWidth">{{skill.label}}</div>
+                                <div class="col-2 playerfield" [class.col-md-1]="section.fullWidth">{{skill.value}}</div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modern-player-modal__footer">
+                <button type="button" class="btn btn-outline-dark" (click)="closeReport()">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

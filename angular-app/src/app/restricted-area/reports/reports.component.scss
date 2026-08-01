@@ -1,0 +1,14 @@
+@import "colors";
+@import "evaluation-modal";
+
+// Summary row at the bottom of the scouts table: same cells as a data row but
+// tinted and bold, so it reads as a total rather than a clickable entry.
+.total-row td{
+    background-color: darken($bg-color2, 8%);
+    font-weight: 700;
+}
+
+.modal-dialog {
+    color: $bg-color1;
+    background-color: transparent;
+}
