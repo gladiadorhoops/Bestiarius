@@ -3,64 +3,38 @@
     Estadisticas de Evaluacion
 </h2>
 
-<div class=>
-    <div>
-        <form [formGroup]="filterForm">
-            <div class="row">
-                <div class="col col-md-3 col-12">
-                    <div class="row">
-                        <label for="category">Categoria:</label>
-                    </div>
-                    <div class="row">
-                        <div class="filterPadding">
-                            <select class="col-12" id="category" formControlName="cat" (change)="applyFilters()" required>
-                                <option value="aprendiz">Aprendiz</option>
-                                <option selected value="elite">Elite</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col col-md-3 col-12">
-                    <div class="row">
-                        <label for="awardCat">Habilidad:</label>
-                    </div>
-                    <div class="row">
-                        <div class="filterPadding">
-                            <select class="col-12" id="awardCat" formControlName="awardCat" (change)="applyFilters()" required>
-                                <option *ngFor="let awardCategory of awardCategories" value="{{awardCategory}}">{{awardCategory}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col col-md-3 col-12">
-                    <div class="row">
-                        <label for="teams">Equipo</label>
-                    </div>
-                    <div class="row">
-                        <div class="filterPadding">
-                            <select class="col-12" id="teams" formControlName="equipo" (change)="applyFilters()" require>
-                                <option value={{null}}></option>
-                                <option *ngFor="let equipo of catEquipos" value="{{equipo.id}}">{{equipo.name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col col-md-3 col-12">
-                    <div class="row">
-                        <label for="teams">Jugador</label>
-                    </div>
-                    <div class="row">
-                        <div class="filterPadding">
-                            <select class="col-12" id="player" formControlName="player" (change)="updateSelected(filterForm.value.player!)" require>
-                                <option value={{null}}></option>
-                                <option *ngFor="let player of players" value="{{player.id}}">{{player.name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+<div class="mb-3">
+    <form class="filter-bar" [formGroup]="filterForm">
+        <div class="row g-2 align-items-end">
+            <div class="col-12 col-md-6 col-lg-3">
+                <label for="category" class="form-label text-light small mb-1">Categoria</label>
+                <select class="form-select" id="category" formControlName="cat" (change)="applyFilters()" required>
+                    <option value="aprendiz">Aprendiz</option>
+                    <option selected value="elite">Elite</option>
+                </select>
             </div>
-        </form>
-    </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <label for="awardCat" class="form-label text-light small mb-1">Habilidad</label>
+                <select class="form-select" id="awardCat" formControlName="awardCat" (change)="applyFilters()" required>
+                    <option *ngFor="let awardCategory of awardCategories" value="{{awardCategory}}">{{awardCategory}}</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <label for="teams" class="form-label text-light small mb-1">Equipo</label>
+                <select class="form-select" id="teams" formControlName="equipo" (change)="applyFilters()" require>
+                    <option value={{null}}></option>
+                    <option *ngFor="let equipo of catEquipos" value="{{equipo.id}}">{{equipo.name}}</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-6 col-lg-3">
+                <label for="player" class="form-label text-light small mb-1">Jugador</label>
+                <select class="form-select" id="player" formControlName="player" (change)="updateSelected(filterForm.value.player!)" require>
+                    <option value={{null}}></option>
+                    <option *ngFor="let player of players" value="{{player.id}}">{{player.name}}</option>
+                </select>
+            </div>
+        </div>
+    </form>
 </div>
 <div class="spinner-border text-light" role="status" *ngIf="loading">
     <span class="sr-only">Loading...</span>
@@ -89,34 +63,37 @@
 
         <h3 class="text-center mb-3" *ngIf="selectedAwardCat != null && selectedAwardCat != undefined"> Desglose de {{selectedAwardCat.sectionName}} </h3>
 
-        <div  *ngFor="let topSkill of selectedAwardCatSkills | keyvalue; let i=index" class="accordion accordion-flush" id="accordionFlushExample">
+        <div *ngFor="let topSkill of selectedAwardCatSkills | keyvalue; let i=index" class="accordion accordion-flush modern-accordion">
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#flush-collapse-awds'" aria-expanded="false" [attr.aria-controls]="'flush-collapse-awds'">
-                    Top {{topSkill.value.length}} {{topSkill.key}} 
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        [attr.data-bs-target]="'#flush-collapse-awds-' + i"
+                        aria-expanded="false"
+                        [attr.aria-controls]="'flush-collapse-awds-' + i">
+                    Top {{topSkill.value.length}} {{topSkill.key}}
                 </button>
                 </h2>
-                <div [attr.id]="'flush-collapse-awds'" class="accordion-collapse" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-                    <table class="row modern-table">
-                        <tr class="row">
-                            <th class="col col-1">#</th>
-                            <th class="col col-5">Nombre</th>
-                            <th class="col col-4">Equipo</th>
-                            <th *ngIf="showAvg" class="col col-2">Pts</th>
-                            <th *ngIf="!showAvg" class="col col-2">Votos</th>
-                        </tr>
-                        <tr class="row clickable-row" *ngFor="let player of topSkill.value; let i=index" (click)="updateSelected(player.playerId)">
-                            <td class="col col-1">{{i+1}}</td>
-                            <td class="col col-5">{{player.name}}</td>
-                            <td class="col col-4">{{player.team}}</td>
-                            <td *ngIf="showAvg" class="col col-2">{{player.skill.avg}}</td>
-                            <td *ngIf="!showAvg" class="col col-2">{{player.skill.count}}</td>
-                        </tr>
-                    </table>
+                <div [attr.id]="'flush-collapse-awds-' + i" class="accordion-collapse collapse">
+                    <div class="accordion-body">
+                        <table class="row modern-table">
+                            <tr class="row">
+                                <th class="col col-1">#</th>
+                                <th class="col col-5">Nombre</th>
+                                <th class="col col-4">Equipo</th>
+                                <th *ngIf="showAvg" class="col col-2">Pts</th>
+                                <th *ngIf="!showAvg" class="col col-2">Votos</th>
+                            </tr>
+                            <tr class="row clickable-row" *ngFor="let player of topSkill.value; let j=index" (click)="updateSelected(player.playerId)">
+                                <td class="col col-1">{{j+1}}</td>
+                                <td class="col col-5">{{player.name}}</td>
+                                <td class="col col-4">{{player.team}}</td>
+                                <td *ngIf="showAvg" class="col col-2">{{player.skill.avg}}</td>
+                                <td *ngIf="!showAvg" class="col col-2">{{player.skill.count}}</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-                </div>
-            </div>  
+            </div>
         </div>
 
     </div>
