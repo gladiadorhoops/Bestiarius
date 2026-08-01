@@ -59,6 +59,11 @@
 
 .standings-group {
     margin-bottom: 2.5rem;
+
+    // The accordion body already provides the padding below the last table.
+    &:last-child {
+        margin-bottom: 0;
+    }
 }
 
 // Fixed column widths. The first column is sized so team names wrap into at most
@@ -72,9 +77,13 @@ $result-column-width: 10.5rem;
 $cell-line-height: 1.3rem;
 $cell-lines: 2;
 
+// Shared modern-table treatment: rounded outer corners, no cell grid, hairline
+// dividers instead of borders.
+$table-radius: 0.75rem;
+
 // Cross table: the top-left corner cell carries the group name, the first row
 // and first column are the team headers, and the diagonal (team vs itself) is
-// blacked out.
+// filled in.
 .standings-table {
     // `table-layout: auto` with matching min/max widths per cell, rather than
     // `fixed` + `width`: under `fixed` the table sizes to its container first and
@@ -86,14 +95,32 @@ $cell-lines: 2;
     border-collapse: separate;
     border-spacing: 0;
     color: $bg-color1;
+    // Corners are rounded per cell rather than by clipping the table: `overflow`
+    // on the table would make it the scroll container for the sticky row headers
+    // below, pinning them to the table instead of to .scroll-container.
+    border-radius: $table-radius;
 
     th, td {
         min-width: $result-column-width;
         max-width: $result-column-width;
-        padding: 0.4rem 0.5rem;
-        border: 1px solid $bg-color1;
+        padding: 0.55rem 0.65rem;
         vertical-align: middle;
+        // Hairlines only, so the data reads as rows and columns rather than as a
+        // grid of boxes. The last of each is dropped below so the rounded corners
+        // aren't cut by a stray line.
+        border-right: 1px solid $divider-color;
+        border-bottom: 1px solid $divider-color;
     }
+
+    tr > :last-child { border-right: 0; }
+    tbody tr:last-child > * { border-bottom: 0; }
+
+    // Rounded outer corners, applied to the corner cells since the table itself
+    // can't clip them.
+    thead tr:first-child th:first-child { border-top-left-radius: $table-radius; }
+    thead tr:first-child th:last-child { border-top-right-radius: $table-radius; }
+    tbody tr:last-child > :first-child { border-bottom-left-radius: $table-radius; }
+    tbody tr:last-child > :last-child { border-bottom-right-radius: $table-radius; }
 
     // Column headers: the opponents. The corner is excluded so its own, darker
     // treatment below wins — view-encapsulation attributes would otherwise make
@@ -102,17 +129,29 @@ $cell-lines: 2;
         background-color: $header-color1;
         color: $bg-color1;
         font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
         text-align: center;
+        // Against the yellow header a grey hairline muddies the fill; a translucent
+        // dark tint keeps the columns separated in the same tone.
+        border-right-color: rgba($bg-color1, 0.18);
+        border-bottom-color: rgba($bg-color1, 0.18);
     }
 
     // Row headers: the team the results are read from. Wider than the result
-    // columns, since these hold the team names.
+    // columns, since these hold the team names. Pinned to the left so the team
+    // stays visible while scrolling across a wide group.
     .standings-table__row-header {
         min-width: $row-header-width;
         max-width: $row-header-width;
+        position: sticky;
+        left: 0;
+        z-index: 1;
         background-color: $header-color1;
         color: $bg-color1;
         font-weight: 700;
+        border-right-color: rgba($bg-color1, 0.18);
 
         .standings-cell {
             justify-content: flex-end;
@@ -125,9 +164,14 @@ $cell-lines: 2;
 
     // Group name sits in the empty corner above the row headers. Dark panel with
     // the brand yellow on top so it reads as the table's title, not as a team.
+    // Pinned with the row headers it sits above, and one level higher so it stays
+    // on top of them.
     th.standings-table__corner {
         min-width: $row-header-width;
         max-width: $row-header-width;
+        position: sticky;
+        left: 0;
+        z-index: 2;
         background-color: $bg-color1;
         color: $header-color1;
         font-weight: 800;
@@ -135,6 +179,8 @@ $cell-lines: 2;
         text-transform: uppercase;
         letter-spacing: 0.04em;
         text-align: center;
+        border-right-color: rgba($header-color1, 0.25);
+        border-bottom-color: rgba($header-color1, 0.25);
     }
 
     td {
@@ -142,9 +188,24 @@ $cell-lines: 2;
         text-align: center;
     }
 
-    // A team never plays itself, so the diagonal is filled in solid.
+    // A team never plays itself, so the diagonal is filled in. Diagonal hatching
+    // rather than a solid block: it reads as "not applicable" instead of as an
+    // unplayed game, which is what the empty cells mean.
     .standings-table__self {
-        background-color: $bg-color1;
+        background-color: darken($bg-color2, 4%);
+        background-image: repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 5px,
+            rgba($bg-color1, 0.08) 5px,
+            rgba($bg-color1, 0.08) 10px
+        );
+    }
+
+    // Reading across one team's results is the main use of this table, so the row
+    // under the cursor is tinted.
+    tbody tr:hover td:not(.standings-table__self) {
+        background-color: darken($bg-color2, 5%);
     }
 
     // Every cell's content lives in this box, fixed at two lines tall so all rows
@@ -169,9 +230,141 @@ $cell-lines: 2;
     }
 }
 
+// Each result is a pill, so a row of them scans as won/lost at a glance without
+// having to read the G/P letter on every cell.
 .standings-result {
-    font-weight: 600;
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+    background-color: rgba($bg-color1, 0.08);
 
-    &--win { color: darken($text-color1, 20%); }
-    &--loss { color: $text-color2; }
+    &--win {
+        color: darken($text-color1, 32%);
+        background-color: rgba($text-color1, 0.35);
+    }
+
+    &--loss {
+        color: darken($text-color2, 25%);
+        background-color: rgba($text-color2, 0.22);
+    }
+}
+
+// Position tables below the cross tables: one row per team, ordered by the
+// standing the CreateStandings workflow computed.
+
+// Sits on the accordion body's light panel, so the dark base colour rather than
+// the brand yellow the section headings use elsewhere.
+.standings-positions__group {
+    color: $bg-color1;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.positions-table {
+    // Same reasoning as .standings-table: pinned column widths that overflow into
+    // .scroll-container rather than shrinking on a narrow screen.
+    table-layout: auto;
+    width: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: $bg-color1;
+    border-radius: $table-radius;
+    // This table is narrow enough to fit the panel, so center it rather than
+    // leaving it against the left edge. Auto margins (not `justify-content` on the
+    // container) because they collapse to 0 when the table does overflow, instead
+    // of pushing its first columns out of reach of the horizontal scroll.
+    margin-left: auto;
+    margin-right: auto;
+
+    th, td {
+        min-width: 3.5rem;
+        padding: 0.55rem 0.65rem;
+        text-align: center;
+        vertical-align: middle;
+        line-height: $cell-line-height;
+        // Row dividers only — the stat columns are narrow and evenly spaced, so
+        // vertical lines add noise without helping.
+        border-bottom: 1px solid $divider-color;
+        // Stats line up column-wise even with mixed digit counts.
+        font-variant-numeric: tabular-nums;
+    }
+
+    tbody tr:last-child > * { border-bottom: 0; }
+
+    thead th {
+        background-color: $header-color1;
+        color: $bg-color1;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        border-bottom-color: rgba($bg-color1, 0.18);
+    }
+
+    thead th:first-child { border-top-left-radius: $table-radius; }
+    thead th:last-child { border-top-right-radius: $table-radius; }
+    tbody tr:last-child td:first-child { border-bottom-left-radius: $table-radius; }
+    tbody tr:last-child td:last-child { border-bottom-right-radius: $table-radius; }
+
+    td {
+        background-color: $bg-color2;
+    }
+
+    tbody tr:hover td {
+        background-color: darken($bg-color2, 5%);
+    }
+
+    // The standing itself, so it carries the most weight in the row.
+    .positions-table__position {
+        min-width: 2.75rem;
+        max-width: 2.75rem;
+        font-weight: 800;
+        font-size: 1.05rem;
+    }
+
+    // Holds the team names, so it gets the same width as the cross table's row
+    // headers and is the only left-aligned, wrapping column.
+    .positions-table__team {
+        min-width: $row-header-width;
+        max-width: $row-header-width;
+        text-align: left;
+        font-weight: 600;
+        // Set explicitly because .scroll-container sets nowrap on its subtree.
+        white-space: normal;
+        overflow-wrap: break-word;
+    }
+
+    // Games won is what the standing is built on, so it's the one stat set apart
+    // from the rest.
+    .positions-table__won {
+        font-weight: 700;
+    }
+
+    // The team picked in the filter, so its row is findable at a glance. A left
+    // marker plus a tint rather than the full yellow fill, which was loud enough
+    // to read as the header row.
+    .positions-table__row--selected td {
+        background-color: rgba($header-color1, 0.3);
+        font-weight: 700;
+    }
+
+    .positions-table__row--selected td:first-child {
+        box-shadow: inset 3px 0 0 $header-color1;
+    }
+
+    tbody tr.positions-table__row--selected:hover td {
+        background-color: rgba($header-color1, 0.4);
+    }
+}
+
+// Point differential: coloured text, not a pill — it sits in a stat column next
+// to plain numbers, so a filled background would pull the eye off the standing.
+.positions-differential {
+    font-weight: 700;
+
+    &--positive { color: darken($text-color1, 32%); }
+    &--negative { color: darken($text-color2, 20%); }
 }

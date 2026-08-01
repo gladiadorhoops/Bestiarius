@@ -32,7 +32,10 @@ export { LIABILITY_WAIVER_PATH, LIABILITY_WAIVER_TEMPLATE_KEY };
 
 export enum ReportType {
     TOP_PLAYTERS = 'tops',
-    PLAYER_REPORT = 'reports'
+    PLAYER_REPORT = 'reports',
+    // Group-stage tables written by the Retiarius CreateStandings workflow, all
+    // categories and groups in a single standings.json.
+    STANDINGS = 'standings'
 }
 
 export { client };
