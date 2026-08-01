@@ -147,7 +147,7 @@ export class RestrictedAreaComponent {
           {value: "scouting", text: "Scouting"},
           {value: "listPlayers", text: "Jugadores Registrados"},
           {value: "viewUsers", text: "Usuarios Registrados"},
-          {value: "listReports", text: "Evaluaciones Enviadas"}
+          {value: "listReports", text: "Reportes"}
         ]);
       }
       if(this.isCoach){

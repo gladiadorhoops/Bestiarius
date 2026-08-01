@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CY_KEY, DynamoDb, PK_KEY, SK_KEY, SPK_KEY, SSK_KEY } from "src/app/aws-clients/dynamodb";
-import { DisplayReport, Reporte, ReportBasic, Section, Skill, Skills, TopReporte } from "../interfaces/reporte";
+import { DisplayReport, Reporte, ReportBasic, ReportSectionView, ReportSkillView, ScoutPlayerReportView, Section, Skill, Skills, TopReporte } from "../interfaces/reporte";
 import { AttributeValue } from "@aws-sdk/client-dynamodb";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Scout } from '../interfaces/scout';
@@ -166,10 +166,120 @@ export class ReporteBuilder {
         let reports: ReportBasic[] = []
         reports = await ddb.listBySPKQuery(`report`, TOURNAMENT_YEAR).then(
             (items) => {
-                return items.map((item) => {return {scoutId: item['pk'].S!.substring(6), playerId: item['sk'].S!.split('player.')[1], category: item['categoria'].S!, teamName: "", playerName:"", scoutName: ""}})
+                return items.map((item) => {return {scoutId: item['pk'].S!.substring(6), playerId: item['sk'].S!.split('player.')[1], category: item['categoria'].S!, teamName: "", playerName:"", playerNumber: "", scoutName: ""}})
             }
         )
         return reports
+    }
+
+    /**
+     * Read the report a single scout submitted for a single player and flatten it
+     * into sections of localized label/value pairs for on-page display.
+     */
+    async getScoutPlayerReport(ddb: DynamoDb, scoutId: string, playerId: string): Promise<ScoutPlayerReportView> {
+        let key: Record<string, AttributeValue> = {
+            [PK_KEY]: {S: `${Role.SCOUT}.${scoutId}`},
+            [SK_KEY]: {S: `report.${TOURNAMENT_YEAR}.player.${playerId}`}
+        }
+
+        let item = await ddb.getItem(key)
+        if (item == undefined) return {general: "", sections: []}
+
+        let sections: ReportSectionView[] = []
+
+        // The overall score is shown in the summary header, not as a section.
+        let generalSkills = item[Section.GENERAL]?.M
+        let general = generalSkills == undefined ? "" :
+            Object.keys(generalSkills)
+                .map(skillName => ReporteBuilder.skillValue(Section.GENERAL, generalSkills![skillName]))
+                .find(value => value !== "") ?? ""
+
+        // Render sections in the same order the evaluation form presents them.
+        ReporteBuilder.sectionOrder.forEach((sectionName: string) => {
+            let sectionSkills = item![sectionName]?.M
+            if (sectionSkills == undefined) return
+
+            // Checkbox sections only record whether an option was picked, so the
+            // option's own name becomes the value instead of pairing it with a "Si".
+            let valueOnly = ReporteBuilder.valueOnlySections.includes(sectionName)
+
+            let skills: ReportSkillView[] = Object.keys(sectionSkills).map((skillName: string) => {
+                let label = ReporteBuilder.skillLabel(sectionName, skillName)
+                let value = ReporteBuilder.skillValue(sectionName, sectionSkills![skillName])
+                if (valueOnly) return {label: "", value: value === "" ? "" : label}
+                return {label: label, value: value}
+            }).filter(skill => skill.value !== "")
+
+            if (skills.length == 0) return
+
+            sections.push({
+                section: sectionName,
+                title: ReporteBuilder.sectionTitles[sectionName] ?? sectionName,
+                fullWidth: ReporteBuilder.fullWidthSections.includes(sectionName),
+                valueOnly: valueOnly,
+                skills: skills
+            })
+        })
+
+        return {general: general, sections: sections}
+    }
+
+    private static sectionOrder: string[] = [
+        Section.POSICION,
+        Section.TIRO,
+        Section.PASE,
+        Section.DEFENSA,
+        Section.BOTE,
+        Section.JUGADOR,
+        Section.ESTILO,
+        Section.NOMINACION,
+    ]
+
+    private static sectionTitles: {[key: string]: string} = {
+        [Section.POSICION]: 'Posicion(es)',
+        [Section.TIRO]: 'Tiro',
+        [Section.PASE]: 'Pase',
+        [Section.DEFENSA]: 'Defensa',
+        [Section.BOTE]: 'Bote',
+        [Section.JUGADOR]: 'Jugador',
+        [Section.ESTILO]: 'Estilo de Juego',
+        [Section.NOMINACION]: 'Nominacion a Premios',
+    }
+
+    // Nominaciones has long award labels, so it gets the full grid width — the
+    // same layout the evaluation results modal uses.
+    private static fullWidthSections: string[] = [Section.NOMINACION]
+
+    // Sections the scout fills in with checkboxes: the report only stores which
+    // options were checked, so the picked option's name is the value.
+    private static valueOnlySections: string[] = [
+        Section.POSICION,
+        Section.ESTILO,
+        Section.NOMINACION,
+    ]
+
+    private static skillLabel(sectionName: string, skillName: string): string {
+        let section = Skills.findSection(sectionName)
+        if (section == undefined) return skillName
+        let skill = Object.values(section).find((s: Skill) => s.report == skillName)
+        return skill?.localized ?? skillName
+    }
+
+    private static skillValue(sectionName: string, attribute: AttributeValue): string {
+        // A checked box carries no value of its own; the caller swaps in the skill
+        // name. Anything falsy drops out of the section entirely.
+        if (attribute.BOOL != undefined) return attribute.BOOL ? 'x' : ''
+
+        let raw = attribute.N ?? attribute.S
+        if (raw == undefined || raw === '') return ''
+
+        // The general section stores a 1-5 score; show the localized wording too.
+        if (sectionName == Section.GENERAL) {
+            let localized = Object.values(Skills.general).find(s => `${s.value}` == raw)?.localized
+            if (localized) return `${raw} - ${localized}`
+        }
+
+        return raw
     }
 
     transformToDisplayReport(report: Reporte): DisplayReport {
