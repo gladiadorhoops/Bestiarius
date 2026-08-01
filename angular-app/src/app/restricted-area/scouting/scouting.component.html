@@ -67,21 +67,23 @@
                         <span class="ms-2">{{ filtersCollapsed ? 'Mostrar filtros' : 'Ocultar filtros' }}</span>
                     </button>
 
-                    <button *ngIf="activeTab === 'partido'" class="btn btn-warning btn-sm" type="button"
-                            (click)="scrollToTop()"
-                            title="Volver arriba"
-                            aria-label="Volver arriba">
-                        <i class="fas fa-arrow-up"></i>
-                        <span class="ms-2 d-inline">Top</span>
-                    </button>
+                    <div class="scouting-action-buttons">
+                        <button *ngIf="activeTab === 'partido'" class="btn btn-warning btn-sm" type="button"
+                                (click)="scrollToTop()"
+                                title="Volver arriba"
+                                aria-label="Volver arriba">
+                            <i class="fas fa-arrow-up"></i>
+                            <span class="ms-2 d-none d-md-inline">Top</span>
+                        </button>
 
-                    <button *ngIf="activeTab === 'partido'" class="btn btn-warning btn-sm" type="button"
-                            (click)="scrollToFirstRelevantMatch()"
-                            title="Ir al siguiente partido relevante"
-                            aria-label="Ir al siguiente partido relevante">
-                        <i class="fas fa-arrow-down"></i>
-                        <span class="ms-2 d-inline">Partido Actual</span>
-                    </button>
+                        <button *ngIf="activeTab === 'partido'" class="btn btn-warning btn-sm" type="button"
+                                (click)="scrollToFirstRelevantMatch()"
+                                title="Ir al siguiente partido relevante"
+                                aria-label="Ir al siguiente partido relevante">
+                            <i class="fas fa-arrow-down"></i>
+                            <span class="ms-2 d-none d-md-inline">Partido Actual</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div id="scoutingFilters" class="collapse" [class.show]="!filtersCollapsed">

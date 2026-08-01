@@ -1,0 +1,87 @@
+@import "colors";
+
+.modern-player-modal {
+    border: 1px solid $modal-surface-strong-border;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: $bg-color2;
+    color: $bg-color1;
+    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.28);
+}
+
+.modern-player-modal .modal-header.dark-header {
+    background: $bg-color1;
+    color: $header-color1;
+    border-bottom: 0;
+}
+
+.modern-player-modal__body {
+    background: linear-gradient(180deg, $modal-surface-gradient-start, $modal-surface-gradient-end);
+    padding: 1.25rem;
+}
+
+.modern-player-modal__footer {
+    background: $bg-color2;
+    border-top: 1px solid $modal-surface-border;
+}
+
+.modern-player-modal__image-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    background: $modal-surface-muted;
+    border: 1px solid $modal-surface-border;
+    border-radius: 0.9rem;
+    padding: 1rem;
+}
+
+.modern-player-modal__image {
+    max-height: 200px;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 0.75rem;
+}
+
+.modern-player-modal__summary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.detail-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 0.9rem;
+    background: rgba($modal-surface-color, 0.9);
+    border: 1px solid $modal-surface-border;
+    border-radius: 0.75rem;
+}
+
+.detail-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: rgba($bg-color1, 0.72);
+}
+
+.playerfield {
+    font-weight: 600;
+    color: $bg-color1;
+}
+
+.score-block {
+    padding: 0.9rem;
+    background: rgba($modal-surface-color, 0.92);
+    border: 1px solid $modal-surface-border;
+    border-radius: 0.75rem;
+}
+
+.myrow {
+    display: flex;
+    align-items: center;
+    padding: 0.45rem 0;
+    border-top: 1px solid rgba($bg-color1, 0.08);
+}

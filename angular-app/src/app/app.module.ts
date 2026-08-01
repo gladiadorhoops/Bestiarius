@@ -58,6 +58,7 @@ import { ListPlayersComponent } from './restricted-area/list-players/list-player
 import { ScoutingComponent } from './restricted-area/scouting/scouting.component';
 import { DatePipe } from '@angular/common';
 import { ReportsComponent } from './restricted-area/reports/reports.component'
+import { ReportDetailModalComponent } from './shared/report-detail-modal/report-detail-modal.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import { ReportsComponent } from './restricted-area/reports/reports.component'
     AddGymComponent,
     ListPlayersComponent,
     ScoutingComponent,
-    ReportsComponent
+    ReportsComponent,
+    ReportDetailModalComponent
   ],
   imports: [
     BrowserModule,
