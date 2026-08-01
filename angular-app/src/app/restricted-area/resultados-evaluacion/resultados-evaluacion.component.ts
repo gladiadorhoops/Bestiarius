@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ReporteBuilder } from '../../Builders/reporte-builder';
-import { DisplayReport, Reporte, Section, TopAward, TopReporte, SectionType, TopSkillsMap } from '../../interfaces/reporte';
+import { DisplayReport, ReportBasic, Reporte, ReportSectionView, Section, TopAward, TopReporte, SectionType, TopSkillsMap } from '../../interfaces/reporte';
 import { AuthService } from '../../auth.service';
 import { S3 } from '../../aws-clients/s3';
 import { FormBuilder } from '@angular/forms';
@@ -37,9 +37,17 @@ export class ResultadosEvaluacionComponent {
   equipos : Team[] = [];
   catEquipos : Team[] = [];
   players : Player[] = [];
+  allPlayers: Player[] = [];
   selectedPlayerTeam!: Team;
   loading = true;
   imageUrl: string | ArrayBuffer | null | undefined = "assets/no-avatar.png";
+  myEvaluations: ReportBasic[] = [];
+  myEvaluationsDisplayStyle = "none";
+  myEvaluationDetailDisplayStyle = "none";
+  selectedMyEvaluationReport: ReportBasic | undefined;
+  myEvaluationSections: ReportSectionView[] = [];
+  myEvaluationGeneral = "";
+  loadingMyEvaluation = false;
 
   awardCategories : string[] = []
   
@@ -77,6 +85,8 @@ export class ResultadosEvaluacionComponent {
     console.debug(this.selectedAwardCatSkills)
 
     this.equipos = await this.teamBuilder.getTeams(this.ddb)
+    this.allPlayers = await this.playerBuilder.getAllPlayers(this.ddb)
+    await this.loadMyEvaluations()
     this.loading = false
     this.applyFilters()
   }
@@ -174,6 +184,71 @@ export class ResultadosEvaluacionComponent {
     }
 
     // TODO: filter teams and players based on category/team selection
+  }
+
+  async loadMyEvaluations() {
+    const scoutId = this.authService.getUserId() || this.authService.getUserUsername();
+    const reports = await this.reporteBuilder.getAllReportsScoutPlayerMap(this.ddb);
+
+    this.myEvaluations = reports
+      .filter(report => report.scoutId === scoutId)
+      .map(report => {
+        const player = this.allPlayers.find(player => player.id === report.playerId);
+        return {
+          ...report,
+          playerNumber: player?.number ? player.number : "#",
+          playerName: player?.name ?? report.playerId,
+          teamName: this.equipos.find(team => team.id === player?.team)?.name ?? "",
+          scoutName: this.authService.getUserName() || report.scoutId,
+        };
+      })
+      .sort((a, b) => a.playerName.localeCompare(b.playerName));
+  }
+
+  openMyEvaluationsModal() {
+    this.myEvaluationsDisplayStyle = "block";
+  }
+
+  closeMyEvaluationsModal() {
+    this.myEvaluationsDisplayStyle = "none";
+  }
+
+  async selectMyEvaluation(report: ReportBasic) {
+    this.selectedMyEvaluationReport = report;
+    this.myEvaluationSections = [];
+    this.myEvaluationGeneral = "";
+    this.loadingMyEvaluation = true;
+    this.myEvaluationDetailDisplayStyle = "block";
+
+    this.loadPlayerPhoto(report.playerId);
+
+    const view = await this.reporteBuilder.getScoutPlayerReport(this.ddb, report.scoutId, report.playerId);
+    this.myEvaluationSections = view.sections;
+    this.myEvaluationGeneral = view.general;
+    this.loadingMyEvaluation = false;
+  }
+
+  closeMyEvaluationDetailModal() {
+    this.selectedMyEvaluationReport = undefined;
+    this.myEvaluationSections = [];
+    this.myEvaluationGeneral = "";
+    this.myEvaluationDetailDisplayStyle = "none";
+    this.imageUrl = "assets/no-avatar.png";
+  }
+
+  loadPlayerPhoto(playerId: string) {
+    this.imageUrl = "assets/no-avatar.png";
+
+    const player = this.allPlayers.find(player => player.id === playerId);
+    if (!player?.imageType || !this.s3) return;
+
+    this.s3.downloadFile(playerId).then(data => {
+      if (!data) return;
+      const blob = new Blob([data], {type: player.imageType});
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onload = () => this.imageUrl = reader.result;
+    });
   }
 
   displayStyle = "none";

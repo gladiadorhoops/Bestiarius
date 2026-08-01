@@ -3,6 +3,12 @@
     Estadisticas de Evaluacion
 </h2>
 
+<div class="d-flex justify-content-end mb-3">
+    <button type="button" class="results-action-btn" (click)="openMyEvaluationsModal()">
+        Mis Evaluaciones
+    </button>
+</div>
+
 <div class="mb-3">
     <form class="filter-bar" [formGroup]="filterForm">
         <div class="row g-2 align-items-end">
@@ -241,6 +247,114 @@
     </div>
 </div>
 
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':myEvaluationsDisplayStyle}">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content modern-player-modal">
+            <div class="modal-header dark-header">
+                <h5 class="modal-title">Mis Evaluaciones</h5>
+                <button type="button" class="btn-close" (click)="closeMyEvaluationsModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body modern-player-modal__body">
+                <p class="text-light mb-3" *ngIf="myEvaluations.length === 0">Aun no tienes evaluaciones registradas.</p>
+                <div class="scroll-container" *ngIf="myEvaluations.length > 0">
+                    <div style="min-width: 600px;">
+                        <table class="row modern-table">
+                            <tr class="row">
+                                <th class="col col-2">#</th>
+                                <th class="col col-5">Jugador</th>
+                                <th class="col col-3">Equipo</th>
+                                <th class="col col-2">Categoria</th>
+                            </tr>
+                            <tr class="row clickable-row" *ngFor="let evaluation of myEvaluations; let i = index" (click)="selectMyEvaluation(evaluation)">
+                                <td class="col col-2">{{i+1}}</td>
+                                <td class="col col-5">{{evaluation.playerName}}</td>
+                                <td class="col col-3">{{evaluation.teamName}}</td>
+                                <td class="col col-2">{{evaluation.category}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modern-player-modal__footer">
+                <button type="button" class="btn btn-outline-dark" (click)="closeMyEvaluationsModal()">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':myEvaluationDetailDisplayStyle}" *ngIf="selectedMyEvaluationReport">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+        <div class="modal-content modern-player-modal">
+            <div class="modal-header dark-header">
+                <h5 class="modal-title">Detalle de la Evaluacion</h5>
+                <button type="button" class="btn-close" (click)="closeMyEvaluationDetailModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body modern-player-modal__body">
+                <div class="row g-3 align-items-stretch">
+                    <div class="col col-12 col-md-4">
+                        <div class="modern-player-modal__image-card">
+                            <img class="modern-player-modal__image" [src]="imageUrl" alt="Foto del jugador">
+                        </div>
+                    </div>
+
+                    <div class="col col-12 col-md-8">
+                        <div class="modern-player-modal__summary">
+                            <div class="detail-row">
+                                <div class="detail-label">Nombre</div>
+                                <div class="playerfield">{{selectedMyEvaluationReport.playerName}}</div>
+                            </div>
+
+                            <div class="detail-row">
+                                <div class="detail-label">Equipo</div>
+                                <div class="playerfield">{{selectedMyEvaluationReport.teamName}} ({{selectedMyEvaluationReport.category}})</div>
+                            </div>
+
+                            <div class="detail-row" *ngIf="myEvaluationGeneral">
+                                <div class="detail-label">Evaluacion General</div>
+                                <div class="playerfield">{{myEvaluationGeneral}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="spinner-border" role="status" *ngIf="loadingMyEvaluation">
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+                <p *ngIf="!loadingMyEvaluation && myEvaluationSections.length == 0">
+                    Este reporte no tiene datos registrados.
+                </p>
+
+                <div class="row g-3">
+                    <div *ngFor="let section of myEvaluationSections" class="col-12 score-block"
+                         [class.col-md-6]="!section.fullWidth">
+                        <div class="row">
+                            <div class="col-12"><b>{{section.title}}:</b></div>
+                        </div>
+                        <div class="row myrow" *ngFor="let skill of section.skills">
+                            <ng-container *ngIf="section.valueOnly">
+                                <div class="col-12 playerfield">{{skill.value}}</div>
+                            </ng-container>
+                            <ng-container *ngIf="!section.valueOnly">
+                                <div class="col-10" [class.col-md-11]="section.fullWidth">{{skill.label}}</div>
+                                <div class="col-2 playerfield" [class.col-md-1]="section.fullWidth">{{skill.value}}</div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modern-player-modal__footer">
+                <button type="button" class="btn btn-outline-dark" (click)="closeMyEvaluationDetailModal()">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div
   class="modal"

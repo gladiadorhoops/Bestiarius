@@ -241,6 +241,16 @@ fieldset {
     }
 }
 
+.scouting-action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+
+    @media (max-width: 767.98px) {
+        display: inline-flex;
+    }
+}
 
 .tournament-match__logo {
     width: 1.8em;
