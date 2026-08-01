@@ -124,50 +124,52 @@
 </div>  
 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" *ngIf="selectedPlayerReport!=undefined">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col col-12 col-md-5" style="position: relative;z-index: 1; height:200px">
-                        <img id="image" style="max-height: 200px; max-width:90%;position: absolute; top:0; left:0; ;z-index: 1;" [src]="imageUrl">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+        <div class="modal-content modern-player-modal">
+            <div class="modal-header dark-header">
+                <h5 class="modal-title">Detalle del Jugador</h5>
+                <button type="button" class="btn-close" (click)="closePopup()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body modern-player-modal__body">
+                <div class="row g-3 align-items-stretch">
+                    <div class="col col-12 col-md-4">
+                        <div class="modern-player-modal__image-card">
+                            <img id="image" class="modern-player-modal__image" [src]="imageUrl" alt="Foto del jugador">
+                        </div>
                     </div>
 
-                    <div class="col col-12 col-md-7">
-                        <div>
-                            <b>Nombre</b>
-                        </div>
-                        <div class="playerfield">
-                            {{selectedPlayer!.name}}
-                        </div>
+                    <div class="col col-12 col-md-8">
+                        <div class="modern-player-modal__summary">
+                            <div class="detail-row">
+                                <div class="detail-label">Nombre</div>
+                                <div class="playerfield">{{selectedPlayer!.name}}</div>
+                            </div>
 
-                        <div>
-                            <b>Scouts</b>
-                        </div>
-                        <div class="playerfield">
-                            ({{selectedPlayerReport!.scouts.length}}): 
-                            <span *ngFor="let scout of selectedPlayerReport!.scouts">
-                                {{scout.name}},  
-                            </span>
-                        </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Scouts</div>
+                                <div class="playerfield">
+                                    ({{selectedPlayerReport!.scouts.length}}):
+                                    <span *ngFor="let scout of selectedPlayerReport!.scouts">
+                                        {{scout.name}},
+                                    </span>
+                                </div>
+                            </div>
 
-                        <div>
-                            <b>Equipo</b>
-                        </div>
-                        <div class="playerfield">
-                            {{selectedPlayerTeam.name}}
-                        </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Equipo</div>
+                                <div class="playerfield">{{selectedPlayerTeam.name}}</div>
+                            </div>
 
-                        <div *ngIf="selectedPlayerReport.general">
-                            <b>Evaluacion General</b>
-                            <div class="playerfield">
-                                {{selectedPlayerReport!.general!.skill[0].avg!}}
+                            <div class="detail-row" *ngIf="selectedPlayerReport.general">
+                                <div class="detail-label">Evaluacion General</div>
+                                <div class="playerfield">{{selectedPlayerReport!.general!.skill[0].avg!}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <br>
 
-                <div class="row">
+                <div class="row g-3">
                     <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.posicion">
                         <div>
                             <div class="col-12"><b>Posicion (Votos):</b></div>
@@ -252,8 +254,9 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-danger" 
-                    (click)="closePopup()">
+            </div>
+            <div class="modal-footer modern-player-modal__footer">
+                <button type="button" class="btn btn-outline-dark" (click)="closePopup()">
                     Cerrar
                 </button>
             </div>
