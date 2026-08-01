@@ -21,6 +21,19 @@ export interface ScoutReports {
     reports: ReportBasic[],
 }
 
+// One player and every report submitted about them — the same data as
+// ScoutReports pivoted the other way, so the list can be read by player instead
+// of by scout. Only players somebody reported on appear: the full roster runs to
+// hundreds of players, and the unscouted ones would bury the rest.
+export interface PlayerReports {
+    playerId: string,
+    playerName: string,
+    playerNumber: string,
+    teamName: string,
+    category: string,
+    reports: ReportBasic[],
+}
+
 // A single scout's report for a player, flattened for display: one entry per
 // section, each with its localized skill labels and values. `fullWidth` sections
 // span the whole grid instead of sitting two-up. `valueOnly` sections are
