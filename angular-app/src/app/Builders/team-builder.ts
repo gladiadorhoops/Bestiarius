@@ -211,6 +211,38 @@ export class TeamBuilder {
         return `team-logos/${teamId}`;
     }
 
+    // Fetch a team's logo from S3 as an object URL for display in shared views.
+    // Returns undefined when the team has no logo or the download fails.
+    async loadTeamLogo(s3: S3, team: Pick<Team, 'id' | 'imageType'>): Promise<string | undefined> {
+        if (!team.id || !team.imageType) {
+            return undefined;
+        }
+
+        const result = await s3.downloadFile(TeamBuilder.getLogoFilePath(team.id));
+        if (!result) {
+            return undefined;
+        }
+
+        const blob = new Blob([result as BlobPart], { type: team.imageType });
+        return URL.createObjectURL(blob);
+    }
+
+    // Load all current team logos for the shared results page in one pass.
+    // The caller only receives the finished map, without having to fetch teams.
+    async loadAllTeamLogos(ddb: DynamoDb, s3: S3, year: string = TOURNAMENT_YEAR): Promise<{[teamId: string]: string}> {
+        const teamLogos: {[teamId: string]: string} = {};
+        const teams = await this.getTeams(ddb, year);
+
+        for (const team of teams) {
+            const url = await this.loadTeamLogo(s3, team);
+            if (url) {
+                teamLogos[team.id] = url;
+            }
+        }
+
+        return teamLogos;
+    }
+
     async uploadTeamLogo(ddb: DynamoDb, s3: S3, team: Team, logoFile: Buffer | Uint8Array): Promise<void> {
         let logoPath = TeamBuilder.getLogoFilePath(team.id);
         await s3.uploadFile(logoPath, logoFile, team.imageType!);

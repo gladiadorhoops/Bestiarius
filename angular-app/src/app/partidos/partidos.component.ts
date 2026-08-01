@@ -7,8 +7,11 @@ import { AwardsComponent } from '../results/awards/awards.component';
 import { COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR, REGION } from '../aws-clients/constants';
 import { FeatureFlag } from '../interfaces/feature-flag';
 import { FeatureFlagBuilder } from '../Builders/feature-flag-builder';
+import { TeamBuilder } from '../Builders/team-builder';
 import { DynamoDb } from '../aws-clients/dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { S3 } from '../aws-clients/s3';
+import { S3Client } from '@aws-sdk/client-s3';
 
 @Component({
   selector: 'app-partidos',
@@ -18,7 +21,8 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 export class PartidosComponent {
 
   constructor(
-    private featureFlagBuilder: FeatureFlagBuilder
+    private featureFlagBuilder: FeatureFlagBuilder,
+    private teamBuilder: TeamBuilder
   ){
   }
 
@@ -29,9 +33,10 @@ export class PartidosComponent {
     credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
   }); 
   ddb: DynamoDb =  new DynamoDb(this.ddbClient);
-
+  s3: S3 = new S3(new S3Client({ region: REGION, credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS }));
 
   featureFlags: FeatureFlag | undefined = undefined
+  teamLogos: {[teamId: string]: string} = {};
   
   showBrackets = false;
   showStandings = false;
@@ -58,7 +63,14 @@ export class PartidosComponent {
   
   async loadResults(){
     this.loading = false;
+    this.teamLogos = {};
+    void this.loadSharedTeamLogos();
     await this.showViews();
+  }
+
+  private async loadSharedTeamLogos() {
+    const loadedLogos = await this.teamBuilder.loadAllTeamLogos(this.ddb, this.s3, TOURNAMENT_YEAR);
+    this.teamLogos = loadedLogos;
   }
 
   selectCategory(){
