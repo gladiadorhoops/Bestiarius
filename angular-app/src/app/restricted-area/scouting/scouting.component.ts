@@ -127,8 +127,15 @@ export class ScoutingComponent implements OnInit {
   }
 
   scrollToTop() {
-    const topElement = document.getElementById('scoutingTopAnchor') as HTMLElement | null;
-    topElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => {
+      const topElement = document.getElementById('scoutingTopAnchor') as HTMLElement | null;
+      if (topElement) {
+        topElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 0);
   }
 
   scrollToFirstRelevantMatch() {
