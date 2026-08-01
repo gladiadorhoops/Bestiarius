@@ -1,0 +1,60 @@
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': visible ? 'block' : 'none'}" *ngIf="visible">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+        <div class="modal-content modern-player-modal">
+            <div class="modal-header dark-header">
+                <h5 class="modal-title">{{title}}</h5>
+                <button type="button" class="btn-close" (click)="close()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body modern-player-modal__body">
+                <div class="row g-3 align-items-stretch">
+                    <div class="col col-12 col-md-4">
+                        <div class="modern-player-modal__image-card">
+                            <img class="modern-player-modal__image" [src]="imageUrl" [alt]="imageAlt">
+                        </div>
+                    </div>
+
+                    <div class="col col-12 col-md-8">
+                        <div class="modern-player-modal__summary">
+                            <div class="detail-row" *ngFor="let row of summaryRows">
+                                <div class="detail-label">{{row.label}}</div>
+                                <div class="playerfield">{{row.value}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="spinner-border" role="status" *ngIf="loading">
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+                <p *ngIf="!loading && sections.length == 0">
+                    {{emptyMessage}}
+                </p>
+
+                <div class="row g-3" *ngIf="sections.length > 0">
+                    <div *ngFor="let section of sections" class="col-12 score-block"
+                         [class.col-md-6]="!section.fullWidth">
+                        <div class="row">
+                            <div class="col-12"><b>{{section.title}}:</b></div>
+                        </div>
+                        <div class="row myrow" *ngFor="let skill of section.skills">
+                            <ng-container *ngIf="section.valueOnly">
+                                <div class="col-12 playerfield">{{skill.value}}</div>
+                            </ng-container>
+                            <ng-container *ngIf="!section.valueOnly">
+                                <div class="col-10" [class.col-md-11]="section.fullWidth">{{skill.label}}</div>
+                                <div class="col-2 playerfield" [class.col-md-1]="section.fullWidth">{{skill.value}}</div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modern-player-modal__footer">
+                <button type="button" class="btn btn-outline-dark" (click)="close()">
+                    {{closeButtonLabel}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -106,146 +106,16 @@
     
 </div>  
 
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" *ngIf="selectedPlayerReport!=undefined">
-    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
-        <div class="modal-content modern-player-modal">
-            <div class="modal-header dark-header">
-                <h5 class="modal-title">Detalle del Jugador</h5>
-                <button type="button" class="btn-close" (click)="closePopup()" aria-label="Close"></button>
-            </div>
-            <div class="modal-body modern-player-modal__body">
-                <div class="row g-3 align-items-stretch">
-                    <div class="col col-12 col-md-4">
-                        <div class="modern-player-modal__image-card">
-                            <img id="image" class="modern-player-modal__image" [src]="imageUrl" alt="Foto del jugador">
-                        </div>
-                    </div>
-
-                    <div class="col col-12 col-md-8">
-                        <div class="modern-player-modal__summary">
-                            <div class="detail-row">
-                                <div class="detail-label">Nombre</div>
-                                <div class="playerfield">{{selectedPlayer!.name}}</div>
-                            </div>
-
-                            <div class="detail-row">
-                                <div class="detail-label">Scouts</div>
-                                <div class="playerfield">
-                                    ({{selectedPlayerReport!.scouts.length}}):
-                                    <span *ngFor="let scout of selectedPlayerReport!.scouts">
-                                        {{scout.name}},
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="detail-row">
-                                <div class="detail-label">Equipo</div>
-                                <div class="playerfield">{{selectedPlayerTeam.name}}</div>
-                            </div>
-
-                            <div class="detail-row" *ngIf="selectedPlayerReport.general">
-                                <div class="detail-label">Evaluacion General</div>
-                                <div class="playerfield">{{selectedPlayerReport!.general!.skill[0].avg!}}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <br>
-
-                <div class="row g-3">
-                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.posicion">
-                        <div>
-                            <div class="col-12"><b>Posicion (Votos):</b></div>
-                        </div>
-                        <div class="row myrow" *ngFor="let pos of selectedPlayerReport.posicion!.skill">
-                            <div class="col-10">{{pos.localized}}</div>
-                            <div class="col-2 playerfield">{{pos.value}}</div>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.estilo">
-                        <div class="row">
-                            <div class="col-10"><b>Estilo de Juego (Votos):</b></div>
-                        </div>
-                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.estilo!.skill">
-                            <div class="col-10">{{style.localized}}</div> 
-                            <div class="col-2 playerfield">{{style.value}}</div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.tiro">
-                        <div class="row">
-                            <div class="col-10"><b>Tiro (Promedio):</b></div>
-                            <div class="col-2 playerfield">{{selectedPlayerReport.tiro.score.avg}}</div>
-                        </div>
-                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.tiro!.skill">
-                            <div class="col-10">{{style.localized}}</div> 
-                            <div class="col-2 playerfield">{{style.avg}}</div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.defensa">
-                        <div class="row">
-                            <div class="col-10"><b>Defensa (Promedio):</b></div>
-                            <div class="col-2 playerfield">{{selectedPlayerReport.defensa.score.avg}}</div>
-                        </div>
-                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.defensa!.skill">
-                            <div class="col-10">{{style.localized}}</div> 
-                            <div class="col-2 playerfield">{{style.avg}}</div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.jugador">
-                        <div class="row">
-                            <div class="col-10"><b>Jugador (Promedio):</b></div>
-                        </div>
-                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.jugador!.skill">
-                            <div class="col-10">{{style.localized}}</div> 
-                            <div class="col-2 playerfield">{{style.avg}}</div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.pase">
-                        <div class="row">
-                            <div class="col-10"><b>Pase (Promedio):</b></div>
-                            <div class="col-2 playerfield">{{selectedPlayerReport.pase.score.avg}}</div>
-                        </div>
-                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.pase!.skill">
-                            <div class="col-10">{{style.localized}}</div> 
-                            <div class="col-2 playerfield">{{style.avg}}</div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 score-block" *ngIf="selectedPlayerReport.bote">
-                        <div class="row">
-                            <div class="col-10"><b>Bote (Promedio):</b></div>
-                            <div class="col-2 playerfield">{{selectedPlayerReport.bote.score.avg}}</div>
-                        </div>
-                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.bote!.skill">
-                            <div class="col-10">{{style.localized}}</div> 
-                            <div class="col-2 playerfield">{{style.avg}}</div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 score-block" *ngIf="selectedPlayerReport.nominacion">
-                        <div class="row">
-                            <div class="col-12"><b>Nominaciones (Votos):</b></div>
-                        </div>
-                        <div class="row myrow" *ngFor="let style of selectedPlayerReport.nominacion!.skill">
-                            <div class="col-10 col-md-11">{{style.localized}}</div> 
-                            <div class="col-2 col-md-1 playerfield">{{style.value}}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer modern-player-modal__footer">
-                <button type="button" class="btn btn-outline-dark" (click)="closePopup()">
-                    Cerrar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<app-report-detail-modal
+    [visible]="displayStyle === 'block'"
+    [title]="'Detalle del Jugador'"
+    [imageUrl]="imageUrl"
+    [loading]="false"
+    [summaryRows]="playerModalSummaryRows"
+    [sections]="playerModalSections"
+    [emptyMessage]="'Este reporte no tiene datos registrados.'"
+    (closed)="closePopup()">
+</app-report-detail-modal>
 
 
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':myEvaluationsDisplayStyle}">
@@ -285,76 +155,16 @@
     </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':myEvaluationDetailDisplayStyle}" *ngIf="selectedMyEvaluationReport">
-    <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
-        <div class="modal-content modern-player-modal">
-            <div class="modal-header dark-header">
-                <h5 class="modal-title">Detalle de la Evaluacion</h5>
-                <button type="button" class="btn-close" (click)="closeMyEvaluationDetailModal()" aria-label="Close"></button>
-            </div>
-            <div class="modal-body modern-player-modal__body">
-                <div class="row g-3 align-items-stretch">
-                    <div class="col col-12 col-md-4">
-                        <div class="modern-player-modal__image-card">
-                            <img class="modern-player-modal__image" [src]="imageUrl" alt="Foto del jugador">
-                        </div>
-                    </div>
-
-                    <div class="col col-12 col-md-8">
-                        <div class="modern-player-modal__summary">
-                            <div class="detail-row">
-                                <div class="detail-label">Nombre</div>
-                                <div class="playerfield">{{selectedMyEvaluationReport.playerName}}</div>
-                            </div>
-
-                            <div class="detail-row">
-                                <div class="detail-label">Equipo</div>
-                                <div class="playerfield">{{selectedMyEvaluationReport.teamName}} ({{selectedMyEvaluationReport.category}})</div>
-                            </div>
-
-                            <div class="detail-row" *ngIf="myEvaluationGeneral">
-                                <div class="detail-label">Evaluacion General</div>
-                                <div class="playerfield">{{myEvaluationGeneral}}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <br>
-
-                <div class="spinner-border" role="status" *ngIf="loadingMyEvaluation">
-                    <span class="sr-only">Loading...</span>
-                </div>
-
-                <p *ngIf="!loadingMyEvaluation && myEvaluationSections.length == 0">
-                    Este reporte no tiene datos registrados.
-                </p>
-
-                <div class="row g-3">
-                    <div *ngFor="let section of myEvaluationSections" class="col-12 score-block"
-                         [class.col-md-6]="!section.fullWidth">
-                        <div class="row">
-                            <div class="col-12"><b>{{section.title}}:</b></div>
-                        </div>
-                        <div class="row myrow" *ngFor="let skill of section.skills">
-                            <ng-container *ngIf="section.valueOnly">
-                                <div class="col-12 playerfield">{{skill.value}}</div>
-                            </ng-container>
-                            <ng-container *ngIf="!section.valueOnly">
-                                <div class="col-10" [class.col-md-11]="section.fullWidth">{{skill.label}}</div>
-                                <div class="col-2 playerfield" [class.col-md-1]="section.fullWidth">{{skill.value}}</div>
-                            </ng-container>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer modern-player-modal__footer">
-                <button type="button" class="btn btn-outline-dark" (click)="closeMyEvaluationDetailModal()">
-                    Cerrar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<app-report-detail-modal
+    [visible]="myEvaluationDetailDisplayStyle === 'block'"
+    [title]="'Detalle de la Evaluacion'"
+    [imageUrl]="imageUrl"
+    [loading]="loadingMyEvaluation"
+    [summaryRows]="myEvaluationSummaryRows"
+    [sections]="myEvaluationSections"
+    [emptyMessage]="'Este reporte no tiene datos registrados.'"
+    (closed)="closeMyEvaluationDetailModal()">
+</app-report-detail-modal>
 
 <div
   class="modal"

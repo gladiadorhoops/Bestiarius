@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ReporteBuilder } from '../../Builders/reporte-builder';
-import { DisplayReport, ReportBasic, Reporte, ReportSectionView, Section, TopAward, TopReporte, SectionType, TopSkillsMap } from '../../interfaces/reporte';
+import { DisplayReport, ReportBasic, ReportSectionView, TopAward, TopReporte, TopSkillsMap } from '../../interfaces/reporte';
 import { AuthService } from '../../auth.service';
 import { S3 } from '../../aws-clients/s3';
 import { FormBuilder } from '@angular/forms';
@@ -48,6 +48,81 @@ export class ResultadosEvaluacionComponent {
   myEvaluationSections: ReportSectionView[] = [];
   myEvaluationGeneral = "";
   loadingMyEvaluation = false;
+
+  get playerModalSummaryRows() {
+    const scoutsText = (this.selectedPlayerReport?.scouts || []).map(s => s.name).join(', ');
+    const generalText = this.getGeneralText(this.selectedPlayerReport?.general);
+
+    return [
+      { label: 'Nombre', value: this.selectedPlayer?.name || '' },
+      { label: 'Scouts', value: `(${this.selectedPlayerReport?.scouts.length || 0}): ${scoutsText}` },
+      { label: 'Equipo', value: this.selectedPlayerTeam?.name || '' },
+      { label: 'Evaluacion General', value: generalText }
+    ];
+  }
+
+  get playerModalSections(): ReportSectionView[] {
+    if (!this.selectedPlayerReport) return [];
+
+    const sections: ReportSectionView[] = [];
+    if (this.selectedPlayerReport.posicion) {
+      sections.push(this.buildSectionView('posicion', 'Posicion (Votos):', false, this.selectedPlayerReport.posicion.skill));
+    }
+    if (this.selectedPlayerReport.estilo) {
+      sections.push(this.buildSectionView('estilo', 'Estilo de Juego (Votos):', false, this.selectedPlayerReport.estilo.skill));
+    }
+    if (this.selectedPlayerReport.tiro) {
+      sections.push(this.buildSectionView('tiro', 'Tiro (Promedio):', false, this.selectedPlayerReport.tiro.skill));
+    }
+    if (this.selectedPlayerReport.defensa) {
+      sections.push(this.buildSectionView('defensa', 'Defensa (Promedio):', false, this.selectedPlayerReport.defensa.skill));
+    }
+    if (this.selectedPlayerReport.jugador) {
+      sections.push(this.buildSectionView('jugador', 'Jugador (Promedio):', false, this.selectedPlayerReport.jugador.skill));
+    }
+    if (this.selectedPlayerReport.pase) {
+      sections.push(this.buildSectionView('pase', 'Pase (Promedio):', false, this.selectedPlayerReport.pase.skill));
+    }
+    if (this.selectedPlayerReport.bote) {
+      sections.push(this.buildSectionView('bote', 'Bote (Promedio):', false, this.selectedPlayerReport.bote.skill));
+    }
+    if (this.selectedPlayerReport.nominacion) {
+      sections.push(this.buildSectionView('nominacion', 'Nominaciones (Votos):', true, this.selectedPlayerReport.nominacion.skill));
+    }
+    return sections;
+  }
+
+  private buildSectionView(section: string, title: string, fullWidth: boolean, skills: Array<{ label?: string; localized?: string; report?: string; value?: number | string | boolean | undefined }>): ReportSectionView {
+    return {
+      section,
+      title,
+      fullWidth,
+      valueOnly: false,
+      skills: skills.map(skill => ({
+        label: skill.localized ?? skill.report ?? '',
+        value: this.formatSkillValue(skill.value)
+      }))
+    };
+  }
+
+  private getGeneralText(section: { skill?: Array<{ avg?: number | string | boolean | undefined }> } | undefined): string {
+    if (!section?.skill?.length) return '';
+    const firstSkill = section.skill[0];
+    return this.formatSkillValue(firstSkill.avg);
+  }
+
+  private formatSkillValue(value: number | string | boolean | undefined): string {
+    if (typeof value === 'boolean') return value ? 'Sí' : 'No';
+    return value === undefined || value === null ? '' : `${value}`;
+  }
+
+  get myEvaluationSummaryRows() {
+    return [
+      { label: 'Nombre', value: this.selectedMyEvaluationReport?.playerName || '' },
+      { label: 'Equipo', value: `${this.selectedMyEvaluationReport?.teamName || ''}${this.selectedMyEvaluationReport?.category ? ` (${this.selectedMyEvaluationReport.category})` : ''}` },
+      { label: 'Evaluacion General', value: this.myEvaluationGeneral }
+    ];
+  }
 
   awardCategories : string[] = []
   
@@ -187,7 +262,7 @@ export class ResultadosEvaluacionComponent {
   }
 
   async loadMyEvaluations() {
-    const scoutId = this.authService.getUserId() || this.authService.getUserUsername();
+    const scoutId = "14f83458-60d1-7009-3100-ceed52e4f344";//this.authService.getUserId() || this.authService.getUserUsername();
     const reports = await this.reporteBuilder.getAllReportsScoutPlayerMap(this.ddb);
 
     this.myEvaluations = reports
