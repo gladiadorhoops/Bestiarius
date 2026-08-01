@@ -174,9 +174,17 @@ export class RestrictedAreaComponent {
 
       console.log("Reloaded");
 
-      // Scouts (including admins) land on Evaluar Partido by default.
-      let landingFeature = this.isScout ? "scouting" : this.menuItems[0].value;
-      this.changeFeature(landingFeature);
+      switch(this.userrole) {
+        case Role.ADMIN: {
+          this.changeFeature("listPlayers");
+          break;
+        }
+        case Role.SCOUT: {
+          this.changeFeature("scouting");
+          break;
+        }
+        default: this.changeFeature(this.menuItems[0].value);
+      }
     }
 
     async onRenewRegistration(code: string){
