@@ -262,7 +262,7 @@ export class ResultadosEvaluacionComponent {
   }
 
   async loadMyEvaluations() {
-    const scoutId = "14f83458-60d1-7009-3100-ceed52e4f344";//this.authService.getUserId() || this.authService.getUserUsername();
+    const scoutId = this.authService.getUserId() || this.authService.getUserUsername();
     const reports = await this.reporteBuilder.getAllReportsScoutPlayerMap(this.ddb);
 
     this.myEvaluations = reports
