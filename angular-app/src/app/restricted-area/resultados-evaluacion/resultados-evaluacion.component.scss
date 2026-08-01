@@ -6,14 +6,14 @@
 
 .mainpanel .sidepanels {
     padding: 2%;
-    background-color: linear-gradient(to bottom left, $bg-color1, $bg-color2);
+    background: linear-gradient(to bottom left, $bg-color1, $bg-color2);
 
     -ms-flex: 1;  /* IE 10 */  
     flex: 1;
 }
 
 .modern-player-modal {
-    border: 1px solid rgba(72, 71, 71, 0.18);
+    border: 1px solid $modal-surface-strong-border;
     border-radius: 1rem;
     overflow: hidden;
     background: $bg-color2;
@@ -28,7 +28,7 @@
 }
 
 .modern-player-modal__body {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(236, 236, 236, 0.98));
+    background: linear-gradient(180deg, $modal-surface-gradient-start, $modal-surface-gradient-end);
     padding: 1.25rem;
 }
 
@@ -38,8 +38,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(72, 71, 71, 0.06);
-    border: 1px solid rgba(72, 71, 71, 0.12);
+    background: $modal-surface-muted;
+    border: 1px solid $modal-surface-border;
     border-radius: 0.9rem;
     padding: 1rem;
 }
@@ -72,13 +72,13 @@
 }
 
 .playerfield {
-    background: rgba(255, 255, 255, 0.98);
+    background: rgba($modal-surface-color, 0.98);
     color: $bg-color1;
     font-weight: 700;
     padding: 0.6rem 0.8rem;
     border-radius: 0.65rem;
-    border: 1px solid rgba(72, 71, 71, 0.18);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    border: 1px solid $modal-surface-strong-border;
+    box-shadow: inset 0 1px 0 rgba($modal-surface-color, 0.65);
 }
 
 .myrow {
@@ -93,8 +93,8 @@
 
 .score-block {
     padding: 0.75rem;
-    background: rgba(72, 71, 71, 0.04);
-    border: 1px solid rgba(72, 71, 71, 0.12);
+    background: rgba($bg-color1, 0.04);
+    border: 1px solid $modal-surface-border;
     border-radius: 0.75rem;
 }
 
@@ -117,6 +117,6 @@
 
 .modern-player-modal__footer {
     background: $bg-color2;
-    border-top: 1px solid rgba(72, 71, 71, 0.12);
+    border-top: 1px solid $modal-surface-border;
 }
 

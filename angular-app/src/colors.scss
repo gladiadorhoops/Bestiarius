@@ -14,6 +14,14 @@ $text-color2: #d6726c;
 $focus-ring-color: rgba($header-color1, 0.35);
 $active-tint-color: rgba($header-color1, 0.12);
 
+// Shared surface tokens used by the modern evaluation detail modal.
+$modal-surface-color: #ffffff;
+$modal-surface-muted: rgba($bg-color1, 0.06);
+$modal-surface-border: rgba($bg-color1, 0.12);
+$modal-surface-strong-border: rgba($bg-color1, 0.18);
+$modal-surface-gradient-start: rgba($modal-surface-color, 0.9);
+$modal-surface-gradient-end: rgba($bg-color2, 0.98);
+
 // Faint divider line derived from the dark base ($bg-color1), used for
 // subtle row separators in tables.
 $divider-color: rgba($bg-color1, 0.12);
