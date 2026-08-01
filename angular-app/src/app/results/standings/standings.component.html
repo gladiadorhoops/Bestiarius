@@ -28,50 +28,129 @@
             </div>
         </div>
 
-        <h2 *ngIf="!loading && standings.length === 0" class="text-center">
+        <h2 *ngIf="!loading && standings.length === 0 && groupStandings.length === 0" class="text-center">
             Próximamente, estad atentos.
         </h2>
 
-        <!-- One cross table per group: columns and rows are the same team list,
-             so the diagonal is the team against itself and is blacked out. -->
-        <div class="col col-12 standings-group" *ngFor="let groupStandings of standings">
-            <div class="scroll-container">
-                <table class="standings-table">
-                    <!-- Every cell's content is wrapped in .standings-cell, a fixed
-                         two-line box, so all rows end up exactly the same height. -->
-                    <thead>
-                        <tr>
-                            <th class="standings-table__corner">
-                                <div class="standings-cell"><span class="standings-cell__text">{{groupStandings.group}}</span></div>
-                            </th>
-                            <th *ngFor="let team of groupStandings.teams">
-                                <div class="standings-cell"><span class="standings-cell__text">{{team.name}}</span></div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let rowTeam of groupStandings.rowTeams">
-                            <th class="standings-table__row-header">
-                                <div class="standings-cell"><span class="standings-cell__text">{{rowTeam.name}}</span></div>
-                            </th>
-                            <ng-container *ngFor="let columnTeam of groupStandings.teams">
-                                <td *ngIf="rowTeam.id === columnTeam.id" class="standings-table__self">
-                                    <div class="standings-cell"></div>
-                                </td>
-                                <td *ngIf="rowTeam.id !== columnTeam.id">
-                                    <div class="standings-cell">
-                                        <span class="standings-cell__text standings-result"
-                                              *ngIf="groupStandings.results[rowTeam.id][columnTeam.id] as cell"
-                                              [class.standings-result--win]="cell.outcome === 'G'"
-                                              [class.standings-result--loss]="cell.outcome === 'P'">
-                                            {{cell.outcome}} {{cell.teamPoints}} - {{cell.opponentPoints}}
-                                        </span>
-                                    </div>
-                                </td>
-                            </ng-container>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- Collapsible sections, same accordion cards the partidos page uses for
+             "Fase de Grupos". Both start expanded. -->
+        <div class="col col-12 accordion accordion-flush modern-accordion" *ngIf="standings.length > 0">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapseResults" aria-expanded="true"
+                            aria-controls="flush-collapseResults">
+                        Resultados
+                    </button>
+                </h2>
+                <div id="flush-collapseResults" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                        <!-- One cross table per group: columns and rows are the same team
+                             list, so the diagonal is the team against itself and is
+                             blacked out. -->
+                        <div class="standings-group" *ngFor="let groupStandings of standings">
+                            <div class="scroll-container">
+                                <table class="standings-table">
+                                    <!-- Every cell's content is wrapped in .standings-cell, a
+                                         fixed two-line box, so all rows end up exactly the
+                                         same height. -->
+                                    <thead>
+                                        <tr>
+                                            <th class="standings-table__corner">
+                                                <div class="standings-cell"><span class="standings-cell__text">{{groupStandings.group}}</span></div>
+                                            </th>
+                                            <th *ngFor="let team of groupStandings.teams">
+                                                <div class="standings-cell"><span class="standings-cell__text">{{team.name}}</span></div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let rowTeam of groupStandings.rowTeams">
+                                            <th class="standings-table__row-header">
+                                                <div class="standings-cell"><span class="standings-cell__text">{{rowTeam.name}}</span></div>
+                                            </th>
+                                            <ng-container *ngFor="let columnTeam of groupStandings.teams">
+                                                <td *ngIf="rowTeam.id === columnTeam.id" class="standings-table__self">
+                                                    <div class="standings-cell"></div>
+                                                </td>
+                                                <td *ngIf="rowTeam.id !== columnTeam.id">
+                                                    <div class="standings-cell">
+                                                        <span class="standings-cell__text standings-result"
+                                                              *ngIf="groupStandings.results[rowTeam.id][columnTeam.id] as cell"
+                                                              [class.standings-result--win]="cell.outcome === 'G'"
+                                                              [class.standings-result--loss]="cell.outcome === 'P'">
+                                                            {{cell.outcome}} {{cell.teamPoints}} - {{cell.opponentPoints}}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </ng-container>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Position tables, published to S3 by the CreateStandings workflow.
+             Absent until the workflow has run for the year, so the whole section
+             only appears once there's something to show. -->
+        <div class="col col-12 accordion accordion-flush modern-accordion" *ngIf="groupStandings.length > 0">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#flush-collapsePositions" aria-expanded="true"
+                            aria-controls="flush-collapsePositions">
+                        Posiciones
+                    </button>
+                </h2>
+                <div id="flush-collapsePositions" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                        <div class="standings-group" *ngFor="let group of groupStandings">
+                            <h3 class="text-center standings-positions__group">{{group.group}}</h3>
+                            <div class="scroll-container">
+                                <table class="positions-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="positions-table__position">#</th>
+                                            <th class="positions-table__team">Equipo</th>
+                                            <th>JJ</th>
+                                            <th>G</th>
+                                            <th>P</th>
+                                            <th>PF</th>
+                                            <th>PC</th>
+                                            <th>DIF</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- With a team filter on, every row stays so the
+                                             position keeps its context; the picked team is
+                                             highlighted. -->
+                                        <tr *ngFor="let row of group.standings"
+                                            [class.positions-table__row--selected]="row.teamId === selectedTeamId">
+                                            <td class="positions-table__position">{{row.position}}</td>
+                                            <td class="positions-table__team">{{row.teamName}}</td>
+                                            <td>{{row.played}}</td>
+                                            <td class="positions-table__won">{{row.won}}</td>
+                                            <td>{{row.lost}}</td>
+                                            <td>{{row.pointsFor}}</td>
+                                            <td>{{row.pointsAgainst}}</td>
+                                            <td>
+                                                <span class="positions-differential"
+                                                      [class.positions-differential--positive]="row.pointDifferential > 0"
+                                                      [class.positions-differential--negative]="row.pointDifferential < 0">
+                                                    {{row.pointDifferential > 0 ? '+' : ''}}{{row.pointDifferential}}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

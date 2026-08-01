@@ -3,9 +3,13 @@ import { FormControl } from '@angular/forms';
 import { Match } from '../../interfaces/match';
 import { Category, MatchTeam } from '../../interfaces/team';
 import { MatchBuilder } from '../../Builders/match-builder';
+import { StandingBuilder } from '../../Builders/standing-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
+import { S3 } from '../../aws-clients/s3';
+import { GroupStanding } from '../../interfaces/standing';
 import { COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR, REGION } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { S3Client } from '@aws-sdk/client-s3';
 
 // One result as seen from the row team's point of view: "G 44 - 38" means the
 // row team won 44 to 38. Cells stay undefined when the pairing hasn't been
@@ -39,6 +43,10 @@ export class StandingsComponent implements OnInit {
     credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
   });
   ddb: DynamoDb = new DynamoDb(this.ddbClient);
+  s3: S3 = new S3(new S3Client({
+    region: REGION,
+    credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
+  }));
 
   loading = true;
 
@@ -65,9 +73,19 @@ export class StandingsComponent implements OnInit {
   // filter applied. Kept in sync by applyFilters().
   standings: GroupStandings[] = [];
 
+  // Position tables published to S3 by the Retiarius CreateStandings workflow,
+  // grouped by category. Shown below the cross tables.
+  groupStandingsByCategory: Partial<Record<Category, GroupStanding[]>> = {};
+
+  // The selected category's position tables, with the team filter applied.
+  groupStandings: GroupStanding[] = [];
+
   selectedYear = "";
 
-  constructor(private matchBuilder: MatchBuilder) {
+  constructor(
+    private matchBuilder: MatchBuilder,
+    private standingBuilder: StandingBuilder
+  ) {
   }
 
   async ngOnInit() {
@@ -84,12 +102,14 @@ export class StandingsComponent implements OnInit {
   selectTeam() {
     this.selectedTeamId = this.team.value ?? "";
     this.applyFilters();
+    this.applyStandingsFilters();
   }
 
   clearTeam() {
     this.selectedTeamId = "";
     this.team.setValue("");
     this.applyFilters();
+    this.applyStandingsFilters();
   }
 
   // Teams of the selected category, for the team dropdown.
@@ -119,14 +139,34 @@ export class StandingsComponent implements OnInit {
       }));
   }
 
+  // Same shape as applyFilters(), for the position tables. Unlike the cross
+  // table, the team filter keeps every row of the group: a position only means
+  // something next to the teams it's measured against. The team's own row is
+  // highlighted instead.
+  private applyStandingsFilters() {
+    const groupStandings = this.groupStandingsByCategory[this.selectedCategory] ?? [];
+
+    if (!this.selectedTeamId) {
+      this.groupStandings = groupStandings;
+      return;
+    }
+
+    this.groupStandings = groupStandings
+      .filter(group => group.standings.some(row => row.teamId === this.selectedTeamId));
+  }
+
   async loadMatches(year: string) {
     this.loading = true;
     this.selectedYear = year;
     this.standingsByCategory = {};
     this.teamsByCategory = {};
+    this.groupStandingsByCategory = {};
     this.clearTeam();
 
-    const allMatches = await this.matchBuilder.getListOfMatch(this.ddb, year);
+    const [allMatches, publishedStandings] = await Promise.all([
+      this.matchBuilder.getListOfMatch(this.ddb, year),
+      this.standingBuilder.getStandings(this.s3)
+    ]);
 
     const groupMatches = allMatches.filter(match => this.groups.includes(match.juego));
 
@@ -136,12 +176,27 @@ export class StandingsComponent implements OnInit {
       );
       this.standingsByCategory[category] = standings;
       this.teamsByCategory[category] = this.collectFilterTeams(standings);
+      this.groupStandingsByCategory[category] = this.orderGroupStandings(
+        publishedStandings.filter(group => group.category === category)
+      );
     });
 
     // clearTeam() above ran before the tables existed, so pick them up now.
     this.applyFilters();
+    this.applyStandingsFilters();
 
     this.loading = false;
+  }
+
+  // The file lists groups in whatever order the workflow emitted them; line them
+  // up with the cross tables above. Groups the workflow named but this page
+  // doesn't know about go last, in file order.
+  private orderGroupStandings(groupStandings: GroupStanding[]): GroupStanding[] {
+    return [...groupStandings].sort((a, b) => {
+      const aIndex = this.groups.indexOf(a.group);
+      const bIndex = this.groups.indexOf(b.group);
+      return (aIndex < 0 ? this.groups.length : aIndex) - (bIndex < 0 ? this.groups.length : bIndex);
+    });
   }
 
   // Flattens the per-group team lists into one alphabetical list for the team
