@@ -126,22 +126,9 @@ export class ScoutingComponent implements OnInit {
     }
   }
 
-  private scrollToTop() {
-    const scrollingElement = document.scrollingElement as HTMLElement | null;
-    const documentElement = document.documentElement as HTMLElement | null;
-    const body = document.body as HTMLElement | null;
-
-    if (scrollingElement) {
-      scrollingElement.scrollTop = 0;
-    }
-    if (documentElement) {
-      documentElement.scrollTop = 0;
-    }
-    if (body) {
-      body.scrollTop = 0;
-    }
-
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  scrollToTop() {
+    const topElement = document.getElementById('scoutingTopAnchor') as HTMLElement | null;
+    topElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   scrollToFirstRelevantMatch() {

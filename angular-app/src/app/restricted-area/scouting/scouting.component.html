@@ -53,7 +53,7 @@
     <div class="spinner-border text-light" role="status" *ngIf="loading">
         <span class="sr-only">Loading...</span>
     </div>
-    <div class="row mainpanel tab-content-panel" *ngIf="!loading">
+    <div id="scoutingTopAnchor" class="row mainpanel tab-content-panel" *ngIf="!loading">
 
         <!-- Shared filters (Category + Equipo) — hidden on the statistics tab, which has its own filters -->
         <div class="scouting-filters-wrapper" *ngIf="!isScouting && !isTeamSelected && activeTab !== 'estadisticas'">
@@ -67,7 +67,15 @@
                         <span class="ms-2">{{ filtersCollapsed ? 'Mostrar filtros' : 'Ocultar filtros' }}</span>
                     </button>
 
-                    <button  *ngIf="activeTab === 'partido'" class="btn btn-warning btn-sm" type="button"
+                    <button *ngIf="activeTab === 'partido'" class="btn btn-warning btn-sm" type="button"
+                            (click)="scrollToTop()"
+                            title="Volver arriba"
+                            aria-label="Volver arriba">
+                        <i class="fas fa-arrow-up"></i>
+                        <span class="ms-2 d-inline">Top</span>
+                    </button>
+
+                    <button *ngIf="activeTab === 'partido'" class="btn btn-warning btn-sm" type="button"
                             (click)="scrollToFirstRelevantMatch()"
                             title="Ir al siguiente partido relevante"
                             aria-label="Ir al siguiente partido relevante">
