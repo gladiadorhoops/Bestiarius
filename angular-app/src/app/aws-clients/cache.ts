@@ -9,7 +9,7 @@ interface CacheEntry {
 export class Cache {
     private cache: Map<string, CacheEntry> = new Map();
     private readonly TTL_MS = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-    private readonly MAX_SIZE_BYTES = 100 * 1024 * 1024; // 150 MB in bytes
+    private readonly MAX_SIZE_BYTES = 150 * 1024 * 1024; // 150 MB in bytes
     private currentSize: number = 0;
     private cleanupInterval: NodeJS.Timeout | null = null;
 
@@ -182,7 +182,7 @@ export class Cache {
             currentSizeBytes: this.currentSize,
             currentSizeMB: Math.round((this.currentSize / (1024 * 1024)) * 100) / 100,
             maxSizeBytes: this.MAX_SIZE_BYTES,
-            maxSizeMB: 150,
+            maxSizeMB: Math.round((this.MAX_SIZE_BYTES / (1024 * 1024)) * 100) / 100,
             utilizationPercent: Math.round((this.currentSize / this.MAX_SIZE_BYTES) * 10000) / 100,
             oldestEntry: entries.length > 0 ? new Date(oldestTimestamp) : undefined,
             newestEntry: entries.length > 0 ? new Date(newestTimestamp) : undefined,
