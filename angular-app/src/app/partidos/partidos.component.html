@@ -32,7 +32,75 @@
 
     <app-awards *ngIf="showAwards"></app-awards>
     <app-brackets *ngIf="showBrackets" [category]="selectedCategory" [teamLogos]="teamLogos"></app-brackets>
-    <app-standing-matches *ngIf="showStandings" [category]="selectedCategory" [teamLogos]="teamLogos"></app-standing-matches>
-    <app-groups *ngIf="showGroups" [category]="selectedCategory" [teamLogos]="teamLogos"></app-groups>
+
+    <!-- Extra filters, applied to Standings and Fase de Grupos only. Placed
+         right above those sections (the brackets above are unfiltered). Grupo
+         doesn't apply to Standings (those matches belong to no group), so that
+         section responds to the other three. -->
+    <div class="col col-12 partidos-filters" *ngIf="showStandings||showGroups">
+        <div class="filter-bar">
+            <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-warning btn-sm" type="button"
+                        (click)="toggleFilters()"
+                        [attr.aria-expanded]="!filtersCollapsed"
+                        aria-controls="partidosFilters">
+                    <i class="fas" [class.fa-chevron-down]="filtersCollapsed" [class.fa-chevron-up]="!filtersCollapsed"></i>
+                    <span class="ms-2">Filtros</span>
+                </button>
+
+                <span class="filter-active-badge" *ngIf="hasActiveFilters">
+                    <i class="fas fa-filter"></i>&nbsp;Filtros activos
+                </span>
+            </div>
+
+            <div id="partidosFilters" class="collapse" [class.show]="!filtersCollapsed">
+                <form [formGroup]="filterForm" class="mt-3">
+                    <div class="row g-2">
+                        <div class="col-6 col-md-3" *ngIf="groupOptions.length > 0">
+                            <select class="form-select" id="groupFilter" formControlName="group" (change)="applyFilters()"
+                                    aria-label="Filtrar por grupo">
+                                <option [ngValue]="null">Grupo</option>
+                                <option *ngFor="let group of groupOptions" [ngValue]="group">{{group}}</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3" *ngIf="teamOptions.length > 0">
+                            <select class="form-select" id="teamFilter" formControlName="teamId" (change)="applyFilters()"
+                                    aria-label="Filtrar por equipo">
+                                <option [ngValue]="null">Equipo</option>
+                                <option *ngFor="let team of teamOptions" [ngValue]="team.id">{{team.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3" *ngIf="gymOptions.length > 0">
+                            <select class="form-select" id="gymFilter" formControlName="gymId" (change)="applyFilters()"
+                                    aria-label="Filtrar por gimnasio">
+                                <option [ngValue]="null">Gimnasio</option>
+                                <option *ngFor="let gym of gymOptions" [ngValue]="gym.id">{{gym.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-6 col-md-3" *ngIf="dayOptions.length > 0">
+                            <select class="form-select" id="dayFilter" formControlName="day" (change)="applyFilters()"
+                                    aria-label="Filtrar por fecha">
+                                <option [ngValue]="null">Fecha</option>
+                                <option *ngFor="let day of dayOptions" [ngValue]="day.key">{{day.label | titlecase}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12 text-center">
+                            <button class="btn btn-outline-light btn-sm" type="button" (click)="clearFilters()"
+                                    title="Limpiar filtros" aria-label="Limpiar filtros">
+                                <i class="fas fa-rotate-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <app-standing-matches *ngIf="showStandings" [category]="selectedCategory" [teamLogos]="teamLogos"
+                          [filters]="selectedFilters"></app-standing-matches>
+    <app-groups *ngIf="showGroups" [category]="selectedCategory" [teamLogos]="teamLogos"
+                [filters]="selectedFilters"></app-groups>
 </div>
 </div>

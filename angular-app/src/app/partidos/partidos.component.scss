@@ -27,6 +27,24 @@
     margin-bottom: 1.25rem;
 }
 
+// Group/team/gym/date filters for the Standings and Fase de Grupos sections.
+// Sits between the category toggle and the sections it drives.
+.partidos-filters {
+    margin-bottom: 1.25rem;
+}
+
+// "Filtros activos" hint, so a collapsed filter bar still shows that the lists
+// below are narrowed down.
+.filter-active-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background-color: $active-tint-color;
+    color: $header-color1;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 // Segmented category toggle matching the reports page view-switcher.
 .view-toggle {
     display: inline-flex;

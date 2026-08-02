@@ -1,4 +1,4 @@
-<div class="row justify-content-md-center" *ngIf="hasVisibleMatches || loading">
+<div class="row justify-content-md-center" *ngIf="hasCategoryMatches || loading">
     <div class="accordion accordion-flush modern-accordion" id="accordionFlushExample">
         <div class="accordion-item">
             <h2 class="accordion-header">
@@ -53,17 +53,15 @@
                 </ng-template>
 
                 <div class="row" *ngIf="!loading">
-                    <div class="col col-12 padded-col" *ngIf="category === 'aprendiz' && standingMatches.length>0">
-                        <ng-container *ngFor="let match of standingMatches"
+                    <div class="col col-12 padded-col" *ngIf="hasVisibleMatches">
+                        <ng-container *ngFor="let match of visibleMatches"
                             [ngTemplateOutlet]="matchCard"
                             [ngTemplateOutletContext]="{ $implicit: match }">
                         </ng-container>
                     </div>
-                    <div class="col col-12 padded-col" *ngIf="category === 'elite' && standingMatchesElite.length>0">
-                        <ng-container *ngFor="let match of standingMatchesElite"
-                            [ngTemplateOutlet]="matchCard"
-                            [ngTemplateOutletContext]="{ $implicit: match }">
-                        </ng-container>
+                    <!-- The category has standings, but the filters matched none of them. -->
+                    <div class="col col-12 padded-col text-center" *ngIf="!hasVisibleMatches">
+                        <p class="empty-filter-message">No hay partidos que coincidan con los filtros seleccionados.</p>
                     </div>
                 </div>
             </div>
