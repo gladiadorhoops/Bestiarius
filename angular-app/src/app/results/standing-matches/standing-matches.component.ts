@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Match } from '../../interfaces/match';
 import { FormBuilder } from '@angular/forms';
@@ -15,7 +15,7 @@ const LOGO_PLACEHOLDER = 'assets/logo_gray.png';
   templateUrl: './standing-matches.component.html',
   styleUrls: ['./standing-matches.component.scss']
 })
-export class StandingMatchesComponent implements OnInit {
+export class StandingMatchesComponent implements OnInit, OnChanges {
   ddbClient = new DynamoDBClient({ 
     region: REGION,
     credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
@@ -32,6 +32,7 @@ export class StandingMatchesComponent implements OnInit {
   // Category to show, controlled by the shared toggle in the parent results page.
   @Input() category: 'elite' | 'aprendiz' = 'elite';
   @Input() teamLogos: {[teamId: string]: string} = {};
+  @Output() matchesAvailable = new EventEmitter<boolean>();
 
   constructor(private fb: FormBuilder, 
     private matchBuilder: MatchBuilder,
@@ -43,7 +44,13 @@ export class StandingMatchesComponent implements OnInit {
 
   async ngOnInit() {
     await this.loadMatches(TOURNAMENT_YEAR)
-  }  
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['category']) {
+      this.emitMatchesAvailability();
+    }
+  }
 
   async loadMatches(year: string){
     this.selectedYear = year;
@@ -64,6 +71,17 @@ export class StandingMatchesComponent implements OnInit {
       }
     });
     this.loading = false;
+    this.emitMatchesAvailability();
+  }
+
+  get hasVisibleMatches(): boolean {
+    return this.category === 'elite'
+      ? this.standingMatchesElite.length > 0
+      : this.standingMatches.length > 0;
+  }
+
+  private emitMatchesAvailability() {
+    this.matchesAvailable.emit(this.hasVisibleMatches);
   }
 
   teamLogoUrl(team: MatchTeam | undefined): string {
