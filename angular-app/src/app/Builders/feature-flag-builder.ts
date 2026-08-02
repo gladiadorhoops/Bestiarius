@@ -44,7 +44,8 @@ export class FeatureFlagBuilder {
             [Feature.SHOW_BRACKETS]: item[Feature.SHOW_BRACKETS] ? item[Feature.SHOW_BRACKETS].BOOL! : false,
             [Feature.SHOW_GROUPS]: item[Feature.SHOW_GROUPS] ? item[Feature.SHOW_GROUPS].BOOL! : false,
             [Feature.SHOW_STANDINGS]: item[Feature.SHOW_STANDINGS] ? item[Feature.SHOW_STANDINGS].BOOL! : false,
-            [Feature.SHOW_PARTICIPANTS]: item[Feature.SHOW_PARTICIPANTS] ? item[Feature.SHOW_PARTICIPANTS].BOOL! : false
+            [Feature.SHOW_PARTICIPANTS]: item[Feature.SHOW_PARTICIPANTS] ? item[Feature.SHOW_PARTICIPANTS].BOOL! : false,
+            [Feature.SHOW_PODIUM]: item[Feature.SHOW_PODIUM] ? item[Feature.SHOW_PODIUM].BOOL! : false
         };
     }
 }

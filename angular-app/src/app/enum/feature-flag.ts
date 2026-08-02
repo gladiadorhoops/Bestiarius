@@ -4,5 +4,6 @@ export enum Feature {
     SHOW_GROUPS = 'showGroups',
     SHOW_BRACKETS = 'showBrackets',
     SHOW_STANDINGS = 'showStandings',
-    SHOW_PARTICIPANTS = 'showParticipants'
+    SHOW_PARTICIPANTS = 'showParticipants',
+    SHOW_PODIUM = 'showPodium'
 }

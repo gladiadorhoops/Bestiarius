@@ -16,8 +16,110 @@
 // Standings tables here center their single header cell (Elite / Aprendiz).
 .modern-table th{
     text-align: center;
+    padding: 0.6rem 0.4rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+}
+
+.modern-table {
+    background: rgba(255, 255, 255, 0.62);
+    border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.modern-table tr.row {
+    align-items: center;
+    min-height: 3.3rem;
+    background: rgba(255, 255, 255, 0.78);
 }
 
 .maincol{
     padding: 2%;
+}
+
+.podio-team {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.2rem;
+}
+
+.podio-team__logo {
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.55);
+    flex: 0 0 auto;
+}
+
+.podio-team__name {
+    font-weight: 600;
+    color: #24323d;
+}
+
+.medal {
+    --metal-1: #f5b700;
+    --metal-2: #d89500;
+    --metal-3: #fff3bd;
+    --rim: rgba(118, 78, 8, 0.55);
+    position: relative;
+    display: inline-block;
+    width: 1.95rem;
+    height: 2.15rem;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
+}
+
+.medal::before {
+    content: '';
+    position: relative;
+    display: block;
+    width: 1.05rem;
+    height: 0.9rem;
+    margin: 0 auto;
+    background:
+        linear-gradient(90deg, #2d65ec 0 48%, #cf3b3b 52% 100%);
+    border-radius: 0 0 0.38rem 0.38rem;
+    clip-path: polygon(0 0, 100% 0, 84% 100%, 64% 78%, 50% 100%, 36% 78%, 16% 100%);
+}
+
+.medal::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 1.48rem;
+    height: 1.48rem;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.92) 0 11%, rgba(255, 255, 255, 0) 34%),
+        radial-gradient(circle at 65% 70%, rgba(0, 0, 0, 0.22) 0 22%, rgba(0, 0, 0, 0) 62%),
+        radial-gradient(circle at 50% 52%, var(--metal-3) 0 28%, var(--metal-1) 56%, var(--metal-2) 100%);
+    border: 1px solid var(--rim);
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.28),
+        inset 0 -3px 5px rgba(0, 0, 0, 0.22);
+}
+
+.medal--gold {
+    --metal-1: #f5b700;
+    --metal-2: #c98700;
+    --metal-3: #fff2b6;
+    --rim: rgba(120, 79, 0, 0.58);
+}
+
+.medal--silver {
+    --metal-1: #c4ced9;
+    --metal-2: #8e9aa8;
+    --metal-3: #f9fcff;
+    --rim: rgba(90, 102, 116, 0.58);
+}
+
+.medal--bronze {
+    --metal-1: #cd7b41;
+    --metal-2: #985326;
+    --metal-3: #f4c8a6;
+    --rim: rgba(103, 53, 23, 0.58);
 }
