@@ -144,7 +144,7 @@
                 <div class="match-card__meta">
                     <!-- Primary line: which game + when. -->
                     <div class="match-card__title">
-                        <span class="match-game">{{match.juego}}</span>
+                        <span class="match-game">{{ match.braketPlace == 'f22' ? 'Tercer' : match.juego}}</span>
                         <span class="match-time"><i class="fas fa-clock"></i>&nbsp;{{match.time}}</span>
                     </div>
                     <!-- Secondary line: where (gym) — clickable. -->
