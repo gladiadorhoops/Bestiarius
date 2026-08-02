@@ -1,55 +1,100 @@
-<div class="mainpanel">
-    <!-- New gym form: fields grouped in a filter-bar block, two per row,
-         with the yellow floppy-disk save button used elsewhere in the app. -->
-    <form class="filter-bar mb-3" [formGroup]="gymForm" (ngSubmit)="onSubmit()">
-        <div class="row g-2 justify-content-center">
-            <div class="col-12 col-md-6">
-                <label for="id" class="form-label text-light small mb-1">ID</label>
-                <input type="text" class="form-control" id="id" name="id" formControlName="id">
-            </div>
-            <div class="col-12 col-md-6">
-                <label for="name" class="form-label text-light small mb-1">Nombre</label>
-                <input type="text" class="form-control" id="name" name="name" formControlName="name">
-            </div>
-        </div>
-        <div class="row g-2 mt-1 justify-content-center">
-            <div class="col-12 col-md-6">
-                <label for="address" class="form-label text-light small mb-1">Dirección</label>
-                <input type="text" class="form-control" id="address" name="address" formControlName="address">
-            </div>
-            <div class="col-12 col-md-6">
-                <label for="place_id" class="form-label text-light small mb-1">Place ID</label>
-                <input type="text" class="form-control" id="place_id" name="place_id" formControlName="place_id">
-            </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-12 text-center">
-                <button type="submit" class="btn btn-warning btn-floating" title="Guardar" [disabled]="!gymForm.valid">
-                    <i class="fas fa-floppy-disk"></i>
-                </button>
-            </div>
-        </div>
-    </form>
+<h2 class="text-center mb-3">
+    Gimnasios
+</h2>
+
+<div class="spinner-border text-light" role="status" *ngIf="isLoading">
+    <span class="sr-only">Loading...</span>
+</div>
+
+<div class="mainpanel" *ngIf="!isLoading">
+    <!-- Registering a gym happens in the modal below, same as adding a player. -->
+    <div class="d-flex justify-content-end mb-3">
+        <button type="button" (click)="addGym()" class="btn btn-dark btn-floating"
+                title="Registrar Nuevo Gimnasio" aria-label="Registrar Nuevo Gimnasio">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
 
     <div class="scroll-container">
-        <table *ngIf="!isLoading" class="modern-table" style="min-width: 100%;">
+        <table class="modern-table" style="min-width: 100%;">
             <tr>
                 <th> <a [routerLink]="">ID</a></th>
                 <th> <a [routerLink]="">Nombre</a></th>
                 <th> <a [routerLink]="">Dirección</a></th>
+                <!-- Flags at a glance which gyms have a transmission link. -->
+                <th> <a [routerLink]="">Transmisión</a></th>
             </tr>
-            <tr *ngFor="let gym of gyms">
+            <!-- Clicking a row opens it in the editor. -->
+            <tr class="clickable-row" *ngFor="let gym of gyms" [routerLink]="" (click)="edit(gym)">
                 <td>{{gym.id}}</td>
-                <td>{{gym.name}}</td>
-                <td><a href="https://www.google.com/maps/search/?api=1&query_place_id={{gym.place_id}}&query={{gym.address}}">{{gym.address}}</a></td>
+                <td><u>{{gym.name}}</u></td>
+                <td>{{gym.address}}</td>
+                <td>
+                    <!-- Opens the transmission itself; stops the click from also
+                         opening the row's editor. -->
+                    <a *ngIf="gym.live_feed" [href]="gym.live_feed" target="_blank" rel="noopener"
+                       (click)="$event.stopPropagation()"
+                       title="Ver Transmisión" aria-label="Ver Transmisión">
+                        <i class="fas fa-video"></i>
+                    </a>
+                </td>
             </tr>
         </table>
     </div>
 </div>
 
+<!--Gym editor modal: doubles as the new-gym form, in which case the id is editable-->
+<div class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayGymForm}">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header dark-header">
+        <h5 class="modal-title">{{ editingGym ? editingGym.name : 'Nuevo Gimnasio' }}</h5>
+        <button type="button" class="btn-close" (click)="closeGymForm()" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="gymForm">
+            <div class="row g-2">
+                <div class="col-12 col-md-6">
+                    <label for="id" class="form-label small mb-1">ID</label>
+                    <!-- The id is the record's key, so it can only be set at creation. -->
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" [readonly]="!!editingGym">
+                </div>
+                <div class="col-12 col-md-6">
+                    <label for="name" class="form-label small mb-1">Nombre</label>
+                    <input type="text" class="form-control" id="name" name="name" formControlName="name">
+                </div>
+            </div>
+            <div class="row g-2 mt-1">
+                <div class="col-12 col-md-6">
+                    <label for="address" class="form-label small mb-1">Dirección</label>
+                    <input type="text" class="form-control" id="address" name="address" formControlName="address">
+                </div>
+                <div class="col-12 col-md-6">
+                    <label for="place_id" class="form-label small mb-1">Place ID</label>
+                    <input type="text" class="form-control" id="place_id" name="place_id" formControlName="place_id">
+                </div>
+            </div>
+            <div class="row g-2 mt-1">
+                <div class="col-12">
+                    <label for="live_feed" class="form-label small mb-1">Transmisión en Vivo (URL)</label>
+                    <input type="text" class="form-control" id="live_feed" name="live_feed" formControlName="live_feed">
+                </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="onSubmit()" [disabled]="!gymForm.valid">
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
-
-    
 <div
 class="modal"
 tabindex="-1"
@@ -62,7 +107,7 @@ role="dialog"
 
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" 
+      <button type="button" class="btn btn-danger"
               (click)="closePopup()">
         Cerrar
       </button>

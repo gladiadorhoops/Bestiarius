@@ -17,6 +17,12 @@
                     <div class="match-card match-card--readonly mb-3">
                         <!-- Category tag pinned top-left. -->
                         <span class="match-badge">{{match.category}}</span>
+                        <!-- Gym's live transmission pinned top-right, only when one is registered. -->
+                        <a class="match-live-feed" *ngIf="match.location.live_feed"
+                           [href]="match.location.live_feed" target="_blank" rel="noopener"
+                           title="Transmisión en Vivo" aria-label="Transmisión en Vivo">
+                            <i class="fas fa-video"></i>
+                        </a>
 
                         <div class="match-card__meta">
                             <!-- Primary line: which group + when. -->

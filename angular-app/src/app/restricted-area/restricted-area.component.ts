@@ -142,11 +142,11 @@ export class RestrictedAreaComponent {
         // tabs inside Evaluar Partido, so only admins keep a dropdown — and it
         // includes "Evaluar Partido" so they can navigate back to it.
         this.menuItems = this.menuItems.concat([
-          {value: "addGym", text: "Add Gym"},
+          {value: "addGym", text: "Gimnasios"},
           {value: "editMatch", text: "Partidos"},
           {value: "scouting", text: "Scouting"},
-          {value: "listPlayers", text: "Jugadores Registrados"},
-          {value: "viewUsers", text: "Usuarios Registrados"},
+          {value: "listPlayers", text: "Jugadores"},
+          {value: "viewUsers", text: "Usuarios"},
           {value: "listReports", text: "Reportes"}
         ]);
       }
@@ -154,7 +154,7 @@ export class RestrictedAreaComponent {
         // "Registrar Equipo" is reached via the "+" button in Equipos
         // Registrados, so it's no longer a standalone menu entry.
         this.menuItems = this.menuItems.concat([
-          {value: "listTeams", text: "Equipos Registrados"},
+          {value: "listTeams", text: "Equipos"},
         ]);
       }
 
