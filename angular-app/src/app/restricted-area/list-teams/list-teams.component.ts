@@ -230,7 +230,10 @@ export class ListTeamsComponent {
 
       for (let i = 0; i < 10; i++) {
         const fileName = TeamBuilder.getReceiptFileName(team.name, team.id, i);
-        const data = await this.s3.downloadFile(fileName);
+        // Uncached: receipt keys are positional, so deleting one shifts every
+        // later file down into a key that already exists. An admin reviewing a
+        // payment has to see what the coach uploaded last, not a shifted copy.
+        const data = await this.s3.downloadFile(fileName, false);
         if (data) {
           const blob = new Blob([data as any]);
           this.reviewReceiptUrls.push(URL.createObjectURL(blob));

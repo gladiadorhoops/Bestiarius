@@ -1,7 +1,7 @@
 import { S3Client, GetObjectCommand, ListObjectsCommand, ListObjectsCommandInput, GetObjectCommandInput, PutObjectCommand, PutObjectCommandInput, DeleteObjectCommand, DeleteObjectCommandInput } from "@aws-sdk/client-s3";
 import { REGION, COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR } from "./constants";
 import { AwsCredentialIdentity, Provider } from "@aws-sdk/types"
-import { Cache } from "./cache";
+import { Cache, globalCache } from "./cache";
 
 const client = new S3Client({ 
     region: REGION,
@@ -38,15 +38,27 @@ export enum ReportType {
     STANDINGS = 'standings'
 }
 
+// Sent as `response-cache-control` on reads of objects that get rewritten in
+// place under a stable key, so the browser never serves a stale copy. It also
+// changes the request URL, which evicts anything already cached under the plain
+// object URL.
+const NO_CACHE = 'no-cache, no-store, must-revalidate'
+
 export { client };
 export class S3 {
-    
+
     client: S3Client;
-    cache: Cache;
+    // Images keyed per entity only (player photos, team logos). Mutable objects
+    // — JSON reports, payment receipts, waivers — bypass this; see readObject and
+    // downloadFile's useCache flag.
+    //
+    // Shared process-wide rather than per instance: every component builds its
+    // own S3, so a per-instance cache never gets a hit across views and each one
+    // would leak its own cleanup interval.
+    cache: Cache = globalCache;
 
     constructor(client: S3Client){
         this.client = client
-        this.cache = new Cache();
     }
     async listObjects(): Promise<any> {
         console.log("Listing all match files")
@@ -66,11 +78,17 @@ export class S3 {
         }
     }
 
+    /**
+     * Read a JSON report (tops, player reports, standings). Never cached: these
+     * files are rewritten in place as matches are scored, so a cached copy would
+     * show stale stats and standings.
+     */
     async readObject(name: string, type: ReportType): Promise<string | undefined> {
         console.log(`Reading s3 object for ${name}`)
         let input: GetObjectCommandInput = {
             Bucket: GLADIADORES_BUCKET_NAME,
-            Key: `${REPORT_PATH}/${type}/${name}.json`
+            Key: `${REPORT_PATH}/${type}/${name}.json`,
+            ResponseCacheControl: NO_CACHE
         }
         console.log('input', input)
         try{
@@ -174,17 +192,28 @@ export class S3 {
     }
 
     /**
-     * Destroy the S3 instance and cleanup cache resources
+     * Drop everything this instance has cached. The cache is shared across all
+     * S3 instances, so this affects every view — it tears down the cleanup
+     * interval too, and is not meant for per-component teardown.
      */
     destroy(): void {
         this.cache.destroy();
         console.log('S3 instance destroyed and cache cleaned up');
     }
 
+    /**
+     * Download an image under the images/ path. Cached for 24h by default, which
+     * suits objects keyed per entity (player photos, team logos) that only change
+     * when someone uploads a replacement — and uploadFile invalidates those.
+     *
+     * Pass useCache=false for keys that are rewritten in place, such as the
+     * index-shuffled payment receipts: that skips the in-memory cache and also
+     * tells the browser not to reuse its own cached response.
+     */
     async downloadFile(fileName: string, useCache: boolean = true): Promise<Uint8Array | undefined> {
         const objectKey = `${IMAGE_PATH}/${fileName}`;
         console.log(`Downloading file: ${objectKey}`)
-        
+
         // Check cache first if caching is enabled
         if (useCache) {
             const cachedData = this.cache.get(objectKey);
@@ -194,10 +223,11 @@ export class S3 {
             }
             console.log(`Cache miss for file: ${objectKey}, downloading from S3`);
         }
-        
+
         const input: GetObjectCommandInput = {
             Bucket: GLADIADORES_BUCKET_NAME,
-            Key: objectKey
+            Key: objectKey,
+            ...(useCache ? {} : {ResponseCacheControl: NO_CACHE})
         };
 
         console.log('Download input:', input);
@@ -225,13 +255,19 @@ export class S3 {
         }
     }
 
+    /**
+     * Download a file along with its content type, used for the signed liability
+     * waivers. Not cached: a re-uploaded waiver keeps the same key, so a cached
+     * copy would keep showing the superseded document.
+     */
     async downloadFileWithType(fileName: string, path: string = IMAGE_PATH): Promise<{data: Uint8Array, contentType: string} | undefined> {
         const objectKey = `${path}/${fileName}`;
         console.log(`Downloading file with type: ${objectKey}`)
 
         const input: GetObjectCommandInput = {
             Bucket: GLADIADORES_BUCKET_NAME,
-            Key: objectKey
+            Key: objectKey,
+            ResponseCacheControl: NO_CACHE
         };
 
         try {
@@ -253,11 +289,16 @@ export class S3 {
      * Download the blank liability-waiver template (bucket root, keyed by year).
      * Returns the file bytes + content type, or undefined when the template
      * for the current tournament year has not been uploaded yet.
+     *
+     * Not cached: the key is only keyed by year, so a corrected template
+     * replaces it in place and a stale copy would be handed to coaches. This
+     * also doubles as the availability check the modal relies on.
      */
     async downloadLiabilityWaiverTemplate(): Promise<{data: Uint8Array, contentType: string} | undefined> {
         const input: GetObjectCommandInput = {
             Bucket: GLADIADORES_BUCKET_NAME,
-            Key: LIABILITY_WAIVER_TEMPLATE_KEY
+            Key: LIABILITY_WAIVER_TEMPLATE_KEY,
+            ResponseCacheControl: NO_CACHE
         };
 
         try {
