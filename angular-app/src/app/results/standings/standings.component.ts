@@ -7,7 +7,7 @@ import { StandingBuilder } from '../../Builders/standing-builder';
 import { DynamoDb } from '../../aws-clients/dynamodb';
 import { S3 } from '../../aws-clients/s3';
 import { GroupStanding } from '../../interfaces/standing';
-import { COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR, REGION } from '../../aws-clients/constants'
+import { COGNITO_UNAUTHENTICATED_CREDENTIALS, TOURNAMENT_YEAR, REGION, GROUP_NAMES } from '../../aws-clients/constants'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { S3Client } from '@aws-sdk/client-s3';
 
@@ -51,7 +51,7 @@ export class StandingsComponent implements OnInit {
   loading = true;
 
   // Same group names (and order) the group-phase match list uses.
-  groups = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4", "Grupo A", "Grupo B", "Grupo C"]
+  groups = GROUP_NAMES
 
   // Elite first, matching the filter on the partidos page. (Listed explicitly
   // rather than via getCategories(), which returns aprendiz first.)

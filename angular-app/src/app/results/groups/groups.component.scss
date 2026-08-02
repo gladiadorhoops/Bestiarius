@@ -43,6 +43,15 @@ a:link {
   }
 
 
+// Shown in place of the groups when the page's filters match no group match.
+// The accordion body is light, so this reads against it rather than the page.
+.empty-filter-message {
+    margin: 0;
+    padding: 1rem 0;
+    color: $bg-color1;
+    font-weight: 600;
+}
+
 .tournament-match__logo {
     width: 1.8em;
     height: 1.8em;

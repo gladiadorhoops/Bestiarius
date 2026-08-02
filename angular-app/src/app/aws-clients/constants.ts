@@ -4,6 +4,12 @@ import { CognitoIdentity } from "../interfaces/cognito-identity";
 export var TOURNAMENT_YEAR = new Date().getFullYear().toString()
 export const TOURNAMENT_DAYS = [31, 1, 2]
 
+// Group-phase names in display order, and the name given to the standings
+// matches. Both are stored in a match's `juego`, so they are what tells the
+// group phase, the standings and the partidos filters which matches to show.
+export const GROUP_NAMES = ["Grupo 1", "Grupo 2", "Grupo 3", "Grupo 4", "Grupo A", "Grupo B", "Grupo C"]
+export const STANDING_GAME_NAME = 'Standing'
+
 export const REGION = 'us-east-1'
 export const COGNITO_IDENTITY_POOL = 'us-east-1:66bd9702-735d-4e68-a155-76fb7fb20547'
 export const COGNITO_UNAUTHENTICATED_IDENTITY_POOL = 'us-east-1:adf17da9-3e55-4f06-b8fa-53554f6f4dbf'
