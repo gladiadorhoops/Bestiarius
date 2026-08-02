@@ -4,4 +4,5 @@ export interface Gym {
     name: string  
     address?: string | undefined
     place_id?: string | undefined
+    live_feed?: string | undefined
 }

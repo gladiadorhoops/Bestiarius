@@ -42,6 +42,13 @@
                                     {{ match.location.name }}
                                 </a>
                                 <span class="tournament-bracket__time">{{ match.time }}</span>
+                                <!-- Gym's live transmission, only when one is registered. -->
+                                <a class="tournament-bracket__feed" *ngIf="match.location.live_feed"
+                                   [href]="match.location.live_feed" target="_blank" rel="noopener"
+                                   (click)="$event.stopPropagation()"
+                                   title="Transmisión en Vivo" aria-label="Transmisión en Vivo">
+                                    <i class="fas fa-video"></i>
+                                </a>
                             </div>
                         </div>
                     </ng-template>
