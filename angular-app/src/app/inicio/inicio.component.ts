@@ -15,7 +15,9 @@ import { Feature } from '../enum/feature-flag';
 interface PodioRow {
   pos: '#1' | '#2' | '#3';
   medal: 'gold' | 'silver' | 'bronze';
-  team: string;
+  teamName: string;
+  teamId?: string;
+  imageType?: string;
   logoUrl: string;
 }
 
@@ -67,29 +69,28 @@ export class InicioComponent implements OnInit, OnDestroy {
       ? TOURNAMENT_YEAR
       : `${Math.max(0, Number(TOURNAMENT_YEAR) - 1)}`;
 
-    const [matches, teamLogos] = await Promise.all([
-      this.matchBuilder.getListOfMatch(this.ddb, this.podioYear),
-      this.teamBuilder.loadAllTeamLogos(this.ddb, this.s3, this.podioYear),
-    ]);
+    const matches = await this.matchBuilder.getListOfMatch(this.ddb, this.podioYear);
 
-    this.resultsEL = this.buildPodioForCategory('elite', matches, teamLogos);
-    this.resultsAP = this.buildPodioForCategory('aprendiz', matches, teamLogos);
+    this.resultsEL = this.buildPodioForCategory('elite', matches);
+    this.resultsAP = this.buildPodioForCategory('aprendiz', matches);
 
     this.loadingPodio = false;
+
+    // Load podium logos in the background so the podium text renders immediately.
+    void this.loadPodiumLogos([...this.resultsEL, ...this.resultsAP]);
   }
 
   private emptyPodio(): PodioRow[] {
     return [
-      { pos: '#1', medal: 'gold', team: '', logoUrl: '' },
-      { pos: '#2', medal: 'silver', team: '', logoUrl: '' },
-      { pos: '#3', medal: 'bronze', team: '', logoUrl: '' },
+      { pos: '#1', medal: 'gold', teamName: '', logoUrl: '' },
+      { pos: '#2', medal: 'silver', teamName: '', logoUrl: '' },
+      { pos: '#3', medal: 'bronze', teamName: '', logoUrl: '' },
     ];
   }
 
   private buildPodioForCategory(
     category: 'elite' | 'aprendiz',
-    matches: Match[],
-    teamLogos: { [teamId: string]: string }
+    matches: Match[]
   ): PodioRow[] {
     const finalMatch = matches.find((m) => m.category === category && m.braketPlace === 'f15');
     const thirdPlaceMatch = matches.find((m) => m.category === category && m.braketPlace === 'f22');
@@ -98,9 +99,9 @@ export class InicioComponent implements OnInit, OnDestroy {
     const { winner: thirdWinner } = this.getWinnerAndLoser(thirdPlaceMatch);
 
     return [
-      this.toPodioRow('#1', finalWinner, teamLogos),
-      this.toPodioRow('#2', finalLoser, teamLogos),
-      this.toPodioRow('#3', thirdWinner, teamLogos),
+      this.toPodioRow('#1', finalWinner),
+      this.toPodioRow('#2', finalLoser),
+      this.toPodioRow('#3', thirdWinner),
     ];
   }
 
@@ -128,7 +129,7 @@ export class InicioComponent implements OnInit, OnDestroy {
     };
   }
 
-  private toPodioRow(pos: '#1' | '#2' | '#3', team: MatchTeam | undefined, teamLogos: { [teamId: string]: string }): PodioRow {
+  private toPodioRow(pos: '#1' | '#2' | '#3', team: MatchTeam | undefined): PodioRow {
     const medalByPosition: { [key in '#1' | '#2' | '#3']: 'gold' | 'silver' | 'bronze' } = {
       '#1': 'gold',
       '#2': 'silver',
@@ -136,15 +137,52 @@ export class InicioComponent implements OnInit, OnDestroy {
     };
 
     if (!team?.id) {
-      return { pos, medal: medalByPosition[pos], team: '', logoUrl: '' };
+      return { pos, medal: medalByPosition[pos], teamName: '', logoUrl: '' };
     }
 
     return {
       pos,
       medal: medalByPosition[pos],
-      team: team.name,
-      logoUrl: teamLogos[team.id] || LOGO_PLACEHOLDER,
+      teamName: team.name,
+      teamId: team.id,
+      imageType: team.imageType,
+      logoUrl: '',
     };
+  }
+
+  private async loadPodiumLogos(rows: PodioRow[]) {
+    const uniqueTeams = new Map<string, PodioRow[]>();
+
+    for (const row of rows) {
+      if (!row.teamId || !row.imageType) {
+        continue;
+      }
+
+      const key = `${row.teamId}:${row.imageType}`;
+      const teamRows = uniqueTeams.get(key) ?? [];
+      teamRows.push(row);
+      uniqueTeams.set(key, teamRows);
+    }
+
+    await Promise.all(Array.from(uniqueTeams.entries()).map(async ([, teamRows]) => {
+      const firstRow = teamRows[0];
+      if (!firstRow.teamId || !firstRow.imageType) {
+        return;
+      }
+
+      const logoUrl = await this.teamBuilder.loadTeamLogo(this.s3, {
+        id: firstRow.teamId,
+        imageType: firstRow.imageType,
+      });
+
+      if (!logoUrl) {
+        return;
+      }
+
+      for (const row of teamRows) {
+        row.logoUrl = logoUrl;
+      }
+    }));
   }
 
 }
