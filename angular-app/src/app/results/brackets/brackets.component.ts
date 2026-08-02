@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Match } from '../../interfaces/match';
 import { MatchTeam } from '../../interfaces/team';
@@ -25,7 +25,7 @@ const LOGO_PLACEHOLDER = 'assets/logo_gray.png';
   templateUrl: './brackets.component.html',
   styleUrls: ['./brackets.component.scss']
 })
-export class BracketsComponent implements OnInit {
+export class BracketsComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   ddbClient = new DynamoDBClient({
     region: REGION,
     credentials: COGNITO_UNAUTHENTICATED_CREDENTIALS
@@ -58,6 +58,12 @@ export class BracketsComponent implements OnInit {
   // Id of the match whose gym/date/time detail is currently expanded.
   expandedMatchId: string | null = null;
 
+  @ViewChildren('bracketLayout') bracketLayouts!: QueryList<ElementRef<HTMLElement>>;
+
+  private alignmentFrameId: number | null = null;
+  private readonly onResize = () => this.scheduleAlignment();
+  private readonly finalBaseSpacingPx = 24;
+
   constructor(private fb: FormBuilder,
     private matchBuilder: MatchBuilder,
     private httpService: HttpClient
@@ -69,6 +75,26 @@ export class BracketsComponent implements OnInit {
   async ngOnInit() {
     console.log("init brackets");
     await this.loadMatches(TOURNAMENT_YEAR);
+  }
+
+  ngAfterViewInit() {
+    window.addEventListener('resize', this.onResize);
+    this.bracketLayouts.changes.subscribe(() => this.scheduleAlignment());
+    this.scheduleAlignment();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['category']) {
+      this.scheduleAlignment();
+    }
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('resize', this.onResize);
+    if (this.alignmentFrameId !== null) {
+      cancelAnimationFrame(this.alignmentFrameId);
+      this.alignmentFrameId = null;
+    }
   }
 
   async loadMatches(year: string){
@@ -97,6 +123,7 @@ export class BracketsComponent implements OnInit {
     this.showElite = Object.keys(this.phaseMatchesElite).length != 0;
 
     this.loading = false;
+    this.scheduleAlignment();
 
     console.log("loaded bracket")
   }
@@ -118,6 +145,26 @@ export class BracketsComponent implements OnInit {
     return this.rounds.filter(round => round.places.some(place => !!matches[place]));
   }
 
+  hasQuarterfinalMatches(matches: Record<string, Match | undefined>): boolean {
+    return ['q9', 'q10', 'q11', 'q12'].some(place => !!matches[place]);
+  }
+
+  getQuarterfinalMatches(matches: Record<string, Match | undefined>): Array<Match | undefined> {
+    return ['q9', 'q10', 'q11', 'q12'].map(place => matches[place]);
+  }
+
+  getSemifinalMatches(matches: Record<string, Match | undefined>): Array<Match | undefined> {
+    return ['s13', 's14'].map(place => matches[place]);
+  }
+
+  getFinalMatch(matches: Record<string, Match | undefined>): Match | undefined {
+    return matches['f15'];
+  }
+
+  getThirdPlaceMatch(matches: Record<string, Match | undefined>): Match | undefined {
+    return matches['f22'];
+  }
+
   mapsUrl(location: Gym | undefined): string {
     if (!location) { return ''; }
     return `https://www.google.com/maps/search/?api=1&query_place_id=${location.place_id}&query=${location.address}`;
@@ -126,9 +173,100 @@ export class BracketsComponent implements OnInit {
   toggleMatch(match: Match | undefined) {
     if (!match?.id) { return; }
     this.expandedMatchId = this.expandedMatchId === match.id ? null : match.id;
+    this.scheduleAlignment();
   }
 
   isExpanded(match: Match | undefined): boolean {
     return !!match?.id && this.expandedMatchId === match.id;
+  }
+
+  private scheduleAlignment() {
+    if (this.alignmentFrameId !== null) {
+      cancelAnimationFrame(this.alignmentFrameId);
+    }
+
+    this.alignmentFrameId = requestAnimationFrame(() => {
+      this.alignmentFrameId = null;
+      this.applyDynamicAlignment();
+    });
+  }
+
+  private applyDynamicAlignment() {
+    if (!this.bracketLayouts?.length) { return; }
+
+    this.bracketLayouts.forEach(layoutRef => {
+      const layout = layoutRef.nativeElement;
+      this.resetDynamicStyles(layout);
+
+      const quarterSlots = Array.from(layout.querySelectorAll<HTMLElement>('.tournament-bracket__slot--quarter'));
+      const semifinalFirst = layout.querySelector<HTMLElement>('.tournament-bracket__slot--semifinal-first');
+      const semifinalSecond = layout.querySelector<HTMLElement>('.tournament-bracket__slot--semifinal-second');
+      const finalSlot = layout.querySelector<HTMLElement>('.tournament-bracket__slot--final');
+
+      if (quarterSlots.length >= 4 && semifinalFirst && semifinalSecond) {
+        this.alignSlotToPairMidpoint(semifinalFirst, quarterSlots[0], quarterSlots[1]);
+        this.alignSlotToPairMidpoint(semifinalSecond, quarterSlots[2], quarterSlots[3]);
+
+        const semifinalConnectorFirst = semifinalFirst.querySelector<HTMLElement>('.tournament-bracket__connector--quarter');
+        const semifinalConnectorSecond = semifinalSecond.querySelector<HTMLElement>('.tournament-bracket__connector--quarter');
+        if (semifinalConnectorFirst) {
+          semifinalConnectorFirst.style.height = `${this.centerDistance(quarterSlots[0], quarterSlots[1])}px`;
+        }
+        if (semifinalConnectorSecond) {
+          semifinalConnectorSecond.style.height = `${this.centerDistance(quarterSlots[2], quarterSlots[3])}px`;
+        }
+      }
+
+      if (finalSlot && semifinalFirst && semifinalSecond) {
+        const finalDelta = this.alignSlotToPairMidpoint(finalSlot, semifinalFirst, semifinalSecond);
+
+        // Keep flow spacing in sync with visual translateY so Final never overlaps Tercer.
+        const extraSpace = Math.max(0, finalDelta);
+        finalSlot.style.marginBottom = `${this.finalBaseSpacingPx + extraSpace}px`;
+
+        const finalConnector = finalSlot.querySelector<HTMLElement>('.tournament-bracket__connector--final');
+        if (finalConnector) {
+          finalConnector.style.height = `${this.centerDistance(semifinalFirst, semifinalSecond)}px`;
+        }
+      }
+    });
+  }
+
+  private resetDynamicStyles(layout: HTMLElement) {
+    const dynamicSlots = layout.querySelectorAll<HTMLElement>(
+      '.tournament-bracket__slot--semifinal-first, .tournament-bracket__slot--semifinal-second, .tournament-bracket__slot--final'
+    );
+
+    dynamicSlots.forEach(slot => {
+      slot.style.transform = '';
+      if (slot.classList.contains('tournament-bracket__slot--final')) {
+        slot.style.marginBottom = '';
+      }
+    });
+
+    const dynamicConnectors = layout.querySelectorAll<HTMLElement>(
+      '.tournament-bracket__connector--quarter, .tournament-bracket__connector--final'
+    );
+
+    dynamicConnectors.forEach(connector => {
+      connector.style.height = '';
+    });
+  }
+
+  private alignSlotToPairMidpoint(target: HTMLElement, sourceA: HTMLElement, sourceB: HTMLElement): number {
+    const currentCenter = this.elementCenterY(target);
+    const desiredCenter = (this.elementCenterY(sourceA) + this.elementCenterY(sourceB)) / 2;
+    const delta = desiredCenter - currentCenter;
+    target.style.transform = `translateY(${delta}px)`;
+    return delta;
+  }
+
+  private centerDistance(a: HTMLElement, b: HTMLElement): number {
+    return Math.abs(this.elementCenterY(a) - this.elementCenterY(b));
+  }
+
+  private elementCenterY(element: HTMLElement): number {
+    const rect = element.getBoundingClientRect();
+    return rect.top + rect.height / 2;
   }
 }
