@@ -53,24 +53,63 @@
                         </div>
                     </ng-template>
 
-                    <!-- One bracket per category, both driven by the same rounds config. -->
+                    <!-- One bracket per category, with explicit round sections and connector cues. -->
                     <ng-template #bracket let-matches>
                         <div class="container text-center">
-                            <div class="tournament-bracket tournament-bracket--rounded">
-                                <div class="tournament-bracket__round tournament-bracket__round--{{ round.cssClass }}"
-                                     *ngFor="let round of visibleRounds(matches)">
-                                    <h3 class="tournament-bracket__round-title">{{ round.title }}</h3>
-                                    <ul class="tournament-bracket__list">
-                                        <li class="tournament-bracket__item" *ngFor="let place of round.places">
-                                            <ng-container *ngIf="matches[place]"
-                                                [ngTemplateOutlet]="matchCard"
-                                                [ngTemplateOutletContext]="{ $implicit: matches[place] }">
-                                            </ng-container>
-                                        </li>
-                                    </ul>
+                            <div class="tournament-bracket-scroll">
+                                <div class="tournament-bracket" #bracketLayout>
+                                    <div class="tournament-bracket__round" *ngIf="hasQuarterfinalMatches(matches)">
+                                        <h3 class="tournament-bracket__round-title">Cuartos</h3>
+                                        <div class="tournament-bracket__slot-list">
+                                            <div class="tournament-bracket__slot tournament-bracket__slot--quarter" *ngFor="let match of getQuarterfinalMatches(matches)">
+                                                <ng-container *ngIf="match; else emptySlot">
+                                                    <ng-container [ngTemplateOutlet]="matchCard" [ngTemplateOutletContext]="{ $implicit: match }"></ng-container>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tournament-bracket__round tournament-bracket__round--semifinals">
+                                        <h3 class="tournament-bracket__round-title">Semifinales</h3>
+                                        <div class="tournament-bracket__slot-list">
+                                            <div class="tournament-bracket__slot tournament-bracket__slot--semifinal"
+                                                 [class.tournament-bracket__slot--semifinal-first]="i === 0"
+                                                 [class.tournament-bracket__slot--semifinal-second]="i === 1"
+                                                 *ngFor="let match of getSemifinalMatches(matches); let i = index">
+                                                <div class="tournament-bracket__connector tournament-bracket__connector--quarter"
+                                                     [class.tournament-bracket__connector--first]="i === 0"
+                                                     [class.tournament-bracket__connector--second]="i === 1"
+                                                     *ngIf="hasQuarterfinalMatches(matches)"></div>
+                                                <ng-container *ngIf="match; else emptySlot">
+                                                    <ng-container [ngTemplateOutlet]="matchCard" [ngTemplateOutletContext]="{ $implicit: match }"></ng-container>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tournament-bracket__round tournament-bracket__round--final">
+                                        <h3 class="tournament-bracket__round-title">Final</h3>
+                                        <div class="tournament-bracket__slot-list">
+                                            <div class="tournament-bracket__slot tournament-bracket__slot--final">
+                                                <div class="tournament-bracket__connector tournament-bracket__connector--final"></div>
+                                                <ng-container *ngIf="getFinalMatch(matches); else emptySlot">
+                                                    <ng-container [ngTemplateOutlet]="matchCard" [ngTemplateOutletContext]="{ $implicit: getFinalMatch(matches) }"></ng-container>
+                                                </ng-container>
+                                            </div>
+
+                                            <div class="tournament-bracket__slot tournament-bracket__slot--third" *ngIf="getThirdPlaceMatch(matches)">
+                                                <span class="tournament-bracket__third-label">Tercer lugar</span>
+                                                <ng-container [ngTemplateOutlet]="matchCard" [ngTemplateOutletContext]="{ $implicit: getThirdPlaceMatch(matches) }"></ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </ng-template>
+
+                    <ng-template #emptySlot>
+                        <div class="tournament-bracket__placeholder">Por definir</div>
                     </ng-template>
 
                     <ng-container *ngIf="category === 'elite' && showElite"
