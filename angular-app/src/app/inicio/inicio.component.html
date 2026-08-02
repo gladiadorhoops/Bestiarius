@@ -25,6 +25,48 @@
         <div class="d-flex justify-content-center align-items-center" >
             
             <div class="text-justify outer">
+                <div class=" text-center row" >
+                    <h2>Podio {{ podioYear }}</h2>
+                    <div class="maincol col col-lg-6 col-12">
+                        <table class="row modern-table">
+                            <tr class="row">
+                                <th class="col col-12">Elite</th>
+                            </tr>
+                            <tr class="row" *ngFor="let res of resultsEL" [routerLink]="" >
+                                <td class="col col-2">
+                                    <span class="medal" [ngClass]="'medal--' + res.medal" [attr.aria-label]="res.pos"></span>
+                                </td>
+                                <td class="col col-10">
+                                    <div class="podio-team">
+                                        <img *ngIf="res.logoUrl" class="podio-team__logo" [src]="res.logoUrl" alt="" />
+                                        <span class="podio-team__name">{{res.team}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="maincol col col-lg-6 col-12">
+                        <table class="row modern-table">
+                            <tr class="row">
+                                <th class="col col-12">Aprendiz</th>
+                            </tr>
+                            <tr class="row" *ngFor="let res of resultsAP" [routerLink]="" >
+                                <td class="col col-2">
+                                    <span class="medal" [ngClass]="'medal--' + res.medal" [attr.aria-label]="res.pos"></span>
+                                </td>
+                                <td class="col col-10">
+                                    <div class="podio-team">
+                                        <img *ngIf="res.logoUrl" class="podio-team__logo" [src]="res.logoUrl" alt="" />
+                                        <span class="podio-team__name">{{res.team}}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>  
+                
+
+                <br><br>
 
                 <div class="row">
                     <div class="maincol col col-lg-4 col-12">
@@ -162,35 +204,6 @@
                         <img src="assets/player_example.jpeg" width="100%" alt="14mo Torneo Gladiadores Hoops">
                     </div>
                 </div>
-
-                <br><br><br>
-
-                <div class=" text-center row" >
-                    <h2>Podio 2025</h2>
-                    <div class="maincol col col-lg-6 col-12">
-                        <table class="row modern-table">
-                            <tr class="row">
-                                <th class="col col-12">Elite</th>
-                            </tr>
-                            <tr class="row" *ngFor="let res of resultsEL" [routerLink]="" >
-                                <td class="col col-2">{{res.pos}}</td>
-                                <td class="col col-10">{{res.team}}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="maincol col col-lg-6 col-12">
-                        <table class="row modern-table">
-                            <tr class="row">
-                                <th class="col col-12">Aprendiz</th>
-                            </tr>
-                            <tr class="row" *ngFor="let res of resultsAP" [routerLink]="" >
-                                <td class="col col-2">{{res.pos}}</td>
-                                <td class="col col-10">{{res.team}}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>  
-                
 
                 <br><br>
 
